@@ -1,0 +1,110 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.6.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'war'
+	//querydsl 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+
+//group = 'co.kr'
+//version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '11'
+bootWar{
+	archiveBaseName='ROOT'
+	archiveFileName='ROOT.war'
+	archiveVersion=''
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		url "https://plugins.gradle.org/m2/"
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'org.springframework.session:spring-session-data-redis'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation('javax.servlet:jstl:1.2')
+	runtimeOnly 'org.postgresql:postgresql'
+	implementation('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
+	implementation('org.apache.tomcat.embed:tomcat-embed-jasper')
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	implementation group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.25.5'
+	compileOnly "net.sf.json-lib:json-lib:2.4:jdk15"
+	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.16.0'
+	implementation 'com.google.protobuf:protobuf-lite:3.0.0'
+
+	//파이어베이스
+	implementation 'com.google.firebase:firebase-admin:8.1.0'
+
+	//map좌표 위경도로 변환
+	implementation files('libs/TransCoord.jar')
+
+	//셀레니움 크롤링
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '4.0.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-common', version: '2.0b1'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.0.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '4.0.0'
+	implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
+
+	//querydsl 추가
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	//jwt token
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+	//redis
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.6.3'
+	implementation group: 'redis.clients', name: 'jedis', version: '4.2.1'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+//querydsl 추가 끝

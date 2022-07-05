@@ -1,0 +1,441 @@
+@charset "UTF-8";
+.main {
+  /* 위로가기 탑버튼 .main-top */
+}
+
+.main-wrap {
+  position: relative;
+  min-width: 320px;
+}
+
+.main-wrap h4 {
+  margin-bottom: 15px;
+  font-size: 1.444em;
+  color: #000;
+}
+
+.main__inner {
+  margin: 0 20px;
+}
+
+.main-store .store {
+  display: inline-block;
+  position: relative;
+  z-index: 100;
+  margin: 0 3px;
+  border: 1px solid #edecec;
+  border-radius: 10px;
+  padding: 8px 10px 8px 30px;
+  text-align: left;
+  font-size: 0.6666em;
+  background-color: #fff;
+}
+
+.main-store .store:before {
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  width: 15px;
+  height: 15px;
+  background: url(../images/ic_playstore.png) no-repeat center;
+  background-size: auto 15px;
+  content: "";
+}
+
+.main-store .store--apple:before {
+  background-image: url(../images/ic_appstore.png);
+}
+
+.main-store .store strong {
+  display: block;
+  font-size: 1.777em;
+}
+
+.main-header {
+  position: fixed;
+  z-index: 100;
+  top: 20px;
+  padding: 0 20px;
+  width: 100%;
+  min-width: 320px;
+  height: 50px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.main-header .logo {
+  float: left;
+}
+
+.main-header .logo img {
+  height: 25px;
+}
+
+.main-header .insta {
+  float: right;
+}
+
+.main-header .insta img {
+  width: 30px;
+  height: auto;
+}
+
+.main-visual {
+  text-align: center;
+  position: relative;
+}
+
+.main-visual__title {
+  font-weight: bold;
+  font-size: 2.4em;
+  line-height: 1.3;
+  color: #000;
+}
+
+.main-visual__title.delay {
+  margin-bottom: 40px;
+}
+
+.main-visual__sub {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 10px;
+  font-size: 1.3333em;
+}
+
+.main-visual__sub strong {
+  color: #3e56f8;
+}
+
+.main-visual__sub:before {
+  display: block;
+  position: absolute;
+  top: -36px;
+  left: -25px;
+  width: 80px;
+  height: 38px;
+  padding-top: 10px;
+  color: #fff;
+  font-size: 0.7em;
+  text-align: center;
+  background: url(../images/tag.png) no-repeat center;
+  background-size: auto 38px;
+  content: "150개 기관";
+}
+
+.main-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-image: url(../images/bg_wave.png);
+  background-size: cover;
+  background-position: center 0;
+}
+
+.main-blue {
+  font-size: 2.4em;
+  text-align: center;
+  color: #fff;
+}
+
+.main-intro {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.main-intro h3 {
+  margin-bottom: 40px;
+  font-size: 1.8em;
+  color: #000;
+  opacity: 0;
+}
+
+.main-intro h3 i {
+  margin-bottom: 10px;
+  display: block;
+  font-size: 0.555em;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.main-intro--sec1 {
+  background-image: url(../images/bg01.png);
+}
+
+.main-intro--sec2 {
+  background-image: url(../images/bg02.png);
+}
+
+.main-intro--sec3 {
+  background-image: url(../images/bg03.png);
+}
+
+.main-use {
+  padding: 0 20px;
+  text-align: center;
+}
+
+.main-use .text {
+  margin: 10px 0 40px;
+  opacity: 0;
+}
+
+.main-use .thumb img {
+  max-width: 50%;
+  height: auto;
+}
+
+.main-use h4 span {
+  display: block;
+  font-size: 0.5555em;
+}
+
+.main-use__title {
+  opacity: 0;
+  font-size: 1.333em;
+}
+
+.main-tip {
+  background-color: #3e56f8;
+}
+
+.main-tip__slide {
+  position: relative;
+  margin: auto 20px;
+  border-radius: 20px;
+  height: 450px;
+  max-height: 80%;
+  padding: 35px 12px 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: 1px 2px 5px 2px rgba(71, 71, 71, 0.2);
+          box-shadow: 1px 2px 5px 2px rgba(71, 71, 71, 0.2);
+  text-align: center;
+  background-color: #fff;
+}
+
+.main-tip__slide h4:before {
+  display: block;
+  height: 20px;
+  background-image: url(../images/img_text.png);
+  background-size: auto 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  content: "";
+}
+
+.main-tip__slide .text {
+  opacity: 0;
+}
+
+.main-tip__slide .thumb {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.main-tip__slide .thumb img {
+  display: inline-block;
+  width: 140px;
+  text-align: center;
+}
+
+.main-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 500px;
+  color: #fff;
+  text-align: center;
+  background: url(../images/bg04.png) no-repeat center;
+  background-size: cover;
+}
+
+.main-banner h2 {
+  margin-bottom: 20px;
+  padding-top: 120px;
+  font-size: 1.444em;
+  font-weight: 300;
+}
+
+.main-banner h2 span {
+  font-weight: 500;
+}
+
+.main-footer {
+  position: relative;
+  background-color: #eceefd;
+}
+
+.main-footer footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #eceefd;
+}
+
+.main-footer .main__inner {
+  padding: 20px 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.main-footer .fcscenter {
+  color: #000;
+  font-weight: bold;
+}
+
+.main-footer .num {
+  display: block;
+  font-size: 2em;
+  margin: 6px 0 3px;
+}
+
+.main-footer .fright p {
+  margin-bottom: 3px;
+  font-size: 0.777em;
+}
+
+.main-footer .fmenu {
+  padding: 20px 0 10px;
+  font-size: 0.6666em;
+  font-weight: bold;
+}
+
+.main-footer dl {
+  display: table;
+  margin-bottom: 3px;
+  border-spacing: 2px;
+  font-size: 0.5555em;
+}
+
+.main-footer dt {
+  display: table-cell;
+  color: #999;
+}
+
+.main-footer dd {
+  margin-right: 5px;
+}
+
+.main-footer .fcopy {
+  color: #a8a8a8;
+  font-size: 0.4455em;
+}
+
+.main-top {
+  display: block;
+  position: absolute;
+  bottom: 30px;
+  left: calc(100vw - 15%);
+  z-index: 100;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  color: #333;
+  text-align: center;
+  line-height: 40px;
+}
+
+/*animation effect*/
+.tit_fadeup {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.intro_fadeup {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.use_fadeup {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.usebox_fadeup {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  -webkit-animation-duration: 0.7s;
+  animation-duration: 0.7s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 50px, 0);
+    transform: translate3d(0, 50px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 50px, 0);
+    transform: translate3d(0, 50px, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes typingAni {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 280px;
+  }
+}
+
+@keyframes typingAni {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 280px;
+  }
+}
+
+@-webkit-keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes cursor {
+  50% {
+    border-color: transparent;
+  }
+}

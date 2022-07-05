@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Api.ItdaMapper">
+
+    <insert id="addQuestion" parameterType="hashMap">
+        INSERT INTO itda_web.questions
+        (cret_time, companyname, username, userhp, app_flag, web_flag, etc_flag, check_flag, body)
+        VALUES(now(), #{companyName}, #{userName}, #{userHp}, #{appFlag}, #{webFlag}, #{etcFlag}, 'N', #{body})
+    </insert>
+
+    <select id="getProvider" resultType="ProviderVo">
+        select provider_nm, provider_loc, index
+        from itda_web.provider
+        order by index
+    </select>
+
+    <update id="updateLoc" parameterType="HashMap">
+        update itda_web.provider
+        set provider_lat = #{latitude},
+            provider_lng = #{longitude},
+            search_nm = #{title},
+            search_address = #{addr},
+            search_url = #{link},
+            search_tel = #{tel},
+            search_ctg = #{ctg}
+        where 1=1
+          and index = #{index}::integer
+    </update>
+
+    <update id="updatePhone" parameterType="HashMap">
+        update itda_web.provider
+        set search_tel = #{phone}
+        where 1=1
+          and index = #{index}::integer
+    </update>
+
+</mapper>

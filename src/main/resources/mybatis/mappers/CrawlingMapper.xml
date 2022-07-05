@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Api.CrawlingMapper">
+
+    <select id="isUrl" parameterType="map" resultType="boolean">
+        select exists(select 1 from itda_app.support_info where mobile_url = #{bodyurl})
+    </select>
+
+    <insert id="create" parameterType="SupportVo">
+        insert into itda_app.support_info
+        (
+            si_idx, target_name, target_cat_name, loc_code, si_title, mobile_url, pc_url, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt
+        )
+        values
+        <foreach collection="supportVos" item="vo" index="index" separator=",">
+
+            (
+             (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info), #{vo.targetName}, #{vo.targetCatName}, #{vo.locCode}, #{vo.siTitle}, #{vo.mobileUrl},
+                #{vo.pcUrl}, NOW(), 'N', 0, 0, 0
+            )
+        </foreach>
+    </insert>
+
+    <insert id="createMaster" parameterType="SupportVo">
+        insert into itda_web.crawling_mst
+        (id, title, url, active_yn, error_yn, loc_code, created_at, last_crawling_dt, remark)
+        values
+            ((select coalesce(max(id)+1,1) from itda_web.crawling_mst), #{title}, #{url}, #{activeYn}, #{errorYn}, #{locCode}, NOW(), NOW(), '-')
+            ON CONFLICT(title)
+        DO UPDATE
+                           set url = #{url},
+                           loc_code = #{locCode},
+                           active_yn = #{activeYn},
+                           error_yn = #{errorYn},
+                           last_crawling_dt = NOW()
+    </insert>
+
+    <update id="removeLNew">
+        update itda_app.support_info set si_title = replace(si_title, si_title, ltrim(si_title, 'New'))
+        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd')
+    </update>
+
+    <update id="removeRNew">
+        update itda_app.support_info set si_title = replace(si_title, si_title, rtrim(si_title, 'NEW'))
+        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd')
+    </update>
+
+    <update id="removeBlank">
+        update itda_app.support_info set <![CDATA[ si_title = ltrim(regexp_replace(si_title, '\<[^)]+\>' ,'')) ]]>
+
+    </update>
+
+
+</mapper>

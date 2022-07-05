@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Mobile.UserMapper">
+
+<select id="getUserToken" parameterType="hashMap" resultType="String">
+SELECT usertoken
+  FROM itda_app.usertable
+WHERE id=#{id}
+</select>
+
+
+  <select id="getUserTokenByLocation" parameterType="hashMap" resultType="map">
+    SELECT usertoken
+    FROM itda_app.usertable
+    WHERE usertoken not in ('', 'null')
+          <if test="userlocs != null">
+              AND userloc in
+              <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
+                  #{loc}
+              </foreach>
+          </if>
+  </select>
+
+    <select id="getUserTokenByLocationTest" parameterType="hashMap" resultType="map">
+        SELECT usertoken, userloc
+        FROM itda_app.usertable
+        WHERE usertoken not in ('', 'null')
+        AND username in ('권혁남', '전승희', '이소연', '김호준', '박준호', '최찬미', '김은영')
+        AND admin_flag = 'Y'
+        <if test="loc != null">
+        AND userloc in
+        <foreach collection="params" item="loc" index="idx" separator="," open="(" close=")">
+            #{loc}
+        </foreach>
+        </if>
+    </select>
+
+
+</mapper>
