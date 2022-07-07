@@ -44,14 +44,6 @@ public class CrawlingScheduler {
     @Autowired
     SeoulBiUosCrawling seoulBiUosCrawling;
 
-    /* 성북구 중장년 기술창업센터 */
-    @Autowired
-    SeoulSsscCrawling seoulSsscCrawling;
-
-    /* 송파구일자리통합지원센터 */
-    @Autowired
-    SeoulSongpaCrawling seoulSongpaCrawling;
-
     /* 한국콘텐츠진흥원 */
     @Autowired
     SeoulKoccaCrawling seoulKoccaCrawling;
@@ -71,10 +63,6 @@ public class CrawlingScheduler {
     /* 건국대학교 창업보육센터 */
     @Autowired
     SeoulKkuCrawling seoulKkuCrawling;
-
-    /* 서울창업카페신촌점 */
-    @Autowired
-    SeoulStartupcafeCrawling seoulStartupcafeCrawling;
 
     /* 서울창업카페상봉점 */
     @Autowired
@@ -128,17 +116,9 @@ public class CrawlingScheduler {
     @Autowired
     SeoulTpCrawling seoulTpCrawling;
 
-    /* 창업진흥원 */
-    @Autowired
-    SeoulKisedCrawling seoulKisedCrawling;
-
     /* 지역문화진흥원 */
     @Autowired
     SeoulRcdaCrawling seoulRcdaCrawling;
-
-    /* 동부여성발전센터 */
-    @Autowired
-    SeoulDongbuCrawling seoulDongbuCrawling;
 
     /* 북부여성발전센터 */
     @Autowired
@@ -467,12 +447,6 @@ public class CrawlingScheduler {
         /* 서울시 청년활동지원센터 */
         seoulBiUosCrawling.craw();
 
-        /* 성북구 중장년 기술창업센터 */
-        seoulSsscCrawling.craw();
-
-        /* 송파구일자리통합지원센터 */
-        seoulSongpaCrawling.craw();
-
         /* 한국콘텐츠진흥원 */
         seoulKoccaCrawling.craw();
 
@@ -504,9 +478,6 @@ public class CrawlingScheduler {
 
         /* 건국대학교 창업보육센터 */
         seoulKkuCrawling.craw();
-
-        /* 서울창업카페신촌점 */
-        seoulStartupcafeCrawling.craw();
 
         /* 서울창업카페상봉점 */
         seoulSangbongCrawling.craw();
@@ -555,9 +526,6 @@ public class CrawlingScheduler {
         /* 서울창조경제혁신센터 */
         seoulCceiCrawling.craw();
 
-        /* 창업진흥원 */
-        seoulKisedCrawling.craw();
-
         /* 지역문화진흥원 */
         seoulRcdaCrawling.craw();
 
@@ -575,8 +543,6 @@ public class CrawlingScheduler {
 
     @Scheduled(cron = "0 20 0 * * ?")
     public void CrawlingGroup4() throws InterruptedException {
-        /* 동부여성발전센터 */
-        seoulDongbuCrawling.craw();
 
         /* 북부여성발전센터 */
         seoulBukbuCrawling.craw();

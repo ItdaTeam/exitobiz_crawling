@@ -35,7 +35,7 @@ public class JeonbukJbbaCrawling implements Crawling {
      *  */
 
     private String url = "http://www.jbba.kr/bbs/board.php?bo_table=sub01_09&page=";
-    private int page = 5;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -48,7 +48,6 @@ public class JeonbukJbbaCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class JeonbukJbbaCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("전북경제통상진흥원");
@@ -87,7 +85,6 @@ public class JeonbukJbbaCrawling implements Crawling {
 
             for(int j=1; j<16; j++) {
                 try {
-
                     WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr["+ j +"]/td[2]/a"));
                     SupportVo vo = new SupportVo();
 
@@ -111,7 +108,6 @@ public class JeonbukJbbaCrawling implements Crawling {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                 }
             }
 

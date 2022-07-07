@@ -49,7 +49,6 @@ public class SeoulBiUosCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,7 +69,6 @@ public class SeoulBiUosCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서대문구-서울시립대학교 창업지원센터");
@@ -107,8 +105,6 @@ public class SeoulBiUosCrawling implements Crawling {
                         typePatternArray.add(typeMatcher.group());
                     }
 
-                    String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("]", "");
-
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("서대문구-서울시립대학교 창업지원센터");
                     vo.setTargetCatName("-");
@@ -144,9 +140,6 @@ public class SeoulBiUosCrawling implements Crawling {
                 supportVo.setErrorYn("Y");
                 crawlingMapper.createMaster(supportVo);
             }
-        }else {
-            supportVo.setErrorYn("N");
-            crawlingMapper.createMaster(supportVo);
         }
 
         driver.close();

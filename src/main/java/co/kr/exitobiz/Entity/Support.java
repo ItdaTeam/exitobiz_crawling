@@ -60,4 +60,17 @@ public class Support {
 
     @Column(name = "save_cnt")
     private Integer saveCnt;
+
+    public Support(){
+
+    }
+
+    public Support(String targetName, String targetCatName, String locCode, String siTitle, String mobileUrl, String pcUrl){
+        this.targetName = targetName;
+        this.targetCatName = targetCatName;
+        this.locCode = locCode;
+        this.siTitle = siTitle;
+        this.mobileUrl = mobileUrl;
+        this.pcUrl = pcUrl;
+    }
 }

@@ -47,7 +47,6 @@ public class SeoulYcstartupCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class SeoulYcstartupCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("양천디지털상상캠퍼스");
@@ -91,10 +89,7 @@ public class SeoulYcstartupCrawling implements Crawling {
                     WebElement targetXpath = driver.findElement(By.xpath("//*[@id=\"gall_ul\"]/li[" + j + "]/div/div[2]/div[1]/a[1]"));
 
                     String title = titleXpath.getText();
-                    String target = targetXpath.getText();
                     String url = titleXpath.getAttribute("href");
-
-                    String targettype = target.replaceAll("\\[", "").replaceAll("]", "");
 
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("양천디지털상상캠퍼스");
@@ -115,7 +110,6 @@ public class SeoulYcstartupCrawling implements Crawling {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                 }
 
             }

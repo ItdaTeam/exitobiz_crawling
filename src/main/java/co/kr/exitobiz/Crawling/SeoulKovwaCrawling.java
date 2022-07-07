@@ -49,7 +49,6 @@ public class SeoulKovwaCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulKovwaCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국여성벤처협회");
@@ -105,16 +103,6 @@ public class SeoulKovwaCrawling implements Crawling {
 
                         SupportVo vo = new SupportVo();
 
-                        //타입코드 없을경우 - 처리
-//                        if(!typePatternArray.isEmpty()){
-//                            String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-//                            vo.setTargettype(targettype);
-//                            vo.setTargettypecode(targettype);
-//                        }else {
-//                            vo.setTargettype("-");
-//                            vo.setTargettypecode("-");
-//                        }
-
                         vo.setTargetName("한국여성벤처협회");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C02");
@@ -133,7 +121,6 @@ public class SeoulKovwaCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

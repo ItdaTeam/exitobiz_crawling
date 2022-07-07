@@ -35,7 +35,7 @@ public class SeoulCceiCrawling implements Crawling {
      *  */
 
     private String url = "https://ccei.creativekorea.or.kr/seoul/custom/notice_list.do?&page=";
-    private int page = 2;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -48,7 +48,6 @@ public class SeoulCceiCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class SeoulCceiCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울창조경제혁신센터");
@@ -112,7 +110,6 @@ public class SeoulCceiCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

@@ -49,7 +49,6 @@ public class SeoulseCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,9 +70,6 @@ public class SeoulseCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriver driver2 = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebDriverWait wait2 = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울사회적기업협의회");
@@ -93,10 +89,6 @@ public class SeoulseCrawling implements Crawling {
 
                 try {
 
-                    //*[@id="list-body"]/li[9]/div[2]/a/span
-
-                    /* li not selector */
-//                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"list-body\"]/li[not(contains(@class, 'bg-light'))]["+j+"]/div[2]/a/span"));
                     WebElement bodyUrlXpath = driver.findElement(By.xpath("//*[@id=\"list-body\"]/li[not(contains(@class, 'bg-light'))]["+j+"]/div[2]/a"));
 
                     String title = bodyUrlXpath.getText();
@@ -110,14 +102,14 @@ public class SeoulseCrawling implements Crawling {
                         pattern.add(m.group());
                     }
 
-                    driver2.get(url + i);
-                    WebElement targettypeXpath = driver2.findElement(By.xpath("//*[@id=\"page\"]/div[1]/section/div/div/section/article/div[1]/div[1]/div/span[2]"));
-
-                    String targettype = targettypeXpath.getText();
+                    driver.navigate().to(url + i);
 
                     /* 글 상세페이지 들어가므로 1500 기다림 */
                     Thread.sleep(1500);
-//                    driver2.quit();
+
+                    WebElement targettypeXpath = driver.findElement(By.xpath("//*[@id=\"page\"]/div[1]/section/div/div/section/article/div[1]/div[1]/div/span[2]"));
+
+                    String targettype = targettypeXpath.getText();
 
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("서울사회적기업협의회");
@@ -134,10 +126,10 @@ public class SeoulseCrawling implements Crawling {
                         supportVos.add(vo);
                     }
 
+                    driver.navigate().back();
+
                 } catch (Exception e) {
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
-                    System.out.println(e.getMessage());
                 }
 
             }

@@ -1,6 +1,7 @@
 package co.kr.exitobiz.Controller.Api;
 
 import co.kr.exitobiz.Crawling.*;
+import co.kr.exitobiz.Vo.Crawling.CeciCrawVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,14 +36,6 @@ public class CrawlingController {
     @Autowired
     SeoulBiUosCrawling seoulBiUosCrawling;
 
-    /* 성북구 중장년 기술창업센터 */
-    @Autowired
-    SeoulSsscCrawling seoulSsscCrawling;
-
-    /* 송파구일자리통합지원센터 */
-    @Autowired
-    SeoulSongpaCrawling seoulSongpaCrawling;
-
     /* 한국콘텐츠진흥원 */
     @Autowired
     SeoulKoccaCrawling seoulKoccaCrawling;
@@ -62,10 +55,6 @@ public class CrawlingController {
     /* 건국대학교 창업보육센터 */
     @Autowired
     SeoulKkuCrawling seoulKkuCrawling;
-
-    /* 서울창업카페신촌점 */
-    @Autowired
-    SeoulStartupcafeCrawling seoulStartupcafeCrawling;
 
     /* 서울창업카페상봉점 */
     @Autowired
@@ -119,17 +108,9 @@ public class CrawlingController {
     @Autowired
     SeoulTpCrawling seoulTpCrawling;
 
-    /* 창업진흥원 */
-    @Autowired
-    SeoulKisedCrawling seoulKisedCrawling;
-
     /* 지역문화진흥원 */
     @Autowired
     SeoulRcdaCrawling seoulRcdaCrawling;
-
-    /* 동부여성발전센터 */
-    @Autowired
-    SeoulDongbuCrawling seoulDongbuCrawling;
 
     /* 북부여성발전센터 */
     @Autowired
@@ -438,12 +419,15 @@ public class CrawlingController {
     @Autowired
     NaraTestCrawling naraTestCrawling;
 
+    @Autowired
+    CeciCrawling ceciCrawling;
 
     @RequestMapping("/craw")
     @ResponseBody
     public void index() throws InterruptedException, IOException {
         System.out.println("컨트롤러시작테스트");
-        jejuCceiCrawling.craw();
+//        CeciCrawVo seoul = new CeciCrawVo("서울창조경제혁신센터","https://ccei.creativekorea.or.kr/seoul",1,"C02");
+//        ceciCrawling.craw(seoul);
         System.out.println("컨트롤러완료테스트");
     }
 }

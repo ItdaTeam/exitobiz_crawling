@@ -36,7 +36,7 @@ public class SbaCrawling implements Crawling {
      *  */
 
     private String url = "https://www.sba.seoul.kr/Pages/ContentsMenu/Company_Support.aspx?C=6FA70790-6677-EC11-80E8-9418827691E2";
-    private int page = 5;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -49,7 +49,6 @@ public class SbaCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,7 +69,6 @@ public class SbaCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         JavascriptExecutor jse = (JavascriptExecutor) driver;
 
@@ -87,6 +85,7 @@ public class SbaCrawling implements Crawling {
         for (int i=page; i>0; i--) {
 
             driver.get(url);
+
             Thread.sleep(1000);
             WebElement pageXpath = driver.findElement(By.xpath("//*[@id='pagination']/ol/li["+ i +"]"));
 
@@ -124,7 +123,6 @@ public class SbaCrawling implements Crawling {
 
                 } catch (Exception e) {
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
                 }
 

@@ -49,7 +49,6 @@ public class SeoulKonkukCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulKonkukCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         List<SupportVo> supportVos = new ArrayList<>();
         SupportVo supportVo = new SupportVo();
@@ -85,7 +83,14 @@ public class SeoulKonkukCrawling implements Crawling {
 
             driver.get(url + i);
 
-            for(int j=1; j<11; j++) {
+            Thread.sleep(1000);
+
+            List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"container\"]/section/div[2]/div[2]/div/div[2]/table/tbody[2]/tr"));
+
+            // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
+            int k = list.size();
+
+            for(int j=1; j<k+1; j++) {
 
                 try {
                     WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/section/div[2]/div[2]/div/div[2]/table/tbody[2]/tr["+ j +"]/td[2]/div/div/dl/dt/a"));
@@ -101,7 +106,6 @@ public class SeoulKonkukCrawling implements Crawling {
                     String title = titleXpath.getText();
                     String url = titleXpath.getAttribute("data-itsp-view-link");
                     String bodyurl = "https://startup.konkuk.ac.kr/BoardView.do?menuSeq=43850&configSeq=51126&seq=" + url;
-                    String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
 
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("건국대학교 창업지원단");
@@ -122,9 +126,7 @@ public class SeoulKonkukCrawling implements Crawling {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                 }
-
             }
 
             Thread.sleep(500);

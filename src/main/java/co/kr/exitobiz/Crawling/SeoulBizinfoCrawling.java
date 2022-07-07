@@ -47,7 +47,6 @@ public class SeoulBizinfoCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class SeoulBizinfoCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("기업마당");
@@ -87,11 +85,6 @@ public class SeoulBizinfoCrawling implements Crawling {
             for(int j=1; j<16; j++) {
                     try {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[3]/a"));
-//                        WebElement urlXpath = driver.findElement(By.xpath("/html/body/div[1]/div[5]/form[2]/section/div[2]/div[4]/ul/li[" + j + "]/a"));
-//                        WebElement targetXpath = driver.findElement(By.xpath("/html/body/div[1]/div[5]/form[2]/section/div[2]/div[4]/ul/li[" + j + "]/a/span[2]/span[1]"));
-//                        WebElement dateXpath = driver.findElement(By.xpath("/html/body/div[1]/div[5]/form[2]/section/div[2]/div[4]/ul/li[" + j + "]/a/span[3]"));
-                        //*[@id="articleSearchForm"]/div[3]/div[3]/table/tbody/tr[1]/td[3]/a
-                        //*[@id="articleSearchForm"]/div[3]/div[3]/table/tbody/tr[15]/td[3]/a
                         SupportVo vo = new SupportVo();
 
                         String title = titleXpath.getText();
@@ -117,7 +110,6 @@ public class SeoulBizinfoCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

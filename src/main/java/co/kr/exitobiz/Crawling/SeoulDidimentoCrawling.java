@@ -36,7 +36,7 @@ public class SeoulDidimentoCrawling implements Crawling {
      *  */
 
     private String url = "http://didimteo.or.kr/news/neighbor_news/?pageid=";
-    private int page = 2;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -49,7 +49,6 @@ public class SeoulDidimentoCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulDidimentoCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울창업디딤터");
@@ -89,7 +87,6 @@ public class SeoulDidimentoCrawling implements Crawling {
             for(int j=1; j<11; j++) {
 
                 try {
-                                                                                       //*[@id="kboard-default-list"]/div[2]/table/tbody/tr[5]/td[2]/a
                     WebElement titleXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[2]/table/tbody/tr[" + j + "]/td[2]/a/div"));
                     WebElement urlXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[2]/table/tbody/tr[" + j + "]/td[2]/a"));
 
@@ -106,16 +103,6 @@ public class SeoulDidimentoCrawling implements Crawling {
 
 
                     SupportVo vo = new SupportVo();
-
-                    //타입코드 없을경우 - 처리
-//                    if(!typePatternArray.isEmpty()){
-//                        String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-//                        vo.setTargettype(targettype);
-//                        vo.setTargettypecode(targettype);
-//                    }else {
-//                        vo.setTargettype("-");
-//                        vo.setTargettypecode("-");
-//                    }
 
                     vo.setTargetName("서울창업디딤터");
                     vo.setTargetCatName("-");
@@ -135,7 +122,6 @@ public class SeoulDidimentoCrawling implements Crawling {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                 }
 
             }

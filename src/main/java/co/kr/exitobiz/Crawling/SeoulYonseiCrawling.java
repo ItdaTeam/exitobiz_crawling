@@ -47,7 +47,6 @@ public class SeoulYonseiCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class SeoulYonseiCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("연세대학교창업지원관");
@@ -93,8 +91,6 @@ public class SeoulYonseiCrawling implements Crawling {
 
                         String title = titleXpath.getText();
                         String bodyurl = urlXpath.getAttribute("href");
-                        String type = typeXpath.getText();
-
 
                         SupportVo vo = new SupportVo();
 
@@ -116,7 +112,6 @@ public class SeoulYonseiCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

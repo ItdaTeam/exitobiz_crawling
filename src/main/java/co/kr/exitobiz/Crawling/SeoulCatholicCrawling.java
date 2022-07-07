@@ -48,7 +48,6 @@ public class SeoulCatholicCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,9 +69,6 @@ public class SeoulCatholicCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("가톨릭대학교 창업대학");
@@ -83,17 +79,14 @@ public class SeoulCatholicCrawling implements Crawling {
 
         List<SupportVo> supportVos = new ArrayList<>();
 
-        driver.get(url);
-        Thread.sleep(1500);
-
         for (int i=page; i>0; i--) {
 
             driver.get(url + i);
+            Thread.sleep(1500);
 
             for(int j=1; j<10; j++) {
 
                 try {
-
 
                     WebElement titleXpath = driver.findElement(By.xpath(" //*[@id=\"contents\"]/div/div[2]/ul/li[" + j + "]/a/div[1]/div/div"));
                     WebElement bodyUrlXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/div[2]/ul/li[" + j + "]/a"));
@@ -117,9 +110,8 @@ public class SeoulCatholicCrawling implements Crawling {
                     }
 
                 } catch (Exception e) {
-                    supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
+                    supportVo.setErrorYn("Y");
                 }
 
             }

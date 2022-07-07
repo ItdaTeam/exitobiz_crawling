@@ -39,4 +39,24 @@ public class SupportVo {
     private String ViewCntLoc;
     private String SupportCntLoc;
 
+    public SupportVo(){
+    }
+
+    public SupportVo(String title, String url, String locCode, String activeYn, String errorYn){
+        this.title = title;
+        this.url = url;
+        this.locCode = locCode;
+        this.activeYn = activeYn;
+        this.errorYn = errorYn;
+    }
+
+    public SupportVo(String title, String targetCatName, String locCode, String siTitle, String mobileUrl, String pcUrl){
+        this.title = title;
+        this.targetCatName = targetCatName;
+        this.locCode = locCode;
+        this.siTitle = siTitle;
+        this.mobileUrl = mobileUrl;
+        this.pcUrl = pcUrl;
+    }
+
 }

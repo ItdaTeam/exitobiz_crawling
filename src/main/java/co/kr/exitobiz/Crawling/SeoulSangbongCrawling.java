@@ -36,7 +36,7 @@ public class SeoulSangbongCrawling implements Crawling {
      *  */
 
     private String url = "http://www.xn--9n3b11ebufi2hb1cvzk.com/kwa-47155?PB_1582776078=";
-    private int page = 4;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -49,7 +49,6 @@ public class SeoulSangbongCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulSangbongCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울창업카페상봉점");
@@ -104,18 +102,7 @@ public class SeoulSangbongCrawling implements Crawling {
                     String title = titleXpath.getText();
                     String bodyurl = urlXpath.getAttribute("href");
 
-
                     SupportVo vo = new SupportVo();
-
-                    //타입코드 없을경우 - 처리
-//                    if(!typePatternArray.isEmpty()){
-//                        String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-//                        vo.setTargettype(targettype);
-//                        vo.setTargettypecode(targettype);
-//                    }else {
-//                        vo.setTargettype("-");
-//                        vo.setTargettypecode("-");
-//                    }
 
                     vo.setTargetName("서울창업카페상봉점");
                     vo.setTargetCatName("-");
@@ -135,7 +122,6 @@ public class SeoulSangbongCrawling implements Crawling {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                 }
 
             }

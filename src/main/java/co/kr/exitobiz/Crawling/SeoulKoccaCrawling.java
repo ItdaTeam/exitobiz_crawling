@@ -33,7 +33,7 @@ public class SeoulKoccaCrawling implements Crawling {
      * https://www.kocca.kr/
      *  */
 
-    private String url = "https://m.home.kocca.kr/mcop/pims/list.do?siteId=&category=&menuNo=201290&searchWrd=&search=&sortOrdrBy=&recptSt=&pageIndex=";
+    private String url = "https://www.kocca.kr/kocca/pims/list.do?menuNo=204104";
     private int page = 1;
 
     @Override
@@ -47,7 +47,6 @@ public class SeoulKoccaCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class SeoulKoccaCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국콘텐츠진흥원");
@@ -86,7 +84,7 @@ public class SeoulKoccaCrawling implements Crawling {
             driver.get(url + i);
 
 
-            List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"frm\"]/div[2]/div/dl"));
+            List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"frm\"]/div[4]/table/tbody/tr"));
 
             // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
             int k = list.size();
@@ -94,12 +92,11 @@ public class SeoulKoccaCrawling implements Crawling {
             for(int j=1; j<k; j++) {
 
                 try {
-                    WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[3]/form/div[2]/div/dl["+ j +"]/dt/a"));
+
+                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"frm\"]/div[4]/table/tbody/tr["+ j +"]/td[2]/a"));
 
                     String title = titleXpath.getText();
-                    String url = titleXpath.getAttribute("href");
-                    String baseurl = "https://m.home.kocca.kr/mcop/pims/view.do";
-                    String bodyurl = baseurl + url.substring(url.lastIndexOf("?"),url.length());
+                    String bodyurl = titleXpath.getAttribute("href");
 
                     SupportVo vo = new SupportVo();
                     vo.setMobileUrl(bodyurl);
@@ -117,9 +114,8 @@ public class SeoulKoccaCrawling implements Crawling {
                     }
 
                 } catch (Exception e) {
-                    supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
+                    supportVo.setErrorYn("Y");
                 }
 
             }

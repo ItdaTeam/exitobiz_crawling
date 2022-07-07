@@ -1,15 +1,15 @@
 package co.kr.exitobiz.Crawling;
 
 import co.kr.exitobiz.Mappers.Api.CrawlingMapper;
+import co.kr.exitobiz.Vo.Crawling.CeciCrawVo;
 import co.kr.exitobiz.Vo.Cms.SupportVo;
+import lombok.AllArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -20,34 +20,18 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class SeoulSsscCrawling implements Crawling {
+@AllArgsConstructor
+public class CeciCrawling {
 
-    @Autowired
-    CrawlingMapper crawlingMapper;
+    private final CrawlingMapper crawlingMapper;
+    private final Environment environment;
 
-    @Autowired
-    Environment environment;
 
-    /*
-     * 성북구 중장년 기술창업센터
-     * https://sssc.co.kr/
-     *  */
-
-    private String url = "https://sssc.co.kr/sssc/bbs/board.php?bo_table=notice&page=";
-    private int page = 1;
-
-    @Override
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    @Override
-    public void craw() throws InterruptedException {
-
+    public void craw(CeciCrawVo dto) throws InterruptedException {
         String driverPath = environment.getProperty("chrome.driver.path");
+        String url = dto.getBaseUrl() + "/custom/notice_list.do?&page=";
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -59,7 +43,7 @@ public class SeoulSsscCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                .usingAnyFreePort()
                 .build();
 
         try {
@@ -68,54 +52,39 @@ public class SeoulSsscCrawling implements Crawling {
             e.printStackTrace();
         }
 
-        WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriver driver = new ChromeDriver(service);
 
-        SupportVo supportVo = new SupportVo();
-        supportVo.setTitle("성북구중장년기술창업센터");
-        supportVo.setUrl("https://sssc.co.kr/");
-        supportVo.setLocCode("C02");
-        supportVo.setActiveYn("Y");
-        supportVo.setErrorYn("N");
+        SupportVo supportVo = new SupportVo(dto.getTitle(), dto.getBaseUrl(), dto.getLocCode(), "Y", "N");
 
         List<SupportVo> supportVos = new ArrayList<>();
 
-
-        for (int i=page; i>0; i--) {
+        for (int i=dto.getPage(); i>0; i--) {
 
             driver.get(url + i);
-
-            for(int j=1; j<16; j++) {
-
+            Thread.sleep(1000);
+            for(int j=1; j<9; j++) {
                 try {
 
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr["+j+"]/td[2]/a"));
+                    WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[3]/section/div[2]/div[4]/table/tbody/tr["+ j +"]/td[3]/a"));
 
                     String title = titleXpath.getText();
-                    String bodyUrl = titleXpath.getAttribute("href");
+                    String targetUrl = titleXpath.getAttribute("onclick").replaceAll("fnDetailPage","").replaceAll("\\(","").replaceAll("\\)","").replaceAll("\"","");
+                    String[] urlTemp = targetUrl.split(",");
+                    String bodyurl = dto.getBaseUrl() + "/custom/notice_view.do?no=" + urlTemp[0];
 
-                    SupportVo vo = new SupportVo();
-                    vo.setTargetName("성북구중장년기술창업센터");
-                    vo.setTargetCatName("-");
-                    vo.setLocCode("C02");
-                    vo.setSiTitle(title);
-                    vo.setMobileUrl(bodyUrl);
-                    vo.setPcUrl("-");
+                    SupportVo vo = new SupportVo(dto.getTitle(), "-", dto.getLocCode(), title, bodyurl, "-");
 
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyUrl);
-
+                    params.put("bodyurl", bodyurl);
                     boolean isUrl = crawlingMapper.isUrl(params);
                     if (!isUrl) {
                         supportVos.add(vo);
                     }
 
                 } catch (Exception e) {
-                    supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
+                    supportVo.setErrorYn("Y");
                 }
-
             }
 
             Thread.sleep(500);
@@ -139,6 +108,5 @@ public class SeoulSsscCrawling implements Crawling {
         driver.quit();
         service.stop();
     }
-
 
 }

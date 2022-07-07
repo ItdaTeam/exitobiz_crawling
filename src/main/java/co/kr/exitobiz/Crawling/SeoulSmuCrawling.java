@@ -49,7 +49,6 @@ public class SeoulSmuCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulSmuCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("상명대학교창업지원센터");
@@ -104,23 +102,12 @@ public class SeoulSmuCrawling implements Crawling {
                         String title = titleXpath.getText();
                         String bodyurl = titleXpath.getAttribute("href");
 
-                        //타입코드 없을경우 - 처리
-//                        if(!typePatternArray.isEmpty()){
-//                            String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-//                            vo.setTargettype(targettype);
-//                            vo.setTargettypecode(targettype);
-//                        }else {
-//                            vo.setTargettype("-");
-//                            vo.setTargettypecode("-");
-//                        }
-
                         vo.setTargetName("상명대학교창업지원센터");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C02");
                         vo.setSiTitle(title);
                         vo.setMobileUrl(bodyurl);
                         vo.setPcUrl("-");
-
 
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyurl);
@@ -132,7 +119,6 @@ public class SeoulSmuCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

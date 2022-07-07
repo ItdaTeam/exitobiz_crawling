@@ -45,4 +45,16 @@ public class Agency {
 
     @Column(name = "remark")
     private String remark;
+
+    public Agency(){
+
+    }
+
+    public Agency(String title, String url, String locCode, String activeYn, String errorYn){
+        this.title = title;
+        this.url = url;
+        this.activeYn = activeYn;
+        this.errorYn = errorYn;
+        this.locCode = locCode;
+    }
 }
