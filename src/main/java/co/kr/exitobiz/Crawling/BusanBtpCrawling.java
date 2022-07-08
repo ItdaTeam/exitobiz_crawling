@@ -47,7 +47,6 @@ public class BusanBtpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -68,8 +67,6 @@ public class BusanBtpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriver driver2 = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("부산테크노파크");
@@ -88,14 +85,12 @@ public class BusanBtpCrawling implements Crawling {
                     try {
 
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id='sform']/table/tbody/tr["+ j +"]/td[2]/a"));
-//                        WebElement dateXpath = driver.findElement(By.xpath("/html/body/div[6]/div/section/div[2]/article/div/form/table/tbody/tr["+ j +"]/td[4]"));
 
                         //텍스트가 안들어올경우 innerText로 처리
                         String title = titleXpath.getAttribute("innerText");
 
                         String url = titleXpath.getAttribute("href").replaceAll("javascript:fn_boardView","").replaceAll("\\(","").replaceAll("\\)","").replaceAll("'","").replaceAll(";","");
                         String bodyurl = "https://www.btp.or.kr/?action=BD0000M&pagecode=P000000296&language=KR&command=View&idx=" + url;
-                        String targettype = "-";
 
                         SupportVo vo = new SupportVo();
 
@@ -105,8 +100,6 @@ public class BusanBtpCrawling implements Crawling {
                         vo.setSiTitle(title);
                         vo.setMobileUrl(bodyurl);
                         vo.setPcUrl("-");
-
-                        System.out.println(vo.toString());
 
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyurl);
@@ -118,7 +111,6 @@ public class BusanBtpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

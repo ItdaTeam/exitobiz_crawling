@@ -35,7 +35,7 @@ public class SeoulSehubCrawling implements Crawling {
      *  */
 
     private String url = "https://sehub.net/archives/category/alarm/opencat/opencat_outside/page/";
-    private int page = 2;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -48,7 +48,6 @@ public class SeoulSehubCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,9 +69,6 @@ public class SeoulSehubCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울시청년활동지원센터");
@@ -82,9 +78,6 @@ public class SeoulSehubCrawling implements Crawling {
         supportVo.setErrorYn("N");
 
         List<SupportVo> supportVos = new ArrayList<>();
-
-        driver.get(url);
-        Thread.sleep(1500);
 
         for (int i=page; i>0; i--) {
             driver.get(url + i);
@@ -120,9 +113,8 @@ public class SeoulSehubCrawling implements Crawling {
                     }
 
                 } catch (Exception e) {
-                    supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
+                    supportVo.setErrorYn("Y");
                 }
 
             }

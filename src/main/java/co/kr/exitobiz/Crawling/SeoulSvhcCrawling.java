@@ -48,7 +48,6 @@ public class SeoulSvhcCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,9 +69,6 @@ public class SeoulSvhcCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         List<SupportVo> supportVos = new ArrayList<>();
 
@@ -83,11 +79,9 @@ public class SeoulSvhcCrawling implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
-
-        driver.get(url);
-        Thread.sleep(1500);
-
         for (int i=page; i>0; i--) {
+
+            driver.get(url+i);
 
             Thread.sleep(1500);
 
@@ -95,14 +89,10 @@ public class SeoulSvhcCrawling implements Crawling {
 
                 try {
 
-                    String baseUrl = "http://www.svhc.or.kr";
                     WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"content\"]/div[2]/div["+j+"]/div/p[2]/a"));
-                    WebElement targettypeXpath = driver.findElement(By.xpath("//*[@id=\"content\"]/div[2]/div["+j+"]/div/p[1]/span"));
 
                     String title = titleXpath.getText();
                     String bodyUrl = titleXpath.getAttribute("href");
-                    String targettype = targettypeXpath.getText();
-
 
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("소셜벤처허브");
@@ -112,8 +102,6 @@ public class SeoulSvhcCrawling implements Crawling {
                     vo.setMobileUrl(bodyUrl);
                     vo.setPcUrl("-");
 
-
-
                     HashMap<String, String> params = new HashMap<>();
                     params.put("bodyurl", bodyUrl);
                     boolean isUrl = crawlingMapper.isUrl(params);
@@ -121,11 +109,9 @@ public class SeoulSvhcCrawling implements Crawling {
                         supportVos.add(vo);
                     }
 
-
                 } catch (Exception e) {
-                    supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
+                    supportVo.setErrorYn("Y");
                 }
 
             }

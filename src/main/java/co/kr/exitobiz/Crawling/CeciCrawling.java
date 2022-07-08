@@ -67,15 +67,17 @@ public class CeciCrawling {
 
                     WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[3]/section/div[2]/div[4]/table/tbody/tr["+ j +"]/td[3]/a"));
 
+                    StringBuilder stringBuilder = new StringBuilder();
+
                     String title = titleXpath.getText();
                     String targetUrl = titleXpath.getAttribute("onclick").replaceAll("fnDetailPage","").replaceAll("\\(","").replaceAll("\\)","").replaceAll("\"","");
                     String[] urlTemp = targetUrl.split(",");
-                    String bodyurl = dto.getBaseUrl() + "/custom/notice_view.do?no=" + urlTemp[0];
+                    stringBuilder.append(dto.getBaseUrl()).append("/custom/notice_view.do?no=").append(urlTemp[0]);
 
-                    SupportVo vo = new SupportVo(dto.getTitle(), "-", dto.getLocCode(), title, bodyurl, "-");
+                    SupportVo vo = new SupportVo(dto.getTitle(), "-", dto.getLocCode(), title, stringBuilder.toString(), "-");
 
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyurl);
+                    params.put("bodyurl", stringBuilder.toString());
                     boolean isUrl = crawlingMapper.isUrl(params);
                     if (!isUrl) {
                         supportVos.add(vo);

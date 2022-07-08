@@ -422,12 +422,24 @@ public class CrawlingController {
     @Autowired
     CeciCrawling ceciCrawling;
 
+    @Autowired
+    KpipaCrawling kpipaCrawling;
+
     @RequestMapping("/craw")
     @ResponseBody
     public void index() throws InterruptedException, IOException {
         System.out.println("컨트롤러시작테스트");
 //        CeciCrawVo seoul = new CeciCrawVo("서울창조경제혁신센터","https://ccei.creativekorea.or.kr/seoul",1,"C02");
-//        ceciCrawling.craw(seoul);
+//        CeciCrawVo gyeongnam = new CeciCrawVo("경남창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongnam",1,"C055");
+//        CeciCrawVo busan = new CeciCrawVo("부산창조경제혁신센터","https://ccei.creativekorea.or.kr/busan",1,"C051");
+//        CeciCrawVo gyeonggi = new CeciCrawVo("경기창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeonggi",1,"C031");
+//        CeciCrawVo incheon = new CeciCrawVo("인천창조경제혁신센터","https://ccei.creativekorea.or.kr/incheon",1,"C032");
+//        CeciCrawVo jeonbuk = new CeciCrawVo("전북창조경제혁신센터","https://ccei.creativekorea.or.kr/jeonbuk",1,"C063");
+//        CeciCrawVo jeonnam = new CeciCrawVo("전남창조경제혁신센터","https://ccei.creativekorea.or.kr/jeonnam",1,"C061");
+//        CeciCrawVo sejong = new CeciCrawVo("세종창조경제혁신센터","https://ccei.creativekorea.or.kr/sejong",1,"C044");
+//        CeciCrawVo ulsan = new CeciCrawVo("울산창조경제혁신센터","https://ccei.creativekorea.or.kr/ulsan",1,"C052");
+        jeonnamTpCrawling.craw();
+        sejongTpCrawling.craw();
         System.out.println("컨트롤러완료테스트");
     }
 }

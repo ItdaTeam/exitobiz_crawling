@@ -48,7 +48,6 @@ public class GyeonggiGtpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class GyeonggiGtpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("경기테크노파크");
@@ -86,7 +84,6 @@ public class GyeonggiGtpCrawling implements Crawling {
             Thread.sleep(1000);
             for(int j=1; j<11; j++) {
                     try {
-
 
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/div[2]/div[2]/table/tbody/tr["+ j +"]/td[2]/a"));
                         SupportVo vo = new SupportVo();
@@ -112,7 +109,6 @@ public class GyeonggiGtpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

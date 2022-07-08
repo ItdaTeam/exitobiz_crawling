@@ -48,7 +48,6 @@ public class SeoulSocialEnterPrise implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,9 +69,6 @@ public class SeoulSocialEnterPrise implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         List<SupportVo> supportVos = new ArrayList<>();
 
@@ -84,10 +80,8 @@ public class SeoulSocialEnterPrise implements Crawling {
         supportVo.setErrorYn("N");
 
 
-        driver.get(url);
-        Thread.sleep(1500);
-
         for (int i=page; i>0; i--) {
+            driver.get(url+i);
 
             Thread.sleep(1500);
 
@@ -106,7 +100,6 @@ public class SeoulSocialEnterPrise implements Crawling {
                     String bodyUrl = baseUrl + intStr;
 
                     String title = titleXpath.getText();
-                    String targettype = "사업공고";
 
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("한국사회적기업진흥원");
@@ -126,9 +119,8 @@ public class SeoulSocialEnterPrise implements Crawling {
 
 
                 } catch (Exception e) {
-                    supportVo.setErrorYn("Y");
-                    crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
+                    supportVo.setErrorYn("Y");
                 }
 
             }

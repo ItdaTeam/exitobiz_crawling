@@ -49,7 +49,6 @@ public class SeoulTpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulTpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울테크노파크");
@@ -80,7 +78,6 @@ public class SeoulTpCrawling implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
-
 
         for (int i=page; i>0; i--) {
 
@@ -106,23 +103,12 @@ public class SeoulTpCrawling implements Crawling {
                         String[] urlTemp = url.split(",");
                         String bodyurl = "https://seoultp.or.kr/user/nd19746.do?View&boardNo=" + urlTemp[2];
 
-                        //타입코드 없을경우 - 처리
-//                        if(!typePatternArray.isEmpty()){
-//                            String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-//                            vo.setTargettype(targettype);
-//                            vo.setTargettypecode(targettype);
-//                        }else {
-//                            vo.setTargettype("-");
-//                            vo.setTargettypecode("-");
-//                        }
-
                         vo.setTargetName("서울테크노파크");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C02");
                         vo.setSiTitle(title);
                         vo.setMobileUrl(bodyurl);
                         vo.setPcUrl("-");
-
 
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyurl);
@@ -134,7 +120,6 @@ public class SeoulTpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 
@@ -156,9 +141,7 @@ public class SeoulTpCrawling implements Crawling {
         }
 
         driver.close();
-driver.quit();
+        driver.quit();
         service.stop();
     }
-
-
 }
