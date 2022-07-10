@@ -48,7 +48,6 @@ public class GangwonGidpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class GangwonGidpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("강원디자인진흥원");
@@ -79,7 +77,6 @@ public class GangwonGidpCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-
         for (int i=page; i>0; i--) {
 
             driver.get(url);
@@ -87,7 +84,6 @@ public class GangwonGidpCrawling implements Crawling {
 
             for(int j=1; j<16; j++) {
                     try {
-
 
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"A-Contents\"]/div/div[2]/table/tbody/tr["+ j +"]/td[3]/a"));
                         WebElement statusXpath = driver.findElement(By.xpath("//*[@id=\"A-Contents\"]/div/div[2]/table/tbody/tr["+ j +"]/td[4]/i"));
@@ -116,7 +112,6 @@ public class GangwonGidpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

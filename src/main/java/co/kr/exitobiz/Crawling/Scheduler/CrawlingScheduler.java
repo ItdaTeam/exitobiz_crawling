@@ -2,6 +2,7 @@ package co.kr.exitobiz.Crawling.Scheduler;
 
 import co.kr.exitobiz.Crawling.*;
 import co.kr.exitobiz.Mappers.Api.CrawlingMapper;
+import co.kr.exitobiz.Vo.Crawling.CeciCrawVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -108,10 +109,6 @@ public class CrawlingScheduler {
     @Autowired
     SeoulBizinfoCrawling seoulBizinfoCrawling;
 
-    /* 서울창조경제혁신센터 */
-    @Autowired
-    SeoulCceiCrawling seoulCceiCrawling;
-
     /* 서울테크노파크 */
     @Autowired
     SeoulTpCrawling seoulTpCrawling;
@@ -143,14 +140,6 @@ public class CrawlingScheduler {
     /* 한국산업기술진흥원 */
     @Autowired
     SeoulKiatCrawling seoulKiatCrawling;
-
-    /* 경남창조경제혁신센터 */
-    @Autowired
-    GyeongnamCceiCrawling gyeongnamCceiCrawling;
-
-    /* 부산창조경제혁신센터 */
-    @Autowired
-    BusanCceiCrawling busanCceiCrawling;
 
     /* 부산테크노파크 */
     @Autowired
@@ -184,30 +173,6 @@ public class CrawlingScheduler {
     @Autowired
     GyeonggiGtpCrawling gyeonggiGtpCrawling;
 
-    /* 경기창조경제혁신센터 */
-    @Autowired
-    GyeonggiCceiCrawling gyeonggiCceiCrawling;
-
-    /* 인천창조경제혁신센터 */
-    @Autowired
-    IncheonCceiCrawling incheonCceiCrawling;
-
-    /* 전북창조경제혁신센터 */
-    @Autowired
-    JeonbukCceiCrawling jeonbukCceiCrawling;
-
-    /* 전남창조경제혁신센터 */
-    @Autowired
-    JeonnamCceiCrawling jeonnamCceiCrawling;
-
-    /* 세종창조경제혁신센터 */
-    @Autowired
-    SejongCceiCrawling sejongCceiCrawling;
-
-    /* 울산창조경제혁신센터 */
-    @Autowired
-    UlsanCceiCrawling ulsanCceiCrawling;
-
     /* 제주창조경제혁신센터 */
     @Autowired
     JejuCceiCrawling jejuCceiCrawling;
@@ -236,26 +201,6 @@ public class CrawlingScheduler {
     @Autowired
     UlsanTpCrawling ulsanTpCrawling;
 
-    /* 대구창조경제혁신센터 */
-    @Autowired
-    DaeguCceiCrawling daeguCceiCrawling;
-
-    /* 강원창조경제혁신센터 */
-    @Autowired
-    GangwonCceiCrawling gangwonCceiCrawling;
-
-    /* 충북창조경제혁신센터 */
-    @Autowired
-    ChungbukCceiCrawling chungbukCceiCrawling;
-
-    /* 충남창조경제혁신센터 */
-    @Autowired
-    ChungnamCceiCrawling chungnamCceiCrawling;
-
-    /* 경북창조경제혁신센터 */
-    @Autowired
-    GyeongbukCceiCrawling gyeongbukCceiCrawling;
-
     /* 강원테크노파크 */
     @Autowired
     GangwonTpCrawling gangwonTpCrawling;
@@ -271,14 +216,6 @@ public class CrawlingScheduler {
     /* 경북테크노파크 */
     @Autowired
     GyeongbukTpCrawling gyeongbukTpCrawling;
-
-    /* 대전창조경제혁신센터 */
-    @Autowired
-    DaejeonCceiCrawling daejeonCceiCrawling;
-
-    /* 광주창조경제혁신센터 */
-    @Autowired
-    GwangjuCceiCrawling gwangjuCceiCrawling;
 
     /* 대전테크노파크 */
     @Autowired
@@ -424,6 +361,10 @@ public class CrawlingScheduler {
     @Autowired
     GyeongbukPtpCrawling gyeongbukPtpCrawling;
 
+    /* 창조경제혁신센터 */
+    @Autowired
+    CeciCrawling ceciCrawling;
+
     @Scheduled(cron = "0 0 0 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
@@ -523,9 +464,6 @@ public class CrawlingScheduler {
         /* 기업마당 */
         seoulBizinfoCrawling.craw();
 
-        /* 서울창조경제혁신센터 */
-        seoulCceiCrawling.craw();
-
         /* 지역문화진흥원 */
         seoulRcdaCrawling.craw();
 
@@ -559,25 +497,12 @@ public class CrawlingScheduler {
         /* 서울 소셜벤처허브 */
         seoulSvhcCrawling.craw();
 
-        /* 경남창조경제혁신센터 */
-        gyeongnamCceiCrawling.craw();
-
-        /* 부산창조경제혁신센터 */
-        busanCceiCrawling.craw();
-
         /* 부산테크노파크 */
         busanBtpCrawling.craw();
 
         /* 경남테크노파크 */
         gyeongnamGntpCrawling.craw();
 
-        /* 한국산업기술진흥원 */
-        seoulKiatCrawling.craw();
-        System.out.println("--------그룹4 크롤링완료---------");
-    }
-
-    @Scheduled(cron = "0 25 0 * * ?")
-    public void CrawlingGroup5() throws InterruptedException {
         /* SMTECH */
         smtechCrawling.craw();
 
@@ -587,29 +512,61 @@ public class CrawlingScheduler {
         /* 여성기업종합정보포털 */
         wbizCrawling.craw();
 
-        /* 한국여성과학기술인지원센터 */
-        wisetCrawling.craw();
+        /* 한국산업기술진흥원 */
+        seoulKiatCrawling.craw();
+        System.out.println("--------그룹4 크롤링완료---------");
+    }
 
-        /* 한국출판문화산업진흥원 */
-        kpipaCrawling.craw();
+    @Scheduled(cron = "0 25 0 * * ?")
+    public void CrawlingGroup5() throws InterruptedException {
+        CeciCrawVo seoul = new CeciCrawVo("서울창조경제혁신센터","https://ccei.creativekorea.or.kr/seoul",1,"C02");
+        CeciCrawVo gyeongnam = new CeciCrawVo("경남창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongnam",1,"C055");
+        CeciCrawVo busan = new CeciCrawVo("부산창조경제혁신센터","https://ccei.creativekorea.or.kr/busan",1,"C051");
+        CeciCrawVo gyeonggi = new CeciCrawVo("경기창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeonggi",1,"C031");
+        CeciCrawVo incheon = new CeciCrawVo("인천창조경제혁신센터","https://ccei.creativekorea.or.kr/incheon",1,"C032");
+        CeciCrawVo jeonbuk = new CeciCrawVo("전북창조경제혁신센터","https://ccei.creativekorea.or.kr/jeonbuk",1,"C063");
+        CeciCrawVo jeonnam = new CeciCrawVo("전남창조경제혁신센터","https://ccei.creativekorea.or.kr/jeonnam",1,"C061");
+        CeciCrawVo sejong = new CeciCrawVo("세종창조경제혁신센터","https://ccei.creativekorea.or.kr/sejong",1,"C044");
+        CeciCrawVo ulsan = new CeciCrawVo("울산창조경제혁신센터","https://ccei.creativekorea.or.kr/ulsan",1,"C052");
+        CeciCrawVo gyeongbuk = new CeciCrawVo("경북창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongbuk",1,"C054");
+        CeciCrawVo gwangju = new CeciCrawVo("광주창조경제혁신센터","https://ccei.creativekorea.or.kr/gwangju",1,"C062");
+        CeciCrawVo chungbuk = new CeciCrawVo("충북창조경제혁신센터","https://ccei.creativekorea.or.kr/chungbuk",1,"C043");
+
+        /* 서울창조경제혁신센터 */
+        ceciCrawling.craw(seoul);
+
+        /* 경남창조경제혁신센터 */
+        ceciCrawling.craw(gyeongnam);
+
+        /* 부산창조경제혁신센터 */
+        ceciCrawling.craw(busan);
 
         /* 경기창조경제혁신센터 */
-        gyeonggiCceiCrawling.craw();
+        ceciCrawling.craw(gyeonggi);
 
         /* 인천창조경제혁신센터 */
-        incheonCceiCrawling.craw();
+        ceciCrawling.craw(incheon);
 
         /* 전북창조경제혁신센터 */
-        jeonbukCceiCrawling.craw();
+        ceciCrawling.craw(jeonbuk);
 
         /* 전남창조경제혁신센터 */
-        jeonnamCceiCrawling.craw();
+        ceciCrawling.craw(jeonnam);
 
         /* 세종창조경제혁신센터 */
-        sejongCceiCrawling.craw();
+        ceciCrawling.craw(sejong);
 
         /* 울산창조경제혁신센터 */
-        ulsanCceiCrawling.craw();
+        ceciCrawling.craw(ulsan);
+
+        /* 경북창조경제혁신센터 */
+        ceciCrawling.craw(gyeongbuk);
+
+        /* 광주창조경제혁신센터 */
+        ceciCrawling.craw(gwangju);
+
+        /* 충북창조경제혁신센터 */
+        ceciCrawling.craw(chungbuk);
 
         /* 제주창조경제혁신센터 */
         jejuCceiCrawling.craw();
@@ -620,8 +577,12 @@ public class CrawlingScheduler {
     @Scheduled(cron = "0 30 0 * * ?")
     public void CrawlingGroup6() throws InterruptedException {
 
-        /* 대구창조경제혁신센터 */
-        daeguCceiCrawling.craw();
+
+        /* 한국여성과학기술인지원센터 */
+        wisetCrawling.craw();
+
+        /* 한국출판문화산업진흥원 */
+        kpipaCrawling.craw();
 
         /* 제주테크노파크 */
         jejuTpCrawling.craw();
@@ -653,18 +614,6 @@ public class CrawlingScheduler {
     @Scheduled(cron = "0 35 0 * * ?")
     public void CrawlingGroup7() throws InterruptedException {
 
-        /* 강원창조경제혁신센터 */
-        gangwonCceiCrawling.craw();
-
-        /* 충북창조경제혁신센터 */
-        chungbukCceiCrawling.craw();
-
-        /* 충남창조경제혁신센터 */
-        chungnamCceiCrawling.craw();
-
-        /* 경북창조경제혁신센터 */
-        gyeongbukCceiCrawling.craw();
-
         /* 강원테크노파크 */
         gangwonTpCrawling.craw();
 
@@ -676,12 +625,6 @@ public class CrawlingScheduler {
 
         /* 경북테크노파크 */
         gyeongbukTpCrawling.craw();
-
-        /* 대전창조경제혁신센터 */
-        daejeonCceiCrawling.craw();
-
-        /* 광주창조경제혁신센터 */
-        gwangjuCceiCrawling.craw();
 
         /* 대전테크노파크 */
         daejeonTpCrawling.craw();

@@ -35,7 +35,7 @@ public class GyeonggiGconCrawling implements Crawling {
      *  */
 
     private String url = "https://www.gcon.or.kr/busiNotice?rowCnt=10&menuId=MENU02369&schType=0&schText=&boardStyle=&categoryId=&continent=&country=&upDown=0&pageNum=";
-    private int page = 3;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -48,7 +48,6 @@ public class GyeonggiGconCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class GyeonggiGconCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("경기콘텐츠진흥원");
@@ -116,7 +114,6 @@ public class GyeonggiGconCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

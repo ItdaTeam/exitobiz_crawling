@@ -36,7 +36,7 @@ public class IncheonTpCrawling implements Crawling {
      *  */
 
     private String url = "https://www.itp.or.kr/intro.asp?tmid=13";
-    private int page = 3;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -49,7 +49,6 @@ public class IncheonTpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -60,7 +59,7 @@ public class IncheonTpCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                .usingAnyFreePort()
                 .build();
 
         try {
@@ -70,7 +69,6 @@ public class IncheonTpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         SupportVo supportVo = new SupportVo();
@@ -81,9 +79,8 @@ public class IncheonTpCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-        driver.get(url);
-        Thread.sleep(1000);
         for (int i=page; i>0; i--) {
+            driver.get(url);
             Thread.sleep(1000);
             jse.executeScript("fncBoardPage("+ i +")");
 
@@ -114,7 +111,6 @@ public class IncheonTpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

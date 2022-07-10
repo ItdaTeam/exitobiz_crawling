@@ -51,10 +51,6 @@ public class KStartUpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-
-        String driverFilePath = driverFile.getAbsolutePath();
-
-
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -76,7 +72,6 @@ public class KStartUpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
         JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         SupportVo supportVo = new SupportVo();
@@ -90,7 +85,7 @@ public class KStartUpCrawling implements Crawling {
 
         try {
             for (int i=page+2; i>2; i--) {
-                System.out.println("페이지::" + i);
+
                 driver.get(url);
 
                 WebElement pageXpath = driver.findElement(By.xpath("//*[@id='bizPbancList']/div/a["+ i +"]"));
@@ -132,9 +127,8 @@ public class KStartUpCrawling implements Crawling {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            crawlingMapper.createMaster(supportVo);
             System.out.println(e.getMessage());
+            supportVo.setErrorYn("Y");
         }
 
             /* 빈 리스트가 아니면 크레이트 */

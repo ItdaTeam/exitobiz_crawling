@@ -36,7 +36,7 @@ public class VisitKoreaCrawling implements Crawling {
      *  */
 
     private String url = "https://kto.visitkorea.or.kr/kor/notice/news/noti/board/list.kto?cPage=";
-    private int page = 3;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -49,7 +49,6 @@ public class VisitKoreaCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,7 +69,6 @@ public class VisitKoreaCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국관광공사");
@@ -119,7 +117,6 @@ public class VisitKoreaCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

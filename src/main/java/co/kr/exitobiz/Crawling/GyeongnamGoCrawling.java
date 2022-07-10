@@ -77,7 +77,6 @@ public class GyeongnamGoCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-
         for (int i=page; i>0; i--) {
 
             driver.get(url+i);

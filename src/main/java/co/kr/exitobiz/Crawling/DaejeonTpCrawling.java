@@ -36,7 +36,7 @@ public class DaejeonTpCrawling implements Crawling {
      *  */
 
     private String url = "https://www.djtp.or.kr/sub010101/index/page/";
-    private int page = 2;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -49,7 +49,6 @@ public class DaejeonTpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,8 +69,6 @@ public class DaejeonTpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("대전테크노파크");
@@ -81,7 +78,6 @@ public class DaejeonTpCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-        Thread.sleep(1000);
         for (int i=page; i>0; i--) {
             driver.get(url+i);
 
@@ -112,7 +108,6 @@ public class DaejeonTpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

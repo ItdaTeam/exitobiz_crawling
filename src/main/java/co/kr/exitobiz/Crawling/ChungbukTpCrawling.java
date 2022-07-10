@@ -49,7 +49,6 @@ public class ChungbukTpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -60,7 +59,7 @@ public class ChungbukTpCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                .usingAnyFreePort()
                 .build();
 
         try {
@@ -69,9 +68,7 @@ public class ChungbukTpCrawling implements Crawling {
             e.printStackTrace();
         }
 
-        WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        WebDriver driver = new ChromeDriver(service);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("충북테크노파크");
@@ -81,7 +78,6 @@ public class ChungbukTpCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-        Thread.sleep(1000);
         for (int i=page; i>0; i--) {
             driver.get(url+i);
 
@@ -112,7 +108,6 @@ public class ChungbukTpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

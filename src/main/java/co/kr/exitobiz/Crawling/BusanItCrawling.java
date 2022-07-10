@@ -35,7 +35,7 @@ public class BusanItCrawling implements Crawling {
      *  */
 
     private String url = "http://www.busanit.or.kr/board/list.asp?bcode=notice&sword=&search_txt=&ipage=";
-    private int page = 2;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -48,7 +48,6 @@ public class BusanItCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -59,7 +58,7 @@ public class BusanItCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                .usingAnyFreePort()
                 .build();
 
         try {
@@ -68,8 +67,7 @@ public class BusanItCrawling implements Crawling {
             e.printStackTrace();
         }
 
-        WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriver driver = new ChromeDriver(service);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("부산정보산업진흥원");
@@ -87,7 +85,6 @@ public class BusanItCrawling implements Crawling {
 
             for(int j=1; j<11; j++) {
                     try {
-
 
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"sub_cont\"]/div[2]/table/tbody/tr["+ j +"]/td[2]/a"));
                         SupportVo vo = new SupportVo();
@@ -111,7 +108,6 @@ public class BusanItCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

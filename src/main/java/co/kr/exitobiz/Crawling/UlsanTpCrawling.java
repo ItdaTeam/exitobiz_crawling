@@ -49,7 +49,6 @@ public class UlsanTpCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -70,8 +69,6 @@ public class UlsanTpCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("울산테크노파크");
@@ -81,8 +78,6 @@ public class UlsanTpCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-
-        Thread.sleep(1000);
         for (int i=page; i>0; i--) {
 
             driver.get(url+i);
@@ -113,7 +108,6 @@ public class UlsanTpCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

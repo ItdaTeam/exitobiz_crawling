@@ -35,7 +35,7 @@ public class GyeonggiEgbizCrawling implements Crawling {
      *  */
 
     private String url = "https://www.egbiz.or.kr/prjCategory/a/m/selectPrjCategoryList.do";
-    private int page = 3;
+    private int page = 1;
 
     @Override
     public void setPage(int page) {
@@ -48,7 +48,6 @@ public class GyeonggiEgbizCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class GyeonggiEgbizCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("경기도경제과학진흥원");
@@ -79,8 +77,8 @@ public class GyeonggiEgbizCrawling implements Crawling {
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
 
-        driver.get(url);
         for (int i=page; i>1; i--) {
+            driver.get(url);
 
             Thread.sleep(1000);
 
@@ -113,7 +111,6 @@ public class GyeonggiEgbizCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

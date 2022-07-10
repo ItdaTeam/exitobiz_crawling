@@ -48,7 +48,6 @@ public class ChungnamCtiaCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -69,7 +68,6 @@ public class ChungnamCtiaCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("충남정보문화산업진흥원");
@@ -84,12 +82,12 @@ public class ChungnamCtiaCrawling implements Crawling {
 
             driver.get(url);
 
+            Thread.sleep(1000);
+
             List <WebElement> col = driver.findElements(By.xpath("//*[@id=\"list\"]/tbody/tr"));
 
             //공지사항때문에 행사이즈 구해서 for문 돌리기
             int k = col.size();
-
-            Thread.sleep(1000);
 
             for(int j=1; j<k; j++) {
                     try {
@@ -119,7 +117,6 @@ public class ChungnamCtiaCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

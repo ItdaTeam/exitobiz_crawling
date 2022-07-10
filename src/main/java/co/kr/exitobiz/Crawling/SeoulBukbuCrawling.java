@@ -49,7 +49,6 @@ public class SeoulBukbuCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -71,7 +70,6 @@ public class SeoulBukbuCrawling implements Crawling {
         }
 
         WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("북부여성발전센터");
@@ -106,16 +104,6 @@ public class SeoulBukbuCrawling implements Crawling {
                         String[] urlTemp = url.split(",");
                         String bodyurl = "https://bukbu.seoulwomanup.or.kr/bukbu/common/bbs/selectBBS.do?bbs_code=G0303&bbs_type_code=10&bbs_seq=" + urlTemp[0];
 
-//                        //타입코드 없을경우 - 처리
-//                        if(!typePatternArray.isEmpty()){
-//                            String targettype = typePatternArray.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-//                            vo.setTargettype(targettype);
-//                            vo.setTargettypecode(targettype);
-//                        }else {
-//                            vo.setTargettype("-");
-//                            vo.setTargettypecode("-");
-//                        }
-
                         vo.setTargetName("북부여성발전센터");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C02");
@@ -134,7 +122,6 @@ public class SeoulBukbuCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 

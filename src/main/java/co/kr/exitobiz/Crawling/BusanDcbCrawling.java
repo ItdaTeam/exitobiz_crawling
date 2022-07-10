@@ -48,7 +48,6 @@ public class BusanDcbCrawling implements Crawling {
         String driverPath = environment.getProperty("chrome.driver.path");
         File driverFile = new File(String.valueOf(driverPath));
 
-        String driverFilePath = driverFile.getAbsolutePath();
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
@@ -59,7 +58,7 @@ public class BusanDcbCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                .usingAnyFreePort()
                 .build();
 
         try {
@@ -68,8 +67,7 @@ public class BusanDcbCrawling implements Crawling {
             e.printStackTrace();
         }
 
-        WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriver driver = new ChromeDriver(service);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("부산디자인진흥원");
@@ -114,7 +112,6 @@ public class BusanDcbCrawling implements Crawling {
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
-                        crawlingMapper.createMaster(supportVo);
                     }
             }
 
