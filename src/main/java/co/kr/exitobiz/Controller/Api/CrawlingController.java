@@ -312,10 +312,6 @@ public class CrawlingController {
     @Autowired
     GyeongnamGbiaCrawling gyeongnamGbiaCrawling;
 
-    /* 창업산업진흥원 */
-    @Autowired
-    CwipCrawling cwipCrawling;
-
     /* 창원시사회적경제지원센터 */
     @Autowired
     GyeongnamCwsecCrawling gyeongnamCwsecCrawling;

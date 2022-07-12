@@ -257,10 +257,6 @@ public class CrawlingScheduler {
     @Autowired
     GyeongnamGbiaCrawling gyeongnamGbiaCrawling;
 
-    /* 창업산업진흥원 */
-    @Autowired
-    CwipCrawling cwipCrawling;
-
     /* 창원시사회적경제지원센터 */
     @Autowired
     GyeongnamCwsecCrawling gyeongnamCwsecCrawling;
@@ -698,9 +694,6 @@ public class CrawlingScheduler {
 
         /* 김해의생명산업진흥원 */
         gyeongnamGbiaCrawling.craw();
-
-        /* 창업산업진흥원 */
-        cwipCrawling.craw();
 
         /* 창원시사회적경제지원센터 */
         gyeongnamCwsecCrawling.craw();
