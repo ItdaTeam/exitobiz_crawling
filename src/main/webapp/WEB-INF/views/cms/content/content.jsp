@@ -133,6 +133,36 @@
                                      style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
                             </td>
                         </tr>
+                        <tr>
+                            <th>원가<i>*</i></th>
+                            <td>
+                                <input type="number" name="cost">원
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>할인금액<i>*</i></th>
+                            <td>
+                                <input type="number" name="discount_cost">원
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>할인율<i>*</i></th>
+                            <td>
+                                <input type="number" name="discount_rate">%
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>판매기간<i>*</i></th>
+                            <td>
+                                <input type="date" name="sales_from_dt">~<input type="date" name="sales_to_dt">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>모집인원<i>*</i></th>
+                            <td>
+                                <input type="number" name="person">명
+                            </td>
+                        </tr>
                         <tr id="new_content_url_tb">
                             <th>URL<i>*</i></th>
                             <td>
@@ -212,6 +242,12 @@
                     })
                 },
                 {binding: 'url', header: 'URL', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'cost', header: '원가', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'discountCost', header: '할인금액', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'discountRate', header: '할인율', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'person', header: '모집인원', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'salesFromDt', header: '판매시작일', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'salesToDt', header: '판매종료일', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'content', header: '내용', isReadOnly: true, width: 150, align: "center", visible : false},
                 {binding: 'remark', header: '비고', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'cretDt', header: '작성날짜', isReadOnly: true, width: 150, align: "center"},
@@ -311,7 +347,13 @@
                     _target.querySelector("input[name='title']").value = ctx.item.title;
                     _target.querySelector("input[name='id']").value = ctx.item.id;
                     _target.querySelector("input[name='url']").value = ctx.item.url;
-                    _target.querySelector("input[name='remark']").value = ctx.item.remark
+                    _target.querySelector("input[name='remark']").value = ctx.item.remark;
+                    _target.querySelector("input[name='cost']").value = ctx.item.cost;
+                    _target.querySelector("input[name='discount_cost']").value = ctx.item.discountCost;
+                    _target.querySelector("input[name='discount_rate']").value = ctx.item.discountRate;
+                    _target.querySelector("input[name='person']").value = ctx.item.person;
+                    _target.querySelector("input[name='sales_from_dt']").value = new Date(ctx.item.salesFromDt).format("yyyy-mm-dd");
+                    _target.querySelector("input[name='sales_to_dt']").value = new Date(ctx.item.salesToDt).format("yyyy-mm-dd");
                     _target.querySelector("input[name='active_yn']").checked = ctx.item.activeYn == 'Y' ? true : false;
                     if (ctx.item.type == '외부콘텐츠') {
                         $("input:radio[name='type']:radio[data-value='외부콘텐츠']").prop('checked', true);
@@ -382,6 +424,12 @@
         formData.append("url", f.url.value);
         formData.append("activeYn", f.active.value);
         formData.append("remark", f.remark.value);
+        formData.append("cost", f.cost.value);
+        formData.append("discountCost", f.discount_cost.value);
+        formData.append("discountRate", f.discount_rate.value);
+        formData.append("salesFromDt", f.sales_from_dt.value);
+        formData.append("salesToDt", f.sales_to_dt.value);
+        formData.append("person", f.person.value);
         formData.append("content", editor1.getData());
         if (f.upFile.files[0] != null) {
             formData.append("upFile", f.upFile.files[0])

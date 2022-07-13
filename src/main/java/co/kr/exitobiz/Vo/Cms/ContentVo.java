@@ -3,6 +3,8 @@ package co.kr.exitobiz.Vo.Cms;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 @Data
 public class ContentVo {
     private Integer id;
@@ -18,4 +20,11 @@ public class ContentVo {
 
     private Long inCnt;
     private Long outCnt;
+
+    private Integer cost;
+    private Integer discountCost;
+    private Integer discountRate;
+    private String salesFromDt;
+    private String salesToDt;
+    private Integer person;
 }

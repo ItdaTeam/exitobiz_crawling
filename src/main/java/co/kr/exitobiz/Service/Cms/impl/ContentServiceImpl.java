@@ -146,6 +146,7 @@ public class ContentServiceImpl implements ContentService {
     @Transactional
     public void editContent(ContentVo contentVo) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         StringBuilder ImgPath = new StringBuilder();
         Content content = contentRepository.findContentById(contentVo.getId());
 
@@ -171,6 +172,12 @@ public class ContentServiceImpl implements ContentService {
             content.setRemark(contentVo.getRemark());
             content.setActiveYn(contentVo.getActiveYn());
             content.setUpdtDt(timestamp);
+            content.setCost(contentVo.getCost());
+            content.setDiscountCost(contentVo.getDiscountCost());
+            content.setDiscountRate(contentVo.getDiscountRate());
+            content.setSalesToDt(formatter.parse(contentVo.getSalesToDt()));
+            content.setSalesFromDt(formatter.parse(contentVo.getSalesFromDt()));
+            content.setPerson(contentVo.getPerson());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,7 +202,6 @@ public class ContentServiceImpl implements ContentService {
     @Override
     @Transactional
     public void editNotice(NoticeVo noticeVo) throws ParseException {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Notice notice = contentRepository.findNoticeById(noticeVo.getId());
 
         notice.setTitle(noticeVo.getTitle());
@@ -256,6 +262,7 @@ public class ContentServiceImpl implements ContentService {
     @Transactional
     public void createContent(ContentVo contentVo) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         StringBuilder ImgPath = new StringBuilder();
         try {
@@ -285,6 +292,12 @@ public class ContentServiceImpl implements ContentService {
             content.setCretDt(timestamp);
             content.setUpdtDt(timestamp);
             content.setViewCnt(0);
+            content.setCost(contentVo.getCost());
+            content.setDiscountRate(contentVo.getDiscountRate());
+            content.setDiscountCost(contentVo.getDiscountCost());
+            content.setSalesToDt(formatter.parse(contentVo.getSalesToDt()));
+            content.setSalesFromDt(formatter.parse(contentVo.getSalesFromDt()));
+            content.setPerson(contentVo.getPerson());
 
             contentRepository.createContent(content);
         } catch (Exception e) {

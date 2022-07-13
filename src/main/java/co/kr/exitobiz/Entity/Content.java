@@ -52,4 +52,26 @@ public class Content {
 
     @Column(name = "view_cnt")
     private Integer viewCnt;
+
+    @Column(name = "cost")
+    private Integer cost;
+
+    @Column(name = "discount_cost")
+    private Integer discountCost;
+
+    @Column(name = "discount_rate")
+    private Integer discountRate;
+
+    @Column(name = "sales_from_dt")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date salesFromDt;
+
+    @Column(name = "sales_to_dt")
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date salesToDt;
+
+    @Column(name = "person")
+    private Integer person;
 }
