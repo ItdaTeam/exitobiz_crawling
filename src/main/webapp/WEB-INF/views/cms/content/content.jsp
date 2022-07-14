@@ -136,19 +136,19 @@
                         <tr>
                             <th>원가<i>*</i></th>
                             <td>
-                                <input type="number" name="cost">원
+                                <input type="number" name="cost">&nbsp;원
                             </td>
                         </tr>
                         <tr>
                             <th>할인금액<i>*</i></th>
                             <td>
-                                <input type="number" name="discount_cost">원
+                                <input type="number" name="discount_cost">&nbsp;원
                             </td>
                         </tr>
                         <tr>
                             <th>할인율<i>*</i></th>
                             <td>
-                                <input type="number" name="discount_rate">%
+                                <input type="number" name="discount_rate">&nbsp;%
                             </td>
                         </tr>
                         <tr>
@@ -160,7 +160,7 @@
                         <tr>
                             <th>모집인원<i>*</i></th>
                             <td>
-                                <input type="number" name="person">명
+                                <input type="number" name="person">&nbsp;명
                             </td>
                         </tr>
                         <tr id="new_content_url_tb">
