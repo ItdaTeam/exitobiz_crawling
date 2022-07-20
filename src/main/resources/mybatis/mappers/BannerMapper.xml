@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Cms.BannerMapper">
+
+    <select id="getTotalBanner" resultType="Integer">
+        select count(*) from itda_web.banner
+    </select>
+
+    <select id="getTotalActiveBanner" resultType="Integer">
+        select count(*) from itda_web.banner where active_yn = 'Y'
+    </select>
+
+    <select id="getBannerList" parameterType="hashMap" resultType="BannerVo">
+        select index
+        , banner_ctg
+        , banner_title
+        , banner_noti_idx
+        , banner_img
+        , banner_link
+        , active_yn
+        , to_char(cret_dt, 'YYYY-MM-DD') as cret_dt
+        , to_char(updt_dt, 'YYYY-MM-DD') as updt_dt
+        from itda_web.banner
+        where 1=1
+        <!--        <if test="inq != null">-->
+        <!--            AND-->
+        <!--            <choose>-->
+        <!--                <when test="con == 'title'">-->
+        <!--                    <foreach collection="inq" item="item"-->
+        <!--                             index="index" open="(" close=")" separator="or">-->
+        <!--                        subject LIKE '%' || #{item} || '%'-->
+        <!--                    </foreach>-->
+        <!--                </when>-->
+        <!--                <when test="con == 'constitution'">-->
+        <!--                    <foreach collection="inq" item="item"-->
+        <!--                             index="index" open="(" close=")" separator="or">-->
+        <!--                        constitution LIKE '%' || #{item} || '%'-->
+        <!--                    </foreach>-->
+        <!--                </when>-->
+        <!--                <when test="con == 'disposition'">-->
+        <!--                    <foreach collection="inq" item="item"-->
+        <!--                             index="index" open="(" close=")" separator="or">-->
+        <!--                        temper LIKE '%' || #{item} || '%'-->
+        <!--                    </foreach>-->
+        <!--                </when>-->
+        <!--                <when test="con == 'age'">-->
+        <!--                    <foreach collection="inq" item="item"-->
+        <!--                             index="index" open="(" close=")" separator="or">-->
+        <!--                        age LIKE '%' || #{item} || '%'-->
+        <!--                    </foreach>-->
+        <!--                </when>-->
+        <!--                <otherwise>-->
+        <!--                    <foreach collection="inq" item="item"-->
+        <!--                             index="index" open="(" close=")" separator="or">-->
+        <!--                        subject LIKE '%' || #{item} || '%'-->
+        <!--                        or constitution LIKE '%' || #{item} || '%'-->
+        <!--                        or temper LIKE '%' || #{item} || '%'-->
+        <!--                        or age LIKE '%' || #{item} || '%'-->
+        <!--                    </foreach>-->
+        <!--                </otherwise>-->
+        <!--            </choose>-->
+        <!--        </if>-->
+        <!--        AND cret_dt::date between #{searchDtFr}::date and #{searchDtTo}::date-->
+        order by cret_dt desc
+    </select>
+
+    <insert id="saveNewBanner" parameterType="BannerVo">
+        INSERT INTO itda_web.banner
+        (index
+        , banner_ctg
+        , banner_link
+        , banner_title
+        , banner_noti_idx
+        , banner_img
+        , active_yn
+        , cret_id
+        , cret_dt
+        , updt_id
+        , updt_dt
+        )VALUES(
+        (select coalesce(max(index)+1,1) from web.banner)::integer
+        ,#{bannerCtg}
+        ,#{bannerLink}
+        ,#{bannerTitle}
+        <choose>
+            <when test="bannerNotiIdx != ''">
+                ,#{bannerNotiIdx}::integer
+            </when>
+            <otherwise>
+                ,NULL
+            </otherwise>
+        </choose>
+        ,#{bannerImg}
+        ,'Y'
+        ,#{cretId}
+        ,NOW()
+        ,#{cretId}
+        ,NOW()
+        )
+    </insert>
+
+    <update id="updateBanner" parameterType="BannerVo">
+        update itda_web.banner set
+        banner_title = #{bannerTitle}
+        ,active_yn = #{activeYn}
+        ,banner_ctg = #{bannerCtg}
+        <choose>
+            <when test="bannerNotiIdx != null">
+                ,banner_noti_idx = #{bannerNotiIdx}::integer
+            </when>
+            <otherwise>
+                ,banner_noti_idx = NULL
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="bannerImg != null">
+                ,banner_img = #{bannerImg}
+            </when>
+        </choose>
+        ,banner_link = #{bannerLink}
+        ,updt_id = #{updtId}
+        ,updt_dt = NOW()
+        where index = #{index}::integer
+    </update>
+
+    <delete id="deleteBanner" parameterType="HashMap">
+        delete from itda_web.banner
+        where index = #{index}::integer
+    </delete>
+</mapper>

@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="main_content">
-                    <!-- 필터 영역 main_filter-->
+                    <!-- 필터 영역 main_filter-->z
                     <div class="main_filter">
                         <form action="#" onsubmit="return false;">
                             <label for="con">검색조건</label>

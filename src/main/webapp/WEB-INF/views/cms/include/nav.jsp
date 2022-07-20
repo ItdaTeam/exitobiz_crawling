@@ -14,7 +14,7 @@
             <a href="/cms/support/agency" id="agency" class="dept1"><span class="material-icons">domain_add</span>지원기관 관리</a>
         </li>
         <li>
-            <a href="banner.html" class="dept1"><span class="material-icons-round">report</span>배너 관리</a>
+            <a href="/cms/banner" id="banner" class="dept1"><span class="material-icons-round">report</span>배너 관리</a>
         </li>
         <li>
             <a href="/cms/content" id="content" class="dept1"><span class="material-icons-round">campaign</span>콘텐츠 관리</a>

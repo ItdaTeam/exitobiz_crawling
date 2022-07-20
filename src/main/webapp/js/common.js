@@ -192,16 +192,16 @@ function _convertHeaderToBinding(header) {
 }
 
 // 팝업
-$(function(){
-  $('.popup_trigger').on('click',function(e){
-      $('.popup').addClass("is_on")
-      e.preventDefault();
-  });
-  $('.popup_close').on('click',function(e){
-      $('.popup').removeClass("is_on")
-      e.preventDefault();
-  });
-});
+// $(function(){
+//   $('.popup_trigger').on('click',function(e){
+//       $('.popup').addClass("is_on")
+//       e.preventDefault();
+//   });
+//   $('.popup_close').on('click',function(e){
+//       $('.popup').removeClass("is_on")
+//       e.preventDefault();
+//   });
+// });
 
 //날짜포맷 yyyy-MM-dd 변환
 //input : date 포맷

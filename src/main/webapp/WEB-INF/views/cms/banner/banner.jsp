@@ -1,7 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <%@ include file="../include/header.jsp" %>
+    <link rel="stylesheet" href="../css/banner.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 </head>
@@ -21,7 +25,7 @@
                         <dd><%=request.getAttribute("totalActiveBanner")%>개</dd>
                     </dl>
                     <!-- 클릭시 팝업창 띄움 -->
-                    <a href="#" class="popup_trigger"  onclick="showPop('new_banner');"><i></i>배너 추가</a>
+                    <a href="javascript:void(0)" class="popup_trigger"  onclick="showPop('new_banner');"><i></i>배너 추가</a>
                 </div>
                 <div class="main_utility">
                     <div class="btn_wrap">
@@ -69,10 +73,10 @@
                                     <th>카테고리<i>*</i></th>
                                     <td>
                                         <select name="new_banner_ctg" id="new_banner_ctg" onchange="bannerChange(this);">
-                                            <option value="공지상세화면이동" selected="selected">공지상세화면이동</option>
-                                            <option value="콘텐츠화면이동">콘텐츠화면이동</option>
-                                            <option value="외부링크">외부링크</option>
-                                            <option value="홍보용배너">홍보용배너</option>
+                                            <option value="공지사항이동" selected="selected">공지사항이동</option>
+                                            <option value="공지세부페이지이동">공지세부페이지이동</option>
+                                            <option value="아웃링크">아웃링크</option>
+                                            <option value="인앱링크">인앱링크</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -254,11 +258,10 @@
     var staffId = "<%=session.getAttribute("staffId")%>";
 
     function pageOnLoad() {
-        $("#content").addClass("current");
         $("#banner").addClass("current");
         loadGridBannerList('init');
         getBannerList();
-        sessionCheck(staffId);
+        // sessionCheck(staffId);
     }
 
     var galleryTop = new Swiper('.gallery-top', {
@@ -291,7 +294,7 @@
 
         $.ajax({
             type : 'GET',
-            url : '/content/getBannerList',
+            url : '/cms/getBannerList',
             async : false, // 비동기모드 : true, 동기식모드 : false
             success : function(result) {
                 console.log(result);
@@ -427,9 +430,9 @@
             newBannerForm.bannerLink.value = "";
             newBannerForm.bannerNotiIdx.value = "";
             newBannerForm.image.value = "";
-            newBannerForm.new_banner_ctg.value = "공지상세화면이동";
+            newBannerForm.new_banner_ctg.value = "공지사항이동";
+            $('#new_banner_noti_tb').hide();
             $('#new_banner_link_tb').hide();
-            $('#new_banner_noti_tb').show();
             $('#new_banner_img').empty();
 
         }else if(pop == "modify_banner"){
@@ -488,16 +491,16 @@
     }
 
     function bannerChange(e) {
-        if(e.value == '외부링크'){
+        if(e.value == '아웃링크' || e.value == '인앱링크'){
             $('#new_banner_noti_tb').hide();
             $('#new_banner_link_tb').show();
             newBannerForm.bannerNotiIdx.value = "";
-        }else if(e.value == '홍보용배너'){
+        }else if(e.value == '공지사항이동'){
             $('#new_banner_noti_tb').hide();
             $('#new_banner_link_tb').hide();
             newBannerForm.bannerNotiIdx.value = "";
             newBannerForm.bannerLink.value = "";
-        }else if(e.value == '공지상세화면이동' || e.value == '콘텐츠화면이동'){
+        }else if(e.value == '공지세부페이지이동'){
             $('#new_banner_noti_tb').show();
             $('#new_banner_link_tb').hide();
             newBannerForm.bannerLink.value = "";
@@ -643,7 +646,7 @@
         var form = new FormData(newBannerForm);
 
         $.ajax({
-            url : "/content/saveNewBanner",
+            url : "/cms/banner",
             async : false, // 비동기모드 : true, 동기식모드 : false
             type : 'POST',
             cache : false,
@@ -691,9 +694,9 @@
         var form = new FormData(updateBannerForm);
 
         $.ajax({
-            url : "/content/updateBanner",
+            url : "/cms/banner",
             async : false, // 비동기모드 : true, 동기식모드 : false
-            type : 'POST',
+            type : 'PUT',
             cache : false,
             contentType : false,
             processData: false,
@@ -721,9 +724,9 @@
             }
 
             $.ajax({
-                url : '/content/deleteBanner',
+                url : '/cms/banner',
                 async : false, // 비동기모드 : true, 동기식모드 : false
-                type : 'POST',
+                type : 'DELETE',
                 data : params,
                 cache : false,
                 dataType : null,
@@ -749,7 +752,7 @@
 
         $.ajax({
             type : 'GET',
-            url : '/content/getBannerList',
+            url : '/cms/getBannerList',
             dataType : null,
             data : param,
             success : function(result) {
