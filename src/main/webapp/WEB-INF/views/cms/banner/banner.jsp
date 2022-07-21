@@ -347,7 +347,7 @@
             bannerColumns = [
                 { binding: 'index', header: '배너번호', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'bannerTitle', header: '제목', isReadOnly: true, width: 300, align:"center"},
-                { binding: 'bannerCtg', header: '카테고리', isReadOnly: true, width: 120, align:"center"},
+                { binding: 'bannerCtgNm', header: '카테고리', isReadOnly: true, width: 120, align:"center"},
                 { binding: 'cretDt', header: '작성날짜', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'updtDt', header: '수정날짜', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'bannerImg', header: '배너이미지', isReadOnly: true, width: 200, align:"center",
@@ -456,19 +456,19 @@
             updateBannerForm.index.value = bannerGrid.collectionView.currentItem["index"];
             updateBannerForm.modify_banner_active.checked = (bannerGrid.collectionView.currentItem["activeYn"] == 'Y' ? true : false );
             updateBannerForm.bannerTitle.value = bannerGrid.collectionView.currentItem["bannerTitle"];
-            updateBannerForm.modify_banner_ctg.value = bannerGrid.collectionView.currentItem["bannerCtg"];
+            updateBannerForm.modify_banner_ctg.value = bannerGrid.collectionView.currentItem["bannerCtgNm"];
             updateBannerForm.bannerLink.value = bannerGrid.collectionView.currentItem["bannerLink"];
             updateBannerForm.bannerNotiIdx.value = bannerGrid.collectionView.currentItem["bannerNotiIdx"];
             updateBannerForm.image.value = "";
 
-            if(bannerGrid.collectionView.currentItem["bannerCtg"] == '공지상세화면이동'){
-                $('#modify_banner_noti_tb').show();
-                $('#modify_banner_link_tb').hide();
-            }else if(bannerGrid.collectionView.currentItem["bannerCtg"] == '외부링크'){
+            if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '외부링크' || bannerGrid.collectionView.currentItem["bannerCtgNm"] == '아웃링크'){
                 $('#modify_banner_noti_tb').hide();
                 $('#modify_banner_link_tb').show();
-            }else {
+            }else if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '공지사항이동'){
                 $('#modify_banner_noti_tb').hide();
+                $('#modify_banner_link_tb').hide();
+            }else if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '공지세부페이지이동'){
+                $('#modify_banner_noti_tb').show();
                 $('#modify_banner_link_tb').hide();
             }
 

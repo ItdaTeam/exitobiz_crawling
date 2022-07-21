@@ -68,6 +68,7 @@
     <insert id="saveNewBanner" parameterType="BannerVo">
         INSERT INTO itda_web.banner
         (index
+        , banner_ctg_nm
         , banner_ctg
         , banner_link
         , banner_title
@@ -79,8 +80,22 @@
         , updt_id
         , updt_dt
         )VALUES(
-        (select coalesce(max(index)+1,1) from web.banner)::integer
+        (select coalesce(max(index)+1,1) from itda_web.banner)::integer
         ,#{bannerCtg}
+        <choose>
+            <when test="bannerCtg == '공지사항이동'">
+                ,'N'
+            </when>
+            <when test="bannerCtg == '공지세부페이지이동'">
+                ,'ND'
+            </when>
+            <when test="bannerCtg == '아웃링크'">
+                ,'O'
+            </when>
+            <otherwise>
+                ,'I'
+            </otherwise>
+        </choose>
         ,#{bannerLink}
         ,#{bannerTitle}
         <choose>
@@ -104,7 +119,21 @@
         update itda_web.banner set
         banner_title = #{bannerTitle}
         ,active_yn = #{activeYn}
-        ,banner_ctg = #{bannerCtg}
+        ,banner_ctg_nm = #{bannerCtg}
+        <choose>
+            <when test="bannerCtg == '공지사항이동'">
+                ,banner_ctg = 'N'
+            </when>
+            <when test="bannerCtg == '공지세부페이지이동'">
+                ,banner_ctg = 'ND'
+            </when>
+            <when test="bannerCtg == '아웃링크'">
+                ,banner_ctg = 'O'
+            </when>
+            <otherwise>
+                ,banner_ctg = 'I'
+            </otherwise>
+        </choose>
         <choose>
             <when test="bannerNotiIdx != null">
                 ,banner_noti_idx = #{bannerNotiIdx}::integer

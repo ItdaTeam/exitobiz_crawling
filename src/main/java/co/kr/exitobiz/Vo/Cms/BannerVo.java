@@ -10,7 +10,7 @@ public class BannerVo {
     private String bannerCtg;
     private String bannerTitle;
     private String bannerLink;
-//    private String bannerLoc;
+    private String bannerCtgNm;
     private String bannerNotiIdx;
     private String bannerImg;
     private String activeYn;
