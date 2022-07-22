@@ -121,7 +121,7 @@
                         <tr>
                             <th>제목<i>*</i></th>
                             <td>
-                                <input type="text" name="title">
+                                <input type="text" name="title" style="width:70%">
                             </td>
                         </tr>
                         <tr>
