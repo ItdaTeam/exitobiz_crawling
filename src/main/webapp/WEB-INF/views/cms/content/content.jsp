@@ -231,7 +231,7 @@
             contentColumns = [
                 {binding: 'id', header: '콘텐츠번호', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'type', header: '콘텐츠종류', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'title', header: '제목', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'title', header: '제목', isReadOnly: true, width: 400, align: "center"},
                 {binding: 'thumbnail', header: '썸네일', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeImage({
                         click:() =>showPop("thumnailPopUp"),
