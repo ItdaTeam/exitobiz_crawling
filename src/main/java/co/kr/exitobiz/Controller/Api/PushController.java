@@ -125,6 +125,28 @@ public class PushController {
         } else {
             return "성공";
         }
+    }
 
+     /**
+     * 앱에서 사용자에게 발송되는 개별 푸쉬 알람
+     * @param params [userId(로그인 ID), idx(게시물번호), title(푸쉬제목), body(푸쉬 부제목), keyId(구분값)]
+     * @return 성공여부
+     * @throws Exception
+     */
+    @RequestMapping(value="/sendOne")
+    @ResponseBody
+    public String sendOnePush(@RequestParam HashMap<String,String> params ) throws Exception {
+        
+
+        params.put("id",params.get("userId")); // 쿼리 공통 사용을 위한 변수 id(사용자 아이디) 추가
+
+        String userToken = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
+        String result ="fail";
+        if(userToken != null){ // 토큰이 존재하는 경우에만 처리
+                params.put("userToken",userToken); // 사용자 토큰 추가 
+                params.put("firebaseKeyPath",environment.getProperty("firebase.path.key")); // key파일 path 가져오기
+                result = pushService.sendPush(params);
+        }
+        return result;
     }
 }

@@ -10,4 +10,33 @@
                 (#{idx}::integer, #{userloc}, #{title}, #{body}, NOW())
     </insert>
 
+    <select id="getPushKeywords" resultType="PushVo">
+    select	keywords.keyword
+      from (
+            select
+                distinct keyword
+            from
+                itda_app.user_keyword
+    ) keywords
+    order by keyword collate "C"
+    </select>
+
+    <select id="getKeywordSupportInfo" parameterType = "HashMap" resultType="int">
+        select count(*)
+        from itda_app.support_info 
+        where 1=1
+            and si_title like '%' || #{keyword} || '%'
+        
+    </select>
+
+    <select id ="getKeywordPushUser" parameterType="HashMap" resultType="PushVo">
+        select uk.user_id, uk.keyword, u.usertoken
+          from itda_app.user_keyword uk 
+          left outer join itda_app.usertable u on uk.user_id = u.id
+          inner join itda_app.user_push_setting ups on u.id = ups.user_id and ups.sp_keyword_push = 'Y'
+        where 1=1
+          and uk.keyword = #{keyword}
+          
+    </select>
+
 </mapper>

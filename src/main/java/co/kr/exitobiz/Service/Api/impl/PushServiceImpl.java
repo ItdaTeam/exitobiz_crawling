@@ -1,30 +1,54 @@
 package co.kr.exitobiz.Service.Api.impl;
 
-import co.kr.exitobiz.Service.Api.PushService;
-import co.kr.exitobiz.Vo.usertableVo;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.time.LocalTime;
-import java.util.*;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.messaging.ApnsConfig;
+import com.google.firebase.messaging.Aps;
+import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.MulticastMessage;
+import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.SendResponse;
+
+import co.kr.exitobiz.Mappers.Cms.PushMapper;
+import co.kr.exitobiz.Service.Api.PushService;
+import co.kr.exitobiz.Vo.usertableVo;
+import co.kr.exitobiz.Vo.Push.PushVo;
 
 @Service
 @Configuration
 @EnableAsync
 public class PushServiceImpl implements PushService {
+
+    @Autowired
+    PushMapper pushMapper;
 
 
     /** Push 서비스
@@ -412,6 +436,32 @@ public class PushServiceImpl implements PushService {
         LocalTime localTime2 = LocalTime.now();
         System.out.println("보내기시작시간 :: " + localTime1 +", 보내기종료시간 :: " + localTime2);
 
+    }
+
+    /**
+     * 키워드 푸쉬를 위한 키워드 조회
+     */
+    @Override
+    public List<PushVo> getPushKeywords() throws Exception {
+        return pushMapper.getPushKeywords();
+    }
+
+
+    /**
+     * 키워드별 지원사업 리스트 조회
+     */
+    @Override
+    public int getKeywordSupportInfo(HashMap<String, String> params) {
+        return pushMapper.getKeywordSupportInfo(params);
+    }
+
+
+    /**
+     * 푸쉬 발송을 위한 키워드별 유저 조회
+     */
+    @Override
+    public List<PushVo> getKeywordPushUser(HashMap<String, String> params) {
+        return pushMapper.getKeywordPushUser(params);
     }
 
 }

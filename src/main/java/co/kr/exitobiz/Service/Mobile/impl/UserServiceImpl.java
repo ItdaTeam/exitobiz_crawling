@@ -31,4 +31,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserTokenByLocationTest(params);
     }
 
+
+    /*
+     * 개별푸쉬를 위한 keyId 유형별 토큰 가져오기
+     */
+    @Override
+    public String getUserTokenByKeyId(HashMap<String, String> params) {
+        // TODO Auto-generated method stub
+        return userMapper.getUserTokenByKeyId(params);
+    }
+
 }

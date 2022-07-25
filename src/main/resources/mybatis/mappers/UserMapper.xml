@@ -12,8 +12,10 @@ WHERE id=#{id}
 
   <select id="getUserTokenByLocation" parameterType="hashMap" resultType="map">
     SELECT usertoken
-    FROM itda_app.usertable
+    FROM itda_app.usertable u 
+     left outer join itda_app.user_push_setting ups on u.id = ups.user_id
     WHERE usertoken not in ('', 'null')
+      AND coalesce(ups.sp_receive_push, '')  != 'N'
           <if test="userlocs != null">
               AND userloc in
               <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
@@ -21,6 +23,50 @@ WHERE id=#{id}
               </foreach>
           </if>
   </select>
+
+  <select id="getUserTokenByKeyId" parameterType="hashMap" resultType="String">
+    SELECT usertoken
+    FROM itda_app.usertable u 
+     left outer join itda_app.user_push_setting ups on u.id = ups.user_id
+    WHERE 1=1
+      and u.id=#{id}
+      and u.usertoken not in ('', 'null')
+    <choose>
+       <when test="keyId == 1 ">
+          and coalesce(ups.sp_receive_push,'') != 'N'
+          <if test="userlocs != null">
+              AND userloc in
+              <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
+                  #{loc}
+              </foreach>
+          </if>
+       </when>
+       <when test="keyId == 2 ">
+          and coalesce(ups.sp_keyword_push,'') != 'N'
+       </when>
+       <when test="keyId == 3 ">
+          and coalesce(ups.sp_recomment_push,'') != 'N'
+       </when>
+       <when test="keyId == 4 ">
+          and coalesce(ups.sp_commentlike_push,'') != 'N'
+       </when>
+    </choose>
+  </select>
+  <!-- 
+     getUserTokenByLocation Original
+
+      SELECT usertoken
+    FROM itda_app.usertable
+    WHERE usertoken not in ('', 'null')
+      AND 
+          <if test="userlocs != null">
+              AND userloc in
+              <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
+                  #{loc}
+              </foreach>
+          </if>
+
+  -->
 
     <select id="getUserTokenByLocationTest" parameterType="hashMap" resultType="map">
         SELECT usertoken, userloc
