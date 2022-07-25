@@ -85,11 +85,11 @@
           <h3>WHAT ABOUT<br> EXITO</h3>
           <dl class="active">
             <dt><span class="icon icon1"></span> <span>한 곳에서 보는<br>다양한 지원사업</span> </dt>
-            <dd>나의 지역 기반으로 여러 기관들의 지원사업을 한 곳에서 확인하세요.<br><br> 금액순, 인기순, 사업 항목 등 나에게 필요한 지원사업만 확인!</dd>
+            <dd>지원사업 찾는라 여러 기관 찾아다니지 마세요.<br><br> 엑시토의 100개 이상의 기관에서 금액순, 인기순, 사업 항목 등 나에게 필요한 지원사업만 확인!</dd>
           </dl>
           <dl>
-            <dt><span class="icon icon2"></span> <span>내 주변 시제품<br> 제작 공급기업</span> </dt>
-            <dd>내 위치 100km 이내 시제품 제작 이력이 있는 기업을 업종별로 찾아보세요. <br><br> 지식SW,기계ㆍ재료,정보ㆍ통신등 내 분야에 맞는 공급기업 선정!</dd>
+            <dt><span class="icon icon2"></span> <span>엑시토<br>프렌즈 리스팅</span> </dt>
+            <dd>엑시토에서 획득한 정부 지원금으로 N:1 공동구매를 통해 싸게 구매하세요!<br>VOD 교육, 컨설팅, 팀 / 문서 협업 툴, 시제품 제작 등 내가 필요한 상품 공동구매 신청!<br></dd>
           </dl>
           <dl>
             <dt><span class="icon icon3"></span><span>카카오톡 스타트업<br>네트워킹</span></dt>
@@ -100,13 +100,13 @@
       <section class="landing_sct2" id="exito" data-section="exito">
         <div class="innr flex">
           <div class="img_wrap">
-            <img src="/img/img_mockup1.png" alt="">
-            <img src="/img/img_mck1_1.png" class="img01 aos-init aos-animate" data-aos="fade-up" alt="">
+            <img src="/img/iphone_Mockup_1.png" alt=""> <!--/img/img_mockup1.png-->
+            <img src="/img/img_mck1_1.png" class="img01 aos-init aos-animate" data-aos="fade-up" alt=""> 
             <img src="/img/img_mck1_2.png" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500" alt="">
           </div>
           <div class="textbox">
-            <h4>지원사업부터 공급기업까지 <br>스타트업 창업자들의 필수 앱</h4>
-            <p>지원사업 찾느라 여러 기관 찾아다니지 마세요.<br>시제품 제작 업체를 막연하게 찾지 마세요.<br>엑시토가 지원사업 합격부터 시제품 제작까지 도와드릴게요.<br>'스타트업 조력자, 엑시토'</p>
+            <h4>전국 지원사업 정보를<br>입맛대로 한곳에서 확인!</h4>
+            <p>지원사업 찾느라 여러 기관 찾아다니지 마세요!<br>100개의 이상 사이트에 방문할 필요없이<br>엑시토 한 곳에서 지원사업 정보를 확인하세요!</p>
           </div>
         </div>
       </section>
@@ -114,15 +114,15 @@
         <div class="how how1" >
           <div class="innr flex">
             <div> 
-              <h3>HOW TO USE<br> EXITO</h3>
-              <h4>내 지역 지원사업부터<br>확인해보세요</h4>
-              <p class="txt">지역 > 카테고리 > 필터를 설정하여<br>내 기업 상황에 맞는 지원사업을 발견할 수 있습니다.</p>
+              <h3>전국 지원사업 정보를<br>입맛대로 한 곳에서 확인!</h3>
+              <h4>엑시토에서 회사 정보를 기입하고<br>회사에 맞는 지원사업을 추천 받아보세요.</h4>
+              <p class="txt">엑시토에서 인기 많은 지원사업부터<br>숨은 지원사업까지 똑똑하게 추천해드려요!</p>
             </div>
             <div class="img_wrap">
               <img src="/img/img_how1_1.svg" alt="" class="img01 aos-init aos-animate" data-aos="fade-up">
-              <img class="mockup" src="/img/img_mockup2.png" alt="">
-              <img src="/img/img_how1_2.svg" alt="" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
-              <img src="/img/img_how4_1.svg" alt="" class="img03 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
+              <img class="mockup" src="/img/iphone_Mockup_2.png" alt=""> <!-- /img/img_mockup2.png -->
+              <!-- <img src="/img/img_how1_2.svg" alt="" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300"> -->
+              <img src="/img/ai_1.png" alt="" class="img03 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500"> <!-- /img/img_how4_1.svg -->
             </div>
           </div>
         </div>
@@ -130,20 +130,20 @@
           <div class="innr flex">
             <div class="img_wrap">
               <img src="/img/img_how1_1.svg" alt="" class="img01 aos-init aos-animate" data-aos="fade-up">
-              <img class="mockup" src="/img/img_mockup3.png" alt="">
+              <img class="mockup" src="/img/iphone_Mockup_4.png" alt=""> <!-- /img/img_mockup3.png -->
               <img src="/img/img_how2_2.svg" alt="" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
               <img src="/img/img_how4_2.svg" alt="" class="img03 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
             </div>
             <div> 
-              <h4>내 주변 공급기업을<br> 찾아보세요</h4>
-              <p class="txt">지역 설정 > 제작분야  > 리스트 결과<br>내 주변 가장 가까운 시제품 제작 기업을 찾을 수 있습니다.</p>
+              <h4>정부 지원금으로 결제 가능한<br>N:1공동구매 마켓 운영</h4>
+              <p class="txt">VOD 교육, 컨설팅, CS, 협업툴, 기업복지<br> APP/WEB 제작 등 서비스 상품을 공동구매 마켓을 통해 보다 저렴하게 이용해보세요.</p>
             </div>
           </div>
         </div>
         <div class="how how3">
           <div class="innr flex">
             <div> 
-              <h4>키워드로 원하는 지원사업을<br> 검색해보세요</h4>
+              <h4>키워드로 원하는 지원사업을 검색도 하고,<br>원하는 키워드 알림도 받아보세요</h4>
               <p class="txt">지원사업 > 검색 아이콘<br> 핵심 키워드로 검색하면 관련 지원사업을 찾아드립니다.</p>
               <ul>
                 <li>#사회적기업</li>
@@ -177,8 +177,8 @@
             </div>
             <div>
               <img src="/img/img_how4_2.svg" alt="image">
-              <h4>공급기업 길찾기/전화걸기</h4>
-              <p>마음에 드는 공급기업이 있다면 즉시 경로 확인 또는 유선 상담을 받아보세요. 시제품 제작 시기를 잘 지킬 수 있어요!</p>
+              <h4>스타트업 네트워킹</h4>
+              <p>혼자서 외롭게 창업하지 말고 엑시토 온-오프라인 모임을 통해<br>창업에 미친 사람들을 만나보세요</p>
             </div>
           </div>
         </div>
@@ -189,13 +189,13 @@
       <footer class="landing_footer">
           <div class="fmenu">
             <div class="innr">
-              <a href="/standard">이용약관</a>
+              <a href="/standard">이용약관</a> 
               <a href="/personinfo">개인정보처리약관</a>
               <a href="/locationinfo">위치기반서비스이용약관</a>
               <a href="#" onclick="appdown()">앱 다운로드</a>
             </div>
         </div>
-          <div class="innr">
+          <div class="innr"> 
             <div class="finfo">
               <p>
                 <strong>엑시토</strong>&nbsp; &nbsp;
