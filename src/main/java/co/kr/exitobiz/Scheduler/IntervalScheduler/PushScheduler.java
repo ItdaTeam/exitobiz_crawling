@@ -30,7 +30,7 @@ public class PushScheduler{
      * 대상 : user_push_setting 에서 sp_keyword_push 가 'Y' 인 사용자
      * 키워드당 1번만 푸쉬 발송 
      */
-    @Scheduled(cron = "* * 14 * * ?")
+    @Scheduled(cron = "0 0 14 * * ?")
     public void KeywordPush() throws InterruptedException, Exception {
 
         
