@@ -13,6 +13,7 @@
 
     <select id="getBannerList" parameterType="hashMap" resultType="BannerVo">
         select index
+        , banner_ctg_nm
         , banner_ctg
         , banner_title
         , banner_noti_idx

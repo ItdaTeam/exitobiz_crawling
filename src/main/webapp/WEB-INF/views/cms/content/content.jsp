@@ -386,6 +386,8 @@
                     editor1.setData("");
                     $(".opt_img").css("display", "none");
                     $(".opt_img").attr("src", '');
+                    $('input[name="sales_to_dt"]').attr("min", _getFormatDate(new Date()));
+                    $('input[name="sales_from_dt"]').attr("min", _getFormatDate(new Date()));
                     $('#new_content_cont_tb').css("display", "none");
                     $('.confirm').css("display", "block");
                     $('.fill').css("display", "none");
