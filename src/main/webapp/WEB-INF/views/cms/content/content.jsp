@@ -352,8 +352,8 @@
                     _target.querySelector("input[name='discount_cost']").value = ctx.item.discountCost;
                     _target.querySelector("input[name='discount_rate']").value = ctx.item.discountRate;
                     _target.querySelector("input[name='person']").value = ctx.item.person;
-                    _target.querySelector("input[name='sales_from_dt']").value = new Date(ctx.item.salesFromDt).format("yyyy-mm-dd");
-                    _target.querySelector("input[name='sales_to_dt']").value = new Date(ctx.item.salesToDt).format("yyyy-mm-dd");
+                    _target.querySelector("input[name='sales_from_dt']").value = ctx.item.salesFromDt
+                    _target.querySelector("input[name='sales_to_dt']").value = ctx.item.salesToDt
                     _target.querySelector("input[name='active_yn']").checked = ctx.item.activeYn == 'Y' ? true : false;
                     if (ctx.item.type == '외부콘텐츠') {
                         $("input:radio[name='type']:radio[data-value='외부콘텐츠']").prop('checked', true);
