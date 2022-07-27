@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
     <%@ include file="../include/header.jsp" %>
-    <script src="/js/common.js"></script>
+    <%-- <script src="/js/common.js"></script> --%>
     <script src="../ckeditor5/build/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../ckeditor5/sample/styles.css">
     <style>
@@ -36,6 +36,7 @@
 </script>
 </html>
 <script>
+
     var pjContent = '<%=request.getAttribute("contentPage")%>';
 
     function setProjectContent(){
@@ -63,6 +64,15 @@
     }
 
     $(document).ready(function() {
+        window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+            window.flutter_inappwebview.callHandler('handlerFoo')
+                .then(function(result) {
+                console.log(JSON.stringify(result));
+
+                window.flutter_inappwebview
+                    .callHandler('handlerFooWithArgs', 1, true, ['bar', 5], {foo: 'baz'}, "윈도우세로size" + window.screen.availHeight + "윈도우가로size" + window.screen.availWidth);
+            });
+        });
        setProjectContent();
     });
 </script>
