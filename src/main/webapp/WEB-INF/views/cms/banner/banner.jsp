@@ -146,9 +146,10 @@
                                     <th>카테고리<i>*</i></th>
                                     <td>
                                         <select name="modify_banner_ctg" id="modify_banner_ctg">
-                                            <option value="공지상세화면이동">공지상세화면이동</option>
-                                            <option value="외부링크">외부링크</option>
-                                            <option value="홍보용배너">홍보용배너</option>
+                                            <option value="공지사항이동">공지사항이동</option>
+                                            <option value="공지세부페이지이동">공지세부페이지이동</option>
+                                            <option value="아웃링크">아웃링크</option>
+                                            <option value="인앱링크">인앱링크</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -461,7 +462,7 @@
             updateBannerForm.bannerNotiIdx.value = bannerGrid.collectionView.currentItem["bannerNotiIdx"];
             updateBannerForm.image.value = "";
 
-            if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '외부링크' || bannerGrid.collectionView.currentItem["bannerCtgNm"] == '아웃링크'){
+            if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '인앱링크' || bannerGrid.collectionView.currentItem["bannerCtgNm"] == '아웃링크'){
                 $('#modify_banner_noti_tb').hide();
                 $('#modify_banner_link_tb').show();
             }else if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '공지사항이동'){
@@ -623,7 +624,7 @@
             alert("배너이미지를 등록해주세요.");
             newBannerForm.image.focus();
             return false;
-        }else if (newBannerForm.new_banner_ctg.value == "공지상세화면이동"){
+        }else if (newBannerForm.new_banner_ctg.value == "공지세부페이지이동"){
             if (newBannerForm.bannerNotiIdx.value == ""){
                 alert("공지번호를 입력해주세요.");
                 newBannerForm.bannerNotiIdx.focus();
@@ -633,7 +634,7 @@
                 newBannerForm.bannerNotiIdx.focus();
                 return false;
             }
-        }else if (newBannerForm.new_banner_ctg.value == "외부링크"){
+        }else if (newBannerForm.new_banner_ctg.value == "아웃링크"){
             if (newBannerForm.bannerLink.value == ""){
                 alert("링크를 입력해주세요.");
                 newBannerForm.bannerLink.focus();
@@ -670,7 +671,7 @@
             alert("제목을 입력해주세요.");
             updateBannerForm.bannerTitle.focus();
             return false;
-        }else if (updateBannerForm.modify_banner_ctg.value == "공지상세화면이동"){
+        }else if (updateBannerForm.modify_banner_ctg.value == "공지세부페이지이동"){
             if (updateBannerForm.bannerNotiIdx.value == ""){
                 alert("공지번호를 입력해주세요.");
                 updateBannerForm.bannerNotiIdx.focus();
@@ -680,7 +681,7 @@
                 updateBannerForm.bannerNotiIdx.focus();
                 return false;
             }
-        }else if (updateBannerForm.modify_banner_ctg.value == "외부링크"){
+        }else if (updateBannerForm.modify_banner_ctg.value == "아웃링크"){
             if (updateBannerForm.bannerLink.value == ""){
                 alert("링크를 입력해주세요.");
                 updateBannerForm.bannerLink.focus();
