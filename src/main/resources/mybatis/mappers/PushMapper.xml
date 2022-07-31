@@ -26,7 +26,7 @@
         from itda_app.support_info 
         where 1=1
             and si_title like '%' || #{keyword} || '%'
-            and to_char(si_cret_dt,'yyyymmdd') = to_char(now(),'yyyymmdd')
+            and to_char(si_cret_dt,'yyyymmdd') = to_char(now() - '1 day'::interval,'yyyymmdd')
         
     </select>
 
