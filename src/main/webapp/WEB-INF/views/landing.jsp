@@ -47,7 +47,6 @@
     gtag('config', 'G-RLDS2JPV4N');
   </script>
 </head>
-<!-- 테스트 -->
 <body>
     <div class="landing_wrap">
       <header class="landing_header">
