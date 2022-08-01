@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Api.SmsMapper">
+
+<insert id="insertSmsHistory" parameterType="HashMap">
+INSERT INTO itda_web.sms_history
+(user_id,user_hp, cert_number, cret_dt)
+VALUES(#{userId}, #{userHp}, #{number}, now())    
+</insert>
+
+<select id="checkCertInfo" parameterType="HashMap" resultType="Integer">
+select count(*)
+from itda_web.sms_history 
+where 1=1
+  and user_id = #{userId}
+  and cert_yn = 'Y'
+</select>
+<select id="getCertInfo" parameterType="HashMap" resultType="HashMap">
+select cert_number,sms_seq::varchar
+from itda_web.sms_history
+where 1=1
+  and user_id = #{userId}
+  order by sms_seq desc 
+  limit 1
+</select>
+
+<update id="updateSmsHistory" parameterType="HashMap">
+update itda_web.sms_history
+  set cert_yn = #{certYn},
+      updt_dt = now()
+  where 1=1
+    and sms_seq = #{smsSeq}::numeric
+
+</update>
+
+</mapper>
