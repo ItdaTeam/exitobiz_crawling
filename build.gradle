@@ -84,7 +84,7 @@ dependencies {
 	implementation group: 'redis.clients', name: 'jedis', version: '4.2.1'
 
 	//Cool SMS
-	implementation group: 'net.nurigo', name: 'sdk', version: '4.2.4'
+	implementation group: 'net.nurigo', name: 'sdk', version: '4.2.2'
 }
 
 tasks.named('test') {
