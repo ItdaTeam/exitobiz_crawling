@@ -39,10 +39,7 @@ public class SmsController {
     @ResponseBody
     public String sendOne(@RequestParam HashMap<String,String> params) {
 
-        String apiKey = "NCSCTSU8GDVZ2JXR";
-        String apiSecret = "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK";
-
-        DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize(apiKey,  apiSecret, "https://api.solapi.com");
+        DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize("NCSCTSU8GDVZ2JXR",  "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK", "https://api.solapi.com");
         String result = "fail";
         
         //인증된 회원인지 체크
