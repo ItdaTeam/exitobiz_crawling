@@ -19,17 +19,17 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 @RequestMapping(value = "/sms")
 public class SmsController {
 
-    final DefaultMessageService messageService;
+    // final DefaultMessageService messageService;
 
     @Autowired
     SmsService smsService;
 
-    public SmsController() {
+    // public SmsController() {
         
-        String apiKey = "NCSCTSU8GDVZ2JXR";
-        String apiSecret = "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK";
-        this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.solapi.com");
-    }
+    //     String apiKey = "NCSCTSU8GDVZ2JXR";
+    //     String apiSecret = "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK";
+    //     this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.solapi.com");
+    // }
 
     /**
      * 단일 메시지 발송
@@ -39,6 +39,10 @@ public class SmsController {
     @ResponseBody
     public String sendOne(@RequestParam HashMap<String,String> params) {
 
+        String apiKey = "NCSCTSU8GDVZ2JXR";
+        String apiSecret = "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK";
+
+        DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize(apiKey,  apiSecret, "https://api.solapi.com");
         String result = "fail";
         
         //인증된 회원인지 체크
@@ -55,7 +59,7 @@ public class SmsController {
             message.setTo(params.get("userHp"));
             // message.setTo(params.get("to").toString());
             message.setText("[엑시토] 인증번호 ["+ randomNumber + "]를 입력해 주세요.");
-            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
             if(response.getStatusCode().equals("2000")){
                 result = "success";
                 // sms 문자인증 발송 이력 쌓기
