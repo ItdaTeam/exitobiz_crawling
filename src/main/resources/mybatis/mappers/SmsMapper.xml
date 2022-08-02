@@ -18,10 +18,10 @@ where 1=1
 </select>
 <select id="getCertInfo" parameterType="HashMap" resultType="HashMap">
 select cert_number,sms_seq::varchar
-from itda_web.sms_history
+from itda_web.sms_history sh
 where 1=1
   and user_id = #{userId}
-  order by sms_seq desc 
+  order by sh.sms_seq::numeric desc 
   limit 1
 </select>
 
