@@ -3,10 +3,10 @@ package co.kr.exitobiz.Controller.Api;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.kr.exitobiz.Service.Api.SmsService;
 import net.nurigo.sdk.NurigoApp;
@@ -15,13 +15,21 @@ import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
-@Controller
+@RestController
 @RequestMapping(value = "/sms")
 public class SmsController {
 
+    final DefaultMessageService messageService;
 
     @Autowired
     SmsService smsService;
+
+    public SmsController() {
+        
+        String apiKey = "NCSCTSU8GDVZ2JXR";
+        String apiSecret = "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK";
+        this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.solapi.com");
+    }
 
     /**
      * 단일 메시지 발송
@@ -30,10 +38,6 @@ public class SmsController {
     @RequestMapping("/sendSms")
     @ResponseBody
     public String sendOne(@RequestParam HashMap<String,String> params) {
-
-        String apiKey = "NCSCTSU8GDVZ2JXR";
-        String apiSecret = "EDYKGFFBLDFO0XR0NBLR2KUYW7SKZBUK";
-        DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.solapi.com");
 
         String result = "fail";
         
@@ -51,7 +55,7 @@ public class SmsController {
             message.setTo(params.get("userHp"));
             // message.setTo(params.get("to").toString());
             message.setText("[엑시토] 인증번호 ["+ randomNumber + "]를 입력해 주세요.");
-            SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
+            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
             if(response.getStatusCode().equals("2000")){
                 result = "success";
                 // sms 문자인증 발송 이력 쌓기
