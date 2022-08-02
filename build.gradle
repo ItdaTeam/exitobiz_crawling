@@ -82,6 +82,9 @@ dependencies {
 	//redis
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.6.3'
 	implementation group: 'redis.clients', name: 'jedis', version: '4.2.1'
+
+	//Cool SMS
+	implementation group: 'net.nurigo', name: 'sdk', version: '4.2.4'
 }
 
 tasks.named('test') {
@@ -96,7 +99,7 @@ querydsl {
 	querydslSourcesDir = querydslDir
 }
 sourceSets {
-	main.java.srcDir querydslDir
+	main.java.srcDirs = ['src/main/java', querydslDir]
 }
 compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl
