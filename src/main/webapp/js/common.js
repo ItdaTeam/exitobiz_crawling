@@ -392,12 +392,12 @@ class UploadAdapter {
     async _initListeners(resolve, reject, file) {
         const xhr = this.xhr;
         const loader = this.loader;
-        const genericErrorText = '파일을 업로드 할 수 없습니다. \n파일용량은 3MB를 초과할수 없습니다.'
+        const genericErrorText = '파일을 업로드 할 수 없습니다. \n파일용량은 25MB를 초과할수 없습니다.'
 
         await xhr.addEventListener('error', () => {reject(genericErrorText)})
         await xhr.addEventListener('abort', () => reject())
         await xhr.addEventListener('load', () => {
-            const maxSize = 3500000;
+            const maxSize = 25000000;
             const response = xhr.response
             console.log(response);
             if(!response || response.error ||file.size > maxSize) {
