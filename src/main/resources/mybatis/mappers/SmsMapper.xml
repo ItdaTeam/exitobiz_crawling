@@ -14,6 +14,7 @@ select count(*)
 from itda_web.sms_history 
 where 1=1
   and user_id = #{userId}
+  and user_hp = #{userHp}
   and cert_yn = 'Y'
 </select>
 <select id="getCertInfo" parameterType="HashMap" resultType="HashMap">
@@ -21,6 +22,7 @@ select cert_number,sms_seq::varchar
 from itda_web.sms_history sh
 where 1=1
   and user_id = #{userId}
+  and user_hp = #{userHp}
   order by sh.sms_seq::numeric desc 
   limit 1
 </select>

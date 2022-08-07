@@ -51,7 +51,7 @@ public class SmsController {
             
             Message message = new Message();
             // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-            message.setFrom("01099283137");
+            message.setFrom("0317848443");
             // message.setTo("01021878241");
             message.setTo(params.get("userHp"));
             // message.setTo(params.get("to").toString());
@@ -86,7 +86,6 @@ public class SmsController {
 
         //발송한 인증번호
         String randomCertNumber  =  certInfo.get("cert_number");
-        System.out.println(">>> certNmber : " + randomCertNumber);
         //업데이트를 위한 seq 셋팅
         params.put("smsSeq", certInfo.get("sms_seq"));
 
