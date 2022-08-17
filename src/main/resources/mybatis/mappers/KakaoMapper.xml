@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Api.KakaoMapper">
+
+<select id="getPurchaseData" parameterType="HashMap" resultType="KakaoVO">
+  select u.user_name, c.title, c.discount_cost as price, to_char(c.sales_to_dt, 'yyyy.mm.dd') as end_date, u.user_hp
+    from (select * 
+      from itda_app.userinfo
+      where user_id = #{userId}
+    ) u,
+    (select * 
+      from itda_web."content"
+      where 1=1
+      and id = #{contentId}::integer
+      ) c
+</select>
+
+<insert id="insertLog" parameterType="HashMap">
+INSERT INTO itda_web.kakao_history
+(user_id, user_name, title, price, end_date, send_date, result, type)
+VALUES(#{userId}, #{userName}, #{title}, #{price}::numeric, #{endDate},now(), #{result}, #{type})
+</insert>
+
+<select id="kakaoSendList" resultType="KakaoVo">
+select ch.*        
+	    , c.title           
+	    , c.discount_cost  as price
+	    , c.sales_to_dt as end_date   
+	    , u.user_name  
+      , u.user_hp 
+	    from itda_web.content_history ch 
+	    left outer join itda_web."content" c on c.id = ch.content_id
+	    left outer join itda_app.userinfo u on u.user_id = ch.user_id 
+	    where 1=1
+	    and ch.active_yn = 'Y'
+	    and (c.sales_to_dt + interval '1 day' )::date = now()::date
+</select>
+
+</mapper>
