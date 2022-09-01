@@ -6,11 +6,11 @@ import lombok.Data;
 public class CeciCrawVo {
     private String baseUrl;
     private int page;
-    private String title;
+    private String targetName;
     private String locCode;
 
-    public CeciCrawVo(String title, String baseUrl, int page, String locCode){
-        this.title = title;
+    public CeciCrawVo(String targetName, String baseUrl, int page, String locCode){
+        this.targetName = targetName;
         this.baseUrl = baseUrl;
         this.page = page;
         this.locCode = locCode;
