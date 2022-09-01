@@ -527,6 +527,10 @@ public class CrawlingScheduler {
         CeciCrawVo gyeongbuk = new CeciCrawVo("경북창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongbuk",1,"C054");
         CeciCrawVo gwangju = new CeciCrawVo("광주창조경제혁신센터","https://ccei.creativekorea.or.kr/gwangju",1,"C062");
         CeciCrawVo chungbuk = new CeciCrawVo("충북창조경제혁신센터","https://ccei.creativekorea.or.kr/chungbuk",1,"C043");
+        CeciCrawVo daegu = new CeciCrawVo("대구창조경제혁신센터","https://ccei.creativekorea.or.kr/daegu",1,"C053");
+        CeciCrawVo gangwon = new CeciCrawVo("강원창조경제혁신센터","https://ccei.creativekorea.or.kr/gangwon",1,"C033");
+        CeciCrawVo chungnam = new CeciCrawVo("충남창조경제혁신센터","https://ccei.creativekorea.or.kr/chungnam",1,"C041");
+        CeciCrawVo daejeon = new CeciCrawVo("대전창조경제혁신센터","https://ccei.creativekorea.or.kr/daejeon",1,"C042");
 
         /* 서울창조경제혁신센터 */
         ceciCrawling.craw(seoul);
@@ -563,6 +567,18 @@ public class CrawlingScheduler {
 
         /* 충북창조경제혁신센터 */
         ceciCrawling.craw(chungbuk);
+        
+        /* 강원창조경제혁신센터 */
+        ceciCrawling.craw(gangwon);
+
+        /* 대구창조경제혁신센터 */
+        ceciCrawling.craw(daegu);
+
+        /* 충남창조경제혁신센터 */
+        ceciCrawling.craw(chungnam);
+
+        /* 대전창조경제혁신센터 */
+        ceciCrawling.craw(daejeon);
 
         /* 제주창조경제혁신센터 */
         jejuCceiCrawling.craw();
@@ -570,7 +586,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹5 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 30 0 * * ?")
+    @Scheduled(cron = "0 35 0 * * ?")
     public void CrawlingGroup6() throws InterruptedException {
 
 
@@ -607,7 +623,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹6 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 35 0 * * ?")
+    @Scheduled(cron = "0 40 0 * * ?")
     public void CrawlingGroup7() throws InterruptedException {
 
         /* 강원테크노파크 */
@@ -640,7 +656,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹7 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 45 00 * * ?")
+    @Scheduled(cron = "0 50 00 * * ?")
     public void CrawlingGroup8() throws InterruptedException {
 
 
