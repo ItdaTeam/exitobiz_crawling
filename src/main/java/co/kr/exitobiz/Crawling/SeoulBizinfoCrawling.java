@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 @Component
 public class SeoulBizinfoCrawling implements Crawling {
@@ -34,7 +35,7 @@ public class SeoulBizinfoCrawling implements Crawling {
      *  */
 
     private String url = "https://www.bizinfo.go.kr/web/lay1/bbs/S1T122C128/AS/74/list.do?rows=15&cpage=";
-    private int page = 1;
+    private int page = 10;
 
     @Override
     public void setPage(int page) {
@@ -76,6 +77,11 @@ public class SeoulBizinfoCrawling implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
         List<SupportVo> supportVos = new ArrayList<>();
+        
+        Date today = new Date();
+        today = new Date(today.getTime() - (1000*69*69*24-1));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        String yesterday = sdf.format(today);
 
 
         for (int i=page; i>0; i--) {
@@ -83,6 +89,9 @@ public class SeoulBizinfoCrawling implements Crawling {
             driver.get(url + i);
             Thread.sleep(1000);
             for(int j=1; j<16; j++) {
+                WebElement dateXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[6]"));
+                String date = dateXpath.getText();
+                if(date.equals(yesterday)){
                     try {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[3]/a"));
                         SupportVo vo = new SupportVo();
@@ -111,6 +120,7 @@ public class SeoulBizinfoCrawling implements Crawling {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
                     }
+                }
             }
 
             Thread.sleep(500);
