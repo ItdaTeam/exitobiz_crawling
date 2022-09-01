@@ -54,7 +54,7 @@ public class CeciCrawling {
 
         WebDriver driver = new ChromeDriver(service);
 
-        SupportVo supportVo = new SupportVo(dto.getTitle(), dto.getBaseUrl(), dto.getLocCode(), "Y", "N");
+        SupportVo supportVo = new SupportVo(dto.getTargetName(), dto.getBaseUrl(), dto.getLocCode(), "Y", "N");
 
         List<SupportVo> supportVos = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class CeciCrawling {
                     String[] urlTemp = targetUrl.split(",");
                     stringBuilder.append(dto.getBaseUrl()).append("/custom/notice_view.do?no=").append(urlTemp[0]);
 
-                    SupportVo vo = new SupportVo(dto.getTitle(), "-", dto.getLocCode(), title, stringBuilder.toString(), "-");
+                    SupportVo vo = new SupportVo(dto.getTargetName(), "-", dto.getLocCode(), title, stringBuilder.toString(), "-");
                     vo.setTargetName(dto.getTargetName());
                     HashMap<String, String> params = new HashMap<>();
                     params.put("bodyurl", stringBuilder.toString());
