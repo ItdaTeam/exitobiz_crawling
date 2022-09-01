@@ -75,7 +75,7 @@ public class CeciCrawling {
                     stringBuilder.append(dto.getBaseUrl()).append("/custom/notice_view.do?no=").append(urlTemp[0]);
 
                     SupportVo vo = new SupportVo(dto.getTitle(), "-", dto.getLocCode(), title, stringBuilder.toString(), "-");
-
+                    vo.setTargetName(dto.getTargetName());
                     HashMap<String, String> params = new HashMap<>();
                     params.put("bodyurl", stringBuilder.toString());
                     boolean isUrl = crawlingMapper.isUrl(params);
