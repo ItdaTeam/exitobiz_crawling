@@ -35,7 +35,7 @@ public class YouthSeoulCrawling implements Crawling {
      * https://youth.seoul.go.kr/
      *  */
 
-    private String url = "https://youth.seoul.go.kr/site/main/youth/politics/user/list?pageSize=12&searchType=0,0&category=%EC%B0%BD%EC%97%85&searchIndex=1&cp=";
+    private String url = "https://youth.seoul.go.kr/site/main/youth/politics/user/list?cp=";
     private int page = 3;
 
     @Override
