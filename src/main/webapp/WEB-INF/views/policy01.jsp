@@ -67,6 +67,7 @@
         <li><a href="/standard" class="current">이용약관</a></li>
         <li><a href="/personinfo">개인정보처리약관</a></li>
         <li><a href="/locationinfo">위치기반서비스이용약관</a></li>
+        <li><a href="/marketingInfo">마케팅정보수신동의</a></li> 
       </ul>
 
       <div class="policy_cont">
