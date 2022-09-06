@@ -35,7 +35,7 @@ public class SeoulDidimentoCrawling implements Crawling {
      * http://didimteo.or.kr/
      *  */
 
-    private String url = "http://didimteo.or.kr/news/neighbor_news/?pageid=";
+    private String url = "http://didimteo.or.kr/news/notice/?pageid=";
     private int page = 1;
 
     @Override
