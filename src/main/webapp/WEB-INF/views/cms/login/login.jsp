@@ -134,6 +134,7 @@
             <a href="/standard">이용약관</a>
             <a href="/personinfo">개인정보처리약관</a>
             <a href="/locationinfo">위치기반서비스이용약관</a>
+            <a href="/marketingInfo">마케팅정보수신동의</a>
         </div>
     </div>
 </body>
