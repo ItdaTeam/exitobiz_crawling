@@ -21,6 +21,7 @@
                         <a class="tab on" data-id="terms1" role="tab">이용약관</a>
                         <a class="tab" data-id="terms2" role="tab">개인정보처리방침</a>
                          <a class="tab" data-id="terms3" role="tab">위치기반서비스약관</a>
+                         <a class="tab" data-id="terms4" role="tab">마케팅정보수신동의</a>
                     </div>
                     <div class="tabcont">
                         <!-- 탭 패널 : 이용약관 .terms1-->
@@ -56,6 +57,17 @@
                                 <textarea id="locate" name="privacy"></textarea>
                             </div>
                         </div>
+                        <!-- 탭 패널 : 마케팅정보수신동의 .terms4-->
+                        <div id="terms4" role="tabpanel" class="tabpanel">
+                            <div class="sub_cont">
+                                <div class="btn_wrap">
+                                    <button class="btn" onclick="saveTermMarketing();">저장</button>
+                                </div>
+                            </div>
+                            <div class="edt">
+                                <textarea id="marketing" name="privacy"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -67,6 +79,7 @@
 var termSerContent;
 var termPriContent;
 var termLocContent;
+var termMarketContent;
 <%--var staffId = "<%=session.getAttribute("staffId")%>";--%>
 
 function pageOnLoad(){
@@ -74,6 +87,7 @@ function pageOnLoad(){
     getSerTerm();
     getPriTerm();
     getLocTerm();
+    getMarketTerm();
     ClassicEditor
         .create( document.querySelector( '#service' ), {
 
@@ -263,6 +277,60 @@ function pageOnLoad(){
             console.warn( 'Build id: eed83e2ex4oz-pejoxvy7ffif' );
             console.error( error );
         } );
+    
+     ClassicEditor
+        .create( document.querySelector( '#marketing' ), {
+
+            toolbar: {
+                items: [
+                    'heading',
+                    '|',
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    '|',
+                    'outdent',
+                    'indent',
+                    '|',
+                    'blockQuote',
+                    'insertTable',
+                    'undo',
+                    'redo',
+                    'fontColor',
+                    'fontBackgroundColor',
+                    'fontSize',
+                    'underline',
+                    'specialCharacters',
+                    'horizontalLine',
+                    'htmlEmbed'
+                ]
+            },
+            language: 'ko',
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:inline',
+                    'imageStyle:block',
+                    'imageStyle:side'
+                ]
+            },
+            table: {
+                contentToolbar: [
+                    'tableColumn',
+                    'tableRow',
+                    'mergeTableCells'
+                ]
+            },
+            licenseKey: '',
+
+
+
+        } )
+        .then( editor => {
+            editor4 = editor;
+            editor4.setData(termMarketContent);
 }
 
 var getSerTerm  = function(){
@@ -309,6 +377,23 @@ var getLocTerm  = function(){
         data : null,
         success : function(data) {
             termLocContent = data;
+        },
+        error : function(request,status,error) {
+            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    });
+}
+
+var getMarketTerm  = function(){
+    $.ajax({
+        url : "/cms/terms/getTermMarket",
+        async : false, // 비동기모드 : true, 동기식모드 : false
+        type : 'GET',
+        cache : false,
+        dataType : 'text',
+        data : null,
+        success : function(data) {
+            termMarketContent = data;
         },
         error : function(request,status,error) {
             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -399,6 +484,38 @@ function saveTermLocate(){
         }
     });
 }
+    
+    //마케팅정보수신동의 저장
+function saveTermMarketing(){
+    //필수값 체크
+    if(editor4.getData() == ""){
+        alert("내용을 입력해주세요.");
+        return false;
+    }
+
+    console.log(editor4.getData());
+
+    var params = {
+        content :editor4.getData()
+    }
+
+    $.ajax({
+        url : "/cms/terms/saveTermMarket",
+        async : false, // 비동기모드 : true, 동기식모드 : false
+        type : 'POST',
+        cache : false,
+        dataType : 'text',
+        data : params,
+        success : function(data) {
+            alert("약관 작성이 완료되었습니다.");
+        },
+        error : function(request,status,error) {
+            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+    });
+}
+
+
 
 
 
