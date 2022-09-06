@@ -34,6 +34,16 @@
             , updt_dt = LOCALTIMESTAMP(0)
         where index = 3
     </update>
+    
+    
+    <select id="getTermMarket" resultType="String">
+        select content from itda_web.terms where index = 5
+    </select>
+
+    <update id="saveTermMarket" parameterType="hashMap">
+        update itda_web.terms set content = #{content}, updt_dt = LOCALTIMESTAMP(0) where index = 5
+    </update>
+
 
     <select id="getPersonMobile" resultType="String">
         select content from itda_web.terms where index = 4
