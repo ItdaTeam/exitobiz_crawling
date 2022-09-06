@@ -59,7 +59,8 @@ public class GyeongbukCceiCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                //.usingPort(5000)
+                .usingAnyFreePort()
                 .build();
 
         try {

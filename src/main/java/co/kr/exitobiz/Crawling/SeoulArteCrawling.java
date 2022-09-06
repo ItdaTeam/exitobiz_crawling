@@ -60,7 +60,8 @@ public class SeoulArteCrawling implements Crawling {
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
-                .usingPort(5000)
+                .usingAnyFreePort()
+                //.usingPort(5000)
                 .build();
         try {
             service.start();

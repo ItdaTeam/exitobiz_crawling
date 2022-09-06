@@ -63,12 +63,12 @@ dependencies {
 	implementation files('libs/TransCoord.jar')
 
 	//셀레니움 크롤링
-	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0'
-	implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '4.0.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.4.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '4.4.0'
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-common', version: '2.0b1'
-	implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.0.0'
-	implementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '4.0.0'
-	implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.4.0'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-remote-driver', version: '4.4.0'
+	implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
 	
 	//querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
