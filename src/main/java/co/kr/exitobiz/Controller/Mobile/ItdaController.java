@@ -64,7 +64,7 @@ public class ItdaController {
      @RequestMapping(value = "/marketingInfo")
      public String marketingInfo(HttpServletRequest req)
      {
-       //  req.setAttribute("termLocate", termsService.getTermLocate());
+       req.setAttribute("termLMarket", termsService.getTermMarket());
          return "policy05";
      }
 
