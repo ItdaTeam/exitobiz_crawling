@@ -47,4 +47,14 @@ public class TermsServiceImpl implements TermsService {
     public void saveTermLocate(HashMap<String, String> params) {
         termsMapper.saveTermLocate(params);
     }
+    
+    @Override
+    public String getTermMarket() {
+        return termsMapper.getTermMarket();
+    }
+
+    @Override
+    public void saveTermMarket(HashMap<String, String> params) {
+        termsMapper.saveTermMarket(params);
+    }
 }

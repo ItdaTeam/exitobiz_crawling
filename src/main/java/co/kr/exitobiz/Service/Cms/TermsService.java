@@ -16,4 +16,8 @@ public interface TermsService {
     public String getPersonMobile();
 
     public void saveTermLocate(HashMap<String,String> params);
+    
+    public String getTermMarket();
+
+    public void saveTermMarket(HashMap<String,String> params);
 }

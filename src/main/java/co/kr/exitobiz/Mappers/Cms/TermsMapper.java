@@ -19,4 +19,8 @@ public interface TermsMapper {
     public void saveTermLocate(HashMap<String,String> params);
 
     public String getPersonMobile();
+    
+    String getTermMarket();
+
+    public void saveTermMarket(HashMap<String,String> params);
 }

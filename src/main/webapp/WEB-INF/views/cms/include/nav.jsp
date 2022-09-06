@@ -33,6 +33,7 @@
         <a href="/standard">이용약관</a>
         <a href="/personinfo">개인정보처리약관</a>
         <a href="/locationinfo">위치기반서비스이용약관</a>
+        <a href="/marketingInfo">마케팅정보수신동의</a>
     </div>
     <a href="/cms" class="main_out" data-hover="exit"><span class="material-icons-outlined">logout</span> 관리자모드 나가기</a>
 </aside>

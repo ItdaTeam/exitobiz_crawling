@@ -70,5 +70,21 @@ public class TermsController {
 
         termsService.saveTermLocate(params);
     }
+    
+     //마케팅정보수신동의
+    @RequestMapping(value = "/cms/terms/getTermMarket")
+    @ResponseBody
+    public String getTermMarket(){
+        return termsService.getTermMarket();
+    }
+
+    @RequestMapping(value = "/cms/terms/saveTermMarket")
+    @ResponseBody
+    public void saveTermMarket(@RequestParam HashMap<String, String> params, HttpServletRequest req){
+
+//        params.put("updtId",req.getSession().getAttribute("staffId").toString());
+
+        termsService.saveTermMarket(params);
+    }
 
 }

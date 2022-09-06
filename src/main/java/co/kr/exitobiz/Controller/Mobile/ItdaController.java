@@ -59,6 +59,17 @@ public class ItdaController {
         return "policy03";
     }
 
+
+     //마케팅정보수신동의약관페이지
+     @RequestMapping(value = "/marketingInfo")
+     public String marketingInfo(HttpServletRequest req)
+     {
+       req.setAttribute("termLMarket", termsService.getTermMarket());
+         return "policy05";
+     }
+
+
+
     //엉따 모바일 개인정보처리약관페이지
     @RequestMapping(value = "/personmobile")
     public String personmobile(HttpServletRequest req)

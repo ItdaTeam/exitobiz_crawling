@@ -40,12 +40,7 @@
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-221415003-1"> </script>
-
-  <script> window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-221415003-1');
-  </script>
+  <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'UA-221415003-1'); </script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RLDS2JPV4N"></script>
   <script>
@@ -61,8 +56,7 @@
   <header class="header policy_header">
     <div class="inner">
       <a href="/" class="logo"><img src="/img/logo2.png" alt=""></a>
-
-      <p class="menu">위치기반서비스이용약관</p>
+      <p class="menu">마케팅정보수신동의</p>
     </div>
   </header>
 
@@ -72,13 +66,50 @@
       <ul class="policy_menu">
         <li><a href="/standard">이용약관</a></li>
         <li><a href="/personinfo">개인정보처리약관</a></li>
-        <li><a href="/locationinfo" class="current">위치기반서비스이용약관</a></li>
-        <li><a href="/marketingInfo">마케팅정보수신동의</a></li>
+        <li><a href="/locationinfo">위치기반서비스이용약관</a></li>
+        <li><a href="/marketingInfo" class="current">마케팅정보수신동의</a></li>
       </ul>
 
       <div class="policy_cont">
-        <%=request.getAttribute("termLocate")%>
+        <%=request.getAttribute("termLMarket")%> 
+        <!--<h1>마케팅 정보 수신 동의</h1>
+        <h2>서비스 제공 및 이용과 관련하여 ㈜씨티엔에스가 취득한 개인정보는 "개인정보보호법" 및 "정보통신망 이용촉진 및 정보보호 등에 관한 법률" 등 정보통신서비스제공자가 준수하여야 할 관련 법령상의 개인정보 보호 규정을 준수합니다.<h2><br>
+        <p><span>1. 고객이 수집 및 이용에 동의한 개인정보를 활용하여, 전자적 전송 매체(App Push, 핸드폰 문자메시지(SMS,MMS), E-mail 등 다양한 전송 매체)를 통하여 발송됩니다. </span></p><br>
+        <p><span>2. 발송되는 마케팅 정보는 수신자에게 ㈜씨티엔에스 및 제 3자의 상품 또는 서비스에 대한 혜택 정보, 각종 이벤트 정보, 개인 맞춤형 광고 정보 등 광고성 정보로 관련 법의 규정을 준수하여 발송됩니다.  
+                 단, 광고성 정보 이외에 의무적으로 안내되어야 하는 정보성 내용은 수신동의 여부와 무관하게 제공됩니다. </span></p><br>
+        <p><span>3. 마케팅 정보 수신 여부 및 마케팅을 위한 개인정보 수집이용을 거부하실 수 있으며, 거부 시에도 엑시토 서비스를 이용하실 수 있으나, 동의를 거부한 경우 각종 소식 및 이벤트 참여에 제한이 있을 수 있습니다. </span></p><br>
+        <p><span>4. ㈜씨티엔에스 고객센터를 통해 수신동의를 철회할 수 있습니다. </span></p><br>
+        <p><span>※ 문의 및 동의철회 : 031-784-8443 </span></p>
+        <section class="tableWrap">
+          <div class="tableWrap1 tables">
+            <p>개인정보 수집 항목</p>
+            <ul>
+              <li>개인정보 1등급 : 위치정보</li>
+              <li>개인정보 2등급 : 이름, 휴대폰번호, 이메일, 주소</li>
+            </ul>
+          </div>
+          <div class="tableWrap2 tables">
+            <p>개인정보 수집 이용 목적</p>
+            <ul>
+              <li>마케팅 광고에 활용</li>
+              <li>- 이벤트 운영 및 광고성 정보 전송</li>
+              <li>- 서비스 관련 정보 전송</li>
+            </ul>
+          </div>
+          <div class="tableWrap3 tables">
+            <p>보유 및 이용기간</p>
+            <ul>
+              <li>- 이용자가 동의를 철회하거나, 탈퇴 시 까지</li>
+              <li>- 단, 관련 법령의 규정에 따라 보존할 필요가 있을 경우,해당 기간<br>까지 보존함</li>
+            </ul>
+          </div>
+        </section>
+        <br>
+        <p class="marketingbold">이 마케팅약관은 2022년 09월 01일부터 적용됩니다.</p>
+        -->
       </div>
+
+
     </div>
   </div>
 
