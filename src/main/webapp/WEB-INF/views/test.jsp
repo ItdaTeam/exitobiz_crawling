@@ -87,7 +87,7 @@ $("#delete").click(function(){
 <body>
 <form id="fileForm" action="/test/file/uploadAjax" method="post" enctype="multipart/form-data">
 <input type="file">
-<button type="button" id="btn" onclick="test();">전송</button>
+<button type="button" id="btn" onclick="test();">전송test</button>
 <button type="button" id="delete" onclick="delete();">삭제</button>
 <form>
 </body>
