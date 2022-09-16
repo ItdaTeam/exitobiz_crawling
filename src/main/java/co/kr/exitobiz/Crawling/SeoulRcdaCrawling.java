@@ -35,7 +35,7 @@ public class SeoulRcdaCrawling implements Crawling {
      * http://www.rcda.or.kr/2020/
      *  */
 
-    private String url = "http://www.rcda.or.kr/2021/notice/contest.asp?b_code=15&Page=";
+    private String url = "http://www.rcda.or.kr/board/notice_list.asp?Page=";
     private int page = 1;
 
     @Override
