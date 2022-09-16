@@ -73,7 +73,7 @@ public class DaejeonTpCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("대전테크노파크");
-        supportVo.setUrl("http://www.gwtp.or.kr/");
+        supportVo.setUrl("http://www.djtp.or.kr/");
         supportVo.setLocCode("C042");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
