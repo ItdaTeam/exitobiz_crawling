@@ -88,8 +88,8 @@ public class SeoulKovwaCrawling implements Crawling {
             for(int j=2; j<27; j++) {
                     try {
 
-                        WebElement urlXpath = driver.findElement(By.xpath("//*[@id='w20201001a359f36744ffb']/div/div[2]/div[2]/ul[" + j +"]/li[4]/a[2]"));
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id='w20201001a359f36744ffb']/div/div[2]/div[2]/ul[" + j +"]/li[4]/a[2]/span"));
+                        WebElement urlXpath = driver.findElement(By.xpath("//*[@id='w20201001a359f36744ffb']/div/div[2]/div[1]/ul[" + j +"]/li[4]/a[2]"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id='w20201001a359f36744ffb']/div/div[2]/div[1]/ul[" + j +"]/li[4]/a[2]/span"));
 
                         Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
                         Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
