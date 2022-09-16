@@ -746,11 +746,11 @@ public class CrawlingScheduler {
 
         System.out.println("--------그룹9 크롤링완료---------");
     }
-    @Scheduled(cron = "0 0/5 * * * *")
-    public void CrawlingGroup10() throws InterruptedException {
-        /* 창원산업진흥원 */
-        changwonCwipCrawling.craw();
-    }
+//    @Scheduled(cron = "0 0/5 * * * *")
+//    public void CrawlingGroup10() throws InterruptedException {
+//        /* 창원산업진흥원 */
+//        changwonCwipCrawling.craw();
+//    }
 
     @Scheduled(cron = "0 0 1 * * ?")
     public void CleanUpData() throws InterruptedException {
