@@ -224,6 +224,10 @@ public class CrawlingScheduler {
     /* 광주테크노파크 */
     @Autowired
     GwangjuTpCrawling gwangjuTpCrawling;
+    
+    /* 대구테크노파크 */
+    @Autowired
+    DaeguTpCrawling daeguTpCrawling;
 
     /* 소상공인마당 창업지원 */
     @Autowired
@@ -647,6 +651,9 @@ public class CrawlingScheduler {
 
         /* 광주테크노파크 */
         gwangjuTpCrawling.craw();
+        
+        /* 대구테크노파크 */
+        daeguTpCrawling.craw();
 
         /* 경기도경제과학진흥원 */
         gyeonggiEgbizCrawling.craw();

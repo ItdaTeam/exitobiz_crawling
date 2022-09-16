@@ -94,7 +94,7 @@ public class DaeguTpCrawling implements Crawling {
 
                         WebElement urlXpath = driver.findElement(By.xpath("/html/body/div[2]/section/div/form[2]/table/tbody/tr["+ j +"]/td[3]/div/span/a"));
                         SupportVo vo = new SupportVo();
-                        String title = urlXpath.getText();
+                        String title = urlXpath.getAttribute ("innerHTML");
 
                         System.out.println("체큰" + title);
                         String url = urlXpath.getAttribute("onclick").replaceAll("javascript:fn_egov_inqire_notice","").replaceAll("\\(","").replaceAll("\\)","").replaceAll("\'","").replaceAll(" ","");

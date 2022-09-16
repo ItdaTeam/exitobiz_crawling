@@ -100,7 +100,7 @@
       <section class="landing_sct2" id="exito" data-section="exito">
         <div class="innr flex">
           <div class="img_wrap">
-            <img src="/img/iphone_Mockup_1.png" alt=""> <!--/img/img_mockup1.png-->
+            <img src="/img/exito04.png" alt=""> <!--/img/img_mockup1.png-->
             <img src="/img/img_mck1_2.png" class="img01 aos-init aos-animate" data-aos="fade-up" alt=""> 
             <img src="/img/img_mck1_1.png" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500" alt="">
           </div>
@@ -115,7 +115,7 @@
           <div class="innr flex">
             <div class="img_wrap">
               <img src="/img/mockup2_1.png" alt="" class="img01 aos-init aos-animate" data-aos="fade-up">
-              <img class="mockup" src="/img/img_mockup2.png" alt="" > <!-- /img/img_mockup3.png -->
+              <img class="mockup" src="/img/exito_01.png" alt="" > <!-- /img/img_mockup3.png -->
               <img src="/img/img_how2_2.svg" alt="" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
               <!-- <img src="/img/img_how4_2.svg" alt="" class="img03 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300"> -->
             </div>
@@ -134,7 +134,7 @@
             </div>
             <div class="img_wrap">
               <!-- <img src="/img/mockup2_1.png" alt="" class="img01 aos-init aos-animate" data-aos="fade-up"> -->
-              <img class="mockup" src="/img/iphone_Mockup_2.png" alt=""> <!-- /img/img_mockup2.png -->
+              <img class="mockup" src="/img/exito06.png" alt=""> <!-- /img/img_mockup2.png -->
               <!-- <img src="/img/img_how1_2.svg" alt="" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300"> -->
               <img src="/img/ai_1.png" alt="" class="img03 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500"> <!-- /img/img_how4_1.svg -->
             </div>
@@ -171,8 +171,8 @@
               </ul>  -->
             </div>
             <div class="img_wrap">
-              <img class="mockup mockups4" src="/img/img_mockup4_1.png" alt="">
-              <img id="mockup4_1_1" src="/img/img_mockup4_1_1.png" alt="">
+              <img class="mockup mockups4" src="/img/exito_05.png" alt="">
+              <img id="mockup4_1_1" src="/img/ai_1.png" alt="">
             </div>
           </div>
         </div>

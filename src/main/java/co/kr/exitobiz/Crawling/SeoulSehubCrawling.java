@@ -34,7 +34,7 @@ public class SeoulSehubCrawling implements Crawling {
      * https://www.sygc.kr/
      *  */
 
-    private String url = "https://sehub.net/archives/category/alarm/opencat/opencat_outside/page/";
+    private String url = "https://sygc.kr/NOTICE/?page=";
     private int page = 1;
 
     @Override
@@ -82,21 +82,16 @@ public class SeoulSehubCrawling implements Crawling {
 
         for (int i=page; i>0; i--) {
             driver.get(url + i);
-            int index;
-            if(page==1){
-                index = 16;
-            }else {
-                index = 14;
-            }
-            for(int j=2; j<index; j++) {
+            for(int j=2; j<12; j++) {
 
                 try {
-                    WebElement titleXpath = driver.findElement(By.xpath("/html/body/section/div/div/div[3]/table/tbody/tr["+ j +"]/td[2]/a"));
-                    WebElement targetTypeXpath = driver.findElement(By.xpath("/html/body/section/div/div/div[3]/table/tbody/tr["+ j +"]/td[4]"));
+                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"w20220822288d3e65f885e\"]/div/div[2]/div[1]/ul["+ j +"]/li[2]/a[2]/span"));
+                  //  WebElement targetTypeXpath = driver.findElement(By.xpath("/html/body/section/div/div/div[3]/table/tbody/tr["+ j +"]/td[4]"));
+                    WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"w20220822288d3e65f885e\"]/div/div[2]/div[1]/ul[\"+ j +\"]/li[2]/a[2]"));
 
                     String title = titleXpath.getText();
-                    String url = titleXpath.getAttribute("href");
-                    String targettype = targetTypeXpath.getText();
+                    String url = "https://www.sygc.kr" + urlXpath.getAttribute("href");
+                   // String targettype = targetTypeXpath.getText();
 
                     SupportVo vo = new SupportVo();
                     vo.setTargetName("서울시청년활동지원센터");
@@ -109,7 +104,7 @@ public class SeoulSehubCrawling implements Crawling {
                     HashMap<String, String> params = new HashMap<>();
                     params.put("bodyurl", url);
                     boolean isUrl = crawlingMapper.isUrl(params);
-                    if (!isUrl && !targettype.equals("관리자")) {
+                    if (!isUrl) {
                         supportVos.add(vo);
                     }
 
