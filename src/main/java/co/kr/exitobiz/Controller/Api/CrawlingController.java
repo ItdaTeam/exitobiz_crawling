@@ -412,6 +412,10 @@ public class CrawlingController {
     @Autowired
     GyeongbukPtpCrawling gyeongbukPtpCrawling;
 
+    /* 창원산업진흥원 */
+    @Autowired
+    ChangwonCwipCrawling changwonCwipCrawling;
+
     @Autowired
     NaraTestCrawling naraTestCrawling;
 

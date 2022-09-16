@@ -361,6 +361,10 @@ public class CrawlingScheduler {
     @Autowired
     CeciCrawling ceciCrawling;
 
+    /* 창원산업진흥원 */
+    @Autowired
+    ChangwonCwipCrawling changwonCwipCrawling;
+
     @Scheduled(cron = "0 0 0 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
@@ -725,6 +729,20 @@ public class CrawlingScheduler {
 
 
         System.out.println("--------그룹8 크롤링완료---------");
+    }
+
+    @Scheduled(cron = "0 55 00 * * ?")
+    public void CrawlingGroup9() throws InterruptedException {
+        /* 창원산업진흥원 */
+        changwonCwipCrawling.craw();
+
+
+        System.out.println("--------그룹9 크롤링완료---------");
+    }
+    @Scheduled(cron = "0 0/5 * * * *")
+    public void CrawlingGroup10() throws InterruptedException {
+        /* 창원산업진흥원 */
+        changwonCwipCrawling.craw();
     }
 
     @Scheduled(cron = "0 0 1 * * ?")
