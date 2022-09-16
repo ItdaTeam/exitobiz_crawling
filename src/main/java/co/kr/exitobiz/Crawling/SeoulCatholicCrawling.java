@@ -34,7 +34,7 @@ public class SeoulCatholicCrawling implements Crawling {
      * https://startup.catholic.ac.kr/
      *  */
 
-    private String url = "https://startup.catholic.ac.kr/front/boardlist.do?bbsConfigFK=586&cmsDirPkid=5154&cmsLocalPkid=0&searchField=ALL&searchValue=&currentPage=";
+    private String url = "https://startup.catholic.ac.kr/front/boardlist.do?cmsDirPkid=5156&cmsLocalPkid=0&currentPage=";
     private int page = 1;
 
     @Override
@@ -89,7 +89,9 @@ public class SeoulCatholicCrawling implements Crawling {
 
                 try {
 
-                    WebElement titleXpath = driver.findElement(By.xpath(" //*[@id=\"contents\"]/div/div[2]/ul/li[" + j + "]/a/div[1]/div/div"));
+                    WebElement titleXpath;
+                    if(j <= 3) titleXpath = driver.findElement(By.xpath(" //*[@id=\"contents\"]/div/div[2]/ul/li["+ j +"]/a/div[1]/div[2]/div"));
+                    else titleXpath = driver.findElement(By.xpath(" //*[@id=\"contents\"]/div/div[2]/ul/li[" + j + "]/a/div[1]/div/div"));
                     WebElement bodyUrlXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/div[2]/ul/li[" + j + "]/a"));
 
                     String title = titleXpath.getText();
