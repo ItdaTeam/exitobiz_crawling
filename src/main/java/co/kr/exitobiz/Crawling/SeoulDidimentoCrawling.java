@@ -85,12 +85,12 @@ public class SeoulDidimentoCrawling implements Crawling {
 
             driver.get(url + i);
 
-            for(int j=1; j<11; j++) {
+            for(int j=1; j<17; j++) {
 
                 try {
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[2]/table/tbody/tr[" + j + "]/td[2]/a/div"));
-                    WebElement urlXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[2]/table/tbody/tr[" + j + "]/td[2]/a"));
-
+                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[4]/table/tbody/tr[" + j + "]/td[2]/a/div"));
+                    WebElement urlXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[4]/table/tbody/tr[" + j + "]/td[2]/a"));
+                    
                     Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
                     Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
                     ArrayList<String> typePatternArray = new ArrayList<String>();
