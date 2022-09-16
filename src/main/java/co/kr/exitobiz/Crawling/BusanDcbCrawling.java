@@ -34,7 +34,7 @@ public class BusanDcbCrawling implements Crawling {
      * https://www.dcb.or.kr/
      *  */
 
-    private String url = "https://www.dcb.or.kr/01_news/?mcode=0401010000&mode=1&hd=%EA%B3%B5%EA%B3%A0&st=p&page=";
+    private String url = "https://www.dcb.or.kr/01_news/?mcode=0401010000&mode=1&page=";
     private int page = 1;
 
     @Override
@@ -87,10 +87,9 @@ public class BusanDcbCrawling implements Crawling {
 
             // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
             int k = list.size();
-            for(int j=1; j<k; j++) {
+            for(int j=1; j<16; j++) {
                     try {
-
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"page\"]/div[2]/form/div[1]/table/tbody/tr["+ j +"]/td[2]/a"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"page\"]/div[2]/form/div[1]/table/tbody/tr["+ j +"]/td[3]/a"));
                         SupportVo vo = new SupportVo();
                         String title = titleXpath.getText();
                         String bodyurl = titleXpath.getAttribute("href").substring(0,titleXpath.getAttribute("href").lastIndexOf("page") - 1);
