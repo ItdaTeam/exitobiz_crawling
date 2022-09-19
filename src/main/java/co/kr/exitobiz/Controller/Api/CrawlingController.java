@@ -416,6 +416,18 @@ public class CrawlingController {
     @Autowired
     ChangwonCwipCrawling changwonCwipCrawling;
 
+    /* 창업진흥원 */
+    @Autowired
+    KisedCrawling kisedCrawling;
+
+    /* 한국무역협회 */
+    @Autowired
+    KitaCrawling kitaCrawling;
+
+    /* 송파구일자리통합지원센터 */
+    @Autowired
+    SongpaCrawling songpaCrawling;
+
     @Autowired
     NaraTestCrawling naraTestCrawling;
 

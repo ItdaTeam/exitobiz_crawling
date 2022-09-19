@@ -369,6 +369,18 @@ public class CrawlingScheduler {
     @Autowired
     ChangwonCwipCrawling changwonCwipCrawling;
 
+    /* 한국무역협회 */
+    @Autowired
+    KitaCrawling kitaCrawling;
+
+    /* 창업진흥원 */
+    @Autowired
+    KisedCrawling kisedCrawling;
+
+    /* 송파구일자리통합지원센터 */
+    @Autowired
+    SongpaCrawling songpaCrawling;
+
     @Scheduled(cron = "0 0 0 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
@@ -667,7 +679,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹7 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 50 00 * * ?")
+    @Scheduled(cron = "0 50 0 * * ?")
     public void CrawlingGroup8() throws InterruptedException {
 
 
@@ -738,18 +750,29 @@ public class CrawlingScheduler {
         System.out.println("--------그룹8 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 55 00 * * ?")
+    @Scheduled(cron = "0 55 0 * * ?")
     public void CrawlingGroup9() throws InterruptedException {
         /* 창원산업진흥원 */
         changwonCwipCrawling.craw();
 
+        /* 창업진흥원 */
+        kisedCrawling.craw();
+
+        /* 한국무역협회 */
+        kitaCrawling.craw();
+
+        /* 송파구일자리통합지원센터 */
+        songpaCrawling.craw();
+
 
         System.out.println("--------그룹9 크롤링완료---------");
     }
+
+//    테스트용
 //    @Scheduled(cron = "0 0/5 * * * *")
 //    public void CrawlingGroup10() throws InterruptedException {
-//        /* 창원산업진흥원 */
-//        changwonCwipCrawling.craw();
+//        /* 송파구일자리통합지원센터 */
+//        songpaCrawling.craw();
 //    }
 
     @Scheduled(cron = "0 0 1 * * ?")
