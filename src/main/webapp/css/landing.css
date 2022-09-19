@@ -375,7 +375,7 @@ h4 {
   border-radius: 10px;
   padding: 12px 56px;
   color: #53f19d;
-  width:124%;
+  width:64%;
 }
 
 .landing_visual .appstore span {
@@ -647,27 +647,27 @@ h4 {
 
 .landing_sct2 .img_wrap img {
   position: absolute;
-  top: 7px;
-  width: 222%;
+  top: 15px;
+  width: 72%;
 }
 
 .img_wrap img {
   position: absolute;
-  top: -28px;
-  right:-363px;
-  width: 224%;
+  top: 29px;
+  right:157px;
+  width: 55%;
 }
 
 .landing_sct2 .img_wrap img.img01 {
   top: 20%;
   right: 110px;
-  width: 242px;
+  width: 295px;
 }
 
 .landing_sct2 .img_wrap img.img02 {
   top: 50%;
-  left: 0;
-  width: 250px;
+  left: -48px;
+  width: 370px;
 }
 
 @media only screen and (max-width: 1099px) {
@@ -721,15 +721,17 @@ h4 {
 }
 
 .landing_sct3 .how .img_wrap .mockup {
-  bottom: -40%;
-  left: -44%;
+  bottom: -48%;
+  left: 34%;
 }
 
 .landing_sct3 .how .img_wrap .img01 {
   top: 33%;
-  left: 33%;
+  left: 29%;
    width: 63%;
    z-index: 1000;
+   box-shadow:0 5px 15px -7px rgba(0,0,0,1);
+
 }
 
 .landing_sct3 .how .img_wrap .img02 {
@@ -739,8 +741,10 @@ h4 {
 
 .landing_sct3 .how .img_wrap .img03 {
   width:64%;
-  top: 27%;
-  right: 118px;
+  top: 34%;
+  right: 106px;
+  box-shadow:0 5px 15px -7px rgba(0,0,0,1);
+
 }
 
 .landing_sct3 .how.how1 {
@@ -748,7 +752,7 @@ h4 {
 }
 
 .landing_sct3 .how.how1 .mockup {
-  width: 220%;
+  width: 56%;
 }
 
 .landing_sct3 .how.how1 h3 {
@@ -771,7 +775,7 @@ h4 {
 }
 
 .landing_sct3 .how.how2 .mockup {
-  width: 200%;
+  width: 55%;
 }
 
 
@@ -788,15 +792,16 @@ h4 {
 }
 
 .landing_sct3 .how.how3 .img_wrap .mockup {
-  top: 2%;
-  width: 235%;
+  top: 9%;
+  width: 60%;
 }
 
 
 img#mockup4_1_1{
-  top: 25%;
   width: 70%;
-  right: 73px;
+    right: 8px;
+    box-shadow: 0 5px 15px -7px rgb(0 0 0);
+    top: 49%;
 }
 
 .landing_sct3 .how.how3 ul {
@@ -814,8 +819,8 @@ img#mockup4_1_1{
 
 .landing_sct3 .how.how4 .img_wrap .mockup {
   top: 5%;
-  left: -360px;
-  width: 214%;
+  left: 100px;
+  width: 59%;
 }
 
 .landing_sct3 .how.how5 div {
@@ -977,7 +982,9 @@ img#mockup4_1_1{
 }
 
 .firstMockup{
-  width:159%;
+  width:55%;
+  position: relative;
+  left:40%;
 }
 
 /* 수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정 */
@@ -1075,6 +1082,9 @@ img#mockup4_1_1 {
 }
 
 };
+
+
+#img_ai{left:10%;}
 
 
 /* 수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정 */
