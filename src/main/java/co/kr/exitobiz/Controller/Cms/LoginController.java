@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/login")
@@ -40,6 +41,10 @@ public class LoginController {
             case "login" :  // 로그인 성공
                 loginService.updateLoginTime(vo);
 
+                HttpSession session = request.getSession();
+                session.setAttribute("staffId", vo.getId());
+
+
                 if(autoLogin.equals("on")) {
                     Cookie cookie = new Cookie("id", vo.getId());
                     cookie.setMaxAge(60*60*24*7);
@@ -64,6 +69,7 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(@ModelAttribute StaffVo vo, HttpServletRequest  request, HttpServletResponse response) throws Exception {
         Cookie[] cookies = request.getCookies();
+
         if(cookies != null){
             for(Cookie tmpCookie : cookies){
                 if(tmpCookie.getName().equals("staff_id")){

@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script>
+    $(document).ready(function(){
+        var staffId = "<%=session.getAttribute("staffId")%>";
+        sessionCheck(staffId);
+    });
+</script>
 <aside class="main_sidebar">
     <h1 class="logo">EXITO</h1>
     <ul class="main_nav">
@@ -35,5 +41,5 @@
         <a href="/locationinfo">위치기반서비스이용약관</a>
         <a href="/marketingInfo">마케팅정보수신동의</a>
     </div>
-    <a href="/cms" class="main_out" data-hover="exit"><span class="material-icons-outlined">logout</span> 관리자모드 나가기</a>
+    <a href="javascript:_logOut()" class="main_out" data-hover="exit"><span class="material-icons-outlined">logout</span> 관리자모드 나가기</a>
 </aside>
