@@ -102,7 +102,7 @@ public class VisitKoreaCrawling implements Crawling {
 
                         vo.setTargetName("한국관광공사");
                         vo.setTargetCatName("-");
-                        vo.setLocCode("C082");
+                        vo.setLocCode("C82");
                         vo.setSiTitle(title);
                         vo.setMobileUrl(bodyurl);
                         vo.setPcUrl("-");
