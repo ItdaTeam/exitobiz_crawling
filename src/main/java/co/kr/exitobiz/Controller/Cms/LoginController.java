@@ -72,7 +72,7 @@ public class LoginController {
 
         if(cookies != null){
             for(Cookie tmpCookie : cookies){
-                if(tmpCookie.getName().equals("staff_id")){
+                if(tmpCookie.getName().equals("SESSION")){
                     tmpCookie.setMaxAge(0);
                     tmpCookie.setPath("/");
                     response.addCookie(tmpCookie);
