@@ -128,9 +128,9 @@
         <div class="how how1" >
           <div class="innr flex">
             <div> 
-              <h3>내 주변<br>'지원사업 통계' 확인</h3>
-              <h4>전국 지원사업 규모와<br>내 지역 지원사업 규모를 확인하세요</h4>
-              <p class="txt">획득 가능한 지원금 규모를 안다면<br>자금계획을 세울 수 있답니다!</p>
+              <h3>한눈에 보는 지원사업!</h3>
+              <h4>정부기관, TIPS, 민간기업의 지원사업을<br>한눈에 확인하세요!</h4>
+              <p class="txt">전체 지원사업 규모를 안다면<br>자금계획을 세울 수 있답니다!</p><!-- <p class="txt">획득 가능한 지원금 규모를 안다면<br>자금계획을 세울 수 있답니다!</p> -->
             </div>
             <div class="img_wrap">
               <!-- <img src="/img/mockup2_1.png" alt="" class="img01 aos-init aos-animate" data-aos="fade-up"> -->
@@ -150,7 +150,7 @@
             </div>
             <div class="img_wrap">
               <!-- <img src="/img/img_how1_1.svg" alt="" class="img01 aos-init aos-animate" data-aos="fade-up"> -->
-              <img class="mockup mockups3" src="/img/iphone_Mockup_5.png" alt=""> <!-- /img/img_mockup2.png -->
+              <img class="mockup mockups3" src="/img/iphone_Mockup_5.png" alt="" > <!-- /img/img_mockup2.png -->
               <!-- <img src="/img/img_how1_2.svg" alt="" class="img02 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300"> -->
               <!-- <img src="/img/ai_1.png" alt="" class="img03 aos-init aos-animate" data-aos="fade-up" data-aos-delay="500"> /img/img_how4_1.svg -->
             </div>

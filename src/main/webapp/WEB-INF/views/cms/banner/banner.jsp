@@ -291,7 +291,7 @@
     function imageModalPop(ctx) {
 
         var item = ctx.item
-        console.log(item);
+        console.log(ctx);
 
         $.ajax({
             type : 'GET',
@@ -770,4 +770,11 @@
     $(document).ready(function() {
         pageOnLoad();
     });
+
+
+
+
+
+    // 수정수정
+    
 </script>
