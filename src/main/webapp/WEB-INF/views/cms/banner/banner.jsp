@@ -291,7 +291,6 @@
     function imageModalPop(ctx) {
 
         var item = ctx.item
-        console.log(item);
 
         $.ajax({
             type : 'GET',
@@ -305,12 +304,16 @@
                 var slideTo;
 
                 result.forEach((obj, i) => {
-                    var img = "<img src='"+ obj.bannerImg +"'>";
-                    console.log(img);
-                    if (item.id == obj.index) {
-                        slideTo = Number(i)
-                    }
-                    $("#swiperTop").append('<div class="swiper-slide" data-id="'+ obj.index +'"><div class="swiper-slide-container">'+ img +'</div></div>')
+                    if(obj.bannerImg == item.bannerImg){
+                        var img = "<img src='"+ obj.bannerImg +"'>";
+                        $("#swiperTop").append('<div class="swiper-slide" data-id="'+ obj.index +'"><div class="swiper-slide-container">'+ img +'</div></div>')
+                    }  
+                        
+                  //  
+                    // if (item.id == obj.index) {
+                    //     slideTo = Number(i)
+                    // }
+                   // $("#swiperTop").append('<div class="swiper-slide" data-id="'+ obj.index +'"><div class="swiper-slide-container">'+ img +'</div></div>')
                 })
                 console.log(slideTo);
                 galleryTop.slideTo(slideTo)
@@ -770,4 +773,11 @@
     $(document).ready(function() {
         pageOnLoad();
     });
+
+
+
+
+
+    // 수정수정
+    
 </script>
