@@ -661,13 +661,13 @@ h4 {
 .landing_sct2 .img_wrap img.img01 {
   top: 20%;
   right: 110px;
-  width: 295px;
+  width: 262px;
 }
 
 .landing_sct2 .img_wrap img.img02 {
   top: 50%;
   left: -48px;
-  width: 370px;
+  width: 280px;
 }
 
 @media only screen and (max-width: 1099px) {
@@ -990,16 +990,16 @@ img#mockup4_1_1{
 /* 수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정수정 */
 @media (max-width: 767px){
   .firstMockup{
-    width:300%;
-    position: relative;left:-104%;
+    width:100%;
+    position: relative;left:-7%;
   }
 
 
   .landing_sct2 .img_wrap img {
     position: absolute;
     top: 77px;
-    left:58%;
-    width: 210%;
+    left:49%;
+    width: 72%;
 }
 
 .landing_sct2 .img_wrap img.img01 {
@@ -1043,7 +1043,7 @@ h3{
 .textbox > h4{margin-left: 0%;}
 
 .innr.flex > .img_wrap > img.mockup{
-  width: 284%;
+  width: 100%;
   position: relative;
   top: 5px;
 }
@@ -1056,29 +1056,29 @@ h3{
 } */
 
 .landing_sct3 .how.how3 .img_wrap .mockup.mockups4{
-  width: 140%;
+  width: 48%;
   max-width: 130vw;
-  top: 20px;
+  top: 12px;
   left: 45%;
   transform: translateX(-45%);
 }
 
 
 img#mockup4_1_1 {
-  top: 25%;
+  top: 57%;
   width: 50%;
-  right: 93px;
+  right: 101px;
 }
 
 .landing_sct3 .how .img_wrap .mockup {
-  left: -162px;
+  left: -7px;
 }
 
  div.how.how4 > div.innr.flex > div.img_wrap > img.mockups5{
   position: relative;
   top: 20px;
-  left: -190px;
-  width: 314%;
+  left: 0px;
+  width: 104%;
 }
 
 };

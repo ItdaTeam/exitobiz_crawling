@@ -129,7 +129,7 @@
           <div class="innr flex">
             <div> 
               <h3>한눈에 보는 지원사업!</h3>
-              <h4>정부기관, TIPS, 민간기업의 지원사업을<br>한눈에 확인하세요!</h4>
+              <h4>정부기관, TIPS, 민간기업의<br>지원사업을 한눈에 확인하세요!</h4>
               <p class="txt">전체 지원사업 규모를 안다면<br>자금계획을 세울 수 있답니다!</p><!-- <p class="txt">획득 가능한 지원금 규모를 안다면<br>자금계획을 세울 수 있답니다!</p> -->
             </div>
             <div class="img_wrap">
@@ -145,7 +145,7 @@
           <div class="innr flex">
             <div> 
               <h3 style="margin-bottom: 10%;">지원사업도<br>댓글로 소통하세요!</h3>
-              <h4 style="color:#fff">나만 아는 사업계획서 작성 꿀팁,<br>지원사업 수행 경험 등</h4>
+              <h4 style="color:#fff">나만 아는 사업계획서<br>작성 꿀팁,지원사업 수행 경험 등</h4>
               <p class="txt">동료 스타트업을 위해<br>아끼지 말고 공유해 주세요!</p>
             </div>
             <div class="img_wrap">
