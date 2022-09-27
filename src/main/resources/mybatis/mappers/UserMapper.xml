@@ -50,6 +50,9 @@ WHERE id=#{id}
        <when test="keyId == 4 ">
           and coalesce(ups.sp_commentlike_push,'') != 'N'
        </when>
+        <when test="keyId == 5 ">
+            and coalesce(ups.sp_bookmark_push,'') != 'N'
+        </when>
     </choose>
   </select>
   <!-- 

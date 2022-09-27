@@ -65,21 +65,42 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             /* 500개 제한. 500개넘어가면 푸시보내고 리스트 다시 초기화 */
             if ((i % 499) == 0 && (i != 0)) {
 
-                MulticastMessage message = MulticastMessage.builder()
-                        .setNotification(Notification.builder()
-                                .setTitle(params.get("title"))
-                                .setBody(params.get("body"))
-                                .build())
-                        .setApnsConfig(ApnsConfig.builder()
-                                .setAps(Aps.builder()
-                                        .setSound("default")
-                                        .build())
-                                .build())
-                        .putData("keyId", params.get("keyId"))
-                        .putData("idx", params.get("idx"))
-                        .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                        .addAllTokens(tokenList)
-                        .build();
+                MulticastMessage message;
+
+                //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
+                if(params.get("idx") == null || params.get("idx") == "null"){
+                    message = MulticastMessage.builder()
+                            .setNotification(Notification.builder()
+                                    .setTitle(params.get("title"))
+                                    .setBody(params.get("body"))
+                                    .build())
+                            .setApnsConfig(ApnsConfig.builder()
+                                    .setAps(Aps.builder()
+                                            .setSound("default")
+                                            .build())
+                                    .build())
+                            .putData("keyId", params.get("keyId"))
+                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                            .addAllTokens(tokenList)
+                            .build();
+                }else{
+                    message = MulticastMessage.builder()
+                            .setNotification(Notification.builder()
+                                    .setTitle(params.get("title"))
+                                    .setBody(params.get("body"))
+                                    .build())
+                            .setApnsConfig(ApnsConfig.builder()
+                                    .setAps(Aps.builder()
+                                            .setSound("default")
+                                            .build())
+                                    .build())
+                            .putData("keyId", params.get("keyId"))
+                            .putData("idx", params.get("idx"))
+                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                            .addAllTokens(tokenList)
+                            .build();
+                }
+
 
                 tokenList.clear();
                 BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
@@ -106,22 +127,45 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             System.out.println("마지막리스트::" + tokenCount);
             System.out.println(tokenList.size());
 
-            MulticastMessage message = MulticastMessage.builder()
-                    .setNotification(Notification.builder()
-                            .setTitle(params.get("title"))
-                            .setBody(params.get("body"))
-                            .build())
-                    .setApnsConfig(ApnsConfig.builder()
-                            .setAps(Aps.builder()
+
+            MulticastMessage message;
+
+            //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
+            if(params.get("idx") == null || params.get("idx") == "null") {
+                message = MulticastMessage.builder()
+                        .setNotification(Notification.builder()
+                                .setTitle(params.get("title"))
+                                .setBody(params.get("body"))
+                                .build())
+                        .setApnsConfig(ApnsConfig.builder()
+                                .setAps(Aps.builder()
 //                                    .setBadge(42)
-                                    .setSound("default")
-                                    .build())
-                            .build())
-                    .putData("keyId", params.get("keyId"))
-                    .putData("idx", params.get("idx"))
-                    .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                    .addAllTokens(tokenList)
-                    .build();
+                                        .setSound("default")
+                                        .build())
+                                .build())
+                        .putData("keyId", params.get("keyId"))
+                        .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                        .addAllTokens(tokenList)
+                        .build();
+            }else{
+                message = MulticastMessage.builder()
+                        .setNotification(Notification.builder()
+                                .setTitle(params.get("title"))
+                                .setBody(params.get("body"))
+                                .build())
+                        .setApnsConfig(ApnsConfig.builder()
+                                .setAps(Aps.builder()
+//                                    .setBadge(42)
+                                        .setSound("default")
+                                        .build())
+                                .build())
+                        .putData("keyId", params.get("keyId"))
+                        .putData("idx", params.get("idx"))
+                        .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                        .addAllTokens(tokenList)
+                        .build();
+            }
+
 
             BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
 
@@ -189,10 +233,102 @@ public class PushMultipleServiceImpl implements PushMultipleService {
 
                 System.out.println(i + "번째 리셋 토큰카운트::" + tokenCount);
                 System.out.println(tokenList.size());
+                System.out.println("#######body " + params.get("body"));
 
-                MulticastMessage message = MulticastMessage.builder()
+                MulticastMessage message;
+
+                System.out.println("###########" + params.get("idx"));
+
+                //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
+                if(params.get("idx") == null || params.get("idx") == "null"){
+
+                    message = MulticastMessage.builder()
+                            .setNotification(Notification.builder()
+                                    .setTitle(params.get("title") + i)
+                                    .setBody(params.get("body"))
+                                    .build())
+                            .setApnsConfig(ApnsConfig.builder()
+                                    .setAps(Aps.builder()
+                                            .setBadge(42)
+                                            .setSound("default")
+                                            .build())
+                                    .build())
+                            .putData("keyId", params.get("keyId"))
+                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                            .addAllTokens(tokenList)
+                            .build();
+                }else{
+
+                    message = MulticastMessage.builder()
+                            .setNotification(Notification.builder()
+                                    .setTitle(params.get("title") + i)
+                                    .setBody(params.get("body"))
+                                    .build())
+                            .setApnsConfig(ApnsConfig.builder()
+                                    .setAps(Aps.builder()
+                                            .setBadge(42)
+                                            .setSound("default")
+                                            .build())
+                                    .build())
+                            .putData("keyId", params.get("keyId"))
+                            .putData("idx", params.get("idx"))
+                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                            .addAllTokens(tokenList)
+                            .build();
+
+                }
+
+
+
+                tokenList.clear();
+                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+
+//                if(response.getFailureCount() > 0){
+//
+//                    List<SendResponse> responses = response.getResponses();
+//
+//
+//                    for (int j = 0; j < responses.size(); j++) {
+//                        if (!responses.get(j).isSuccessful()) {
+//                            failedTokens.add(tokenList.get(j));
+//                        }
+//                    }
+//
+//                    System.out.println("List of tokens that caused failures: "
+//                            + failedTokens);
+//                }
+
+            }
+        }
+
+        if (tokenList.size() > 0) {
+            System.out.println("마지막리스트::" + tokenCount);
+            System.out.println(tokenList.size());
+
+            MulticastMessage message;
+
+            //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
+            if(params.get("idx") == null || params.get("idx") == "null") {
+                message = MulticastMessage.builder()
                         .setNotification(Notification.builder()
-                                .setTitle(params.get("title") + i)
+                                .setTitle(params.get("title") + "마지막리스트")
+                                .setBody(params.get("body"))
+                                .build())
+                        .setApnsConfig(ApnsConfig.builder()
+                                .setAps(Aps.builder()
+                                        .setBadge(42)
+                                        .setSound("default")
+                                        .build())
+                                .build())
+                        .putData("keyId", params.get("keyId"))
+                        .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                        .addAllTokens(tokenList)
+                        .build();
+
+            }else{
+                message = MulticastMessage.builder()
+                        .setNotification(Notification.builder()
+                                .setTitle(params.get("title") + "마지막리스트")
                                 .setBody(params.get("body"))
                                 .build())
                         .setApnsConfig(ApnsConfig.builder()
@@ -207,60 +343,22 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                         .addAllTokens(tokenList)
                         .build();
 
-                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-                tokenList.clear();
-
-                if(response.getFailureCount() > 0){
-                    List<SendResponse> responses = response.getResponses();
-
-                    for (int j = 0; j < responses.size(); j++) {
-                        if (!responses.get(j).isSuccessful()) {
-                            failedTokens.add(tokenList.get(j));
-                        }
-                    }
-
-                    System.out.println("List of tokens that caused failures: "
-                            + failedTokens);
-                }
-
             }
-        }
-
-        if (tokenList.size() > 0) {
-            System.out.println("마지막리스트::" + tokenCount);
-            System.out.println(tokenList.size());
-
-            MulticastMessage message = MulticastMessage.builder()
-                    .setNotification(Notification.builder()
-                            .setTitle(params.get("title") + "마지막리스트")
-                            .setBody(params.get("body"))
-                            .build())
-                    .setApnsConfig(ApnsConfig.builder()
-                            .setAps(Aps.builder()
-                                    .setBadge(42)
-                                    .setSound("default")
-                                    .build())
-                            .build())
-                    .putData("keyId", params.get("keyId"))
-                    .putData("idx", params.get("idx"))
-                    .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                    .addAllTokens(tokenList)
-                    .build();
 
             BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
 
-            if(response.getFailureCount() > 0){
-                List<SendResponse> responses = response.getResponses();
-
-                for (int j = 0; j < responses.size(); j++) {
-                    if (!responses.get(j).isSuccessful()) {
-                        failedTokens.add(tokenList.get(j));
-                    }
-                }
-
-                System.out.println("List of tokens that caused failures: "
-                        + failedTokens);
-            }
+//            if(response.getFailureCount() > 0){
+//                List<SendResponse> responses = response.getResponses();
+//
+//                for (int j = 0; j < responses.size(); j++) {
+//                    if (!responses.get(j).isSuccessful()) {
+//                        failedTokens.add(tokenList.get(j));
+//                    }
+//                }
+//
+//                System.out.println("List of tokens that caused failures: "
+//                        + failedTokens);
+//            }
 
 
             tokenList.clear();

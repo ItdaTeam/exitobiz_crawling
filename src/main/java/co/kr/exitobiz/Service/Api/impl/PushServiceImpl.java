@@ -464,4 +464,12 @@ public class PushServiceImpl implements PushService {
         return pushMapper.getKeywordPushUser(params);
     }
 
+    /**
+     * 찜한사업 마감 2일 전 푸쉬발송 대상 리스트 조회
+     */
+    @Override
+    public List<PushVo> getBookmarkSupportInfo() throws Exception {
+        return pushMapper.getBookmarkSupportInfo();
+    }
+
 }

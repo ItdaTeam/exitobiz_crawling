@@ -26,4 +26,6 @@ public interface PushService {
 
     public List<PushVo> getKeywordPushUser(HashMap<String, String> params); // 푸쉬발송 대상 유저 조회
 
+    public List<PushVo> getBookmarkSupportInfo() throws Exception; // 찜한사업 마감 2일 전 푸쉬발송 대상 리스트 조회
+
 }

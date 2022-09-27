@@ -74,10 +74,47 @@ public class PushScheduler{
                 pushMultiService.sendListPush(push, usertokens);
                 
             }
-            
-            
-
         }
+    }
+    /**
+     * 찜한사업 알람용 푸쉬 스케줄러
+     * 매일 10:00 에 1회 발송
+     * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
+     */
+    @Scheduled(cron = "0 0 10 * * ?")
+    public void bookmarkPush() throws InterruptedException, Exception {
+
+
+        List<Map<String, Object>> usertokens = new ArrayList<>();
+
+        System.out.println("=================== 푸쉬 스타트 ====================");
+
+        /**
+         찜한 지원사업이 있는지 확인하기
+         */
+        List<PushVo> bookmarks = pushService.getBookmarkSupportInfo();
+
+        if(bookmarks.size() > 0){
+            for(PushVo bookmark : bookmarks ){
+                HashMap<String,String> push = new HashMap<>();  // 푸쉬 발송을 위한 기본 셋팅
+
+                // 푸쉬를 위한 기본 셋팅 처리
+                push.put("title","(마감일 임박) 찜한 사업 마감일 임박!!!");
+                push.put("body", bookmark.getSiTitle());
+                push.put("keyId","5");
+
+                usertokens.clear();
+
+                 // 푸쉬를 발송할 사용자 토큰 처리
+                Map<String,Object> usertoken = new HashMap<String,Object>();
+                usertoken.put("usertoken",bookmark.getUsertoken());
+                usertokens.add(usertoken);
+
+                //푸쉬 발송
+                pushMultiService.sendListPush(push, usertokens);
+            }
+        }
+
     }
     
 }
