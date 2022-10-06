@@ -1,0 +1,163 @@
+@media (max-width:767px) {
+
+    li{
+        list-style: none;
+    }
+
+    body{
+        margin:0 auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 100%;
+    }
+    .wrap{
+        width: 90%;
+        margin: 100px auto;
+    }
+
+    h3{
+        margin-top: 2rem;
+    }
+
+    input{
+    padding: 0 2rem;
+    border: none;
+    font-size: 1rem;
+    color: #999;
+    outline: none;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+    height:4rem;
+    width: 100%;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    background: transparent;
+    }
+
+    .tnum {
+        margin-top: 4px;
+        margin-left: 90%;
+        color: rgb(112 112 112);
+        font-size: 0.8rem;
+        display: inline-block;
+    }
+    
+    select{
+    padding: 0 2rem;
+    border: none;
+    font-size: 1rem;
+    color: #999;
+    outline: none;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+    height:4rem;
+    width: 100%;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    background: transparent;
+    }
+
+    textarea{
+    padding: 2rem 2rem;
+    border: none;
+    font-size: 1rem;
+    color: #999;
+    outline: none;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 10%);
+    height:14rem;
+    width: calc(100% - 4rem);
+    border-radius: 10px;
+    -webkit-appearance: none;
+    background: transparent;
+    }
+    
+    #bottom{
+        width: 100%;
+        height:6rem;
+        justify-content: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        position: fixed;
+        bottom:0;
+        left: 0;
+        z-index: 9999999;
+    }
+
+    #bottom button{
+        width: 100%;
+        height: 6rem;
+        color: #fff;
+        font-size: 1.4rem;
+        background-color: #7BE4AC;
+        border: none;
+        
+    }
+
+    .fa-angle-down{
+        color: #000;
+        font-size: 1rem;
+    }
+
+    #editor{
+        word-wrap: break-word;
+        text-indent: initial;
+        overflow-x: hidden;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+/* 
+    #editor p {
+        width: 100%;
+    } */
+    .select-wrap{
+            background: url('./img/Icon ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
+        }
+
+    
+
+        /* .headTitle{
+            display:inline-block ;
+            float: left;
+        }
+
+        .headTitle h5{
+            word-break: keep-all;
+            height: fit-content;
+            border: 1px solid red;
+            background-color: #F5F5F5;
+            padding:0.5rem 0.5rem;
+
+        }
+
+        .dot{
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            float: right;
+            border: 1px solid red;
+        }
+        .box1:after{
+            content: "";display: block;clear: both;
+        }
+
+        .box1{
+            height: 4rem;
+            width: 100%;
+        }
+
+        .dot li{
+            justify-items: center;
+        } */
+
+
+        .box1{border:1px solid red;box-sizing: border-box;}
+        .box1::after{content: "";display: block;clear: both;}
+        .headTitle > h5{border:1px solid red;box-sizing: border-box;float: left;}
+        .dot{border:1px solid blue;box-sizing: border-box;float: left;}
+        .dot::after{content: "";display: block;clear: both;}
+        .dot > li{float: left;}
+}
