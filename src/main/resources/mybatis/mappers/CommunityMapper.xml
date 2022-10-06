@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Mobile.CommunityMapper">
+
+
+    <select id="getCommunityList" parameterType="HashMap" resultType="hashMap">
+        select * from (
+              select cc.id, cc.category, cc.title, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
+                    left outer join itda_app.usertable u on cc.user_id  = u.id
+                    left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
+              where 1=1
+                and delete_yn = false
+                and declare_yn = false
+                <choose>
+                    <when test="select_cat == 'info'">
+                        and category = 'info'
+                    </when>
+                    <when test="select_cat == 'qna'">
+                        and category = 'qna'
+                    </when>
+                    <when test="select_cat == 'matching'">
+                        and category = 'matching'
+                    </when>
+                    <when test="select_cat == 'free'">
+                        and category = 'free'
+                    </when>
+                    <otherwise>
+                        and 1=1
+                    </otherwise>
+                </choose>
+          ) as T1 order by
+               <choose>
+                    <when test="ord == '인기순'">
+                        view_count desc
+                    </when>
+                    <otherwise>
+                        cret_dt desc
+                    </otherwise>
+               </choose>
+    </select>
+
+    <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
+        select * from (
+        select cc.id, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
+        left outer join itda_app.usertable u on cc.user_id  = u.id
+        left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
+        where 1=1
+        and delete_yn = false
+        and declare_yn = false
+        and cc.id = #{id}
+        ) as T1
+    </select>
+
+    <insert id="insertCommunity" parameterType="CommunityVo">
+        INSERT INTO itda_web.community_content (
+            category, user_id, title, content, cret_dt, updt_dt
+        )VALUES(
+            #{category}, #{userId}, #{title}, #{content}, NOW(), NOW()
+        )
+    </insert>
+
+    <update id="updateCommunity" parameterType="CommunityVo">
+        update itda_web.community_content set
+            category = #{category}, title = #{title}, content = #{content}, updt_dt = NOW()
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCommunity" parameterType="CommunityVo">
+        update itda_web.community_content set
+            delete_yn = true
+        where id = #{id}
+    </delete>
+</mapper>
