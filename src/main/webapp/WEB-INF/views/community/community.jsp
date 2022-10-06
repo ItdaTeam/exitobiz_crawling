@@ -5,15 +5,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <%@ include file="../include/header.jsp" %>
     <script src="../ckeditor5/build/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../ckeditor5/sample/styles.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="../../../css/community.css">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1.0,width=device-width" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/7b32d23811.js" crossorigin="anonymous"></script>
-    <script src="./js/index.js"></script>
     <title>exitoBoard</title>
 </head>
 <body>
