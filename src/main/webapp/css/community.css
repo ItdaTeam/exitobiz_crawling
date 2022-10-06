@@ -117,47 +117,154 @@
             background: url('../WEB-INF/views/community/img/Icon ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
         }
 
-    
+    /*게시글 상세 --------------------------*/
 
-        /* .headTitle{
-            display:inline-block ;
-            float: left;
+        *{margin:0;padding:0;}
+
+        ol,ul{list-style:none;}
+
+
+        i,em{font-style:normal;}
+
+        b,strong{font-weight:normal;}
+
+        table{border-collapse:collapse;}
+    
+    body{
+        margin:0 auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 100%;
+    }
+    .wrap{
+        width: 90%;
+        margin: 100px auto;
+    }
+
+        .box1 {
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
         }
 
-        .headTitle h5{
-            word-break: keep-all;
-            height: fit-content;
-            border: 1px solid red;
-            background-color: #F5F5F5;
-            padding:0.5rem 0.5rem;
+        .headTitle{
+            width: 92%;
+        }
+        .box1::after{content: "";display: block;clear: both;}
+        .headTitle > h5{box-sizing: border-box;float: left;font-size: 1rem;background-color: #F5F5F5;padding:0.2rem 1rem;}
+        .dot{box-sizing: border-box;float: left;padding: 0 0;width: 40px;height:20px;width:8%;}
+        .dot > li {
+            float: left;
+            margin-top: 13%;
+            /* padding: 25%; */
+          
+            box-sizing: border-box;
+            text-indent: -99999px;
+            margin-right: 8%;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #787878;
+        }
 
+        .dot > li:last-of-type{ margin-right: 0;}
+/* 
+        .dot > li:first-of-type{margin-left: 0;} */
+        .dot::after{content: "";display: block;clear: both;}
+        .box2{padding: 0;width:100%;border-bottom:1px solid #EAEAEA;}
+
+        .box2-1{
+            float: left; width: 85%;
+        }
+
+        .box2-1 > li{
+            float:left;
+            display: flex;
+        align-items: center;
+        height: 5rem;
+        }
+
+        .box2-1 img{
+            width: 3rem;
+            padding-right: 1rem;
+        }
+        .box2-2{
+            float: right;width: 15%;
+        }
+        .box2:after{content: "";display: block;clear: both;}
+
+        .box2-2 img{
+            width: 16px;
+        }
+
+        .box2-2 li{
+            float: left;
+            display: flex;
+        align-items: center;
+        height: 5rem;
+        }
+
+        .box2-2 p{
+            padding-left: 0.7rem;color:#656565;font-size: 16px;
+        }
+
+        .box2 h2 { font-size:1.3rem ; font-weight: 600;padding-right: 1rem;}
+
+        .box2 h3 {font-size:0.85rem ; font-weight: 400;color: #787878;padding-right: 0.8rem;}
+
+        .content{
+            padding: 2rem 0;
+        }
+
+        .content h1{
+            font-size: 1.4rem;font-weight: 600;margin-bottom: 2rem;
+        }
+
+        .content h2{
+            font-size: 1.2rem;font-weight: 400;line-height:1.8rem;
+        }
+
+
+        .content {
+            border-bottom:1px solid #EAEAEA;;
+        }
+
+        .hidddenBox {
+            position: absolute;
+            /* width: 120%; */
+            right: 0rem;
+            top: 1rem;
+            /* margin-right: 0; */
+            display: none;
+        }
+
+        .hidddenBox ul {
+            border:0.5px solid #E4E4E4;
+            border-radius:5px;
+            background-color: #fff;
+
+            /* width: 100%; */
+        }
+
+        .hidddenBox ul li{
+            display: flex;
+            word-break:keep-all;
+            padding: 1rem;
+        
+        }
+
+        .hiddenBox1 > li:nth-of-type(1){
+            border-bottom: 0.5px solid #E4E4E4;
         }
 
         .dot{
-            display: flex;
-            justify-items: center;
-            align-items: center;
-            float: right;
-            border: 1px solid red;
-        }
-        .box1:after{
-            content: "";display: block;clear: both;
+            position:relative;
         }
 
-        .box1{
-            height: 4rem;
-            width: 100%;
+        .hidddenBox.on{
+            display: block;
         }
 
-        .dot li{
-            justify-items: center;
-        } */
-
-
-        .box1{border:1px solid red;box-sizing: border-box;}
-        .box1::after{content: "";display: block;clear: both;}
-        .headTitle > h5{border:1px solid red;box-sizing: border-box;float: left;}
-        .dot{border:1px solid blue;box-sizing: border-box;float: left;}
-        .dot::after{content: "";display: block;clear: both;}
-        .dot > li{float: left;}
+        
 }
