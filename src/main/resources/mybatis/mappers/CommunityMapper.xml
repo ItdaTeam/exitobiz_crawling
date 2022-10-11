@@ -13,17 +13,17 @@
                 and delete_yn = false
                 and declare_yn = false
                 <choose>
-                    <when test="select_cat == 'info'">
-                        and category = 'info'
+                    <when test="select_cat == '정보공유'">
+                        and category = '정보공유'
                     </when>
-                    <when test="select_cat == 'qna'">
-                        and category = 'qna'
+                    <when test="select_cat == 'QnA'">
+                        and category = 'QnA'
                     </when>
-                    <when test="select_cat == 'matching'">
-                        and category = 'matching'
+                    <when test="select_cat == '기업매칭'">
+                        and category = '기업매칭'
                     </when>
-                    <when test="select_cat == 'free'">
-                        and category = 'free'
+                    <when test="select_cat == '자유게시판'">
+                        and category = '자유게시판'
                     </when>
                     <otherwise>
                         and 1=1
@@ -42,7 +42,7 @@
 
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
         select * from (
-        select cc.id, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
+        select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
         left outer join itda_app.usertable u on cc.user_id  = u.id
         left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
         where 1=1
@@ -66,9 +66,9 @@
         where id = #{id}
     </update>
 
-    <delete id="deleteCommunity" parameterType="CommunityVo">
+    <update id="deleteCommunity" parameterType="CommunityVo">
         update itda_web.community_content set
             delete_yn = true
         where id = #{id}
-    </delete>
+    </update>
 </mapper>

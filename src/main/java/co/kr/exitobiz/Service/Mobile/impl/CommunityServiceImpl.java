@@ -89,4 +89,10 @@ public class CommunityServiceImpl implements CommunityService {
     public void deleteCommunity(CommunityVo communityVo) {
         communityMapper.deleteCommunity(communityVo);
     }
+
+    @Override
+    @Transactional
+    public void declareCommunity(CommunityVo communityVo) {
+        communityMapper.declareCommunity(communityVo);
+    }
 }

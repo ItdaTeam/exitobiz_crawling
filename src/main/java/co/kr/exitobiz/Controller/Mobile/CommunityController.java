@@ -26,8 +26,15 @@ public class CommunityController {
 
     private final CommunityService communityService;
 
-    @GetMapping("/community")
+    @GetMapping("/community/detail")
     public String disCommunity(@Valid HttpServletRequest request, Model model){
+        model.addAttribute("id", request.getParameter("id"));
+        return "/community/community2";
+    }
+
+    @GetMapping("/community/edit")
+    public String disCommunityEdit(@Valid HttpServletRequest request, Model model){
+        model.addAttribute("id", request.getParameter("id"));
         model.addAttribute("userId", request.getParameter("userId"));
         return "/community/community";
     }
@@ -54,6 +61,7 @@ public class CommunityController {
     @PutMapping("/community/edit")
     @ResponseBody
     public void editCommunity(CommunityVo communityVo) throws ParseException {
+        System.out.println("#########" + communityVo);
             communityService.updateCommunity(communityVo);
     }
 
@@ -62,5 +70,12 @@ public class CommunityController {
     public void delCommunity(CommunityVo communityVo) {
         communityService.deleteCommunity(communityVo);
     }
+
+    @PutMapping("/community/declare")
+    @ResponseBody
+    public void decCommunity(CommunityVo communityVo) {
+        communityService.declareCommunity(communityVo);
+    }
+
 
 }

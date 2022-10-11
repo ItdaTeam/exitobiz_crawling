@@ -18,4 +18,7 @@ public interface CommunityMapper {
     public void updateCommunity(CommunityVo vo); // 커뮤니티 수정
 
     public void deleteCommunity(CommunityVo vo); // 커뮤니티 삭제
+
+    public void declareCommunity(CommunityVo vo); // 커뮤니티 신고 flag 변경
+
 }
