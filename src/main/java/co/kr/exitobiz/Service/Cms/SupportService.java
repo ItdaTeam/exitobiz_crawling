@@ -14,7 +14,7 @@ public interface SupportService {
 
     public List<Support> findByIdx(Integer idx);
 
-    public List<Support> searchSupport(SearchVo searchVo);
+    public List<Support> searchSupport(SearchVo searchVo) throws ParseException;
 
     public void editSupportData(SupportVo supportVo) throws ParseException;
 

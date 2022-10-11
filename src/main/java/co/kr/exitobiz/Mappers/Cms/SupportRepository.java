@@ -7,6 +7,7 @@ import co.kr.exitobiz.Vo.Cms.SearchVo;
 import co.kr.exitobiz.Vo.Cms.SupportVo;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.DateTimeTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -15,14 +16,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import static co.kr.exitobiz.Entity.QLoccode.loccode1;
+import static co.kr.exitobiz.Entity.QPopup.popup;
 import static co.kr.exitobiz.Entity.QSupport.support;
 
 
@@ -97,11 +102,20 @@ public class SupportRepository {
     DateTimeTemplate formattedDate = Expressions.dateTimeTemplate(LocalDateTime.class,"TO_CHAR({0}, {1})",support.siCretDt, "YYYYMMDD");
 
     //지원사업 검색
-    public List<Support> searchSupport(SearchVo searchVo){
+    public List<Support> searchSupport(SearchVo searchVo) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println("############" + support.siCretDt);
+
         return jpaQueryFactory
                 .select(support)
                 .from(support)
-                .where(searchSupportEq(searchVo), searchActiveEq(searchVo))
+                .where(
+                        searchSupportEq(searchVo),
+                        searchActiveEq(searchVo)
+
+                )
+                .where(support.siCretDt.goe(formatter.parse(searchVo.getFrom())))
+                .where(support.siCretDt.loe(formatter.parse(searchVo.getTo())))
                 .orderBy(orderType(searchVo.getViewType()))
                 .fetch();
     }
@@ -123,7 +137,8 @@ public class SupportRepository {
     }
 
     //업데이트
-    public void update(SupportVo vo){
+    public void update(SupportVo vo) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         jpaQueryFactory
                 .update(support)
                 .set(support.targetName, vo.getTargetName())
@@ -135,7 +150,8 @@ public class SupportRepository {
                 .set(support.pcUrl, vo.getPcUrl())
                 .set(support.siActiveYn, vo.getSiActiveYn())
                 .set(support.siEndDt, LocalDate.parse(vo.getSiEndDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
-                .set(support.siCretDt, LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
+                .set(support.siCretDt, formatter.parse(vo.getSiCretDt()))
+                //.set(support.siCretDt, LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .where(support.siIdx.eq(vo.getSiIdx()))
                 .execute();
     }

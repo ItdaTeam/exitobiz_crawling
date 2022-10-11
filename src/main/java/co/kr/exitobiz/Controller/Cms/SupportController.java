@@ -53,7 +53,7 @@ public class SupportController {
 
     @GetMapping("/allSupport")
     @ResponseBody
-    public List<Support> getSupportData(SearchVo searchVo){
+    public List<Support> getSupportData(SearchVo searchVo) throws ParseException{
         return supportService.searchSupport(searchVo);
     }
 

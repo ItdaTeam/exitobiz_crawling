@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table(name = "support_info", schema = "itda_app")
@@ -47,7 +45,7 @@ public class Support {
 
     @Column(name = "si_cret_dt")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDateTime siCretDt;
+    private Date siCretDt;
 
     @Column(name = "si_active_yn")
     private String siActiveYn;
@@ -61,9 +59,14 @@ public class Support {
     @Column(name = "save_cnt")
     private Integer saveCnt;
 
-    public Support(){
+    @Column(name = "from_dt")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date fromDt;
 
-    }
+    @Column(name = "to_dt")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date toDt;
+
 
     public Support(String targetName, String targetCatName, String locCode, String siTitle, String mobileUrl, String pcUrl){
         this.targetName = targetName;
@@ -72,5 +75,9 @@ public class Support {
         this.siTitle = siTitle;
         this.mobileUrl = mobileUrl;
         this.pcUrl = pcUrl;
+    }
+
+    public Support() {
+
     }
 }

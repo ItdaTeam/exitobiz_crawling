@@ -45,6 +45,10 @@
                 </dl>
             </div>
             <div class="main_utility">
+                <label for="fromDate">조회일</label>
+                <input type="date" id="fromDate" name="from">
+                -
+                <input type="date" id="toDate" name="to">
                 <div class="btn_wrap">
                     <input type="file" class="form-control" style="display:none" id="importFile"
                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"/>
@@ -237,6 +241,13 @@
     var excelView;
     var excelSelector;
     var excelColumns;
+
+
+    //조회일 기본값 설정
+    const month = new Date().getMonth();
+
+    document.getElementById("fromDate").value = new Date(new Date().setMonth(month - 1)).toISOString().slice(0,10);
+    document.getElementById("toDate").value = new Date().toISOString().slice(0,10);
 
     function pageOnLoad() {
         loadGridSupportList('init');
@@ -458,8 +469,9 @@
             con: $('#con').val()
             , inq: $('#inq').val()
             , viewType: $('#viewType').val()
+            ,from : $('#fromDate').val()
+            , to : $('#toDate').val()
         };
-
         $.ajax({
             type: 'GET',
             url: '/cms/allSupport',
@@ -467,6 +479,7 @@
             data: param,
             success: function (result) {
                 console.log("getSupportList success");
+                console.log(result);
                 loadGridSupportList('search', result);
             },
             error: function (request, status, error) {
@@ -488,16 +501,22 @@
         var oldPgIndex = gridView.pageIndex;
 
         //전체 데이터를 엑셀다운받기 위해서는 페이징 제거 > 엑셀 다운 > 페이징 재적용 하여야 함.
+        if(gridView._src.length > 350){
+            alert("조회일을 줄여주세요.");
+            return false;
+        }
+
         supportGrid.beginUpdate();
-        supportView.pageSize = 0;
+        supportView.pageSize = gridView._src.length;
 
         wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(supportGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원사업리스트.xlsx',
             saved => {
-                gridView.pageSize = oldPgSize;
-                gridView.moveToPage(oldPgIndex);
+               gridView.pageSize = oldPgSize;
+               gridView.moveToPage(oldPgIndex);
                 supportGrid.endUpdate();
             }, null
         );
+
     }
 
     //업로드 파일 찾기

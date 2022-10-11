@@ -60,7 +60,7 @@ public class SupportServiceImpl implements SupportService {
     }
 
     @Override
-    public List<Support> searchSupport(SearchVo searchVo) {
+    public List<Support> searchSupport(SearchVo searchVo) throws ParseException {
         if(searchVo.getInq() != null)
             searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
 
@@ -104,7 +104,7 @@ public class SupportServiceImpl implements SupportService {
                     support.setSiTitle(vo.getSiTitle());
                     support.setMobileUrl(vo.getMobileUrl());
                     support.setPcUrl(vo.getPcUrl());
-                    support.setSiCretDt(LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
+                   // support.setSiCretDt(LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiEndDt(LocalDate.parse(vo.getSiEndDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiActiveYn(vo.getSiActiveYn());
                     support.setViewCnt(0);
