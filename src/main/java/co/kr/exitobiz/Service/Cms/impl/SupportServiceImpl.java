@@ -28,6 +28,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
+import static co.kr.exitobiz.Entity.QSupport.support;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -92,7 +94,9 @@ public class SupportServiceImpl implements SupportService {
                 //디비에 존재하는지 확인
                 Boolean checkFlag = supportRepository.findById(vo.getSiIdx());
 
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 if(checkFlag){
+                    System.out.println("@@@@@@@@" + vo);
                     supportRepository.update(vo);
                 }else {
                     Support support = new Support();
@@ -104,6 +108,7 @@ public class SupportServiceImpl implements SupportService {
                     support.setSiTitle(vo.getSiTitle());
                     support.setMobileUrl(vo.getMobileUrl());
                     support.setPcUrl(vo.getPcUrl());
+                    support.setSiCretDt(formatter.parse(vo.getSiCretDt()));
                    // support.setSiCretDt(LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiEndDt(LocalDate.parse(vo.getSiEndDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiActiveYn(vo.getSiActiveYn());
@@ -111,7 +116,9 @@ public class SupportServiceImpl implements SupportService {
                     support.setShareCnt(0);
                     support.setSaveCnt(0);
 
-                    supportRepository.save(support);
+                    System.out.println("#############" + support);
+
+                   supportRepository.save(support);
                 }
 
                 cnt++;
