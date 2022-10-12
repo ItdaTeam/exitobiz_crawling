@@ -5,106 +5,168 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <script src="../ckeditor5/build/ckeditor.js"></script>
-    <link rel="stylesheet" type="text/css" href="../ckeditor5/sample/styles.css">
+    <script src="../../../ckeditor5/build/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../ckeditor5/sample/styles.css">
     <link rel="stylesheet" href="../../../css/community.css">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1.0,width=device-width" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/7b32d23811.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>exitoBoard</title>
 </head>
 <body>
-    <div class="wrap">
-        <h3 class="boardTitle">게시판</h3>
-        <div class="select-wrap">
-            <select class="board" name="" aria-placeholder="게시판을 선택해 주세요.">
-                <!-- <i class="fa-solid fa-angle-down"></i> -->
-                <option value="total">게시판을 선택해 주세요</i></option>
-                <option value="info">정보공유</option>
-                <option value="qna">Q & A</option>
-                <option value="matching">기업 매칭</option>
-                <option value="free">자유게시판</option>
-            </select>
-        </div>
-        <h3>제목</h3>
-        <input type="text" class="title" placeholder="제목을 입력해 주세요">
-        <p class="tnum">0 / 50</p>
-        <h3>내용</h3>
-        <div class="editor" id="editor">
-            <!-- <p>test</p> -->
-        </div>
-        <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
+<form action="" class="wrap" id="contentForm" name="contentForm" onsubmit="return false;">
+    <h3 class="boardTitle">게시판</h3>
+    <input type="hidden" id="id" name="id" value="${id}"/>
+    <input type="hidden" id="userId" name="userId" value="${userId}"/>
+    <div class="select-wrap">
+        <select class="board" name="category" aria-placeholder="게시판을 선택해 주세요.">
+            <!-- <i class="fa-solid fa-angle-down"></i> -->
+            <option value="total">게시판을 선택해 주세요</i></option>
+            <option value="정보공유">정보공유</option>
+            <option value="QnA">QnA</option>
+            <option value="기업매칭">기업매칭</option>
+            <option value="자유게시판">자유게시판</option>
+        </select>
     </div>
-    <div class="bottom" id="bottom">
-        <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
-        <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
-    </div>
+    <h3>제목</h3>
+    <input type="text" class="title" name="title" placeholder="제목을 입력해 주세요">
+    <p class="tnum">0 / 50</p>
+    <h3>내용</h3>
+    <textarea class="editor" id="editor" name="editor">
+    </textarea>
+
+    <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
+</form>
+<div class="bottom" id="bottom">
+    <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
+    <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
+</div>
 </body>
 </html>
 <script>
+    let editor1;
+    const id = document.getElementById('id').value;
+    const userId = document.getElementById('userId').value;
+
+    const f = document.getElementById("contentForm");
+    console.log(f.id.value == null);
+    if(f.id.value != null && f.id.value != ''){
+        getData(f.id.value);
+        $('.confirm').css('display','none');
+        $('.fill').css('display', 'block');
+    }
+
+    async function getData(id){
+        await axios.get("/mobile/community/one", {
+            params:{
+                id : id
+            }
+        }).then((res) => {
+            if(res.status == 200){
+                f.category.value = res.data.category;
+                f.title.value = res.data.title;
+                editor1.setData(res.data.content);
+            }
+        })
+    }
+
+    async function contentConfirm(type){
+
+        if(f.category.value == 'total'){
+            alert("카테고리를 선택해주세요.");
+            return false;
+        }
+
+        if(f.title.value == ''){
+            alert("제목을 입력해주세요.");
+            return false;
+        }
+
+        if(editor1.getData() == ''){
+            alert("내용을 입력해주세요.");
+            return false;
+        }
+
+        const formData = new FormData();
+
+        formData.append("id", id);
+        formData.append("category", f.category.value);
+        formData.append("userId", userId);
+        formData.append("title", f.title.value);
+        formData.append("content", editor1.getData());
+
+        switch(type){
+            case  "add" :
+                if(!confirm("게시글을 추가하시겠습니까?")) return false;
+                await axios.post("/mobile/community", formData, {headers:{'Content-Type' : 'multipart/form-data'}})
+                    .then((res) => {
+                        if(res.status == 200){
+                            alert("게시글이 추가되었습니다.");
+                            //리스트 페이지로 이동
+                        }else{
+                            alert("오류가 발생했습니다. 다시 시도해주세요.");
+                        }
+                    })
+                break;
+            case "modify" :
+                if(!confirm("게시글을 수정하시겠습니까?")) return false;
+                await axios.put("/mobile/community/edit", formData, {header:{'Content-Type' : 'multipart/form-data'}})
+                    .then((res) => {
+                        if(res.status == 200){
+                            alert("게시글이 수정되었습니다.");
+                            location.href = "/mobile/community/detail?id=${id}&userId=${userId}";
+                        }else{
+                            alert("오류가 발생했습니다. 다시 시도해주세요.");
+                        }
+                    })
+                break;
+        }
+
+    }
     $(document).ready(function () {
 //   pageOnLoad();
-  ClassicEditor
-      .create(document.querySelector('#editor'), {
-          toolbar: {
-              items: [
-                //   'heading',
-                //   '|',
-                //   'bold',
-                //   'italic',
-                //   'link',
-                //   'bulletedList',
-                //   'numberedList',
-                //   '|',
-                //   'outdent',
-                //   'indent',
-                  
-                  'imageUpload',
-                  '|',
-                //   'blockQuote',
-                //   'insertTable',
-                //   'mediaEmbed',
-                //   'undo',
-                //   'redo',
-                //   'htmlEmbed',
-                //   'horizontalLine',
-                  'fontSize',
-                //   'fontColor',
-                //   'fontBackgroundColor',
-                //   'alignment',
-              ],
-              shouldNotGroupWhenFull: true
-          },
-          language: 'ko',
-          image: {
-              toolbar: [
-                  'imageTextAlternative',
-                  'imageStyle:inline',
-                  'imageStyle:block',
-                  'imageStyle:side'
-              ]
-          },
-          table: {
-              contentToolbar: [
-                  'tableColumn',
-                  'tableRow',
-                  'mergeTableCells'
-              ]
-          },
-          licenseKey: '',
-      })
-      .then(editor => {
-          editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-              return new UploadAdapter(loader);
-          };
-          editor1 = editor;
-      })
-      .catch(error => {
-          console.error('Oops, something went wrong!');
-          console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
-          console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
-          console.error(error);
-      });
-}); 
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: {
+                    items: [
+                        'imageUpload',
+                        '|',
+                        'fontSize',
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                language: 'ko',
+                image: {
+                    toolbar: [
+                        'imageTextAlternative',
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side'
+                    ]
+                },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells'
+                    ]
+                },
+                licenseKey: '',
+            })
+            .then(editor => {
+                editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                    return new UploadAdapter(loader);
+                };
+                editor1 = editor;
+            })
+            .catch(error => {
+                console.error('Oops, something went wrong!');
+                console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
+                console.error(error);
+            });
+    });
 </script>
+

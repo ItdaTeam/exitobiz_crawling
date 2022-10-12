@@ -21,4 +21,6 @@ public interface CommunityMapper {
 
     public void declareCommunity(CommunityVo vo); // 커뮤니티 신고 flag 변경
 
+    public void reviewViews(int id); // 조회수 증가
+
 }

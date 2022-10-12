@@ -15,8 +15,10 @@ public interface CommunityService {
 
     void updateCommunity(CommunityVo communityVo) throws ParseException;
 
-    void deleteCommunity(CommunityVo communityVo);
+    void deleteCommunity(CommunityVo communityVo) throws ParseException;
 
-    void declareCommunity(CommunityVo communityVo);
+    void declareCommunity(CommunityVo communityVo) throws ParseException;
+
+    void reviewViews(int id) throws ParseException;
 
 }

@@ -86,13 +86,18 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Override
     @Transactional
-    public void deleteCommunity(CommunityVo communityVo) {
+    public void deleteCommunity(CommunityVo communityVo) throws ParseException {
         communityMapper.deleteCommunity(communityVo);
     }
 
     @Override
     @Transactional
-    public void declareCommunity(CommunityVo communityVo) {
+    public void declareCommunity(CommunityVo communityVo) throws ParseException {
         communityMapper.declareCommunity(communityVo);
+    }
+
+    @Override
+    public void reviewViews(int id) {
+        communityMapper.reviewViews(id);
     }
 }

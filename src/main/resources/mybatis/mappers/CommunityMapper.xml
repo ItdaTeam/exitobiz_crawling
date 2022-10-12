@@ -71,4 +71,8 @@
             delete_yn = true
         where id = #{id}
     </update>
+
+    <update id="reviewViews" parameterType="int">
+        update itda_web.community_content set view_count = view_count + 1 where id = #{id}
+    </update>
 </mapper>
