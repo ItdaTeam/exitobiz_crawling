@@ -465,13 +465,18 @@
     }
 
     function getSupportList() {
+        //db데이터에는 시간까지 출력되기 때문에 날짜 데이터만 가져오면 범위에 포함되지 않기 때문에 하루 더해서 범위값 설정한다.
+        let to = new Date($('#toDate').val());
+        to = new Date(to.setDate(to.getDate() + 1));
+        to = to.getFullYear() + "-" + (to.getMonth()+1) + "-" + to.getDate();
         var param = {
             con: $('#con').val()
             , inq: $('#inq').val()
             , viewType: $('#viewType').val()
             ,from : $('#fromDate').val()
-            , to : $('#toDate').val()
+            , to : to
         };
+
         $.ajax({
             type: 'GET',
             url: '/cms/allSupport',
@@ -644,6 +649,8 @@
             // }
 
 
+
+
             params = {
                 siIdx: excelGrid.collectionView.items[i].index,
                 targetCostValue: excelGrid.collectionView.items[i].금액,
@@ -657,9 +664,12 @@
                 pcUrl: excelGrid.collectionView.items[i].피시주소,
                 locCode: excelGrid.collectionView.items[i].지역코드
             }
+
             rows.push(params);
+            console.log(rows);
         }
-        if (confirm("저장 하시겠습니까??")) {
+        console.log('#######3' , rows);
+        if (confirm("저장 하시겠습니까?")) {
             $.ajax({
                 url: "/cms/support/uploadExcel",
                 async: false, // 비동기모드 : true, 동기식모드 : false
