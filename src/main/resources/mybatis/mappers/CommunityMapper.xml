@@ -8,7 +8,14 @@
         select * from (
               select cc.id, cc.category, cc.title, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
                     left outer join itda_app.usertable u on cc.user_id  = u.id
-                    left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
+                    left outer join (
+                        select c_content_id, count(*) as cnt from itda_app.community_comment
+                            where 1=1
+                              and delete_yn = false
+                              and report_yn = false
+                              and step = 1
+                        group by c_content_id
+                    ) as cc2 on cc2.c_content_id = cc.id
               where 1=1
                 and delete_yn = false
                 and declare_yn = false
