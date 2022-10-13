@@ -124,7 +124,61 @@
                     })
                 break;
         }
+    }
 
+    //이미지업로드 ( common.js 와 동일 )
+    //TODO : 개발 후 리팩토링 필요
+    class UploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
+        }
+
+        upload() {
+            return this.loader.file.then( file => new Promise((async (resolve, reject) => {
+                await this._initRequest();
+                await this._initListeners(resolve, reject, file);
+                await this._sendRequest(file);
+            })))
+        }
+
+        abort() {
+            if ( this.xhr ) { this.xhr.abort(); }
+        }
+
+        _initRequest() {
+            const xhr = this.xhr = new XMLHttpRequest();
+            xhr.open('POST', '/mobile/community/uploadImg', true);
+            xhr.responseType = 'json';
+        }ㅂ
+
+        async _initListeners(resolve, reject, file) {
+            const xhr = this.xhr;
+            const loader = this.loader;
+            const genericErrorText = '파일을 업로드 할 수 없습니다. \n파일용량은 25MB를 초과할수 없습니다.'
+
+            console.log(xhr);
+
+            await xhr.addEventListener('error', () => {reject(genericErrorText)})
+            await xhr.addEventListener('abort', () => reject())
+            await xhr.addEventListener('load', () => {
+                const maxSize = 25000000;
+                const response = xhr.response
+                console.log(response);
+                if(!response || response.error ||file.size > maxSize) {
+                    return reject( response && response.error ? response.error.message : genericErrorText );
+                }
+
+                resolve({
+                    default: response.link //업로드된 파일 주소
+                })
+            })
+        }
+
+        _sendRequest(file) {
+            const data = new FormData()
+            data.append('file', file);
+            this.xhr.send(data)
+        }
     }
     $(document).ready(function () {
 //   pageOnLoad();

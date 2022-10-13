@@ -1,6 +1,8 @@
 package co.kr.exitobiz.Controller.Mobile;
 
 import co.kr.exitobiz.Service.Mobile.CommunityService;
+import co.kr.exitobiz.Service.Mobile.FileService;
+import co.kr.exitobiz.Vo.Cms.ImageLink;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
@@ -8,6 +10,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,8 @@ import java.util.Map;
 public class CommunityController {
 
     private final CommunityService communityService;
+
+    private final FileService fileService;
 
     //상세페이지
     @RequestMapping(value = "/community/detail", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
@@ -108,6 +113,33 @@ public class CommunityController {
     @ResponseBody
     public void decCommunity(CommunityVo communityVo) throws ParseException {
         communityService.declareCommunity(communityVo);
+    }
+
+    // ckeditor 이미지 업로드
+    @PostMapping(value = "/community/uploadImg")
+    @ResponseBody
+    public ImageLink uploadImage(@RequestParam("file") MultipartFile file){
+        StringBuilder ImgPath = new StringBuilder();
+        ImageLink link = new ImageLink();
+
+        if (!file.isEmpty()) {
+            String fileName = fileService.fileNameGenerator(file);
+            HashMap<String, String> params = new HashMap<>();
+            params.put("filePath", "/img/community/");
+            params.put("fileName", fileName);
+
+            ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
+            try {
+                fileService.uploadFile(file, params);
+                link.setLink(ImgPath.toString());
+                link.setFileName(fileName);
+                return link;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
     }
 
 
