@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/mobile")
 public class CommunityController {
@@ -105,6 +105,7 @@ public class CommunityController {
 
    // @RequestMapping(value = "/community/delete", method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @PutMapping("/community/delete")
+    @ResponseBody
     public void delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{
         communityService.deleteCommunity(communityVo);
     }
