@@ -21,4 +21,5 @@ public interface CommunityService {
 
     void reviewViews(int id) throws ParseException;
 
+    int getNewId();
 }

@@ -1,15 +1,8 @@
 package co.kr.exitobiz.Controller.Mobile;
 
-import co.kr.exitobiz.Entity.Content;
-import co.kr.exitobiz.Entity.Notice;
-import co.kr.exitobiz.Entity.Popup;
-import co.kr.exitobiz.Service.Cms.ContentService;
 import co.kr.exitobiz.Service.Mobile.CommunityService;
-import co.kr.exitobiz.Service.Mobile.FileService;
-import co.kr.exitobiz.Vo.Cms.*;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -92,22 +85,20 @@ public class CommunityController {
 
     @PostMapping("/community")
     @ResponseBody
-    public void createCommunity(CommunityVo communityVo) throws ParseException {
-        System.out.println("#########" + communityVo);
+    public int createCommunity(CommunityVo communityVo) throws ParseException {
         communityService.insertCommunity(communityVo);
+        return communityService.getNewId();
     }
 
     @PutMapping("/community/edit")
     @ResponseBody
     public void editCommunity(CommunityVo communityVo) throws ParseException {
-        System.out.println("#########" + communityVo);
             communityService.updateCommunity(communityVo);
     }
 
     @PutMapping("/community/delete")
     @ResponseBody
     public void delCommunity(CommunityVo communityVo)  throws ParseException{
-        System.out.println("$$$$$$$$$4" + communityVo);
         communityService.deleteCommunity(communityVo);
     }
 

@@ -97,6 +97,7 @@
         formData.append("title", f.title.value);
         formData.append("content", editor1.getData());
 
+
         switch(type){
             case  "add" :
                 if(!confirm("게시글을 추가하시겠습니까?")) return false;
@@ -104,7 +105,7 @@
                     .then((res) => {
                         if(res.status == 200){
                             alert("게시글이 추가되었습니다.");
-                            //리스트 페이지로 이동
+                           location.href = "/mobile/community/detail?id="+ res.data +"&userId=" + userId;
                         }else{
                             alert("오류가 발생했습니다. 다시 시도해주세요.");
                         }

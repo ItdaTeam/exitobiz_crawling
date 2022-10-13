@@ -100,4 +100,9 @@ public class CommunityServiceImpl implements CommunityService {
     public void reviewViews(int id) {
         communityMapper.reviewViews(id);
     }
+
+    @Override
+    public int getNewId() {
+        return communityMapper.getNewId();
+    }
 }

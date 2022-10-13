@@ -23,4 +23,6 @@ public interface CommunityMapper {
 
     public void reviewViews(int id); // 조회수 증가
 
+    public int getNewId(); // 최근 추가한 커뮤니티 ID 조회
+
 }
