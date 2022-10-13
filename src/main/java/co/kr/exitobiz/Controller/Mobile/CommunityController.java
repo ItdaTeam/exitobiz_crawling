@@ -103,7 +103,7 @@ public class CommunityController {
             communityService.updateCommunity(communityVo);
     }
 
-    @RequestMapping(value = "/community/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/community/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public void delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{
         communityService.deleteCommunity(communityVo);
