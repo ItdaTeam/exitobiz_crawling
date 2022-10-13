@@ -6,7 +6,7 @@
 
     <select id="getCommunityList" parameterType="HashMap" resultType="hashMap">
         select * from (
-              select cc.id, cc.category, cc.title, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
+              select cc.id, cc.category, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
                     left outer join itda_app.usertable u on cc.user_id  = u.id
                     left outer join (
                         select c_content_id, count(*) as cnt from itda_app.community_comment
@@ -45,6 +45,10 @@
                         cret_dt desc
                     </otherwise>
                </choose>
+    </select>
+
+    <select id="getNewId" resultType="int">
+        select id from itda_web.community_content cc order by cret_dt desc limit 1
     </select>
 
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
