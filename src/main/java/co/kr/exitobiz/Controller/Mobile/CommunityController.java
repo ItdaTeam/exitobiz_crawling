@@ -3,6 +3,8 @@ package co.kr.exitobiz.Controller.Mobile;
 import co.kr.exitobiz.Service.Mobile.CommunityService;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -98,7 +100,7 @@ public class CommunityController {
 
     @PutMapping("/community/delete")
     @ResponseBody
-    public void delCommunity(CommunityVo communityVo)  throws ParseException{
+    public void delCommunity(@RequestBody CommunityVo communityVo) throws Exception{
         communityService.deleteCommunity(communityVo);
     }
 
