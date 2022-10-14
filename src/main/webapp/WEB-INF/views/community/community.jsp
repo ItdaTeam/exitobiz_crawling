@@ -108,7 +108,8 @@
                         if(res.status == 200){
                             alert("게시글이 추가되었습니다.");
                            location.href = "/mobile/community/detail?id="+ res.data +"&userId=" + userId;
-                            JavaScriptChannel.postMessage(res.data + " " + userId);
+                           window.flutter_inappwebview.callHandler('postMessage', res.data, userId);
+                           // JavaScriptChannel.postMessage(res.data + " " + userId);
                         }else{
                             alert("오류가 발생했습니다. 다시 시도해주세요.");
                         }
@@ -121,7 +122,8 @@
                         if(res.status == 200){
                             alert("게시글이 수정되었습니다.");
                             location.href = "/mobile/community/detail?id=${id}&userId=${userId}";
-                            JavaScriptChannel.postMessage(id + " " + userId);
+                            window.flutter_inappwebview.callHandler('postMessage', id, userId);
+                           // JavaScriptChannel.postMessage(id + " " + userId);
                         }else{
                             alert("오류가 발생했습니다. 다시 시도해주세요.");
                         }
