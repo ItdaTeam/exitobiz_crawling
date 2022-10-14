@@ -230,6 +230,9 @@
             /*border-bottom:1px solid #EAEAEA;;*/
         }
 
+        .content img{
+            width:100%;
+        }
         .hidddenBox {
             position: absolute;
             /* width: 120%; */
