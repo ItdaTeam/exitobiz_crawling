@@ -39,10 +39,10 @@
 
     <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
 </form>
-<div class="bottom" id="bottom">
-    <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
-    <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
-</div>
+<%--<div class="bottom" id="bottom">--%>
+<%--    <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>--%>
+<%--    <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>--%>
+<%--</div>--%>
 </body>
 </html>
 <script>
@@ -57,6 +57,7 @@
         $('.confirm').css('display','none');
         $('.fill').css('display', 'block');
     }
+
 
     async function getData(id){
         await axios.get("/mobile/community/one", {
@@ -91,12 +92,13 @@
 
         const formData = new FormData();
 
+
+
         formData.append("id", id);
         formData.append("category", f.category.value);
         formData.append("userId", userId);
         formData.append("title", f.title.value);
         formData.append("content", editor1.getData());
-
 
         switch(type){
             case  "add" :
@@ -126,8 +128,11 @@
         }
     }
 
+
+    const data = new FormData();
     //이미지업로드 ( common.js 와 동일 )
     //TODO : 개발 후 리팩토링 필요
+
     class UploadAdapter {
         constructor(loader) {
             this.loader = loader;
@@ -147,11 +152,12 @@
 
         _initRequest() {
             const xhr = this.xhr = new XMLHttpRequest();
-            xhr.open('POST', '/mobile/community/uploadImg', true);
+            xhr.open('POST', '/mobile/community/UploadImg', true);
             xhr.responseType = 'json';
-        }ㅂ
+        }
 
         async _initListeners(resolve, reject, file) {
+            console.log(file);
             const xhr = this.xhr;
             const loader = this.loader;
             const genericErrorText = '파일을 업로드 할 수 없습니다. \n파일용량은 25MB를 초과할수 없습니다.'
@@ -164,6 +170,7 @@
                 const maxSize = 25000000;
                 const response = xhr.response
                 console.log(response);
+
                 if(!response || response.error ||file.size > maxSize) {
                     return reject( response && response.error ? response.error.message : genericErrorText );
                 }
@@ -175,7 +182,6 @@
         }
 
         _sendRequest(file) {
-            const data = new FormData()
             data.append('file', file);
             this.xhr.send(data)
         }
@@ -222,6 +228,8 @@
                 console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
                 console.error(error);
             });
+
+
     });
 </script>
 
