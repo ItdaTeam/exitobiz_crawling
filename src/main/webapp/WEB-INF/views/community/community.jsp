@@ -39,10 +39,10 @@
 
     <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
 </form>
-<%--<div class="bottom" id="bottom">--%>
-<%--    <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>--%>
-<%--    <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>--%>
-<%--</div>--%>
+<div class="bottom" id="bottom">
+    <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
+    <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
+</div>
 </body>
 </html>
 <script>
@@ -129,7 +129,7 @@
     }
 
 
-    const data = new FormData();
+
     //이미지업로드 ( common.js 와 동일 )
     //TODO : 개발 후 리팩토링 필요
 
@@ -152,7 +152,7 @@
 
         _initRequest() {
             const xhr = this.xhr = new XMLHttpRequest();
-            xhr.open('POST', '/mobile/community/UploadImg', true);
+            xhr.open('POST', '/mobile/community/uploadImg', true);
             xhr.responseType = 'json';
         }
 
@@ -168,8 +168,8 @@
             await xhr.addEventListener('abort', () => reject())
             await xhr.addEventListener('load', () => {
                 const maxSize = 25000000;
-                const response = xhr.response
-                console.log(response);
+                const response = xhr.response;
+                console.log("response", response);
 
                 if(!response || response.error ||file.size > maxSize) {
                     return reject( response && response.error ? response.error.message : genericErrorText );
@@ -178,10 +178,43 @@
                 resolve({
                     default: response.link //업로드된 파일 주소
                 })
+
+                // if ( xhr.upload ) {
+                //     xhr.upload.addEventListener( 'progress', evt => {
+                //         if ( evt.lengthComputable ) {
+                //             loader.uploadTotal = evt.total;
+                //             loader.uploaded = evt.loaded;
+                //         }
+                //     } );
+                // }
             })
         }
 
         _sendRequest(file) {
+            // const fr = new FileReader();
+            //
+            // fr.onload = (base64) => {
+            //     const image = new Image();
+            //
+            //     image.src = base64.target.result;
+            //
+            //     image.onload = (e) => {
+            //         const $canvas = document.createElement(`canvas`);
+            //         const ctx = $canvas.getContext(`2d`);
+            //
+            //         $canvas.width = e.target.width;
+            //         $canvas.height = e.target.height;
+            //
+            //         ctx.drawImage(e.target, 0, 0);
+            //
+            //         // 용량이 줄어든 base64 이미지
+            //         console.log($canvas.toDataURL(`image/jpeg`, 0.5));
+            //     }
+            // }
+            //
+            // fr.readAsDataURL(file);
+            console.log(file)
+            const data = new FormData();
             data.append('file', file);
             this.xhr.send(data)
         }

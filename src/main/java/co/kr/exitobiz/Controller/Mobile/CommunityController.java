@@ -98,18 +98,16 @@ public class CommunityController {
         return communityService.getCommunityDetail(communityVo);
     }
 
-   // @PostMapping("/community")
-    @RequestMapping(value = "/community", method = RequestMethod.POST)
+    @PostMapping("/community")
     @ResponseBody
-    public int createCommunity(@Valid CommunityVo communityVo) throws ParseException {
+    public int createCommunity(CommunityVo communityVo) throws ParseException {
         communityService.insertCommunity(communityVo);
         return communityService.getNewId();
     }
 
-    //@PutMapping("/community/edit")
-    @RequestMapping(value = "/community/edit", method = RequestMethod.PUT)
+    @PutMapping("/community/edit")
     @ResponseBody
-    public void editCommunity(@Valid CommunityVo communityVo) throws ParseException {
+    public void editCommunity(CommunityVo communityVo) throws ParseException {
             communityService.updateCommunity(communityVo);
     }
 
@@ -126,23 +124,26 @@ public class CommunityController {
     }
 
     // ckeditor 이미지 업로드
-    @PostMapping(value = "/community/UploadImg")
+    @PostMapping(value = "/community/uploadImg")
     @ResponseBody
-    public ImageLink uploadImg(@RequestParam("file") MultipartFile file) throws IOException {
+    public ImageLink uploadImage(@RequestParam("file") MultipartFile file) throws Exception{
         StringBuilder ImgPath = new StringBuilder();
         ImageLink link = new ImageLink();
 
         if (!file.isEmpty()) {
             String fileName = fileService.fileNameGenerator(file);
+            String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
             HashMap<String, String> params = new HashMap<>();
             params.put("filePath", "/img/community/");
             params.put("fileName", fileName);
 
+            System.out.println("########" +  fileName);
+
             ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
-            imageResize(ImgPath);
 
             try {
                 fileService.uploadFile(file, params);
+                //resizeImageFile(file, String.valueOf(ImgPath), formatName);
                 link.setLink(ImgPath.toString());
                 link.setFileName(fileName);
                 return link;
@@ -154,38 +155,38 @@ public class CommunityController {
         return null;
     }
 
-    /* 파일 정보와 리사이즈 값 정하는 메소드 */
-    public static void imageResize(StringBuilder imgPath) throws IOException {
-        File file = new File(String.valueOf(imgPath));
-        InputStream inputStream = new FileInputStream(file);
-        Image img = new ImageIcon(file.toString()).getImage(); // 파일 정보 추출
+    // 이미지 크기 줄이기
+    private void resizeImageFile(MultipartFile files, String filePath, String formatName) throws Exception {
+        // 이미지 읽어 오기
+        BufferedImage inputImage = ImageIO.read(files.getInputStream());
+        // 이미지 세로 가로 측정
+        int originWidth = inputImage.getWidth();
+        int originHeight = inputImage.getHeight();
+        // 변경할 가로 길이
+        int newWidth = originWidth / 10;
 
-        System.out.println("사진의 가로길이 : " + img.getWidth(null)); // 파일의 가로
-        System.out.println("사진의 세로길이 : " + img.getHeight(null)); // 파일의 세로
-        /* 파일의 길이 혹은 세로길이에 따라 if(분기)를 통해서 응용할 수 있습니다.
-         * '예를 들어 파일의 가로 해상도가 1000이 넘을 경우 1000으로 리사이즈 한다. 같은 분기' */
-        int width = img.getWidth(null) / 10; // 리사이즈할 가로 길이
-        int height = img.getWidth(null) / 10; // 리사이즈할 세로 길이
-
-        BufferedImage resizedImage = resize(inputStream ,width , height );
-        // 리사이즈 실행 메소드에 값을 넘겨준다.
+        if (originWidth > newWidth) {
+            // 기존 이미지 비율을 유지하여 세로 길이 설정
+            int newHeight = (originHeight * newWidth) / originWidth;
+            // 이미지 품질 설정
+            // Image.SCALE_DEFAULT : 기본 이미지 스케일링 알고리즘 사용
+            // Image.SCALE_FAST : 이미지 부드러움보다 속도 우선
+            // Image.SCALE_REPLICATE : ReplicateScaleFilter 클래스로 구체화 된 이미지 크기 조절 알고리즘
+            // Image.SCALE_SMOOTH : 속도보다 이미지 부드러움을 우선
+            // Image.SCALE_AREA_AVERAGING : 평균 알고리즘 사용
+            Image resizeImage = inputImage.getScaledInstance(newWidth, newHeight, Image.SCALE_FAST);
+            BufferedImage newImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics graphics = newImage.getGraphics();
+            graphics.drawImage(resizeImage, 0, 0, null);
+            graphics.dispose();
+            // 이미지 저장
+            File newFile = new File(filePath);
+            ImageIO.write(newImage, formatName, newFile);
+        } else {
+            files.transferTo(new java.io.File(filePath));
+        }
     }
 
-    /* 리사이즈 실행 메소드 */
-    public static BufferedImage resize(InputStream inputStream, int width, int height)
-            throws IOException {
-
-        BufferedImage inputImage = ImageIO.read(inputStream);  // 받은 이미지 읽기
-
-        BufferedImage outputImage = new BufferedImage(width, height, inputImage.getType());
-        // 입력받은 리사이즈 길이와 높이
-
-        Graphics2D graphics2D = outputImage.createGraphics();
-        graphics2D.drawImage(inputImage, 0, 0, width, height, null); // 그리기
-        graphics2D.dispose(); // 자원해제
-
-        return outputImage;
-    }
 
 
 }
