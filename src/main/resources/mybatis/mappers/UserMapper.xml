@@ -53,6 +53,15 @@ WHERE id=#{id}
         <when test="keyId == 5 ">
             and coalesce(ups.sp_bookmark_push,'') != 'N'
         </when>
+        <when test="keyId == 6 ">
+            and coalesce(ups.sp_content_comment_push,'') != 'N'
+        </when>
+        <when test="keyId == 7 ">
+            and coalesce(ups.sp_community_commentlike_push,'') != 'N'
+        </when>
+        <when test="keyId == 8 ">
+            and coalesce(ups.sp_community_recomment_push,'') != 'N'
+        </when>
     </choose>
   </select>
   <!-- 
