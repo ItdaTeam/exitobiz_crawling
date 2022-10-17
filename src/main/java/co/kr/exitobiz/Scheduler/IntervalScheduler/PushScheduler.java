@@ -82,7 +82,7 @@ public class PushScheduler{
      * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
      */
     //2주뒤 업데이트되면 다시 테스트
-    @Scheduled(cron = "0 0 16 * * ?")
+    @Scheduled(cron = "0 30 16 * * ?")
     public void bookmarkPush() throws InterruptedException, Exception {
 
 
@@ -107,9 +107,15 @@ public class PushScheduler{
                 usertokens.clear();
 
                  // 푸쉬를 발송할 사용자 토큰 처리
-                Map<String,Object> usertoken = new HashMap<String,Object>();
-                usertoken.put("usertoken",bookmark.getUsertoken());
-                usertokens.add(usertoken);
+
+                for(Map isUser : usertokens){
+                    if(!isUser.containsValue(bookmark.getUsertoken())){
+                        Map<String,Object> usertoken = new HashMap<String,Object>();
+                        usertoken.put("usertoken",bookmark.getUsertoken());
+                        usertokens.add(usertoken);
+                    }
+                }
+                System.out.println("#####" + usertokens);
 
                 //푸쉬 발송
                 pushMultiService.sendListPush(push, usertokens);
