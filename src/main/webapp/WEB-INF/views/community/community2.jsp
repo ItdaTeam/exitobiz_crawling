@@ -60,7 +60,7 @@
 <%--                    </li>--%>
 <%--                </ul>--%>
 <%--            </div>--%>
-            <div class="content">
+            <div id="inner_wrap">
                 <h1 id="title"></h1>
                 <h2 id="content"></h2>
             </div>
@@ -75,6 +75,13 @@
     const userId = document.getElementById('userId').value;
 
     getData(id);
+
+    function outputsize() {
+        if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
+            window.flutter_inappwebview.callHandler('newHeight', document.getElementById("inner_wrap").offsetHeight);
+    }
+
+    new ResizeObserver(outputsize).observe(inner_wrap)
 
     async function getData(id){
         await axios.get("/mobile/community/one", {
