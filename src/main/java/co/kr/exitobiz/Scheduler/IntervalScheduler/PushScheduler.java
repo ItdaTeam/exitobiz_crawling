@@ -82,7 +82,7 @@ public class PushScheduler{
      * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
      */
     //2주뒤 업데이트되면 다시 테스트
-    @Scheduled(cron = "0 0 14 * * ?")
+    @Scheduled(cron = "0 30 15 * * ?")
     public void bookmarkPush() throws InterruptedException, Exception {
 
 

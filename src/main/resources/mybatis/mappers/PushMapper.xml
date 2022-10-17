@@ -48,6 +48,7 @@
                  left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
                  inner join itda_app.user_push_setting ups on u.id = ups.user_id and ups.sp_bookmark_push = 'Y'
         where 1=1
+          and mb.mb_save_yn = 'Y'
           and si.si_end_dt::date - current_date = 2 ;
     </select>
 
