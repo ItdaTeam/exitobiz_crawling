@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +89,9 @@ public class CommunityController {
 
     @GetMapping("/community/all")
     @ResponseBody
-    public List<CommunityVo> getCommunityList(@RequestParam HashMap<String, String> params) throws ParseException {
+    public List<CommunityVo> getCommunityList(@RequestParam HashMap<String, Object> params) throws ParseException {
+        int cntSql = Integer.parseInt(String.valueOf(params.get("cnt_sql")));
+        params.replace("cnt_sql", cntSql);
         return communityService.getCommunityList(params);
     }
 

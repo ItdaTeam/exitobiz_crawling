@@ -1,6 +1,5 @@
 package co.kr.exitobiz.Mappers.Mobile;
 
-import co.kr.exitobiz.Vo.Cms.BannerVo;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface CommunityMapper {
-    public List<CommunityVo> getCommunityList(HashMap<String, String> params); //커뮤니티 전체 리스트 조회
+    public List<CommunityVo> getCommunityList(HashMap<String, Object> params); //커뮤니티 전체 리스트 조회
 
     public HashMap<String, Object> getCommunityDetail(CommunityVo vo); // 커뮤니티 상세 조회
 

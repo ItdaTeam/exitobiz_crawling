@@ -45,6 +45,7 @@
                         cret_dt desc
                     </otherwise>
                </choose>
+                limit 30 offset #{cnt_sql}
     </select>
 
     <select id="getNewId" resultType="int">

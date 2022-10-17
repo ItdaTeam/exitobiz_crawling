@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CommunityServiceImpl implements CommunityService {
     private final FileService fileService;
 
     @Override
-    public List<CommunityVo> getCommunityList(HashMap<String, String> params) throws ParseException {
+    public List<CommunityVo> getCommunityList(HashMap<String, Object> params) throws ParseException {
         return communityMapper.getCommunityList(params);
     }
 

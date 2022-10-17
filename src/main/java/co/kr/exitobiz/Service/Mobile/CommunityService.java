@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface CommunityService {
-    List<CommunityVo> getCommunityList(HashMap<String, String> params) throws ParseException;
+    List<CommunityVo> getCommunityList(HashMap<String, Object> params) throws ParseException;
 
     HashMap<String, Object> getCommunityDetail(CommunityVo communityVo);
 
