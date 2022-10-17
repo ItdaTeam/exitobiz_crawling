@@ -83,9 +83,10 @@ public class GyeonggiEgbizCrawling implements Crawling {
 
             Thread.sleep(1000);
 
-            WebElement pageXpath = driver.findElement(By.xpath("//*[@id=\"listForm\"]/div[2]/span["+ i+1 +"]/a"));
-
-            pageXpath.click();
+            if(i>1) {
+                WebElement pageXpath = driver.findElement(By.xpath("//*[@id=\"listForm\"]/div[2]/span["+ i+1 +"]/a"));
+                pageXpath.click();
+            }
 
             for(int j=1; j<11; j++) {
                     try {
@@ -93,7 +94,7 @@ public class GyeonggiEgbizCrawling implements Crawling {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"listForm\"]/div[1]/div/table/tbody/tr["+ j +"]/td[2]/div/a"));
                         SupportVo vo = new SupportVo();
                         String title = titleXpath.getText();
-                        String bodyurl = "https://www.egbiz.or.kr/" + titleXpath.getAttribute("href");
+                        String bodyurl = titleXpath.getAttribute("href");
 
                         vo.setTargetName("경기도경제과학진흥원");
                         vo.setTargetCatName("-");
