@@ -38,11 +38,12 @@
     </textarea>
 
     <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
+    <div class="bottom" id="bottom">
+        <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
+        <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
+    </div>
 </form>
-<div class="bottom" id="bottom">
-    <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
-    <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
-</div>
+
 </body>
 </html>
 <script>
