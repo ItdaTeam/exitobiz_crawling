@@ -506,10 +506,10 @@
         var oldPgIndex = gridView.pageIndex;
 
         //전체 데이터를 엑셀다운받기 위해서는 페이징 제거 > 엑셀 다운 > 페이징 재적용 하여야 함.
-        if(gridView._src.length > 350){
-            alert("조회일을 줄여주세요.");
-            return false;
-        }
+        // if(gridView._src.length > 350){
+        //     alert("조회일을 줄여주세요.");
+        //     return false;
+        // }
 
         supportGrid.beginUpdate();
         supportView.pageSize = gridView._src.length;
