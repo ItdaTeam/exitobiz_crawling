@@ -4,6 +4,8 @@ import co.kr.exitobiz.Service.Mobile.CommunityService;
 import co.kr.exitobiz.Service.Mobile.FileService;
 import co.kr.exitobiz.Vo.Cms.ImageLink;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,10 +92,18 @@ public class CommunityController {
 
     @GetMapping("/community/all")
     @ResponseBody
-    public List<CommunityVo> getCommunityList(@RequestParam HashMap<String, Object> params) throws ParseException {
+    public String getCommunityList(@RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
         int cntSql = Integer.parseInt(String.valueOf(params.get("cnt_sql")));
         params.replace("cnt_sql", cntSql);
-        return communityService.getCommunityList(params);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Date Format 설정
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        mapper.setDateFormat(dateFormat);
+
+        String jsonStr = mapper.writeValueAsString(communityService.getCommunityList(params));
+        return jsonStr;
     }
 
     @GetMapping("/community/one")
