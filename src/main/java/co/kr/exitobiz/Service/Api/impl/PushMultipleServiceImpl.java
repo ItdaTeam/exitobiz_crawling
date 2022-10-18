@@ -64,12 +64,10 @@ public class PushMultipleServiceImpl implements PushMultipleService {
 
             /* 500개 제한. 500개넘어가면 푸시보내고 리스트 다시 초기화 */
             if ((i % 499) == 0 && (i != 0)) {
-
-                MulticastMessage message;
-
                 //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
                 if(params.get("idx") == null || params.get("idx") == "null"){
-                    message = MulticastMessage.builder()
+                    // 찜한사업 마감임박 알람용 ( 배열 돌면서 한 지원사업 당 한 명에게 전송 )
+                    Message msg = Message.builder()
                             .setNotification(Notification.builder()
                                     .setTitle(params.get("title"))
                                     .setBody(params.get("body"))
@@ -81,16 +79,18 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                                     .build())
                             .putData("keyId", params.get("keyId"))
                             .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                            .addAllTokens(tokenList)
+                            .setToken(usertokens.get(0).get("usertoken").toString())
                             .build();
+                    String response = FirebaseMessaging.getInstance().send(msg);
                 }else{
-                    message = MulticastMessage.builder()
+                    MulticastMessage message = MulticastMessage.builder()
                             .setNotification(Notification.builder()
                                     .setTitle(params.get("title"))
                                     .setBody(params.get("body"))
                                     .build())
                             .setApnsConfig(ApnsConfig.builder()
                                     .setAps(Aps.builder()
+//                                    .setBadge(42)
                                             .setSound("default")
                                             .build())
                                     .build())
@@ -99,12 +99,10 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                             .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                             .addAllTokens(tokenList)
                             .build();
+
+                    tokenList.clear();
+                    BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
                 }
-
-
-                tokenList.clear();
-                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-
 
 //                if(response.getFailureCount() > 0){
 //                    List<SendResponse> responses = response.getResponses();
@@ -127,28 +125,26 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             System.out.println("마지막리스트::" + tokenCount);
             System.out.println(tokenList.size());
 
-
-            MulticastMessage message;
-
             //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
             if(params.get("idx") == null || params.get("idx") == "null") {
-                message = MulticastMessage.builder()
+                // 찜한사업 마감임박 알람용 ( 배열 돌면서 한 지원사업 당 한 명에게 전송(multi아님) )
+                Message msg = Message.builder()
                         .setNotification(Notification.builder()
                                 .setTitle(params.get("title"))
                                 .setBody(params.get("body"))
                                 .build())
                         .setApnsConfig(ApnsConfig.builder()
                                 .setAps(Aps.builder()
-//                                    .setBadge(42)
                                         .setSound("default")
                                         .build())
                                 .build())
                         .putData("keyId", params.get("keyId"))
                         .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                        .addAllTokens(tokenList)
+                        .setToken(usertokens.get(0).get("usertoken").toString())
                         .build();
+                String response = FirebaseMessaging.getInstance().send(msg);
             }else{
-                message = MulticastMessage.builder()
+                MulticastMessage message = MulticastMessage.builder()
                         .setNotification(Notification.builder()
                                 .setTitle(params.get("title"))
                                 .setBody(params.get("body"))
@@ -164,11 +160,9 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                         .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                         .addAllTokens(tokenList)
                         .build();
+
+                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
             }
-
-
-            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-
 //            if(response.getFailureCount() > 0){
 //                List<SendResponse> responses = response.getResponses();
 //
