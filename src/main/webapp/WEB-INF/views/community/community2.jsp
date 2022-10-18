@@ -98,6 +98,16 @@
                 $('#viewCount').text(res.data.view_count);
                 $('#content').html(res.data.content);
 
+                $('a').click(function(e){
+                   e.preventDefault();
+                   console.log(this.href);
+                    window.flutter_inappwebview.callHandler('urlLink', this.href);
+                   // flutter_inappwebview._callHandler('goToCashier', setTimeout(function(){}), JSON.stringify([{shopId: 1}]))
+
+                });
+
+
+
                 let date = new Date(res.data.cret_dt);
                 $('#date').text(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
                 $('#time').text(date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds());
@@ -113,6 +123,7 @@
             }
         })
     }
+
 
     async function contentConfirm(type){
         const formData = new FormData();
@@ -145,6 +156,16 @@
     }
     $(document).ready(function(){
         var click1 = false;
+        console.log($('a'));
+
+        $('body a').on('click', function(e){
+            $(this).removeAttr("href");
+            e.stopPropagation()
+            alert();
+            e.preventDefault();
+            console.log(this);
+            return false;
+        })
 
         $(".dot").click(function(){
 
