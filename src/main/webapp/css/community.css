@@ -151,6 +151,10 @@
         font-size: 1.3rem;
     }
 
+    .ck.ck-editor__editable_inline>:first-child {
+        margin-top: 0.4rem;
+    }
+
 
     .fa-angle-down{
         color: #000;
