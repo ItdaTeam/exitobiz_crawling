@@ -5,13 +5,11 @@
     }
 
     body{
-        margin:0 auto;
+        margin:1.5rem auto;
         overflow-x: hidden;
         overflow-y: auto;
         width: 100%;
-        position: fixed;
-        bottom: 3rem;
-        left: 0;
+
     }
     .wrap{
         width: 90%;
@@ -134,7 +132,7 @@
         line-height: 1.3em;
         min-height: var(--ck-sample-editor-min-height);
         padding: 0em 0.8em;
-        min-height: 52vh;
+        min-height: 60vh;
 
     }
 
