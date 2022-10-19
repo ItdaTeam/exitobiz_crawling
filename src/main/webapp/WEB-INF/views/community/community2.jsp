@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1.0,width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=yes,maximum-scale=1.0,width=device-width" />
     <link rel="stylesheet" href="../../../css/community.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
@@ -132,7 +132,7 @@
             case 'delete' :
                 if(!confirm("게시글을 삭제하시겠습니까?")) return false;
                 await axios.put("/mobile/community/delete", formData, {header:{'Content-Type' : 'multipart/form-data'}})
-                    .then((res) => {
+                    .then((res) => {1
                         if(res.status == 200){
                             alert("게시글이 삭제되었습니다.");
                         }else{
