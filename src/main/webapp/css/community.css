@@ -184,13 +184,7 @@
         b,strong{font-weight:normal;}
 
         table{border-collapse:collapse;}
-    
-    body{
-        margin:0 auto;
-        overflow-x: hidden;
-        overflow-y: auto;
-        width: 100%;
-    }
+
     .wrap{
         width: 90%;
         margin: 0 auto;
