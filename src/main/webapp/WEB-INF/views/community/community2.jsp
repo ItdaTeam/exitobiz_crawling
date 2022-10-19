@@ -132,7 +132,7 @@
             case 'delete' :
                 if(!confirm("게시글을 삭제하시겠습니까?")) return false;
                 await axios.put("/mobile/community/delete", formData, {header:{'Content-Type' : 'multipart/form-data'}})
-                    .then((res) => {1
+                    .then((res) => {
                         if(res.status == 200){
                             alert("게시글이 삭제되었습니다.");
                         }else{
