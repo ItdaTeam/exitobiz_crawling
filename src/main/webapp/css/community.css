@@ -169,6 +169,7 @@
     } */
     .select-wrap{
             background: url('../WEB-INF/views/community/img/Icon ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
+            z-index: 999999999999;
         }
 
     /*게시글 상세 --------------------------*/
