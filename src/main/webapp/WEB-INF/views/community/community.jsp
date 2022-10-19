@@ -31,7 +31,7 @@
         </select>
     </div>
     <h3 class="h3title">제목</h3>
-        <input type="text" class="title" placeholder="제목">
+        <input type="text" class="title" name="title" placeholder="제목">
         <p class="tnum">0 / 50</p>
         <div class="wrap_content">
             <h3 class="h3content">내용</h3>
