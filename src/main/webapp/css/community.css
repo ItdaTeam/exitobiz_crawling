@@ -168,7 +168,7 @@
         width: 100%;
     } */
     .select-wrap{
-            background: url('../WEB-INF/views/community/img/ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
+            background: url('../img/ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
             z-index: 999999999999;
         }
 
@@ -263,7 +263,7 @@
         .box2 h3 {font-size:0.85rem ; font-weight: 400;color: #787878;padding-right: 0.8rem;}
 
         #inner_wrap{
-            padding: 2rem 0;
+            /*padding: 2rem 0;*/
         }
 
         #inner_wrap h1{
