@@ -8,7 +8,7 @@
     <script src="../../../ckeditor5/build/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../../../ckeditor5/sample/styles.css">
     <link rel="stylesheet" href="../../../css/community.css">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1.0,width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/7b32d23811.js" crossorigin="anonymous"></script>
