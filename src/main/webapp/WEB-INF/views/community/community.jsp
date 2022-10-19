@@ -21,27 +21,29 @@
     <input type="hidden" id="id" name="id" value="${id}"/>
     <input type="hidden" id="userId" name="userId" value="${userId}"/>
     <div class="select-wrap">
-        <select class="board" name="category" aria-placeholder="게시판을 선택해 주세요.">
+        <select class="board" name="category" aria-placeholder="게시판 선택">
             <!-- <i class="fa-solid fa-angle-down"></i> -->
-            <option value="total">게시판을 선택해 주세요</i></option>
+            <option value="total">게시판 선택</i></option>
             <option value="정보공유">정보공유</option>
             <option value="QnA">QnA</option>
             <option value="기업매칭">기업매칭</option>
             <option value="자유게시판">자유게시판</option>
         </select>
     </div>
-    <h3>제목</h3>
-    <input type="text" class="title" name="title" placeholder="제목을 입력해 주세요">
-    <p class="tnum">0 / 50</p>
-    <h3>내용</h3>
-    <textarea class="editor" id="editor" name="editor">
-    </textarea>
-
-    <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
-    <div class="bottom" id="bottom">
-        <button class="btn confirm" onclick="contentConfirm('add')">등록하기</button>
-        <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
-    </div>
+    <h3 class="h3title">제목</h3>
+        <input type="text" class="title" placeholder="제목">
+        <p class="tnum">0 / 50</p>
+        <div class="wrap_content">
+            <h3 class="h3content">내용</h3>
+            <div class="bottom" id="bottom">
+                <button class="btn confirm" onclick="contentConfirm('add')">작성하기</button>
+                <button style="display:none;" class="btn fill" onclick="contentConfirm('modify')">수정하기</button>
+            </div>
+        </div>
+        <div class="editor" id="editor">
+            <!-- <p>test</p> -->
+        </div>
+        <!-- <textarea type="text" class="content" placeholder="내용을 입력해 주세요"></textarea> -->
 </form>
 
 </body>
