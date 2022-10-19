@@ -129,10 +129,10 @@
         width: 100%;
         background: #fff;
         font-size: 1em;
-        line-height: 1.3em;
+        line-height: 0.7em;
         min-height: var(--ck-sample-editor-min-height);
         padding: 0em 0.8em;
-        min-height: 60vh;
+        min-height: 58vh;
 
     }
 
@@ -141,7 +141,7 @@
         color: #000;
         font-size: 1rem;
         font-weight: 400;
-        line-height: 1.6rem;
+        line-height: 1.3rem;
     }
 
     /* .ck.ck-editor__editable_inline>:first-child {
@@ -168,7 +168,7 @@
         width: 100%;
     } */
     .select-wrap{
-            background: url('../WEB-INF/views/community/img/Icon ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
+            background: url('../WEB-INF/views/community/img/ionic-ios-arrow-down.png')no-repeat 92% 50%/15px auto;
             z-index: 999999999999;
         }
 
@@ -335,7 +335,7 @@
         .content p {
             font-size: 1rem;
             font-weight: 400;
-            line-height: 1.6rem;
+            line-height: 1.3rem;
             color: #000;
         }
 
