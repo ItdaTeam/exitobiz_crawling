@@ -148,7 +148,7 @@
     .ck.ck-editor__editable_inline>p {
         margin-bottom: var(--ck-spacing-large);
         color: #000;
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
 
     .ck.ck-editor__editable_inline>:first-child {
