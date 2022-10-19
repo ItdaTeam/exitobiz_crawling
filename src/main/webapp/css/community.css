@@ -87,21 +87,6 @@
     background: transparent;
     }
     
-    #bottom{
-        width: 100%;
-        height:4rem;
-        justify-content: center;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        /* position: fixed;
-        bottom:0;
-        left: 0; */
-        z-index: 9999999;
-    }
 
     #bottom {
         width: 50%;
@@ -142,25 +127,28 @@
         border-radius: 5px;
     }
 
-    .wrap .ck.ck-editor__editable[role='textbox'], .ck.editor[role='textbox'] {
+    .ck.ck-editor__editable[role='textbox'], .ck.editor[role='textbox'] {
         width: 100%;
-            background: #fff;
-            /* font-size: 1em; */
-            line-height: 1.3em;
-            min-height: var(--ck-sample-editor-min-height);
-            padding: 0.8em 0.8em;
-            min-height: 52vh;
+        background: #fff;
+        font-size: 1em;
+        line-height: 1.3em;
+        min-height: var(--ck-sample-editor-min-height);
+        padding: 0em 0.8em;
+        min-height: 52vh;
+
     }
 
     .ck.ck-editor__editable_inline>p {
         margin-bottom: var(--ck-spacing-large);
         color: #000;
         font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.6rem;
     }
 
-    .ck.ck-editor__editable_inline>:first-child {
+    /* .ck.ck-editor__editable_inline>:first-child {
         margin-top: 0.4rem;
-    }
+    } */
 
 
     .fa-angle-down{
@@ -335,6 +323,21 @@
 
         .hidddenBox.on{
             display: block;
+        }
+
+        .content{
+            padding: 2rem 0;
+        }
+
+        .content h1{
+            font-size: 1.2rem;font-weight: 600;margin-bottom: 2rem;
+        }
+
+        .content p {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6rem;
+            color: #000;
         }
 
         

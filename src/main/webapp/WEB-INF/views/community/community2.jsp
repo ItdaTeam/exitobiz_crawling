@@ -62,7 +62,7 @@
 <%--            </div>--%>
             <div id="inner_wrap">
                 <h1 id="title"></h1>
-                <h2 id="content"></h2>
+                <p id="content"></p>
             </div>
         </div>
                 <input type="hidden" name="id" id="id" value="${id}"/>
