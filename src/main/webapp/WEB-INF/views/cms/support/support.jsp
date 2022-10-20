@@ -10,6 +10,9 @@
   <div class="modal_bg">
 
   </div>
+  <div class="loading_bar_wrap">
+      <div class="loader"></div>
+  </div>
 <div class="main_wrap">
     <%@ include file="../include/nav.jsp" %>
     <div class="main_container">
@@ -259,6 +262,8 @@
         });
     }
 
+
+
     function selectAll(selectAll)  {
         const checkboxes = document.getElementsByName("location");
 
@@ -465,6 +470,7 @@
     }
 
     function getSupportList() {
+
         //db데이터에는 시간까지 출력되기 때문에 날짜 데이터만 가져오면 범위에 포함되지 않기 때문에 하루 더해서 범위값 설정한다.
         let to = new Date($('#toDate').val());
         to = new Date(to.setDate(to.getDate() + 1));
@@ -501,26 +507,36 @@
 
     //엑셀 다운로드
     function exportExcel() {
+
         var gridView = supportGrid.collectionView;
         var oldPgSize = gridView.pageSize;
         var oldPgIndex = gridView.pageIndex;
 
-        //전체 데이터를 엑셀다운받기 위해서는 페이징 제거 > 엑셀 다운 > 페이징 재적용 하여야 함.
-        // if(gridView._src.length > 350){
-        //     alert("조회일을 줄여주세요.");
-        //     return false;
-        // }
+        //부분 데이터를 엑셀다운받기 위해서는 페이징 재설정 > 엑셀 다운 > 페이징 재적용 하여야 함.
+        if(gridView._src.length > 50000){
+            alert("조회일을 줄여주세요.");
+            return false;
+        }
 
-        supportGrid.beginUpdate();
-        supportView.pageSize = gridView._src.length;
+        //로딩 시작
+        loadingBarStart();
 
-        wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(supportGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원사업리스트.xlsx',
-            saved => {
-               gridView.pageSize = oldPgSize;
-               gridView.moveToPage(oldPgIndex);
-                supportGrid.endUpdate();
-            }, null
-        );
+        // 로딩 이미지가 활성화 된 상태에서 실행하기 위해 지연시간을 둠
+        setTimeout(function(){
+            supportGrid.beginUpdate();
+            supportView.pageSize = gridView._src.length;
+
+            wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(supportGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원사업리스트.xlsx',
+                saved => {
+                    loadingBarEnd();
+                   gridView.pageSize = oldPgSize;
+                   gridView.moveToPage(oldPgIndex);
+                    supportGrid.endUpdate();
+                }, null
+            );
+        }, 100);
+
+
 
     }
 

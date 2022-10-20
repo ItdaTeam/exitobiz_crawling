@@ -423,6 +423,15 @@ function MyCustomUploadAdapterPlugin(editor) {
     }
 }
 
+// 로딩바
+function loadingBarStart() {
+    $('.loading_bar_wrap').addClass('active');
+}
+
+function loadingBarEnd() {
+    $('.loading_bar_wrap').removeClass('active');
+}
+
 
 // 탭 메뉴
 $(document).ready(function() {
@@ -436,3 +445,4 @@ $(document).ready(function() {
     $("#" + tab_id).siblings().hide();
   })
 });
+
