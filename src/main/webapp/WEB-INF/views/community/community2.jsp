@@ -75,10 +75,11 @@
     const userId = document.getElementById('userId').value;
 
     getData(id);
+    console.log(document.getElementsByTagName("html")[0].offsetHeight);
 
     function outputsize() {
         if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
-            window.flutter_inappwebview.callHandler('newHeight', document.getElementById("body").offsetHeight);
+            window.flutter_inappwebview.callHandler('newHeight', document.getElementsByTagName("html")[0].offsetHeight);
     }
 
     new ResizeObserver(outputsize).observe(inner_wrap)
