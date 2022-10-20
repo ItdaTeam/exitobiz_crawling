@@ -19,6 +19,9 @@
               where 1=1
                 and delete_yn = false
                 and declare_yn = false
+                and user_id not in (
+                    select target_id from itda_app.user_block ub
+                )
                 <choose>
                     <when test="select_cat == '정보공유'">
                         and category = '정보공유'
