@@ -267,7 +267,7 @@
         }
 
         #inner_wrap h1{
-            font-size: 1.4rem;font-weight: 600;margin-bottom: 2rem;
+            font-size: 1.4rem;font-weight: 600;margin-bottom: 1rem;
         }
 
         #inner_wrap h2{
@@ -319,7 +319,6 @@
         }
 
         #content{
-            padding: 2rem 0;
             word-break: break-all;
         }
 
