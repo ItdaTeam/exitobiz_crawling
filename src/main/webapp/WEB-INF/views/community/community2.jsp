@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" id="html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,15 +75,11 @@
     const userId = document.getElementById('userId').value;
 
     getData(id);
-    console.log(document.getElementsByTagName("html")[0].offsetHeight);
 
     function outputsize() {
         if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
-            window.flutter_inappwebview.callHandler('newHeight', document.getElementsByTagName("html")[0].offsetHeight);
+            window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
     }
-
-    new ResizeObserver(outputsize).observe(inner_wrap)
-
     async function getData(id){
         await axios.get("/mobile/community/one", {
             params:{
@@ -101,13 +97,10 @@
 
                 $('a').click(function(e){
                    e.preventDefault();
-                   console.log(this.href);
                     window.flutter_inappwebview.callHandler('urlLink', this.href);
-                   // flutter_inappwebview._callHandler('goToCashier', setTimeout(function(){}), JSON.stringify([{shopId: 1}]))
-
                 });
 
-
+                new ResizeObserver(outputsize).observe(html);
 
                 let date = new Date(res.data.cret_dt);
                 $('#date').text(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
@@ -157,16 +150,6 @@
     }
     $(document).ready(function(){
         var click1 = false;
-        console.log($('a'));
-
-        $('body a').on('click', function(e){
-            $(this).removeAttr("href");
-            e.stopPropagation()
-            alert();
-            e.preventDefault();
-            console.log(this);
-            return false;
-        })
 
         $(".dot").click(function(){
 
