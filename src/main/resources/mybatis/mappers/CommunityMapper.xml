@@ -14,6 +14,11 @@
                               and delete_yn = false
                               and report_yn = false
                               and step = 1
+                              and user_id not in (
+                                select target_id from itda_app.user_block ub
+                                where 1=1
+                                and ub.cret_id = #{user_id}
+                              )
                         group by c_content_id
                     ) as cc2 on cc2.c_content_id = cc.id
               where 1=1
