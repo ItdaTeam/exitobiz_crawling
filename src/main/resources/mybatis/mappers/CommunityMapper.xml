@@ -21,6 +21,8 @@
                 and declare_yn = false
                 and user_id not in (
                     select target_id from itda_app.user_block ub
+                        where 1=1
+                        and ub.cret_id = #{user_id}
                 )
                 <choose>
                     <when test="select_cat == '정보공유'">
