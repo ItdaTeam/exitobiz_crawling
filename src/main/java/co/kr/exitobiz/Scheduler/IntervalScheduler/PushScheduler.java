@@ -97,12 +97,20 @@ public class PushScheduler{
 
         if(bookmarks.size() > 0){
             for(PushVo bookmark : bookmarks ){
-                HashMap<String,String> push = new HashMap<>();  // 푸쉬 발송을 위한 기본 셋팅
 
+
+
+                HashMap<String,String> push = new HashMap<>();  // 푸쉬 발송을 위한 기본 셋팅
                 // 푸쉬를 위한 기본 셋팅 처리
-                push.put("title","(마감일 임박) 찜한 사업 마감일 임박!!!");
-                push.put("body", bookmark.getSiTitle());
-                push.put("keyId","5");
+                if(bookmark.getRestDate().equals("3")){
+                    push.put("title","(마감임박 3일전) 찜한 사업 마감일 임박!!!");
+                    push.put("body", bookmark.getSiTitle());
+                    push.put("keyId","5");
+                }else{
+                    push.put("title","(마감임박 7일전) 찜한 사업 마감일 임박!!!");
+                    push.put("body", bookmark.getSiTitle());
+                    push.put("keyId","5");
+                }
 
                 usertokens.clear();
 

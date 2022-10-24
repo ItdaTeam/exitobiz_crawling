@@ -11,5 +11,5 @@ public class PushVo {
     String siTitle; // 지원사업 공고 제목
     String keyword; //푸쉬용 키워드
     String usertoken; //사용자 토큰
-
+    String restDate; // 마감 남은 일자
 }
