@@ -138,7 +138,7 @@
     }
 
     .ck.ck-editor__editable_inline>p {
-        margin-bottom: var(--ck-spacing-large);
+        margin-bottom:0.8rem;
         color: #000;
         /*font-size: 1rem;*/
         font-weight: 400;
@@ -331,6 +331,7 @@
             font-weight: 400;
             line-height: 1.3rem;
             color: #000;
+            margin-bottom: 0.8rem;
         }
 
         
