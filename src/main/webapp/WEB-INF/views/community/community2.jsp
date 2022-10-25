@@ -76,6 +76,11 @@
 
     getData(id);
 
+    function outputsize() {
+         if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
+             window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
+    }
+
     async function getData(id){
         await axios.get("/mobile/community/one", {
             params:{
@@ -97,12 +102,9 @@
                 });
 
                 // 로드된 후 웹뷰 높이값 flutter에 전송
-                //if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
-                //  window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
-
-                window.addEventListener("flutterInAppWebViewPlatformReady", function() {
-                    window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
-                });
+                //new ResizeObserver(outputsize).observe(html);
+                if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
+                  window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
 
 
                 let date = new Date(res.data.cret_dt);
