@@ -77,8 +77,13 @@
     getData(id);
 
     function outputsize() {
-         if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
-             window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
+        let newHeight = document.getElementById("html").offsetHeight;
+
+        if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined"){
+            if(newHeight > 5500)  window.flutter_inappwebview.callHandler('newHeight', 5500);
+            else window.flutter_inappwebview.callHandler('newHeight', newHeight);
+        }
+
     }
 
     async function getData(id){
