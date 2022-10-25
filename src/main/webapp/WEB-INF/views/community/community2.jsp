@@ -97,8 +97,13 @@
                 });
 
                 // 로드된 후 웹뷰 높이값 flutter에 전송
-                if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
+                //if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
+                //  window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
+
+                window.addEventListener("flutterInAppWebViewPlatformReady", function() {
                     window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
+                });
+
 
                 let date = new Date(res.data.cret_dt);
                 $('#date').text(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
@@ -114,6 +119,10 @@
 
             }
         })
+    }
+
+    window.onload = function(){
+
     }
 
 
