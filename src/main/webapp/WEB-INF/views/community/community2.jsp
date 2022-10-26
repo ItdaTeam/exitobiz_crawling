@@ -80,8 +80,7 @@
         let newHeight = document.getElementById("html").offsetHeight;
 
         if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined"){
-            if(newHeight > 5500)  window.flutter_inappwebview.callHandler('newHeight', 5500);
-            else window.flutter_inappwebview.callHandler('newHeight', newHeight);
+            window.flutter_inappwebview.callHandler('newHeight', newHeight);
         }
 
     }
@@ -108,29 +107,6 @@
 
                 // 로드된 후 웹뷰 높이값 flutter에 전송
                 new ResizeObserver(outputsize).observe(html);
-                // if (typeof window.flutter_inappwebview !== "undefined" && typeof window.flutter_inappwebview.callHandler !== "undefined")
-                //   window.flutter_inappwebview.callHandler('newHeight', document.getElementById("html").offsetHeight);
-
-                // var observerStarted = true;
-                //
-                // let resizeObserver = (outputsize) => new ResizeObserver(entries => {
-                //     console.log("resizeobserver fired");
-                //
-                //     if (observerStarted) {
-                //         observerStarted = false;
-                //         return;
-                //     }
-                //
-                //     resizeObserver.disconnect();
-                //
-                //     // [Operation that would cause resize here]
-                //
-                //     observerStarted = true;
-                //     requestAnimationFrame(() => resizeObserver(outputsize).observe(html));
-                // });
-                //
-                // resizeObserver(outputsize).observe(html);
-
 
                 let date = new Date(res.data.cret_dt);
                 $('#date').text(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
@@ -147,11 +123,6 @@
             }
         })
     }
-
-    window.onload = function(){
-
-    }
-
 
     async function contentConfirm(type){
         const formData = new FormData();
