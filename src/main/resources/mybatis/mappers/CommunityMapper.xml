@@ -46,17 +46,65 @@
                         and 1=1
                     </otherwise>
                 </choose>
+                <trim prefix="and" prefixOverrides="or">
+                    <foreach item="item" index="index" collection = "search_array">
+                        <trim prefix="OR">
+                            TITLE LIKE '%'||#{item}||'%' OR CONTENT LIKE '%'||#{item}||'%'
+                        </trim>
+                    </foreach>
+                </trim>
           ) as T1 order by
                <choose>
                     <when test="ord == '인기순'">
                         view_count desc
                     </when>
+                   <when test="ord == '댓글많은순'">
+                       comment_cnt desc
+                   </when>
                     <otherwise>
                         cret_dt desc
                     </otherwise>
                </choose>
                 limit 30 offset #{cnt_sql}
     </select>
+
+    <select id="getPopularCommunityList" parameterType="CommunityVo" resultType="HashMap">
+        select * from (
+                          select cc.id, cc.user_id, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt, coalesce(cclh.cl_cnt, 0) as like_cnt from itda_web.community_content cc
+                                                                                                                                                                                                         left outer join itda_app.usertable u on cc.user_id  = u.id
+                                                                                                                                                                                                         left outer join (
+                              select c_content_id, count(*) as cnt from itda_app.community_comment
+                              where 1=1
+                                and delete_yn = false
+                                and report_yn = false
+                                and step = 1
+                              group by c_content_id
+                          ) as cc2 on cc2.c_content_id = cc.id
+                                                                                                                                                                                                         left outer join (
+                              select content_id, count(*) as cl_cnt from itda_web.community_content_like_history
+                              where 1=1
+                                and thumb_up = true
+                              group by content_id
+                          ) as cclh on cclh.content_id = cc.id
+                          where 1=1
+                            and delete_yn = false
+                            and declare_yn = false
+                            and user_id not in (
+                              select target_id from itda_app.user_block ub
+                              where 1=1
+                                and ub.cret_id = #{userId}
+                          )
+                      ) as T1 order by (comment_cnt + view_count + like_cnt) desc limit 3;
+    </select>
+
+    <select id="getBlockList"  parameterType="CommunityVo" resultType="HashMap">
+        select u.usernickname from itda_app.user_block ub
+            left outer join itda_app.usertable u on u.id = ub.target_id
+                where 1=1
+                and ub.cret_id = #{userId}
+        order by cret_dt desc
+    </select>
+
 
     <select id="getNewId" resultType="int">
         select id from itda_web.community_content cc order by cret_dt desc limit 1

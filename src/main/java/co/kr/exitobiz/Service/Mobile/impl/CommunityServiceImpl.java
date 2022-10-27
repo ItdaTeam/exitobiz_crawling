@@ -3,6 +3,7 @@ package co.kr.exitobiz.Service.Mobile.impl;
 import co.kr.exitobiz.Mappers.Mobile.CommunityMapper;
 import co.kr.exitobiz.Service.Mobile.CommunityService;
 import co.kr.exitobiz.Service.Mobile.FileService;
+import co.kr.exitobiz.Vo.Cms.UserVo;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,16 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public List<CommunityVo> getCommunityList(HashMap<String, Object> params) throws ParseException {
         return communityMapper.getCommunityList(params);
+    }
+
+    @Override
+    public List<HashMap> getPopularCommunityList(CommunityVo communityVo) throws ParseException {
+        return communityMapper.getPopularCommunityList(communityVo);
+    }
+
+    @Override
+    public List<HashMap> getBlockList(CommunityVo communityVo) throws ParseException {
+        return communityMapper.getBlockList(communityVo);
     }
 
     @Override

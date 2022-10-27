@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.openqa.selenium.json.Json;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.sql.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -39,70 +41,51 @@ import java.util.Map;
 public class CommunityController {
 
     private final CommunityService communityService;
-
     private final FileService fileService;
 
-    //상세페이지
-    @RequestMapping(value = "/community/detail", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
-    public String disCommunity(@Valid HttpServletRequest req, Model model, HttpServletResponse res) throws Exception {
-        int id = Integer.parseInt(req.getParameter("id"));
-
-        model.addAttribute("id", id);
-        model.addAttribute("userId", req.getParameter("userId"));
-
-        // 저장된 쿠키 불러오기
-        Cookie cookies[] = req.getCookies();
-        Map mapCookie = new HashMap();
-        if(req.getCookies() != null){
-            for(int i=0; i<cookies.length; i++){
-                Cookie obj = cookies[i];
-                mapCookie.put(obj.getName(), obj.getValue());
-            }
-        }
-
-        //저장된 쿠키 중에 readCount만 불러오기
-        String readCount = (String) mapCookie.get("replyCount");
-
-        //저장된 새로운 쿠키값 생성
-        String newReadCount = "|" + id;
-
-        // 저장된 쿠키에 새로운 쿠키값이 존재하는 지 검사
-        if(readCount == null || readCount.indexOf(newReadCount) == -1){
-            // 없을 경우 쿠키 생성
-            Cookie cookie = new Cookie("replyCount", readCount + newReadCount);
-
-            res.addCookie(cookie);
-
-            communityService.reviewViews(id); // 조회수 업데이트
-        }
-//        if(StringUtils.indexOfIgnoreCase(readCount, newReadCount) == -1){
-//
-//        }
-
-        return "/community/community2";
-    }
-
-    //수정, 등록페이지
-    @RequestMapping(value = "/community/edit", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
-    public String disCommunityEdit(@Valid HttpServletRequest request, Model model){
-        model.addAttribute("id", request.getParameter("id"));
-        model.addAttribute("userId", request.getParameter("userId"));
-        return "/community/community";
-    }
-
+    //게시글 리스트 조회(검색조건, 정렬조건 포함)
     @GetMapping("/community/all")
     @ResponseBody
-    public String getCommunityList(@RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
+    public String getCommunityList(@RequestHeader Map<String, String> header, @RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
+        System.out.println("####" + header.get("authorization"));
         int cntSql = Integer.parseInt(String.valueOf(params.get("cnt_sql")));
         params.replace("cnt_sql", cntSql);
 
-        ObjectMapper mapper = new ObjectMapper();
+        //검색 조건 배열로 넣기
+        String search_array = (String) params.get("search_array");
+        String[] array = search_array.trim().split(",");
+        params.put("search_array", array);
 
         // Date Format 설정
+        ObjectMapper mapper = new ObjectMapper();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         mapper.setDateFormat(dateFormat);
 
         String jsonStr = mapper.writeValueAsString(communityService.getCommunityList(params));
+        return jsonStr;
+    }
+
+    //인기 게시글 리스트 조회
+    @PostMapping("/community/popularAll")
+    @ResponseBody
+    public String getPopularCommunityList(@RequestHeader Map<String, String> header) throws ParseException, JsonProcessingException{
+        CommunityVo vo = new CommunityVo();
+        vo.setUserId(header.get("user_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(communityService.getPopularCommunityList(vo));
+        return jsonStr;
+    }
+
+    // 차단 회원 리스트
+    @PostMapping("/community/blockAll")
+    @ResponseBody
+    public String getBlockList(@RequestHeader Map<String, String> header) throws ParseException, JsonProcessingException{
+        CommunityVo vo = new CommunityVo();
+        vo.setUserId(header.get("user_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(communityService.getBlockList(vo));
         return jsonStr;
     }
 
@@ -201,6 +184,51 @@ public class CommunityController {
         }
     }
 
+    //웹뷰 url (모바일용)
+    //상세페이지
+    @RequestMapping(value = "/community/detail", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    public String disCommunity(@Valid HttpServletRequest req, Model model, HttpServletResponse res) throws Exception {
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        model.addAttribute("id", id);
+        model.addAttribute("userId", req.getParameter("userId"));
+
+        // 저장된 쿠키 불러오기
+        Cookie cookies[] = req.getCookies();
+        Map mapCookie = new HashMap();
+        if(req.getCookies() != null){
+            for(int i=0; i<cookies.length; i++){
+                Cookie obj = cookies[i];
+                mapCookie.put(obj.getName(), obj.getValue());
+            }
+        }
+
+        //저장된 쿠키 중에 readCount만 불러오기
+        String readCount = (String) mapCookie.get("replyCount");
+
+        //저장된 새로운 쿠키값 생성
+        String newReadCount = "|" + id;
+
+        // 저장된 쿠키에 새로운 쿠키값이 존재하는 지 검사
+        if(readCount == null || readCount.indexOf(newReadCount) == -1){
+            // 없을 경우 쿠키 생성
+            Cookie cookie = new Cookie("replyCount", readCount + newReadCount);
+
+            res.addCookie(cookie);
+
+            communityService.reviewViews(id); // 조회수 업데이트
+        }
+
+        return "/community/community2";
+    }
+
+    //수정, 등록페이지
+    @RequestMapping(value = "/community/edit", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    public String disCommunityEdit(@Valid HttpServletRequest request, Model model){
+        model.addAttribute("id", request.getParameter("id"));
+        model.addAttribute("userId", request.getParameter("userId"));
+        return "/community/community";
+    }
 
 
 }
