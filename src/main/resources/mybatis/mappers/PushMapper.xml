@@ -42,7 +42,7 @@
     </select>
 
     <select id="getBookmarkSupportInfo" resultType="PushVo">
-정        select distinct mb.mb_addidx, mb.mb_cret_id, si.si_title, u.usertoken, ups.sp_bookmark_push, si.si_end_dt, si.si_end_dt::date - current_date as rest_date
+        select distinct mb.mb_addidx, mb.mb_cret_id, si.si_title, u.usertoken, ups.sp_bookmark_push, si.si_end_dt, si.si_end_dt::date - current_date as rest_date
         from itda_app.my_bookmark mb
                  left outer join itda_app.usertable u on mb.mb_cret_id = u.id
                  left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
