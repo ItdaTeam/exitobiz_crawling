@@ -89,6 +89,7 @@ public class CommunityController {
         return jsonStr;
     }
 
+    // 차단 회원 해제
     @PostMapping("/community/delBlockUser")
     @ResponseBody
     public void delBlockUser(@RequestBody Map<String, Object>[] params) throws ParseException{
@@ -99,18 +100,31 @@ public class CommunityController {
         communityService.delBlockUser(list);
     }
 
+    // 차단 회원 추가
     @PostMapping("/community/insertBlock")
     @ResponseBody
     public void insertBlock(@RequestHeader Map<String, Object> header) throws ParseException {
         communityService.insertBlock((HashMap<String, Object>) header);
     }
 
+    // 신고하기 추가
+    @PostMapping("/community/insertReport")
+    @ResponseBody
+    public void insertReport(@RequestHeader Map<String, Object> header, @RequestBody Map<String, Object> body) throws ParseException {
+        body.put("user_id", header.get("user_id"));
+        body.put("target_user_id", header.get("target_user_id"));
+
+        communityService.insertReport((HashMap<String, Object>) body);
+    }
+
+    // 게시글 상세
     @GetMapping("/community/one")
     @ResponseBody
     public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo) throws ParseException {
         return communityService.getCommunityDetail(communityVo);
     }
 
+    // 게시글 추가
     @PostMapping("/community")
     @ResponseBody
     public int createCommunity(CommunityVo communityVo) throws ParseException {
@@ -118,12 +132,14 @@ public class CommunityController {
         return communityService.getNewId();
     }
 
+    // 게시글 수정
     @PutMapping("/community/edit")
     @ResponseBody
     public void editCommunity(CommunityVo communityVo) throws ParseException {
-            communityService.updateCommunity(communityVo);
+        communityService.updateCommunity(communityVo);
     }
 
+    //게시글 삭제
     @RequestMapping(value = "/community/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public void delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{

@@ -20,6 +20,8 @@ public interface CommunityService {
 
     void insertBlock(HashMap<String, Object> params) throws ParseException;
 
+    void insertReport(HashMap<String, Object> params) throws ParseException;
+
     HashMap<String, Object> getCommunityDetail(CommunityVo communityVo);
 
     void insertCommunity(CommunityVo communityVo) throws ParseException;

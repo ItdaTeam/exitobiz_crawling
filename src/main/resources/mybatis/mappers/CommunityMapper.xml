@@ -107,18 +107,10 @@
 
     <insert id="insertBlock" parameterType="HashMap">
         insert into itda_app.user_block(
-            blockidx,
-            target_id,
-            cret_id,
-            cret_dt,
-            active_yn
+            blockidx,target_id,cret_id,cret_dt,active_yn
         ) values(
-                    (select coalesce(max(blockidx)+1,1) as blockidx from itda_app.user_block),
-                    #{target_id},
-                    #{user_id},
-                    NOW(),
-                    'Y'
-                ) ON CONFLICT(target_id,cret_id)
+            (select coalesce(max(blockidx)+1,1) as blockidx from itda_app.user_block), #{target_id}, #{user_id}, NOW(), 'Y'
+        ) ON CONFLICT(target_id,cret_id)
         DO UPDATE SET cret_dt = NOW()
     </insert>
 
@@ -128,6 +120,11 @@
                 blockidx = #{item.blockidx}
             </foreach>
     </delete>
+
+    <insert id="insertReport" parameterType="HashMap">
+        INSERT INTO  itda_app.report ( targetidx, category, report_user_id, target_user_id, description, status, cret_dt )
+                            VALUES ( #{target_idx}, #{category}, #{user_id}, #{target_user_id}, #{description}, #{status}, NOW() )
+    </insert>
 
 
     <select id="getNewId" resultType="int">

@@ -18,8 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CommunityServiceImpl implements CommunityService {
     private final CommunityMapper communityMapper;
-
     private final FileService fileService;
+
 
     @Override
     public List<CommunityVo> getCommunityList(HashMap<String, Object> params) throws ParseException {
@@ -47,6 +47,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public void insertReport(HashMap<String, Object> params) throws ParseException {
+        communityMapper.insertReport(params);
+    }
+
+    @Override
     public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo) {
         return communityMapper.getCommunityDetail(communityVo);
     }
@@ -71,8 +76,6 @@ public class CommunityServiceImpl implements CommunityService {
                     e.printStackTrace();
                 }
             }
-            System.out.println("##########" + communityVo);
-
             communityMapper.insertCommunity(communityVo);
         }catch(Exception e){
             e.printStackTrace();
