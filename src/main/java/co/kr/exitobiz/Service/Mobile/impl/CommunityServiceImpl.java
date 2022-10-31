@@ -3,16 +3,16 @@ package co.kr.exitobiz.Service.Mobile.impl;
 import co.kr.exitobiz.Mappers.Mobile.CommunityMapper;
 import co.kr.exitobiz.Service.Mobile.CommunityService;
 import co.kr.exitobiz.Service.Mobile.FileService;
-import co.kr.exitobiz.Vo.Cms.UserVo;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigInteger;
+import java.sql.Array;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +34,11 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public List<HashMap> getBlockList(CommunityVo communityVo) throws ParseException {
         return communityMapper.getBlockList(communityVo);
+    }
+
+    @Override
+    public void delBlockUser(List<Object> params) throws ParseException {
+        communityMapper.delBlockUser(params);
     }
 
     @Override

@@ -7,6 +7,7 @@ import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.json.Json;
@@ -47,7 +48,6 @@ public class CommunityController {
     @GetMapping("/community/all")
     @ResponseBody
     public String getCommunityList(@RequestHeader Map<String, String> header, @RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
-        System.out.println("####" + header.get("authorization"));
         int cntSql = Integer.parseInt(String.valueOf(params.get("cnt_sql")));
         params.replace("cnt_sql", cntSql);
 
@@ -87,6 +87,19 @@ public class CommunityController {
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = mapper.writeValueAsString(communityService.getBlockList(vo));
         return jsonStr;
+    }
+
+    @PostMapping("/community/delBlockUser")
+    @ResponseBody
+    public void delBlockUser(@RequestBody Map<String, Object>[] params) throws ParseException{
+        String result = "fail";
+        JSONArray jsonArr = new JSONArray(params);
+        List<Object> list = jsonArr.toList();
+        System.out.println("#########" + list);
+
+       // HashMap<String, Object> map = new HashMap<>();
+       // map.put("block_array", params);
+        communityService.delBlockUser(list);
     }
 
     @GetMapping("/community/one")

@@ -98,12 +98,19 @@
     </select>
 
     <select id="getBlockList"  parameterType="CommunityVo" resultType="HashMap">
-        select u.usernickname from itda_app.user_block ub
+        select ub.blockidx, u.usernickname from itda_app.user_block ub
             left outer join itda_app.usertable u on u.id = ub.target_id
                 where 1=1
                 and ub.cret_id = #{userId}
         order by cret_dt desc
     </select>
+
+    <delete id="delBlockUser" parameterType="List">
+        delete from itda_app.user_block ub where 1=1
+            <foreach item="item" collection = "list" separator="or" open="and">
+                blockidx = #{item.blockidx}
+            </foreach>
+    </delete>
 
 
     <select id="getNewId" resultType="int">
