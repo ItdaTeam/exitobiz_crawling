@@ -105,6 +105,23 @@
         order by cret_dt desc
     </select>
 
+    <insert id="insertBlock" parameterType="HashMap">
+        insert into itda_app.user_block(
+            blockidx,
+            target_id,
+            cret_id,
+            cret_dt,
+            active_yn
+        ) values(
+                    (select coalesce(max(blockidx)+1,1) as blockidx from itda_app.user_block),
+                    #{target_id},
+                    #{user_id},
+                    NOW(),
+                    'Y'
+                ) ON CONFLICT(target_id,cret_id)
+        DO UPDATE SET cret_dt = NOW()
+    </insert>
+
     <delete id="delBlockUser" parameterType="List">
         delete from itda_app.user_block ub where 1=1
             <foreach item="item" collection = "list" separator="or" open="and">

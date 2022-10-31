@@ -95,11 +95,14 @@ public class CommunityController {
         String result = "fail";
         JSONArray jsonArr = new JSONArray(params);
         List<Object> list = jsonArr.toList();
-        System.out.println("#########" + list);
 
-       // HashMap<String, Object> map = new HashMap<>();
-       // map.put("block_array", params);
         communityService.delBlockUser(list);
+    }
+
+    @PostMapping("/community/insertBlock")
+    @ResponseBody
+    public void insertBlock(@RequestHeader Map<String, Object> header) throws ParseException {
+        communityService.insertBlock((HashMap<String, Object>) header);
     }
 
     @GetMapping("/community/one")

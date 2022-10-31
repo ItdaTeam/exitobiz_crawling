@@ -42,6 +42,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public void insertBlock(HashMap<String, Object> params) throws ParseException {
+        communityMapper.insertBlock(params);
+    }
+
+    @Override
     public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo) {
         return communityMapper.getCommunityDetail(communityVo);
     }

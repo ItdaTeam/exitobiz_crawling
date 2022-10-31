@@ -18,6 +18,8 @@ public interface CommunityService {
 
     void delBlockUser(List<Object> params) throws ParseException;
 
+    void insertBlock(HashMap<String, Object> params) throws ParseException;
+
     HashMap<String, Object> getCommunityDetail(CommunityVo communityVo);
 
     void insertCommunity(CommunityVo communityVo) throws ParseException;
