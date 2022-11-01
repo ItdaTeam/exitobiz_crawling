@@ -18,7 +18,8 @@
     <div class="main_container">
         <section class="main_section">
             <h2 class="main_title"><span class="material-icons-round"> done_outline</span> 지원사업 관리</h2>
-            <span id="PUSH" class="push">PUSH발송<i class="fa-solid fa-share-from-square"></i></span>
+            <span id="PUSH" class="push push1">지원사업 PUSH발송<i class="fa-solid fa-share-from-square"></i></span>
+            <span id="PUSH" class="push push2">공지 PUSH발송<i class="fa-solid fa-share-from-square"></i></span>       
             <div class="main_summary">
                 <dl>
                     <dt>전체 수</dt>
@@ -126,7 +127,7 @@
     </div>
     <div class="exitoModal">
         <section class="exitoModal1">
-            <h1>푸쉬 알람 발송<span onclick="closeModal()">X</span></h1>
+            <h1>지원사업 푸쉬 발송<span onclick="closeModal()">X</span></h1>
             <p><span class="dot">*</span>필수항목</p>
             <!-- <hr class="boldHR"> -->
         </section>
@@ -232,6 +233,64 @@
         <p id="send"><a href="#" onclick="sendPush()">발송</a></p>
 
     </div>
+
+
+
+
+
+    <div class="NewExitoModal">
+        <section class="NewExitoModal1">
+            <h1>공지 푸쉬 알람 발송<span onclick="closeModal()">X</span></h1>
+            <p><span class="dot">*</span>필수항목</p>
+            <!-- <hr class="boldHR"> -->
+        </section>
+
+        <form name="push_form1" id="push_form1" onsubmit="return false;">
+        <section class="NewExitoModal2">
+            <div class="NewExitoModalleft">
+                <p><span class="dot">*</span>대상선택</p>
+            </div>
+            <div class="NewExitoModalRight">
+                <ul class="areaList NewAreaList">
+                    <li>
+                        <input type="checkbox" id="Newpoint2" name="location" value="C02">
+                        <label for="Newpoint2">공지사항</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Newpoint3" name="location" value="C031">
+                        <label for="Newpoint3">배너</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="Newpoint4" name="location" value="C032">
+                        <label for="Newpoint4">커뮤니티</label>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="NewExitoModal3">
+            <label for="idx"><span class="dot">*</span>게시판 번호</label>
+            <input type="text" name="idx" id="idx">
+        </section>
+        <section class="NewExitoModal4">
+            <label for="title"><span class="dot">*</span>제목</label>
+            <input type="text" name="titel" id="title">
+        </section>
+        <section class="NewExitoModal5">
+            <label for="body"><span class="dot">*</span>본문</label>
+            <textarea name="body" id="body" rows="8" cols="80"></textarea>
+        </section>
+        </form>
+
+        <p id="send"><a href="#" onclick="sendPush()">발송</a></p>
+    </div>
+
+
+
+
+
+
+
+
 </div>
 </body>
 </html>
@@ -273,7 +332,7 @@
     }
 
 
-    $(".push").click(function(){
+    $(".push1").click(function(){
         $('#push_form')[0].reset();
 
         $(".modal_bg").addClass("on");
@@ -283,9 +342,19 @@
 
     function closeModal(){
       $(".modal_bg").removeClass("on");
-      $('.exitoModal').removeClass('on');
+      $(".exitoModal").removeClass('on');
+      $(".modal_bg").removeClass("on");
+      $('.NewExitoModal').removeClass('on');
     }
 
+// 지원사업관리 push화면 보이기
+    $(".push2").click(function(){
+        $('#push_form1')[0].reset();
+
+        $(".modal_bg").addClass("on");
+        $(".NewExitoModal").addClass("on");
+
+    });
 
     function sendPush(){
         const query = 'input[name="location"]:checked';
