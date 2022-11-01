@@ -8,6 +8,7 @@ import co.kr.exitobiz.Vo.Cms.ContentVo;
 import co.kr.exitobiz.Vo.Cms.NoticeVo;
 import co.kr.exitobiz.Vo.Cms.PopupVo;
 import co.kr.exitobiz.Vo.Cms.SearchVo;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -15,6 +16,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -45,20 +47,31 @@ public class ContentRepository {
     public void createContent(Content content){ em.persist(content);}
 
     public List<Notice> getNotice(SearchVo searchVo) throws ParseException {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // 기한조건
+        if(searchVo.getFrom() != null) {
+            builder.and(Expressions.dateTimeTemplate(Date.class,"{0}",notice.createAt, "YYYY-MM-DD")
+                    .goe(Expressions.dateTimeTemplate(Date.class,"TO_DATE({0}, {1})",searchVo.getFrom(), "YYYY-MM-DD")));
+        }
+
+        if(searchVo.getTo() != null) {
+            builder.and(Expressions.dateTimeTemplate(Date.class,"{0}",notice.createAt, "YYYY-MM-DD")
+                    .loe(Expressions.dateTimeTemplate(Date.class,"TO_DATE({0}, {1})",searchVo.getTo(), "YYYY-MM-DD")));
+        }
+
         return jpaQueryFactory
                 .selectFrom(notice)
-                .where(Expressions.dateTimeTemplate(Date.class,"{0}",notice.createAt, "YYYY-MM-DD")
-                        .goe(Expressions.dateTimeTemplate(Date.class,"TO_DATE({0}, {1})",searchVo.getFrom(), "YYYY-MM-DD")))
-                .where(Expressions.dateTimeTemplate(Date.class,"{0}",notice.createAt, "YYYY-MM-DD")
-                        .loe(Expressions.dateTimeTemplate(Date.class,"TO_DATE({0}, {1})",searchVo.getTo(), "YYYY-MM-DD")))
+                .where(builder)
                 .orderBy(notice.createAt.desc())
                 .fetch();
     }
 
     public List<Content> getContent(SearchVo searchVo) throws ParseException {
+
         return jpaQueryFactory
                 .selectFrom(content1)
-                .where(Expressions.dateTimeTemplate(Date.class,"{0}",content1.cretDt, "YYYY-MM-DD")
+                                .where(Expressions.dateTimeTemplate(Date.class,"{0}",content1.cretDt, "YYYY-MM-DD")
                         .goe(Expressions.dateTimeTemplate(Date.class,"TO_DATE({0}, {1})",searchVo.getFrom(), "YYYY-MM-DD")))
                 .where(Expressions.dateTimeTemplate(Date.class,"{0}",content1.cretDt, "YYYY-MM-DD")
                         .loe(Expressions.dateTimeTemplate(Date.class,"TO_DATE({0}, {1})",searchVo.getTo(), "YYYY-MM-DD")))
@@ -68,6 +81,8 @@ public class ContentRepository {
     }
 
     private BooleanExpression searchContentEq(SearchVo searchVo){
+        //기간조건
+        //검색조건
         if(searchVo.getInq() != ""){
             if(searchVo.getCon().equals("all")){
                 return searchVo.getListInq() != null ?
