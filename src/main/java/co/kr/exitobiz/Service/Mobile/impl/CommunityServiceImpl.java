@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Array;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,13 +68,29 @@ public class CommunityServiceImpl implements CommunityService {
                 params.put("filePath", "/img/community/");
                 params.put("fileName", fileName);
 
+                //컨텐츠 내 이미지 저장
                 ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
                 try{
-                    System.out.println("check");
                     fileService.uploadFile(communityVo.getUpFile(), params);
 
                 }catch (Exception e){
                     e.printStackTrace();
+                }
+
+                //다중첨부파일 저장
+                if(communityVo.getAttachFile() != null){
+                    final String url = "https://exitobiz.co.kr/file/community/";  // 임시
+                    HashMap<String, String> fileParams = new HashMap<>();
+                    ArrayList<String> fileArray = new ArrayList<>();
+
+                    fileParams.put("filePath", "/img");
+                    communityVo.getAttachFile().forEach(file ->{
+                       try{
+                            fileService.uploadFile(file, fileParams);
+                       }catch(Exception e){
+                           e.printStackTrace();
+                       }
+                    });
                 }
             }
             communityMapper.insertCommunity(communityVo);
@@ -116,9 +133,23 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    @Transactional
-    public void declareCommunity(CommunityVo communityVo) throws ParseException {
-        communityMapper.declareCommunity(communityVo);
+    public List<HashMap> getCommentList(HashMap<String, Object> params) throws ParseException {
+        return communityMapper.getCommentList(params);
+    }
+
+    @Override
+    public List<HashMap> getRecommentList(HashMap<String, Object> params) throws ParseException {
+        return communityMapper.getRecommentList(params);
+    }
+
+    @Override
+    public void updateComment(HashMap<String, Object> params) throws ParseException {
+        communityMapper.updateComment(params);
+    }
+
+    @Override
+    public void delComment(HashMap<String, Object> params) throws ParseException {
+        communityMapper.delComment(params);
     }
 
     @Override

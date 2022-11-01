@@ -31,7 +31,14 @@ public interface CommunityMapper {
 
     public void deleteCommunity(CommunityVo vo); // 커뮤니티 삭제
 
-    public void declareCommunity(CommunityVo vo); // 커뮤니티 신고 flag 변경
+    //댓글
+    public List<HashMap> getCommentList(HashMap<String, Object> params); // 커뮤티니 내 댓글 리스트
+
+    public List<HashMap> getRecommentList(HashMap<String, Object> params); // 커뮤니티 내 대댓글 리스트
+
+    public void updateComment(HashMap<String, Object> params); // 커뮤니티 댓글 수정
+
+    public void delComment(HashMap<String, Object> params); // 커뮤니티 댓글 삭제
 
     public void reviewViews(int id); // 조회수 증가
 

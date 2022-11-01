@@ -3,6 +3,8 @@ package co.kr.exitobiz.Vo.Mobile;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 public class CommunityVo {
     private Integer id;
@@ -16,4 +18,6 @@ public class CommunityVo {
     private String updtDt;
 
     private Integer viewCnt;
+
+    private List<MultipartFile> attachFile;
 }

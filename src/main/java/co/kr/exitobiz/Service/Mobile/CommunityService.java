@@ -30,7 +30,13 @@ public interface CommunityService {
 
     void deleteCommunity(CommunityVo communityVo) throws ParseException;
 
-    void declareCommunity(CommunityVo communityVo) throws ParseException;
+    List<HashMap> getCommentList(HashMap<String, Object> params) throws ParseException;
+
+    List<HashMap> getRecommentList(HashMap<String, Object> params) throws ParseException;
+
+    void updateComment(HashMap<String, Object> params) throws ParseException;
+
+    void delComment(HashMap<String, Object> params) throws ParseException;
 
     void reviewViews(int id) throws ParseException;
 

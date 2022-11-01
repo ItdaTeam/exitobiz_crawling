@@ -13,7 +13,6 @@
                             where 1=1
                               and delete_yn = false
                               and report_yn = false
-                              and step = 1
                               and user_id not in (
                                 select target_id from itda_app.user_block ub
                                 where 1=1
@@ -46,13 +45,15 @@
                         and 1=1
                     </otherwise>
                 </choose>
-                <trim prefix="and" prefixOverrides="or">
-                    <foreach item="item" index="index" collection = "search_array">
-                        <trim prefix="OR">
-                            TITLE LIKE '%'||#{item}||'%' OR CONTENT LIKE '%'||#{item}||'%'
-                        </trim>
-                    </foreach>
-                </trim>
+                <if test='search_array != null'>
+                    <trim prefix="and" prefixOverrides="or">
+                        <foreach item="item" index="index" collection = "search_array">
+                            <trim prefix="OR">
+                                TITLE LIKE '%'||#{item}||'%' OR CONTENT LIKE '%'||#{item}||'%'
+                            </trim>
+                        </foreach>
+                    </trim>
+                </if>
           ) as T1 order by
                <choose>
                     <when test="ord == '인기순'">
@@ -161,6 +162,74 @@
         update itda_web.community_content set
             delete_yn = true
         where id = #{id}
+    </update>
+
+    <!--  댓글  -->
+    <select id="getCommentList" parameterType="HashMap" resultType="HashMap">
+        select cc.* ,u.idprofile ,u.usernickname, cclh.comment_like_history_id, cclh.thumb_up,
+               (select count(*)
+                from itda_app.community_comment cc2
+                where 1=1
+                  and cc2.report_yn != 'Y'
+                and cc2.delete_yn != true
+                and cc2.step = 2
+                and cc2.user_id not in (
+                select target_id
+                from itda_app.user_block ub
+                where 1=1
+                and ub.cret_id = #{user_id}
+                )
+                and cc2.parent_comment_id = cc.id) as comment_cnt
+        from itda_app.community_comment cc
+            left outer join itda_app.usertable u on u.id = cc.user_id
+            left outer join itda_app.community_comment_like_history cclh on cclh.comment_id = cc.id
+            and cclh.comment_like_history_id  = (
+            select comment_like_history_id
+            from itda_app.community_comment_like_history
+            where 1=1
+            and user_id = #{user_id}
+            and comment_id = cc.id
+            )
+        where 1=1
+          and cc.step = 1
+          and cc.report_yn != 'Y'
+          and cc.delete_yn != true
+          and cc.c_content_id = #{content_id}
+          and cc.user_id not in (
+            select target_id
+            from itda_app.user_block ub
+            where 1=1
+          and ub.cret_id = #{user_id}
+            )
+    </select>
+
+    <select id="getRecommentList" parameterType="HashMap" resultType="HashMap">
+        select cc.*,u.idprofile ,u.usernickname
+        from itda_app.community_comment cc
+                 left outer join itda_app.usertable u on u.id = cc.user_id
+        where 1=1
+          and cc.step = 2
+          and cc.report_yn != 'Y'
+          and cc.delete_yn != true
+          and cc.user_id not in (
+                	select target_id
+                	from itda_app.user_block ub
+                	where 1=1
+                	and ub.cret_id = #{user_id}
+                )
+          and cc.parent_comment_id = #{parent_comment_id};
+    </select>
+
+    <update id="updateComment" parameterType="HashMap">
+        update itda_app.community_comment
+        SET description = #{description} ,updt_dt = now()
+        where id = #{id}
+    </update>
+
+    <update id="delComment" parameterType="HashMap">
+        update itda_app.community_comment
+        SET delete_yn = true
+        WHERE id = #{id}
     </update>
 
     <update id="reviewViews" parameterType="int">

@@ -52,9 +52,12 @@ public class CommunityController {
         params.replace("cnt_sql", cntSql);
 
         //검색 조건 배열로 넣기
-        String search_array = (String) params.get("search_array");
-        String[] array = search_array.trim().split(",");
-        params.put("search_array", array);
+        if(params.get("search_array") != null){
+            String search_array = (String) params.get("search_array");
+            String[] array = search_array.trim().split(",");
+            params.put("search_array", array);
+        }
+
 
         // Date Format 설정
         ObjectMapper mapper = new ObjectMapper();
@@ -146,10 +149,50 @@ public class CommunityController {
         communityService.deleteCommunity(communityVo);
     }
 
-    @PutMapping("/community/declare")
+    //게시글 내 댓글 리스트
+    @PostMapping(value = "/community/comment")
     @ResponseBody
-    public void decCommunity(CommunityVo communityVo) throws ParseException {
-        communityService.declareCommunity(communityVo);
+    public String getCommentList(@RequestHeader Map<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
+        body.put("user_id", header.get("user_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Date Format 설정
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        mapper.setDateFormat(dateFormat);
+
+        String jsonStr = mapper.writeValueAsString(communityService.getCommentList(body));
+        return jsonStr;
+    }
+
+    //게시글 내 대댓글 리스트
+    @PostMapping(value = "/community/recomment")
+    @ResponseBody
+    public String getRecommentList(@RequestHeader Map<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
+        body.put("user_id", header.get("user_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Date Format 설정
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        mapper.setDateFormat(dateFormat);
+
+        String jsonStr = mapper.writeValueAsString(communityService.getRecommentList(body));
+        return jsonStr;
+    }
+
+    //게시글 내 댓글, 대댓글 수정
+    @PostMapping(value = "/community/updateComment")
+    @ResponseBody
+    public void updateComment(@RequestBody HashMap<String, Object> body) throws Exception{
+        communityService.updateComment(body);
+    }
+
+    //게시글 내 댓글, 대댓글 삭제
+    @PostMapping(value = "/community/delComment")
+    @ResponseBody
+    public void delComment(@RequestBody HashMap<String, Object> body) throws Exception{
+        communityService.delComment(body);
     }
 
     // ckeditor 이미지 업로드
