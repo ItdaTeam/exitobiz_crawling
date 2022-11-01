@@ -245,7 +245,7 @@
             <!-- <hr class="boldHR"> -->
         </section>
 
-        <form name="push_form" id="push_form" onsubmit="return false;">
+        <form name="push_form1" id="push_form1" onsubmit="return false;">
         <section class="NewExitoModal2">
             <div class="NewExitoModalleft">
                 <p><span class="dot">*</span>대상선택</p>
@@ -349,7 +349,7 @@
 
 // 지원사업관리 push화면 보이기
     $(".push2").click(function(){
-        $('#push_form')[0].reset();
+        $('#push_form1')[0].reset();
 
         $(".modal_bg").addClass("on");
         $(".NewExitoModal").addClass("on");
