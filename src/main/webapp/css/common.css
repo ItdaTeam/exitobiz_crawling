@@ -1596,7 +1596,7 @@ h5 {
   opacity:0.4;
   display:none;
 }
-/*.modal_bg.on{display:block;pointer-events:auto;}*/
+.modal_bg.on{display:block;pointer-events:auto;}
 
 
 
@@ -1642,7 +1642,8 @@ h5 {
   box-sizing:border-box;
   background:#fff;
   position:fixed;
-  left:calc((100% - 50%) - 17%);top:12%;
+  left:calc((100% - 50%) - 23%);
+  top:12%;
   /*width:40%;*/
   height:80%;
   z-index:1000000000;
@@ -1723,14 +1724,18 @@ h5 {
   line-height:40px;
   padding:0% 1%;
   cursor:pointer;
-  width:10%;
+  width:13%;
+  min-width:200px;
   color:#37f1aa;
   transition:all 0.5s ease 0s;
   font-weight:bold;
   text-align:center;
 }
-.push > i{margin-left:3%;}
 
+.push2{margin-right:20px;}
+
+
+.push > i{margin-left:3%;}
 .push:hover{background:#37f1aa;border:3px solid #37f1aa;box-sizing:border-box;border-radius:20px;color:#fff;}
 
 .areaList > li input[type="checkbox"] + label:after{
@@ -1759,6 +1764,74 @@ h5 {
   background: #37f1aa;
   content: "";
 }
+
+
+
+/* NewExitoModal */
+.NewExitoModal{
+  z-index: 9999999999999999999;
+  box-sizing:border-box;
+  background:#fff;
+  position:fixed;
+  left:calc((100% - 50%) - 17%);top:12%;
+  height:850px;
+  border-radius:20px;
+  padding:1% 1%;
+  font-family: 'Play', 'Noto Sans KR', sans-serif;
+  box-shadow:0 5px 15px -7px rgba(0,0,0,1);
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.4s ease 0s;
+  font-weight: bold;
+}
+
+.NewExitoModal.on{ opacity:1;pointer-events:auto;}
+
+.NewExitoModal1 span{position: absolute;right:20px;cursor: pointer;}
+.NewExitoModal1 > p{text-align: right;padding-right: 20px;margin-bottom: 2%;margin-top: 2%;}
+.NewExitoModal2{
+  display: flex;
+  padding: 3% 0%;
+  border-top: 3px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+}
+.NewExitoModalleft{width:20%;}
+.NewExitoModalRight{width:70%;}
+
+.NewExitoModal3,.NewExitoModal4{
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  padding: 3% 0%;
+}
+.NewExitoModal5{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2% 0%;
+}
+
+
+#send {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  text-align: center;
+  background: #000;
+  line-height: 40px;
+  border-radius: 6px;
+  position: absolute;
+  left: 2%;
+  bottom: 5%;
+  width: 96%;
+}
+#send > a{color: #fff;}
+.NewExitoModal5 > textarea{
+  width:100%;
+  height:200px;
+  margin-top:10px;
+}
+
 
 /* 로딩바 */
 .loading_bar_wrap {position:fixed;z-index:99;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;}
