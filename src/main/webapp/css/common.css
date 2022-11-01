@@ -1682,17 +1682,17 @@ h5 {
 
 
 
-.exitoModal3{padding:5% 0%;border-bottom:1px solid #ccc;box-sizing:border-box;width:100%;}
+.exitoModal3{padding:3% 0%;border-bottom:1px solid #ccc;box-sizing:border-box;width:100%;}
 .exitoModal3::after{content:"";display:block;clear:both;}
 .exitoModal3 > label{box-sizing:border-box;width:15%;display:block;float:left;margin-top:1%;}
 .exitoModal3 > input{float:left;}
 
-.exitoModal4{padding:5% 0%;border-bottom:1px solid #ccc;box-sizing:border-box;width:100%;}
+.exitoModal4{padding:3% 0%;border-bottom:1px solid #ccc;box-sizing:border-box;width:100%;}
 .exitoModal4::after{content:"";display:block;clear:both;}
 .exitoModal4 > label{box-sizing:border-box;width:15%;display:block;float:left;margin-top:1%;}
 .exitoModal4 > input{min-width:50%;max-width:50%;float:left;}
 
-.exitoModal5{padding:8% 0%;}
+.exitoModal5{padding:3% 0%;}
 .exitoModal5 > textarea{
   margin-top:3%;
   font-size:17px;
