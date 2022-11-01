@@ -7,6 +7,7 @@ import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.json.Json;
@@ -47,7 +48,6 @@ public class CommunityController {
     @GetMapping("/community/all")
     @ResponseBody
     public String getCommunityList(@RequestHeader Map<String, String> header, @RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
-        System.out.println("####" + header.get("authorization"));
         int cntSql = Integer.parseInt(String.valueOf(params.get("cnt_sql")));
         params.replace("cnt_sql", cntSql);
 
@@ -89,12 +89,42 @@ public class CommunityController {
         return jsonStr;
     }
 
+    // 차단 회원 해제
+    @PostMapping("/community/delBlockUser")
+    @ResponseBody
+    public void delBlockUser(@RequestBody Map<String, Object>[] params) throws ParseException{
+        String result = "fail";
+        JSONArray jsonArr = new JSONArray(params);
+        List<Object> list = jsonArr.toList();
+
+        communityService.delBlockUser(list);
+    }
+
+    // 차단 회원 추가
+    @PostMapping("/community/insertBlock")
+    @ResponseBody
+    public void insertBlock(@RequestHeader Map<String, Object> header) throws ParseException {
+        communityService.insertBlock((HashMap<String, Object>) header);
+    }
+
+    // 신고하기 추가
+    @PostMapping("/community/insertReport")
+    @ResponseBody
+    public void insertReport(@RequestHeader Map<String, Object> header, @RequestBody Map<String, Object> body) throws ParseException {
+        body.put("user_id", header.get("user_id"));
+        body.put("target_user_id", header.get("target_user_id"));
+
+        communityService.insertReport((HashMap<String, Object>) body);
+    }
+
+    // 게시글 상세
     @GetMapping("/community/one")
     @ResponseBody
     public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo) throws ParseException {
         return communityService.getCommunityDetail(communityVo);
     }
 
+    // 게시글 추가
     @PostMapping("/community")
     @ResponseBody
     public int createCommunity(CommunityVo communityVo) throws ParseException {
@@ -102,12 +132,14 @@ public class CommunityController {
         return communityService.getNewId();
     }
 
+    // 게시글 수정
     @PutMapping("/community/edit")
     @ResponseBody
     public void editCommunity(CommunityVo communityVo) throws ParseException {
-            communityService.updateCommunity(communityVo);
+        communityService.updateCommunity(communityVo);
     }
 
+    //게시글 삭제
     @RequestMapping(value = "/community/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public void delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{
