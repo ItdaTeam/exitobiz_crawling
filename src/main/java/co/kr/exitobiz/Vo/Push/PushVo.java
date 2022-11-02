@@ -12,4 +12,7 @@ public class PushVo {
     String keyword; //푸쉬용 키워드
     String usertoken; //사용자 토큰
     String restDate; // 마감 남은 일자
+
+    // 마감임박용
+    String mbAddidx; // 지원사업 PK
 }
