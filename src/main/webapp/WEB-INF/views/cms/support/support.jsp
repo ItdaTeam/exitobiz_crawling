@@ -385,9 +385,9 @@
         const response = axios.post("/push/sendSplit", null, {
             params : {
                 userloc : result.slice(0,-1),
-                title : push_form.title.value,
-                body : push_form.body.value,
-                idx : push_form.idx.value,
+                title : encodeURIComponent(push_form.title.value),
+                body : encodeURIComponent(push_form.body.value),
+                idx : encodeURIComponent(push_form.idx.value),
                 keyId : 1
             }
         });
