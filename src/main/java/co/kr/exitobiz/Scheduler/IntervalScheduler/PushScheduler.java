@@ -81,7 +81,6 @@ public class PushScheduler{
      * 매일 10:00 에 1회 발송
      * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
      */
-    //2주뒤 업데이트되면 다시 테스트
     @Scheduled(cron = "0 0 10 * * ?")
     public void bookmarkPush() throws InterruptedException, Exception {
 
@@ -98,24 +97,16 @@ public class PushScheduler{
         if(bookmarks.size() > 0){
             for(PushVo bookmark : bookmarks ){
 
-
-
                 HashMap<String,String> push = new HashMap<>();  // 푸쉬 발송을 위한 기본 셋팅
-                // 푸쉬를 위한 기본 셋팅 처리
-                if(bookmark.getRestDate().equals("3")){
-                    push.put("title","(마감임박 3일전) 찜한 사업 마감일 임박!!!");
-                    push.put("body", bookmark.getSiTitle());
-                    push.put("keyId","5");
-                }else{
-                    push.put("title","(마감임박 7일전) 찜한 사업 마감일 임박!!!");
-                    push.put("body", bookmark.getSiTitle());
-                    push.put("keyId","5");
-                }
 
+                // 푸쉬를 위한 기본 셋팅 처리
+                push.put("title","(마감임박 " + bookmark.getRestDate() + "일전) 찜한 사업 마감일 임박!!!");
+                push.put("body", bookmark.getSiTitle());
+                push.put("keyId","5");
+                push.put("idx", bookmark.getMbAddidx());
                 usertokens.clear();
 
                  // 푸쉬를 발송할 사용자 토큰 처리
-
                 Map<String,Object> usertoken = new HashMap<String,Object>();
                 usertoken.put("usertoken",bookmark.getUsertoken());
                 usertokens.add(usertoken);

@@ -64,8 +64,8 @@ public class PushMultipleServiceImpl implements PushMultipleService {
 
             /* 500개 제한. 500개넘어가면 푸시보내고 리스트 다시 초기화 */
             if ((i % 499) == 0 && (i != 0)) {
-                //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
-                if(params.get("idx") == null || params.get("idx") == "null"){
+                //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
+                if(params.get("keyId").equals("5")) {
                     // 찜한사업 마감임박 알람용 ( 배열 돌면서 한 지원사업 당 한 명에게 전송 )
                     Message msg = Message.builder()
                             .setNotification(Notification.builder()
@@ -78,6 +78,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                                             .build())
                                     .build())
                             .putData("keyId", params.get("keyId"))
+                            .putData("idx", params.get("idx"))
                             .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                             .setToken(usertokens.get(0).get("usertoken").toString())
                             .build();
@@ -125,8 +126,8 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             System.out.println("마지막리스트::" + tokenCount);
             System.out.println(tokenList.size());
 
-            //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
-            if(params.get("idx") == null || params.get("idx") == "null") {
+            //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
+            if(params.get("keyId").equals("5")) {
                 // 찜한사업 마감임박 알람용 ( 배열 돌면서 한 지원사업 당 한 명에게 전송(multi아님) )
                 Message msg = Message.builder()
                         .setNotification(Notification.builder()
@@ -139,6 +140,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                                         .build())
                                 .build())
                         .putData("keyId", params.get("keyId"))
+                        .putData("idx", params.get("idx"))
                         .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                         .setToken(usertokens.get(0).get("usertoken").toString())
                         .build();
@@ -227,14 +229,11 @@ public class PushMultipleServiceImpl implements PushMultipleService {
 
                 System.out.println(i + "번째 리셋 토큰카운트::" + tokenCount);
                 System.out.println(tokenList.size());
-                System.out.println("#######body " + params.get("body"));
-
                 MulticastMessage message;
 
-                System.out.println("###########" + params.get("idx"));
 
-                //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
-                if(params.get("idx") == null || params.get("idx") == "null"){
+                //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
+                if(params.get("keyId").equals("5")) {
 
                     message = MulticastMessage.builder()
                             .setNotification(Notification.builder()
@@ -248,6 +247,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                                             .build())
                                     .build())
                             .putData("keyId", params.get("keyId"))
+                            .putData("idx", params.get("idx"))
                             .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                             .addAllTokens(tokenList)
                             .build();
@@ -301,8 +301,8 @@ public class PushMultipleServiceImpl implements PushMultipleService {
 
             MulticastMessage message;
 
-            //idx가 필수값인지 모르겠어서 분기처리해서 idx 구분해줌
-            if(params.get("idx") == null || params.get("idx") == "null") {
+            //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
+            if(params.get("keyId").equals("5")) {
                 message = MulticastMessage.builder()
                         .setNotification(Notification.builder()
                                 .setTitle(params.get("title") + "마지막리스트")
@@ -315,6 +315,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                                         .build())
                                 .build())
                         .putData("keyId", params.get("keyId"))
+                        .putData("idx", params.get("idx"))
                         .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                         .addAllTokens(tokenList)
                         .build();
