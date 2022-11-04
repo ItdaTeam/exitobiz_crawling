@@ -253,15 +253,15 @@
             <div class="NewExitoModalRight">
                 <ul class="areaList NewAreaList">
                     <li>
-                        <input type="checkbox" id="Newpoint2" name="location" value="C02">
+                        <input type="radio" id="Newpoint2" name="category" value="9">
                         <label for="Newpoint2">공지사항</label>
                     </li>
                     <li>
-                        <input type="checkbox" id="Newpoint3" name="location" value="C031">
+                        <input type="radio" id="Newpoint3" name="category" value="10">
                         <label for="Newpoint3">배너</label>
                     </li>
                     <li>
-                        <input type="checkbox" id="Newpoint4" name="location" value="C032">
+                        <input type="radio" id="Newpoint4" name="category" value="11">
                         <label for="Newpoint4">커뮤니티</label>
                     </li>
                 </ul>
@@ -273,7 +273,7 @@
         </section>
         <section class="NewExitoModal4">
             <label for="title"><span class="dot">*</span>제목</label>
-            <input type="text" name="titel" id="title">
+            <input type="text" name="title" id="title">
         </section>
         <section class="NewExitoModal5">
             <label for="body"><span class="dot">*</span>본문</label>
@@ -281,7 +281,7 @@
         </section>
         </form>
 
-        <p id="send"><a href="#" onclick="sendPush()">발송</a></p>
+        <p id="send"><a href="javascript:void(0);" onclick="sendNoticePush()">발송</a></p>
     </div>
 
 
@@ -393,7 +393,44 @@
         });
 
         alert("전송을 완료했습니다.");
-        $('.exitoModal').removeClass('on');
+        closeModal();
+        // $('.exitoModal').removeClass('on');
+
+    }
+
+//공지Push발송
+    function sendNoticePush(){
+        const query = 'input[name="category"]:checked';
+        const selectedEl = document.querySelector(query);
+
+        if(selectedEl == null){
+            alert("대상을 선택해주세요.")
+            return false;
+        }
+        if(push_form1.idx.value == ""){
+            alert("게시판번호를 입력해주세요.")
+            return false;
+        }
+        if(push_form1.title.value == ""){
+            alert("제목을 입력해주세요.")
+            return false;
+        }
+        if(push_form1.body.value == ""){
+            alert("본문을 입력해주세요.")
+            return false;
+        }
+        const response = axios.post("/push/sendNotice", null, {
+            params : {
+                title : encodeURIComponent(push_form1.title.value),
+                body : encodeURIComponent(push_form1.body.value),
+                idx : push_form1.idx.value,
+                keyId : push_form1.category.value
+            }
+        });
+
+        alert("전송을 완료했습니다.");
+        closeModal();
+        // $('.NewExitoModal').removeClass('on');
     }
 
     function enterkey() {

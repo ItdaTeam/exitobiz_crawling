@@ -150,4 +150,27 @@ public class PushController {
         }
         return result;
     }
+
+    @PostMapping(value="/sendNotice")
+    @ResponseBody
+    public String sendNotice(@RequestParam HashMap<String,String> params) {
+
+        params.put("title",URLDecoder.decode(params.get("title")));
+        params.put("body",URLDecoder.decode(params.get("body")));
+
+        List<Map<String, Object>> userTokens = userService.getUserTokens();
+
+        String result = "fail";
+        if(!userTokens.isEmpty()){
+            pushMultipleService.savePush(params);
+            try{
+                pushMultipleService.sendListPush(params, userTokens);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                result = "success";
+            }
+        }
+        return result;
+    }
 }

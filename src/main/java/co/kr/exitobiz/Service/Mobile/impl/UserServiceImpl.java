@@ -41,4 +41,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserTokenByKeyId(params);
     }
 
+    @Override
+    public List<Map<String, Object>> getUserTokens() {
+        return userMapper.getUserTokens();
+
+    }
+
 }

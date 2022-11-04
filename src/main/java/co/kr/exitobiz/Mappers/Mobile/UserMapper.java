@@ -16,4 +16,5 @@ public interface UserMapper {
 
     public String getUserTokenByKeyId(HashMap<String, String> params);
 
+    public List<Map<String, Object>> getUserTokens();
 }

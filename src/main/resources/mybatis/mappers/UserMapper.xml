@@ -98,5 +98,13 @@ WHERE id=#{id}
         </if>
     </select>
 
+    <select id="getUserTokens" resultType="map">
+        SELECT usertoken
+        FROM itda_app.usertable u
+        WHERE 1=1
+           AND u.usertoken not in ('', 'null')
+--           AND username in ('강태욱', '권혁남')
+    </select>
+
 
 </mapper>

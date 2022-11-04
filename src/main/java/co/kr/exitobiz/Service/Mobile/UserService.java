@@ -13,4 +13,5 @@ public interface UserService {
     public List<Map<String, usertableVo>> getUserTokenByLocationTest(List params);
     public String getUserTokenByKeyId(HashMap<String, String> params);
 
+    public List<Map<String, Object>> getUserTokens();
 }
