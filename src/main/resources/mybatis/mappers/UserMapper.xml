@@ -28,6 +28,7 @@ WHERE id=#{id}
     SELECT usertoken
     FROM itda_app.usertable u 
      left outer join itda_app.user_push_setting ups on u.id = ups.user_id
+     left outer join itda_app.admin_push_setting aps on u.id = aps.user_id
     WHERE 1=1
       and u.id=#{id}
       and u.usertoken not in ('', 'null')
@@ -61,6 +62,9 @@ WHERE id=#{id}
         </when>
         <when test="keyId == 8 ">
             and coalesce(ups.sp_community_recomment_push,'') != 'N'
+        </when>
+        <when test="keyId == 12 ">
+            and coalesce(aps.chat_push ,'') != 'N'
         </when>
     </choose>
   </select>
