@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,9 @@ public class PushController {
 
         HashMap<String, Object> params2 = new HashMap<>();
 
+        params.put("title", URLDecoder.decode(params.get("title")));
+        params.put("body", URLDecoder.decode(params.get("body")));
+
 //        /* C82,C055,C051을 콤마로 끊어서 배열로 저장 */
         if (params.get("userloc") != null) {
             String location = params.get("userloc");
@@ -97,6 +101,9 @@ public class PushController {
     public String sendSplitPushTest(@RequestParam HashMap<String,String> params) throws Exception {
 
         HashMap<String, Object> params2 = new HashMap<>();
+
+        params.put("title", URLDecoder.decode(params.get("title")));
+        params.put("body", URLDecoder.decode(params.get("body")));
 
 //        /* C82,C055,C051을 콤마로 끊어서 배열로 저장 */
         if (params.get("userloc") != null) {
