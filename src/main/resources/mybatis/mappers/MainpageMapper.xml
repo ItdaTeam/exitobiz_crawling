@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Mobile.MainpageMapper">
+    <select id="getSearchHotKeyWord" resultType="HashMap">
+        select count(*) as cnt, tl.tl_event from itda_app.time_line tl
+        where 1=1
+          and tl.tl_button_name like '%검색%'
+          and tl.tl_cret_dt > (NOW() +'-10 days')::DATE
+        group by tl.tl_event having count(*) > 1 order by cnt desc
+    </select>
+
+    <select id="getMyRecentKeyword" resultType="HashMap" parameterType="HashMap">
+        select tl.tl_cd, tl.tl_event from itda_app.time_line tl
+            where tl_cret_id =#{tl_cret_id} and tl_button_name ='검색버튼' and tl_memo != '검색어삭제'
+        order by tl_cret_dt desc
+    </select>
+
+    <update id="delMyRecentKeyword" parameterType="HashMap">
+        update itda_app.time_line set tl_memo = '검색어삭제' where tl_cd = #{tl_cd}
+    </update>
+
+    <update id="delMyAllRecentKeyword" parameterType="HashMap">
+        update itda_app.time_line set tl_memo = '검색어삭제' where tl_cret_id =#{tl_cret_id} and tl_button_name ='검색버튼' and tl_memo != '검색어삭제'
+    </update>
+
+    <insert id="insertTimeLine" parameterType="HashMap">
+        INSERT INTO  itda_app.time_line (
+            tl_cret_dt, tl_cret_id, tl_page_type, tl_page_depth, tl_page_name, tl_button_name, tl_type_cd, tl_event, tl_memo)
+        VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}, #{tl_event}, #{tl_memo} )
+    </insert>
+
+    <select id="getBannerList" resultType="hashMap">
+        select * from itda_web.banner where active_yn = 'Y' order by index asc
+    </select>
+
+    <select id="getTotalCount" resultType="HashMap">
+        select
+            ( select count(*)from itda_app.support_info si where si.si_active_yn  = 'Y') as total_cnt ,
+            ( select count(*) from itda_app.support_info si where si.si_active_yn  = 'Y' and si.si_cret_dt > (NOW() +'-7 days')::DATE ) as week_cnt,
+	        ( select count(target_name) from (select si.target_name from itda_app.support_info si where si.si_active_yn  = 'Y' group by si.target_name ) A ) as target_cnt,
+	        (select count(*) from itda_app.usertable u2 ) as user_cnt
+    </select>
+
+    <select id="getKeyword" parameterType="HashMap" resultType="HashMap">
+        select array_to_string(array_agg(keyword),',')as keyword from itda_app.user_keyword uk where uk.user_id = #{user_id}
+    </select>
+
+    <insert id="insertKeyword" parameterType="HashMap">
+        INSERT INTO itda_app.user_keyword (
+            user_id, keyword, cret_dt)
+        VALUES ( #{user_id} ,#{keyword}, NOW() )
+    </insert>
+
+    <delete id="delKeyword" parameterType="HashMap">
+        DELETE from itda_app.user_keyword WHERE user_id = #{user_id} and keyword = #{keyword}
+    </delete>
+
+    <delete id="delAllKeyword" parameterType="HashMap">
+        DELETE from itda_app.user_keyword WHERE user_id = #{user_id}
+    </delete>
+
+    <select id="getPushBookList" parameterType="HashMap" resultType="HashMap">
+        select * ,(select count(*) from itda_app.support_comment sc
+                   where 1=1
+                     and sc.report_yn != 'Y'
+                and sc.delete_type != true
+                and sc.step = 1
+                and sc.user_id not in (
+                select target_id from itda_app.user_block ub
+                where 1=1
+                and ub.cret_id = #{user_id}
+                )
+                and sc.post_id = si.si_idx
+                )as comment_cnt
+        from itda_app.my_pushbook mp
+            left outer join itda_app.support_info si on mp.mp_add_idx = si.si_idx
+            left outer join itda_app.my_bookmark mb on si.si_idx = mb.mb_addidx and mb.mb_cret_id = #{user_id}
+            left outer join itda_app.usertable u on id = mb.mb_cret_id
+        where mp.mp_loc_code like concat('%', u.userloc, '%')
+        order by mp.mp_cret_dt desc limit 5
+    </select>
+</mapper>
