@@ -1,4 +1,4 @@
-package co.kr.exitobiz.Mappers.Mobile;
+package co.kr.exitobiz.Mappers.WebApp;
 
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import org.apache.ibatis.annotations.Mapper;

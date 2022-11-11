@@ -1,4 +1,4 @@
-package co.kr.exitobiz.Mappers.Mobile;
+package co.kr.exitobiz.Mappers.WebApp;
 
 import org.apache.ibatis.annotations.Mapper;
 

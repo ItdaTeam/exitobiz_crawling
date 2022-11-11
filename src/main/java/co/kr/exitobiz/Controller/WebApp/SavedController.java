@@ -1,18 +1,14 @@
-package co.kr.exitobiz.Controller.Mobile;
+package co.kr.exitobiz.Controller.WebApp;
 
-import co.kr.exitobiz.Service.Mobile.MainpageService;
-import co.kr.exitobiz.Service.Mobile.SavedService;
+import co.kr.exitobiz.Service.WebApp.SavedService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.authenticator.SavedRequest;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.HashMap;
-import java.util.Iterator;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="co.kr.exitobiz.Mappers.Mobile.SavedMapper">
+<mapper namespace="co.kr.exitobiz.Mappers.WebApp.SavedMapper">
 
     <select id="getRecentlyMySavedBook" parameterType="HashMap" resultType="hashMap">
         select si.si_idx, si.target_name, si.target_cat_name, si.target_cost_value, si.loc_code, si.si_title, si.mobile_url, si.si_end_dt, si.view_cnt,

@@ -1,34 +1,14 @@
-package co.kr.exitobiz.Controller.Mobile;
+package co.kr.exitobiz.Controller.WebApp;
 
-import co.kr.exitobiz.Mappers.Mobile.MainpageMapper;
-import co.kr.exitobiz.Service.Mobile.CommunityService;
-import co.kr.exitobiz.Service.Mobile.FileService;
-import co.kr.exitobiz.Service.Mobile.MainpageService;
-import co.kr.exitobiz.Vo.Cms.ImageLink;
-import co.kr.exitobiz.Vo.Mobile.CommunityVo;
+import co.kr.exitobiz.Service.WebApp.MainpageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
-import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor

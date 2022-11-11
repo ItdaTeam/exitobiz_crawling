@@ -1,17 +1,11 @@
-package co.kr.exitobiz.Service.Mobile.impl;
+package co.kr.exitobiz.Service.WebApp.impl;
 
-import co.kr.exitobiz.Mappers.Mobile.CommunityMapper;
-import co.kr.exitobiz.Mappers.Mobile.SavedMapper;
-import co.kr.exitobiz.Service.Mobile.CommunityService;
-import co.kr.exitobiz.Service.Mobile.FileService;
-import co.kr.exitobiz.Service.Mobile.SavedService;
-import co.kr.exitobiz.Vo.Mobile.CommunityVo;
+import co.kr.exitobiz.Mappers.WebApp.SavedMapper;
+import co.kr.exitobiz.Service.WebApp.SavedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

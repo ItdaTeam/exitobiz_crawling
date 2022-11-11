@@ -1,4 +1,4 @@
-package co.kr.exitobiz.Service.Mobile;
+package co.kr.exitobiz.Service.WebApp;
 
 import java.text.ParseException;
 import java.util.HashMap;

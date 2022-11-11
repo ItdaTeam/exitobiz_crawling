@@ -1,4 +1,4 @@
-package co.kr.exitobiz.Service.Mobile;
+package co.kr.exitobiz.Service.WebApp;
 
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 
