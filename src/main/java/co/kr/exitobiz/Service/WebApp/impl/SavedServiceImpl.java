@@ -64,4 +64,14 @@ public class SavedServiceImpl implements SavedService {
     public void updateUserNeed(HashMap<String, Object> params) {
         savedMapper.updateUserNeed(params);
     }
+
+    @Override
+    public int hasDeliverEmail(HashMap<String, Object> params) {
+        return savedMapper.hasDeliverEmail(params);
+    }
+
+    @Override
+    public void insertDeliverEmail(HashMap<String, Object> params) {
+        savedMapper.insertDeliverEmail(params);
+    }
 }

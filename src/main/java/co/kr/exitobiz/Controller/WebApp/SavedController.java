@@ -191,11 +191,26 @@ public class SavedController {
     @ResponseBody
     public void updateUserNeed(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("user_id", header.get("user_id"));
+        //현 아이디로 데이터가 있는 지 확인
+        int hasUserNeed = savedService.getUserNeed(body).size();
 
-        if(body.get("idx") == null){
+        if(body.get("idx") == null && hasUserNeed == 0){
             savedService.insertUserNeed(body);
-        }else{
+        }else if(body.get("idx") != null && hasUserNeed != 0){
             savedService.updateUserNeed(body);
+        }
+    }
+
+    //이메일 정기배송 추가
+    @PostMapping("/insertDeliverEmail")
+    @ResponseBody
+    public void insertDeliverEmail(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+        body.put("user_id", header.get("user_id"));
+        //현 아이디로 데이터가 있는 지 확인
+        int hasDeliverEmail = savedService.hasDeliverEmail(body);
+
+        if(hasDeliverEmail == 0){
+            savedService.insertDeliverEmail(body);
         }
     }
 
