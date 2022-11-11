@@ -46,6 +46,9 @@
     </ul>
 </div>
 <style>
+
+    a {   overflow-wrap: break-word;}
+
     * {
         margin: 0;
         padding: 0;
