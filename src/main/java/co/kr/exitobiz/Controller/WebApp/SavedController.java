@@ -12,13 +12,13 @@ import java.util.HashMap;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/mobile")
+@RequestMapping("/saved")
 public class SavedController {
 
     private final SavedService savedService;
 
     // 조회 총 갯수(최근 본 사업, 찜한 사업, 지원한 사업) 리스트
-    @PostMapping("/saved/getTotalCountList")
+    @PostMapping("/getTotalCountList")
     @ResponseBody
     public String getTotalCountList(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException {
         HashMap<String, Object> map = new HashMap<>();
@@ -47,7 +47,7 @@ public class SavedController {
 
 
     //최근 본 사업 리스트
-    @PostMapping("/saved/getRecentlyMySavedBook")
+    @PostMapping("/getRecentlyMySavedBook")
     @ResponseBody
     public String getRecentlyMySavedBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
 
@@ -59,7 +59,7 @@ public class SavedController {
     }
 
     //찜한 사업, 지원한 사업 리스트
-    @PostMapping("/saved/getMySavedBook")
+    @PostMapping("/getMySavedBook")
     @ResponseBody
     public String getMySavedBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
 
@@ -71,7 +71,7 @@ public class SavedController {
     }
 
     // 찜 flag 변경
-    @PostMapping("/saved/isSavedMyBook")
+    @PostMapping("/isSavedMyBook")
     @ResponseBody
     public void isSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("mb_cret_id", header.get("user_id"));
@@ -88,7 +88,7 @@ public class SavedController {
     }
 
     // 지원 flag 변경
-    @PostMapping("/saved/isReqSavedMyBook")
+    @PostMapping("/isReqSavedMyBook")
     @ResponseBody
     public void isReqSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("mb_cret_id", header.get("user_id"));
@@ -116,7 +116,7 @@ public class SavedController {
     }
 
     // 선정 flag 변경
-    @PostMapping("/saved/isDoneSavedMyBook")
+    @PostMapping("/isDoneSavedMyBook")
     @ResponseBody
     public void isDoneSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("mb_cret_id", header.get("user_id"));
@@ -134,7 +134,7 @@ public class SavedController {
         savedService.updateDoneSavedMyBook(body);
     }
     //찜 분류 개수 리스트
-    @PostMapping("/saved/getCatList")
+    @PostMapping("/getCatList")
     @ResponseBody
     public String getCatList(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException {
         HashMap<String, Object> params = new HashMap<>();
@@ -146,7 +146,7 @@ public class SavedController {
     }
 
     //찜 현황 개수 리스트
-    @PostMapping("/saved/getSavedTotalCount")
+    @PostMapping("/getSavedTotalCount")
     @ResponseBody
     public String getSavedTotalCount(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException {
         HashMap<String, Object> map = new HashMap<>();
@@ -173,4 +173,45 @@ public class SavedController {
         String jsonStr = mapper.writeValueAsString(result);
         return jsonStr;
     }
+
+    // 우리 회사에서 필요한 것 조회
+    @PostMapping("/getUserNeed")
+    @ResponseBody
+    public String getUserNeed(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user_id", header.get("user_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(savedService.getUserNeed(map));
+        return jsonStr;
+    }
+
+    // 우리 회사에서 필요한 것 추가 / 수정
+    @PostMapping("/updateUserNeed")
+    @ResponseBody
+    public void updateUserNeed(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+        body.put("user_id", header.get("user_id"));
+        //현 아이디로 데이터가 있는 지 확인
+        int hasUserNeed = savedService.getUserNeed(body).size();
+
+        if(body.get("idx") == null && hasUserNeed == 0){
+            savedService.insertUserNeed(body);
+        }else if(body.get("idx") != null && hasUserNeed != 0){
+            savedService.updateUserNeed(body);
+        }
+    }
+
+    //이메일 정기배송 추가
+    @PostMapping("/insertDeliverEmail")
+    @ResponseBody
+    public void insertDeliverEmail(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+        body.put("user_id", header.get("user_id"));
+        //현 아이디로 데이터가 있는 지 확인
+        int hasDeliverEmail = savedService.hasDeliverEmail(body);
+
+        if(hasDeliverEmail == 0){
+            savedService.insertDeliverEmail(body);
+        }
+    }
+
 }

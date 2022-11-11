@@ -121,4 +121,24 @@
         ,mb_done_updt_dt = NOW()
         WHERE mb_addidx = #{mb_addidx} and mb_cret_id = #{mb_cret_id}
     </update>
+
+    <select id="getUserNeed" parameterType="HashMap" resultType="HashMap">
+        select * from itda_web.user_need where user_id = #{user_id}
+    </select>
+
+    <insert id="insertUserNeed" parameterType="HashMap">
+        insert into itda_web.user_need (user_id, financing, team_building, etc) values (#{user_id}, #{financing}, #{team_building}, #{etc})
+    </insert>
+
+    <update id="updateUserNeed" parameterType="HashMap">
+        update itda_web.user_need set financing = #{financing} , team_building = #{team_building}, etc = #{etc} where idx = #{idx}
+    </update>
+
+    <select id="hasDeliverEmail" parameterType="HashMap" resultType="int">
+        select count(*) from itda_web.user_deliver_service uds where email = #{email}
+    </select>
+
+    <insert id="insertDeliverEmail" parameterType="HashMap">
+        insert into itda_web.user_deliver_service (user_id, email) values (#{user_id}, #{email})
+    </insert>
 </mapper>

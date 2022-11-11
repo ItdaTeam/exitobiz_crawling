@@ -49,4 +49,29 @@ public class SavedServiceImpl implements SavedService {
     public void updateDoneSavedMyBook(HashMap<String, Object> params) throws ParseException {
         savedMapper.updateDoneSavedMyBook(params);
     }
+
+    @Override
+    public HashMap getUserNeed(HashMap<String, Object> params) {
+        return savedMapper.getUserNeed(params);
+    }
+
+    @Override
+    public void insertUserNeed(HashMap<String, Object> params) {
+        savedMapper.insertUserNeed(params);
+    }
+
+    @Override
+    public void updateUserNeed(HashMap<String, Object> params) {
+        savedMapper.updateUserNeed(params);
+    }
+
+    @Override
+    public int hasDeliverEmail(HashMap<String, Object> params) {
+        return savedMapper.hasDeliverEmail(params);
+    }
+
+    @Override
+    public void insertDeliverEmail(HashMap<String, Object> params) {
+        savedMapper.insertDeliverEmail(params);
+    }
 }
