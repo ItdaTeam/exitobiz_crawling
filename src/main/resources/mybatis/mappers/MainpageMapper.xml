@@ -60,6 +60,19 @@
         DELETE from itda_app.user_keyword WHERE user_id = #{user_id}
     </delete>
 
+    <select id="getPopularList" parameterType="HashMap" resultType="HashMap">
+        select * from itda_app.support_info si
+        <choose>
+            <when test='cat = "실시간"'>
+                order by si.view_cnt
+            </when>
+            <when test='cat = "찜"'>
+                order by si.save_cnt
+            </when>
+        </choose>
+         desc limit 5
+    </select>
+
     <select id="getPushBookList" parameterType="HashMap" resultType="HashMap">
         select * ,(select count(*) from itda_app.support_comment sc
                    where 1=1

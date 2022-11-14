@@ -29,5 +29,7 @@ public interface MainpageService {
 
     void delAllKeyword(HashMap<String, Object> params) throws ParseException; // 키워드 전체 삭제
 
+    List<HashMap> getPopularList(HashMap<String, Object> params); // 엑시토 (실시간 인기 | 찜 인기 ) 리스트
+
     List<HashMap> getPushBookList(HashMap<String, Object> params) throws ParseException; // 엑시토 추천 리스트
 }

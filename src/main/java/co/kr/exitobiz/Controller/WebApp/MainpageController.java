@@ -131,6 +131,15 @@ public class MainpageController {
         mainpageService.delAllKeyword(params);
     }
 
+    // 엑시토 (실시간 인기 | 찜 인기 ) 리스트
+    @PostMapping("/getPopularList")
+    @ResponseBody
+    public String getPopularList(@RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(mainpageService.getPushBookList(body));
+        return jsonStr;
+    }
+
 
     // 엑시토 추천 리스트
     @PostMapping("/getPushBookList")

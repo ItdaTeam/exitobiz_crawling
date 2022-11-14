@@ -70,6 +70,11 @@ public class MainpageServiceImpl implements MainpageService {
     }
 
     @Override
+    public List<HashMap> getPopularList(HashMap<String, Object> params) {
+        return mainpageMapper.getPopularList(params);
+    }
+
+    @Override
     public List<HashMap> getPushBookList(HashMap<String, Object> params) throws ParseException {
         return mainpageMapper.getPushBookList(params);
     }
