@@ -35,8 +35,8 @@
                     <when test="select_cat == 'QnA'">
                         and category = 'QnA'
                     </when>
-                    <when test="select_cat == '기업매칭'">
-                        and category = '기업매칭'
+                    <when test="select_cat == '팀원모집'">
+                        and category = '팀원모집'
                     </when>
                     <when test="select_cat == '자유게시판'">
                         and category = '자유게시판'
@@ -72,8 +72,8 @@
     <select id="getPopularCommunityList" parameterType="CommunityVo" resultType="HashMap">
         select * from (
                           select cc.id, cc.user_id, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt, coalesce(cclh.cl_cnt, 0) as like_cnt from itda_web.community_content cc
-                                                                                                                                                                                                         left outer join itda_app.usertable u on cc.user_id  = u.id
-                                                                                                                                                                                                         left outer join (
+                            left outer join itda_app.usertable u on cc.user_id  = u.id
+                            left outer join (
                               select c_content_id, count(*) as cnt from itda_app.community_comment
                               where 1=1
                                 and delete_yn = false
@@ -81,7 +81,7 @@
                                 and step = 1
                               group by c_content_id
                           ) as cc2 on cc2.c_content_id = cc.id
-                                                                                                                                                                                                         left outer join (
+                            left outer join (
                               select content_id, count(*) as cl_cnt from itda_web.community_content_like_history
                               where 1=1
                                 and thumb_up = true

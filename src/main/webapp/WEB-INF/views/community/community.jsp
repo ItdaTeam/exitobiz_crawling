@@ -26,7 +26,7 @@
             <option value="total">게시판 선택</i></option>
             <option value="정보공유">정보공유</option>
             <option value="QnA">QnA</option>
-            <option value="기업매칭">기업매칭</option>
+            <option value="팀원모집">팀원모집</option>
             <option value="자유게시판">자유게시판</option>
         </select>
     </div>
