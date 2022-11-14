@@ -38,14 +38,14 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/mobile")
+@RequestMapping("/mobile/community")
 public class CommunityController {
 
     private final CommunityService communityService;
     private final FileService fileService;
 
     //게시글 리스트 조회(검색조건, 정렬조건 포함)
-    @GetMapping("/community/all")
+    @GetMapping("/all")
     @ResponseBody
     public String getCommunityList(@RequestHeader Map<String, String> header, @RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
         int cntSql = Integer.parseInt(String.valueOf(params.get("cnt_sql")));
@@ -69,7 +69,7 @@ public class CommunityController {
     }
 
     //인기 게시글 리스트 조회
-    @PostMapping("/community/popularAll")
+    @PostMapping("/popularAll")
     @ResponseBody
     public String getPopularCommunityList(@RequestHeader Map<String, String> header) throws ParseException, JsonProcessingException{
         CommunityVo vo = new CommunityVo();
@@ -81,7 +81,7 @@ public class CommunityController {
     }
 
     // 차단 회원 리스트
-    @PostMapping("/community/blockAll")
+    @PostMapping("/blockAll")
     @ResponseBody
     public String getBlockList(@RequestHeader Map<String, String> header) throws ParseException, JsonProcessingException{
         CommunityVo vo = new CommunityVo();
@@ -92,26 +92,33 @@ public class CommunityController {
         return jsonStr;
     }
 
-    // 차단 회원 해제
-    @PostMapping("/community/delBlockUser")
+    // 차단 회원 단일 해제
+    @PostMapping("/delBlockUser")
     @ResponseBody
-    public void delBlockUser(@RequestBody Map<String, Object>[] params) throws ParseException{
-        String result = "fail";
-        JSONArray jsonArr = new JSONArray(params);
-        List<Object> list = jsonArr.toList();
-
-        communityService.delBlockUser(list);
+    public void delBlockUser(@RequestBody HashMap<String, Object> params) throws ParseException{
+        communityService.delBlockUser(params);
     }
 
+    // 차단 회원 전체 해제
+    @PostMapping("/delAllBlockUser")
+    @ResponseBody
+    public void delAllBlockUser(@RequestHeader HashMap<String, Object> header) throws ParseException{
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("cret_id", header.get("user_id"));
+        communityService.delAllBlockUser(params);
+    }
+
+
     // 차단 회원 추가
-    @PostMapping("/community/insertBlock")
+    @PostMapping("/insertBlock")
     @ResponseBody
     public void insertBlock(@RequestHeader Map<String, Object> header) throws ParseException {
         communityService.insertBlock((HashMap<String, Object>) header);
     }
 
     // 신고하기 추가
-    @PostMapping("/community/insertReport")
+    @PostMapping("/insertReport")
     @ResponseBody
     public void insertReport(@RequestHeader Map<String, Object> header, @RequestBody Map<String, Object> body) throws ParseException {
         body.put("user_id", header.get("user_id"));
@@ -121,14 +128,14 @@ public class CommunityController {
     }
 
     // 게시글 상세
-    @GetMapping("/community/one")
+    @GetMapping("/one")
     @ResponseBody
     public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo) throws ParseException {
         return communityService.getCommunityDetail(communityVo);
     }
 
     // 게시글 추가
-    @PostMapping("/community")
+    @PostMapping("/")
     @ResponseBody
     public int createCommunity(CommunityVo communityVo) throws ParseException {
         communityService.insertCommunity(communityVo);
@@ -136,14 +143,14 @@ public class CommunityController {
     }
 
     // 게시글 수정
-    @PutMapping("/community/edit")
+    @PutMapping("/edit")
     @ResponseBody
     public void editCommunity(CommunityVo communityVo) throws ParseException {
         communityService.updateCommunity(communityVo);
     }
 
     //게시글 삭제
-    @RequestMapping(value = "/community/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public void delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{
         communityService.deleteCommunity(communityVo);

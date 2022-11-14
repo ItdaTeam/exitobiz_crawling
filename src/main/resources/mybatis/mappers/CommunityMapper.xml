@@ -115,11 +115,12 @@
         DO UPDATE SET cret_dt = NOW()
     </insert>
 
-    <delete id="delBlockUser" parameterType="List">
-        delete from itda_app.user_block ub where 1=1
-            <foreach item="item" collection = "list" separator="or" open="and">
-                blockidx = #{item.blockidx}
-            </foreach>
+    <delete id="delBlockUser" parameterType="HashMap">
+        delete from itda_app.user_block where blockidx = #{blockidx}
+    </delete>
+
+    <delete id="delAllBlockUser" parameterType="HashMap">
+        delete from itda_app.user_block where cret_id = #{cret_id}
     </delete>
 
     <insert id="insertReport" parameterType="HashMap">

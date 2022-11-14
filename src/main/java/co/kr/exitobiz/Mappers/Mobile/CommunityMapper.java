@@ -17,7 +17,9 @@ public interface CommunityMapper {
 
     public List<HashMap> getBlockList(CommunityVo vo); // 차단회원 리스트
 
-    public void delBlockUser(List<Object> params); // 차단회원 해제
+    public void delBlockUser(HashMap<String, Object> params); // 차단회원 단일 해제
+
+    public void delAllBlockUser(HashMap<String, Object> params); // 차단회원 전체 해제
 
     public void insertBlock(HashMap<String, Object> params); // 차단회원 생성
 

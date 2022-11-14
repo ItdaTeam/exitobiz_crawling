@@ -38,8 +38,13 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public void delBlockUser(List<Object> params) throws ParseException {
+    public void delBlockUser(HashMap<String, Object> params) throws ParseException {
         communityMapper.delBlockUser(params);
+    }
+
+    @Override
+    public void delAllBlockUser(HashMap<String, Object> params) throws ParseException {
+        communityMapper.delAllBlockUser(params);
     }
 
     @Override
