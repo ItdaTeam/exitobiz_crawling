@@ -125,6 +125,8 @@
         </ul>
     </div>
     <style>
+            a{   overflow-wrap: break-word;}
+
             *{margin:0; padding:0;}
             ul,li,ol{list-style: none;}
             /* 아코디언 메뉴 .accr*/
@@ -143,7 +145,7 @@
                 position:absolute; top:50%; right:20px; transform: translateX(-50%);
                 margin-right:8px; border: solid #868686; border-width: 2px 2px 0 0;
                 width: 7px; height: 7px;
-                transform: rotate(135deg);
+                transform: rotate(135deg);•
                 transition: transform 0.3s;
                 content: "";
             }
