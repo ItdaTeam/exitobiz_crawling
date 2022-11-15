@@ -55,19 +55,34 @@ public class MainpageController {
         mainpageService.delMyAllRecentKeyword(params);
     }
 
-    // 타임라인 추가 (나의 최근 검색어 저장) _ 공통
+    // 타임라인 추가 (나의 최근 검색어 저장, 최근 본 지원사업 저장) _ 공통
     @PostMapping("/insertTimeLine")
     @ResponseBody
     public void insertTimeLine(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("tl_cret_id", header.get("user_id"));
-        params.put("tl_page_type", "지원사업");
-        params.put("tl_page_depth", "2");
-        params.put("tl_page_name", "지원사업-검색화면");
-        params.put("tl_button_name", "검색버튼");
-        params.put("tl_type_cd", 0);
-        params.put("tl_event", body.get("search_text"));
-        params.put("tl_memo", "-");
+        if(body.get("search_text") != null){
+
+            // 나의 최근 검색어 저장
+            params.put("tl_cret_id", header.get("user_id"));
+            params.put("tl_page_type", "지원사업");
+            params.put("tl_page_depth", "2");
+            params.put("tl_page_name", "지원사업-검색화면");
+            params.put("tl_button_name", "검색버튼");
+            params.put("tl_type_cd", 0);
+            params.put("tl_event", body.get("search_text"));
+            params.put("tl_memo", "-");
+        }else if(body.get("support_info") != null){
+
+            // 최근 본 지원사업 저장
+            params.put("tl_cret_id", header.get("user_id"));
+            params.put("tl_page_type", "지원사업");
+            params.put("tl_page_depth", "3");
+            params.put("tl_page_name", "지원사업-웹뷰");
+            params.put("tl_button_name", "화면진입");
+            params.put("tl_type_cd", Integer.parseInt((String) body.get("support_info")));
+            params.put("tl_event", "진입완료");
+            params.put("tl_memo", "-");
+        }
 
         mainpageService.insertTimeLine(params);
     }
