@@ -134,11 +134,7 @@
         update itda_web.user_need set financing = #{financing} , team_building = #{team_building}, etc = #{etc} where idx = #{idx}
     </update>
 
-    <select id="hasDeliverEmail" parameterType="HashMap" resultType="int">
-        select count(*) from itda_web.user_deliver_service uds where email = #{email}
-    </select>
-
     <insert id="insertDeliverEmail" parameterType="HashMap">
-        insert into itda_web.user_deliver_service (user_id, email) values (#{user_id}, #{email})
+        update itda_app.usertable set deliver_email = #{deliver_email} where id = #{user_id}
     </insert>
 </mapper>
