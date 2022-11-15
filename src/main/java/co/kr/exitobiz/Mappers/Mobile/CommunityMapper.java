@@ -33,8 +33,12 @@ public interface CommunityMapper {
 
     public void deleteCommunity(CommunityVo vo); // 커뮤니티 삭제
 
+    public void insertContentLike(HashMap<String, Object> params); //  좋아요 flag 변경
+
+    public void updateTotalContentLike(HashMap<String, Object> params); // 좋아요 개수 변경
+
     //댓글
-    public List<HashMap> getCommentList(HashMap<String, Object> params); // 커뮤티니 내 댓글 리스트
+    public List<HashMap> getCommentList(HashMap<String, Object> params); // 커뮤니티 내 댓글 리스트
 
     public List<HashMap> getRecommentList(HashMap<String, Object> params); // 커뮤니티 내 대댓글 리스트
 
@@ -45,5 +49,11 @@ public interface CommunityMapper {
     public void reviewViews(int id); // 조회수 증가
 
     public int getNewId(); // 최근 추가한 커뮤니티 ID 조회
+
+    public void insertCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 flag 변경
+
+    public void updateTotalCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 개수 변경
+
+
 
 }

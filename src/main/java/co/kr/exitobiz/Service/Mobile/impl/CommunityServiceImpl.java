@@ -138,6 +138,16 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public void insertContentLike(HashMap<String, Object> params) {
+        communityMapper.insertContentLike(params);
+    }
+
+    @Override
+    public void updateTotalContentLike(HashMap<String, Object> params) {
+        communityMapper.updateTotalContentLike(params);
+    }
+
+    @Override
     public List<HashMap> getCommentList(HashMap<String, Object> params) throws ParseException {
         return communityMapper.getCommentList(params);
     }
@@ -165,5 +175,15 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public int getNewId() {
         return communityMapper.getNewId();
+    }
+
+    @Override
+    public void insertCommentLike(HashMap<String, Object> params) {
+        communityMapper.insertCommentLike(params);
+    }
+
+    @Override
+    public void updateTotalCommentLike(HashMap<String, Object> params) {
+        communityMapper.updateTotalCommentLike(params);
     }
 }

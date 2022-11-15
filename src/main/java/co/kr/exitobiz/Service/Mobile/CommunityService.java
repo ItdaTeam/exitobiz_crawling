@@ -32,6 +32,11 @@ public interface CommunityService {
 
     void deleteCommunity(CommunityVo communityVo) throws ParseException;
 
+    public void insertContentLike(HashMap<String, Object> params); //  좋아요 flag 변경
+
+    public void updateTotalContentLike(HashMap<String, Object> params); // 좋아요 개수 변경
+
+    // 댓글
     List<HashMap> getCommentList(HashMap<String, Object> params) throws ParseException;
 
     List<HashMap> getRecommentList(HashMap<String, Object> params) throws ParseException;
@@ -43,4 +48,8 @@ public interface CommunityService {
     void reviewViews(int id) throws ParseException;
 
     int getNewId();
+
+    void insertCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 flag 변경
+
+    void updateTotalCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 개수 변경
 }

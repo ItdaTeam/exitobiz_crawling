@@ -128,6 +128,62 @@
                             VALUES ( #{target_idx}, #{category}, #{user_id}, #{target_user_id}, #{description}, #{status}, NOW() )
     </insert>
 
+    <insert id="insertCommentLike" parameterType="HashMap">
+        insert into itda_app.community_comment_like_history(
+            comment_like_history_id, comment_id, user_id, cret_dt, thumb_up
+        ) values(
+                    (select coalesce(max(comment_like_history_id)+1,1) as comment_like_history_id from itda_app.community_comment_like_history), #{comment_id}, #{user_id}, NOW(),true
+                ) ON CONFLICT(comment_id, user_id)
+        DO UPDATE
+             SET cret_dt = NOW(),
+             thumb_up =  (
+             select case when cclh.thumb_up::boolean then false else true end as value from itda_app.community_comment_like_history cclh
+             where 1=1
+             and cclh.user_id = #{user_id}
+             and cclh.comment_id = #{comment_id}
+             )
+    </insert>
+
+    <update id="updateTotalCommentLike" parameterType="HashMap">
+        update itda_app.community_comment
+        SET like_count = (
+            select like_count::numeric + ( select case when cclh.thumb_up::boolean then 1 else -1 end as value from itda_app.community_comment_like_history cclh
+        where 1=1
+          and cclh.user_id = #{user_id}
+          and cclh.comment_id =#{comment_id}
+        )
+        from itda_app.community_comment
+        where id = #{comment_id}) where id = #{comment_id}
+    </update>
+
+    <insert id="insertContentLike" parameterType="HashMap">
+        insert into itda_web.community_content_like_history(
+            content_like_history_id, content_id, user_id, cret_dt, thumb_up
+        ) values(
+                    (select coalesce(max(content_like_history_id)+1,1) as content_like_history_id from itda_web.community_content_like_history), #{content_id},#{user_id}, NOW(), true
+                ) ON CONFLICT(content_id, user_id)
+        DO UPDATE
+             SET cret_dt = NOW(),
+             thumb_up =  (
+             select case when cclh.thumb_up::boolean then false else true end as value from itda_web.community_content_like_history cclh
+             where 1=1
+             and cclh.user_id = #{user_id}
+             and cclh.content_id = #{content_id}
+             )
+    </insert>
+
+    <update id="updateTotalContentLike" parameterType="HashMap">
+        update itda_web.community_content
+        SET like_count = (
+            select like_count::numeric + ( select case when cclh.thumb_up::boolean then 1 else -1 end as value from itda_web.community_content_like_history cclh
+        where 1=1
+          and cclh.user_id =#{user_id}
+          and cclh.content_id =#{content_id}
+            )
+        from itda_web.community_content where id = #{content_id})
+        where id = #{content_id}
+    </update>
+
 
     <select id="getNewId" resultType="int">
         select id from itda_web.community_content cc order by cret_dt desc limit 1

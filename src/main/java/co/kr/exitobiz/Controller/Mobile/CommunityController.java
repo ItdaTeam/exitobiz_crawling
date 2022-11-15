@@ -127,6 +127,8 @@ public class CommunityController {
         communityService.insertReport((HashMap<String, Object>) body);
     }
 
+
+
     // 게시글 상세
     @GetMapping("/one")
     @ResponseBody
@@ -156,8 +158,23 @@ public class CommunityController {
         communityService.deleteCommunity(communityVo);
     }
 
+    // 게시글 좋아요
+    @PostMapping(value = "/like")
+    @ResponseBody
+    public void insertLike(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
+        body.put("user_id", header.get("user_id"));
+        try{
+            communityService.insertContentLike(body);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            communityService.updateTotalContentLike(body);
+        }
+
+    }
+
     //게시글 내 댓글 리스트
-    @PostMapping(value = "/community/comment")
+    @PostMapping(value = "/comment")
     @ResponseBody
     public String getCommentList(@RequestHeader Map<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
         body.put("user_id", header.get("user_id"));
@@ -173,7 +190,7 @@ public class CommunityController {
     }
 
     //게시글 내 대댓글 리스트
-    @PostMapping(value = "/community/recomment")
+    @PostMapping(value = "/recomment")
     @ResponseBody
     public String getRecommentList(@RequestHeader Map<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
         body.put("user_id", header.get("user_id"));
@@ -189,21 +206,39 @@ public class CommunityController {
     }
 
     //게시글 내 댓글, 대댓글 수정
-    @PostMapping(value = "/community/updateComment")
+    @PostMapping(value = "/updateComment")
     @ResponseBody
     public void updateComment(@RequestBody HashMap<String, Object> body) throws Exception{
         communityService.updateComment(body);
     }
 
     //게시글 내 댓글, 대댓글 삭제
-    @PostMapping(value = "/community/delComment")
+    @PostMapping(value = "/delComment")
     @ResponseBody
     public void delComment(@RequestBody HashMap<String, Object> body) throws Exception{
         communityService.delComment(body);
     }
 
+    //게시글 내 댓글, 대댓글 상태변경
+    @PostMapping(value = "/insertCommentLike")
+    @ResponseBody
+    public void insertCommentLike(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String,Object> body) throws Exception{
+        body.put("user_id", header.get("user_id"));
+        try{
+            //좋아요 추가하고
+            communityService.insertCommentLike(body);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            //성공하면 카운트도 업데이트 해주기
+            communityService.updateTotalCommentLike(body);
+        }
+
+
+    }
+
     // ckeditor 이미지 업로드
-    @PostMapping(value = "/community/uploadImg")
+    @PostMapping(value = "/uploadImg")
     @ResponseBody
     public ImageLink uploadImage(@RequestParam("file") MultipartFile file) throws Exception{
         StringBuilder ImgPath = new StringBuilder();
@@ -215,8 +250,6 @@ public class CommunityController {
             HashMap<String, String> params = new HashMap<>();
             params.put("filePath", "/img/community/");
             params.put("fileName", fileName);
-
-            System.out.println("########" +  fileName);
 
             ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
 
@@ -268,7 +301,7 @@ public class CommunityController {
 
     //웹뷰 url (모바일용)
     //상세페이지
-    @RequestMapping(value = "/community/detail", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/detail", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public String disCommunity(@Valid HttpServletRequest req, Model model, HttpServletResponse res) throws Exception {
         int id = Integer.parseInt(req.getParameter("id"));
 
@@ -305,7 +338,7 @@ public class CommunityController {
     }
 
     //수정, 등록페이지
-    @RequestMapping(value = "/community/edit", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/edit", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public String disCommunityEdit(@Valid HttpServletRequest request, Model model){
         model.addAttribute("id", request.getParameter("id"));
         model.addAttribute("userId", request.getParameter("userId"));
