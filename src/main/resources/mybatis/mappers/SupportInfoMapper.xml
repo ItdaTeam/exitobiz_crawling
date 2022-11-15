@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.WebApp.SupportInfoMapper">
+    <select id="getSupportInfoList" parameterType="HashMap" resultType="HashMap">
+        select si_idx, target_name, target_cat_name, target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
+        (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt
+        from itda_app.support_info si
+        left join itda_app.my_bookmark mb on si.si_idx = mb.mb_addidx and
+        mb.mb_idx = (
+        select mb_idx from itda_app.my_bookmark
+        where 1=1
+        <if test='user_id != null'>
+            and mb_cret_id = #{user_id}
+        </if>
+        and mb_addidx = si.si_idx
+        order by mb_cret_dt desc
+        limit 1
+        )
+        left join (select loccode, locname from itda_app.loccode) as l on l.loccode = si.loc_code
+        left join (select tl_type_cd from itda_app.time_line tl where tl.tl_page_type = '지원사업'
+        <if test='user_id != null'>
+            and tl.tl_cret_id = #{user_id}
+        </if>
+            group by tl_type_cd) as info on tl_type_cd = si.si_idx
+        where 1=1
+        and si.si_active_yn = 'Y'
+
+        <choose>
+            <when test='search_text != null'>
+                and si_title like concat('%', ${search_text}, '%') or target_name like concat('%', ${search_text}, '%') or locname like concat('%', ${search_text}, '%')
+            </when>
+        </choose>
+
+        order by
+        <choose>
+            <when test='ord == "인기순"'>
+                totalCnt desc
+            </when>
+            <when test='ord == "금액높은순"'>
+                target_cost_value desc
+            </when>
+            <when test='ord == "마감임박순"'>
+                si_end_dt desc
+            </when>
+            <otherwise>
+                1=1
+            </otherwise>
+        </choose>
+    </select>
+</mapper>
