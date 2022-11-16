@@ -35,6 +35,8 @@ public interface CommunityMapper {
 
     public void insertFile(HashMap<String, Object> params); // 첨부파일 추가
 
+    public List<HashMap> getFile(HashMap<String, Object> params); // 첨부파일 조회
+
     public void insertContentLike(HashMap<String, Object> params); //  좋아요 flag 변경
 
     public void updateTotalContentLike(HashMap<String, Object> params); // 좋아요 개수 변경

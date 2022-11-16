@@ -143,6 +143,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public List<HashMap> getFile(HashMap<String, Object> params) {
+        return communityMapper.getFile(params);
+    }
+
+    @Override
     public void insertContentLike(HashMap<String, Object> params) {
         communityMapper.insertContentLike(params);
     }

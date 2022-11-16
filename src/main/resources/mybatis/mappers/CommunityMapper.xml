@@ -229,7 +229,7 @@
     </insert>
 
     <select id="getFile" parameterType="HashMap" resultType="HashMap">
-        select * from itda_web.communtiy_content_file where content_id = #{content_id}
+        select file_name, generate_name as file_url from itda_web.community_content_file where content_id = #{content_id}
     </select>
 
     <!--  댓글  -->

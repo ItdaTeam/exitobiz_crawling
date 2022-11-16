@@ -7,10 +7,6 @@ import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.openqa.selenium.json.Json;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +16,10 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
 import javax.validation.Valid;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.sql.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -300,6 +290,17 @@ public class CommunityController {
     }
 
     // 파일 불러오기
+    @PostMapping(value = "/getFile")
+    @ResponseBody
+    public String getFile(@RequestBody HashMap<String, Object> body) throws Exception{
+        List<HashMap> List = communityService.getFile(body);
+        for(int i=0; i<List.size(); i++){
+            List.get(i).replace("file_url" , "https://exitobiz.co.kr/img/community/attachFile/" + List.get(i).get("generate_name"));
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(List);
+        return jsonStr;
+    }
 
 
     // 이미지 크기 줄이기
