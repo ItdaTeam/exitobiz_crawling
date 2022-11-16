@@ -221,6 +221,17 @@
         where id = #{id}
     </update>
 
+    <insert id="insertFile" parameterType="HashMap">
+        insert into itda_web.community_content_file (
+                content_id, file_name, generate_name) values(
+                #{content_id}, #{file_name}, #{generate_name}
+            )
+    </insert>
+
+    <select id="getFile" parameterType="HashMap" resultType="HashMap">
+        select * from itda_web.communtiy_content_file where content_id = #{content_id}
+    </select>
+
     <!--  댓글  -->
     <select id="getCommentList" parameterType="HashMap" resultType="HashMap">
         select cc.* ,u.idprofile ,u.usernickname, cclh.comment_like_history_id, cclh.thumb_up,

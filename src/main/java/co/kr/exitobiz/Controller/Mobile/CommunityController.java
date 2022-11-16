@@ -127,8 +127,6 @@ public class CommunityController {
         communityService.insertReport((HashMap<String, Object>) body);
     }
 
-
-
     // 게시글 상세
     @GetMapping("/one")
     @ResponseBody
@@ -266,6 +264,43 @@ public class CommunityController {
         }
         return null;
     }
+
+    // 파일 업로드
+    @PostMapping(value = "/uploadFile")
+    @ResponseBody
+    public void uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam("content_id") String content_id) throws Exception{
+
+        if(!files.isEmpty()){
+            for(int i=0; i<files.size(); i++){
+                StringBuilder ImgPath = new StringBuilder();
+                ImageLink link = new ImageLink();
+
+                String fileName = fileService.fileNameGenerator(files.get(i));
+                String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+
+                // 파일 업로드
+                HashMap<String, String> uploadParams = new HashMap<>();
+                uploadParams.put("filePath", "/img/community/attachFile/");
+                uploadParams.put("fileName", fileName);
+
+                // db저장
+                HashMap<String, Object> dbParams = new HashMap<>();
+                dbParams.put("content_id", Integer.parseInt(content_id));
+                dbParams.put("file_name", files.get(i).getOriginalFilename());
+                dbParams.put("generate_name", fileName);
+
+                try{
+                    String result = fileService.uploadFile(files.get(i), uploadParams);
+                    if(result.equals("success"))  communityService.insertFile(dbParams);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // 파일 불러오기
+
 
     // 이미지 크기 줄이기
     private void resizeImageFile(MultipartFile files, String filePath, String formatName) throws Exception {
