@@ -2,7 +2,7 @@ package co.kr.exitobiz.Controller.Api;
 
 import co.kr.exitobiz.Service.Api.PushMultipleService;
 import co.kr.exitobiz.Service.Api.PushService;
-import co.kr.exitobiz.Service.Mobile.UserService;
+import co.kr.exitobiz.Service.WebApp.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

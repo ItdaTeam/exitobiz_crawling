@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="co.kr.exitobiz.Mappers.Mobile.UserMapper">
+<mapper namespace="co.kr.exitobiz.Mappers.WebApp.UserMapper">
 
 <select id="getUserToken" parameterType="hashMap" resultType="String">
 SELECT usertoken
@@ -109,6 +109,94 @@ WHERE id=#{id}
            AND u.usertoken not in ('', 'null')
 --           AND username in ('강태욱', '권혁남')
     </select>
+
+    <select id="getUserInfo" parameterType="map" resultType="map">
+        SELECT  u.usernickname, u.useremail, u.id
+        FROM itda_app.usertable u
+        WHERE id=#{userid}
+    </select>
+
+    <select id = "getCompanyInfo" parameterType="map" resultType="map">
+        SELECT  user_id, company_name, rep_name, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg, to_char(cret_dt, 'yyyy-mm-dd') cret_dt, cret_id, to_char(updt_dt, 'yyyy-mm-dd') updt_dt, updt_id
+        FROM itda_web.user_support
+        WHERE 1=1
+          AND user_id=#{userid}
+    </select>
+
+    <update id="updatePushSetting" parameterType="map">
+        UPDATE itda_app.user_push_setting
+        set
+            <choose>
+                <when test="spbookmarkpush != null">
+                    sp_bookmark_push =#{spbookmarkpush}
+                </when>
+              <otherwise>
+                  sp_bookmark_push ='N'
+              </otherwise>
+            </choose>
+            <if test="spreceivepush != null">
+                ,sp_receive_push =#{spreceivepush}
+            </if>
+            <if test="spkeywordpush != null">
+                ,sp_keyword_push =#{spkeywordpush}
+            </if>
+            <if test="sprecommentpush != null">
+                ,sp_recomment_push =#{sprecommentpush}
+            </if>
+            <if test="spcommentlikepush != null">
+                ,sp_commentlike_push =#{spcommentlikepush}
+            </if>
+            <if test="spcontentcommentpush != null">
+                ,sp_content_comment_push =#{spcontentcommentpush}
+            </if>
+            <if test="spcommunitycommentlikepush != null">
+                ,sp_community_commentlike_push =#{spcommunitycommentlikepush}
+            </if>
+            <if test="spcommunityrecommentpush != null">
+                ,sp_community_recomment_push =#{spcommunityrecommentpush}
+            </if>
+        WHERE 1=1
+            AND user_id=#{userid}
+    </update>
+    <select id="getPushSetting" parameterType="map" resultType="map">
+        SELECT user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push
+        FROM itda_app.user_push_setting
+     WHERE 1=1
+        AND user_id = #{userid}
+    </select>
+
+    <update id="withdraw" parameterType="map">
+        UPDATE itda_app.usertable
+            SET usernickname ='탈퇴회원'
+              , idprofile = 'https://exitobiz.co.kr/img/profile/default3.png'
+              , useragerange = '-'
+              , usergender = '-'
+              , useremail = '-'
+              , username = '-'
+              , usertitle = '-'
+              , userhp = '-'
+              , companyname = '-'
+              , companytype = '-'
+              , companyloc = '-'
+              , admin_flag = 'N'
+        WHERE 1=1
+            AND id = #{userid}
+    </update>
+
+    <select id="checkNickname" parameterType="map" resultType="int">
+        SELECT count(usernickname)
+            FROM itda_app.usertable
+        WHERE 1=1
+            AND usernickname =#{usernickname}
+    </select>
+
+    <update id="updateUserInfo" parameterType="map">
+        UPDATE itda_app.usertable
+        SET
+            usernickname = #{usernickname}
+        WHERE 1=1
+            AND id=#{userid}
+    </update>
 
 
 </mapper>

@@ -1,7 +1,7 @@
-package co.kr.exitobiz.Service.Mobile.impl;
+package co.kr.exitobiz.Service.WebApp.impl;
 
-import co.kr.exitobiz.Mappers.Mobile.UserMapper;
-import co.kr.exitobiz.Service.Mobile.UserService;
+import co.kr.exitobiz.Mappers.WebApp.UserMapper;
+import co.kr.exitobiz.Service.WebApp.UserService;
 import co.kr.exitobiz.Vo.usertableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +45,41 @@ public class UserServiceImpl implements UserService {
     public List<Map<String, Object>> getUserTokens() {
         return userMapper.getUserTokens();
 
+    }
+
+    @Override
+    public Map<String, Object> getUserInfo(Map<String, Object> params) {
+        return userMapper.getUserInfo(params);
+    }
+
+    @Override
+    public Map<String, Object> getCompanyInfo(Map<String, Object> params) {
+        return userMapper.getCompanyInfo(params);
+    }
+
+    @Override
+    public void updatePushSetting(Map<String, Object> params) {
+        userMapper.updatePushSetting(params);
+    }
+
+    @Override
+    public Map<String, Object> getPushSetting(Map<String, Object> params) {
+        return userMapper.getPushSetting(params);
+    }
+
+    @Override
+    public void withdraw(Map<String, Object> params) {
+        userMapper.withdraw(params);
+    }
+
+    @Override
+    public int checkNickname(Map<String, Object> params) {
+        return userMapper.checkNickname(params);
+    }
+
+    @Override
+    public void updateUserInfo(Map<String, Object> params) {
+        userMapper.updateUserInfo(params);
     }
 
 }

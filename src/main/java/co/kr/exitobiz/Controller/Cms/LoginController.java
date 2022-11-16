@@ -4,6 +4,8 @@ import co.kr.exitobiz.Service.Cms.LoginService;
 import co.kr.exitobiz.Vo.Cms.StaffVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/login")
@@ -21,6 +24,13 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService ;
+
+    @Value("${apple.auth.url")
+    private String appleAuthUrl;
+    @Value("${apple.client.id")
+    private String client_id;
+    @Value("${apple.redirect.url")
+    private String redirect_uri;
 
     @PostMapping(value = "/login")
     @ResponseBody
@@ -80,6 +90,12 @@ public class LoginController {
             }
         }
         return "redirect:"+loginService.logOut(request);
+    }
 
+    public String appleLoginCallback(@RequestBody Map<String,Object> params){
+        String reqUrl = appleAuthUrl + "/auth/authorize?client_id=" + client_id + "&redirect_uri=" + redirect_uri
+                + "&response_type=code id_token&response_mode=form_post";
+
+        return reqUrl;
     }
 }
