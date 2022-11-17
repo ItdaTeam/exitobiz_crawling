@@ -106,7 +106,7 @@
         switch(type){
             case  "add" :
                 if(!confirm("게시글을 추가하시겠습니까?")) return false;
-                await axios.post("/mobile/community", formData, {headers:{'Content-Type' : 'multipart/form-data'}})
+                await axios.post("/mobile/community/", formData, {headers:{'Content-Type' : 'multipart/form-data'}})
                     .then((res) => {
                         if(res.status == 200){
                             alert("게시글이 추가되었습니다.");
