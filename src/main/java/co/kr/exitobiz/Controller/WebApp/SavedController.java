@@ -73,25 +73,37 @@ public class SavedController {
     // 찜 flag 변경
     @PostMapping("/isSavedMyBook")
     @ResponseBody
-    public void isSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+    public String isSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("mb_cret_id", header.get("user_id"));
 
-        if(body.get("mb_save_yn").equals("")){
-            savedService.insertSavedMyBook(body);
-        }else if(body.get("mb_save_yn").equals("Y")){
-            body.replace("mb_save_yn", "N");
-            savedService.updateSavedMyBook(body);
-        }else if(body.get("mb_save_yn").equals("N")){
-            body.replace("mb_save_yn", "Y");
-            savedService.updateSavedMyBook(body);
+        String result = "fail";
+
+        try{
+            if(body.get("mb_save_yn").equals("")){
+                savedService.insertSavedMyBook(body);
+            }else if(body.get("mb_save_yn").equals("Y")){
+                body.replace("mb_save_yn", "N");
+                savedService.updateSavedMyBook(body);
+            }else if(body.get("mb_save_yn").equals("N")){
+                body.replace("mb_save_yn", "Y");
+                savedService.updateSavedMyBook(body);
+            }
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
         }
+        return result;
+
     }
 
     // 지원 flag 변경
     @PostMapping("/isReqSavedMyBook")
     @ResponseBody
-    public void isReqSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+    public String isReqSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+
+        String result = "fail";
         body.put("mb_cret_id", header.get("user_id"));
+
         if(body.get("mb_req_save_yn").equals("")){
             //값이 없을 경우, 생성일자도 추가한다.
             body.replace("mb_req_save_yn", "Y");
@@ -104,22 +116,29 @@ public class SavedController {
             body.replace("mb_req_save_yn", "N");
 
             if(body.get("mb_done_save_yn").equals("N")){
-                System.out.println(body.get("mb_done_save_yn"));
                 body.replace("mb_done_save_yn", "");
             }else if(body.get("mb_done_save_yn").equals("Y")){
-                System.out.println(body.get("mb_done_save_yn"));
                 // 지원을 해제할 때만 선정도 해제해줌.
                 body.replace("mb_done_save_yn", "N");
             }
         }
-        savedService.updateReqSavedMyBook(body);
+        try{
+            savedService.updateReqSavedMyBook(body);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+
     }
 
     // 선정 flag 변경
     @PostMapping("/isDoneSavedMyBook")
     @ResponseBody
-    public void isDoneSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+    public String isDoneSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("mb_cret_id", header.get("user_id"));
+
+        String result = "fail";
 
         if(body.get("mb_done_save_yn").equals("")){
             //값이 없을 경우, 생성일자도 추가한다.
@@ -131,7 +150,14 @@ public class SavedController {
             body.put("mb_done_save_yn", "N");
         }
 
-        savedService.updateDoneSavedMyBook(body);
+        try{
+            savedService.updateDoneSavedMyBook(body);
+            result = "success";
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
     //찜 분류 개수 리스트
     @PostMapping("/getCatList")
@@ -189,24 +215,43 @@ public class SavedController {
     // 우리 회사에서 필요한 것 추가 / 수정
     @PostMapping("/updateUserNeed")
     @ResponseBody
-    public void updateUserNeed(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+    public String updateUserNeed(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("user_id", header.get("user_id"));
-        //현 아이디로 데이터가 있는 지 확인
-        int hasUserNeed = savedService.getUserNeed(body).size();
 
-        if(body.get("idx") == null && hasUserNeed == 0){
-            savedService.insertUserNeed(body);
-        }else if(body.get("idx") != null && hasUserNeed != 0){
-            savedService.updateUserNeed(body);
+        String result = "fail";
+
+        try{
+            //현 아이디로 데이터가 있는 지 확인
+            int hasUserNeed = savedService.getUserNeed(body).size();
+
+            if(body.get("idx") == null && hasUserNeed == 0){
+                savedService.insertUserNeed(body);
+            }else if(body.get("idx") != null && hasUserNeed != 0){
+                savedService.updateUserNeed(body);
+            }
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
         }
+        return result;
+
     }
 
     //이메일 정기배송 추가
     @PostMapping("/insertDeliverEmail")
     @ResponseBody
-    public void insertDeliverEmail(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+    public String insertDeliverEmail(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("user_id", header.get("user_id"));
-        savedService.insertDeliverEmail(body);
+        String result = "fail";
+
+        try{
+            savedService.insertDeliverEmail(body);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+
     }
 
 }

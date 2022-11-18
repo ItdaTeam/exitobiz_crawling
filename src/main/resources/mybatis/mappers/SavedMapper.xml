@@ -73,7 +73,17 @@
                 si_end_dt
             </when>
             <otherwise>
-                mb.mb_updt_dt desc
+                <choose>
+                    <when test='cat == "찜"'>
+                        mb.mb_updt_dt desc
+                    </when>
+                    <when test='cat == "지원"'>
+                        mb.mb_req_updt_dt desc
+                    </when>
+                    <when test='cat == "선정"'>
+                        mb.mb_done_updt_dt desc
+                    </when>
+                </choose>
             </otherwise>
         </choose>
     </select>
