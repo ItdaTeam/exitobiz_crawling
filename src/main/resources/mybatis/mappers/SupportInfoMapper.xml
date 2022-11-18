@@ -25,13 +25,69 @@
             group by tl_type_cd) as info on tl_type_cd = si.si_idx
         where 1=1
         and si.si_active_yn = 'Y'
-
         <choose>
             <when test='search_text != null'>
                 and si_title like concat('%', ${search_text}, '%') or target_name like concat('%', ${search_text}, '%') or locname like concat('%', ${search_text}, '%')
             </when>
         </choose>
-
+        <if test='business_type != null and business_type == "01"'>
+            and business_type in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_type">
+                    item
+                </foreach>
+            </trim>
+        </if>
+        <if test='start_period != null and start_period == "A0"'>
+            <choose>
+                <when test='start_period.substring(0.1) == "U"'>
+                    and #{start_period}.substring(1,1) > start_period
+                </when>
+                <when test='start_period.substring(0.1) == "M"'>
+                    and start_period >= #{start_period}.substring(1,1)
+                </when>
+            </choose>
+        </if>
+        <if test='company_type != null and company_type == "01"'>
+            and company_type in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "company_type">
+                    item
+                </foreach>
+            </trim>
+        </if>
+        <if test='target_cat_name != null and target_cat_name == "01"'>
+            and target_cat_name in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "company_type">
+                    item
+                </foreach>
+            </trim>
+        </if>
+        <if test='business_ctg != null and business_ctg == "01"'>
+            and business_ctg in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_ctg">
+                    item
+                </foreach>
+            </trim>
+        </if>
+        <if test='tech_ctg != null and business_ctg == "01"'>
+            and tech_ctg in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "tech_ctg">
+                    item
+                </foreach>
+            </trim>
+        </if>
+        <if test='loc_code != null and business_ctg == "01"'>
+            and loc_code in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "loc_code">
+                    item
+                </foreach>
+            </trim>
+        </if>
         order by
         <choose>
             <when test='ord == "인기순"'>
