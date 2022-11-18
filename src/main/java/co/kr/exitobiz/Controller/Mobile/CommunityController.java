@@ -85,36 +85,63 @@ public class CommunityController {
     // 차단 회원 단일 해제
     @PostMapping("/delBlockUser")
     @ResponseBody
-    public void delBlockUser(@RequestBody HashMap<String, Object> params) throws ParseException{
-        communityService.delBlockUser(params);
+    public String delBlockUser(@RequestBody HashMap<String, Object> params) throws ParseException{
+        String result = "fail";
+        try{
+            communityService.delBlockUser(params);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     // 차단 회원 전체 해제
     @PostMapping("/delAllBlockUser")
     @ResponseBody
-    public void delAllBlockUser(@RequestHeader HashMap<String, Object> header) throws ParseException{
-
+    public String delAllBlockUser(@RequestHeader HashMap<String, Object> header) throws ParseException{
+        String result = "fail";
         HashMap<String, Object> params = new HashMap<>();
         params.put("cret_id", header.get("user_id"));
-        communityService.delAllBlockUser(params);
+        try{
+            communityService.delAllBlockUser(params);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
     // 차단 회원 추가
     @PostMapping("/insertBlock")
     @ResponseBody
-    public void insertBlock(@RequestHeader Map<String, Object> header) throws ParseException {
-        communityService.insertBlock((HashMap<String, Object>) header);
+    public String insertBlock(@RequestHeader Map<String, Object> header) throws ParseException {
+        String result ="fail";
+        try{
+            communityService.insertBlock((HashMap<String, Object>) header);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     // 신고하기 추가
     @PostMapping("/insertReport")
     @ResponseBody
-    public void insertReport(@RequestHeader Map<String, Object> header, @RequestBody Map<String, Object> body) throws ParseException {
+    public String insertReport(@RequestHeader Map<String, Object> header, @RequestBody Map<String, Object> body) throws ParseException {
+        String result = "fail";
         body.put("user_id", header.get("user_id"));
         body.put("target_user_id", header.get("target_user_id"));
+        try{
+            communityService.insertReport((HashMap<String, Object>) body);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
 
-        communityService.insertReport((HashMap<String, Object>) body);
     }
 
     // 게시글 상세
@@ -128,37 +155,58 @@ public class CommunityController {
     @PostMapping("/")
     @ResponseBody
     public int createCommunity(CommunityVo communityVo) throws ParseException {
-        communityService.insertCommunity(communityVo);
-        return communityService.getNewId();
+        int id = 0;
+        try{
+            communityService.insertCommunity(communityVo);
+            id = communityService.getNewId();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return id;
     }
 
     // 게시글 수정
     @PutMapping("/edit")
     @ResponseBody
-    public void editCommunity(CommunityVo communityVo) throws ParseException {
-        communityService.updateCommunity(communityVo);
+    public String editCommunity(CommunityVo communityVo) throws ParseException {
+        String result = "fail";
+        try{
+            communityService.updateCommunity(communityVo);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     //게시글 삭제
     @RequestMapping(value = "/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public void delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{
-        communityService.deleteCommunity(communityVo);
+    public String delCommunity(@RequestBody @Valid CommunityVo communityVo) throws Exception{
+        String result = "fail";
+        try{
+            communityService.deleteCommunity(communityVo);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+     return result;
     }
 
     // 게시글 좋아요
     @PostMapping(value = "/like")
     @ResponseBody
-    public void insertLike(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
+    public String insertLike(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws Exception{
+        String result = "fail";
         body.put("user_id", header.get("user_id"));
         try{
             communityService.insertContentLike(body);
+            communityService.updateTotalContentLike(body);
+            result = "success";
         }catch(Exception e){
             e.printStackTrace();
-        }finally{
-            communityService.updateTotalContentLike(body);
         }
-
+        return result;
     }
 
     //게시글 내 댓글 리스트
@@ -193,36 +241,68 @@ public class CommunityController {
         return jsonStr;
     }
 
+    //게시글 내 댓글, 대댓글 추가
+    @PostMapping(value = "/insertComment")
+    @ResponseBody
+    public String insertComment(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String,Object> body) throws Exception{
+        String result = "fail";
+        body.put("user_id", header.get("user_id"));
+        try{
+            communityService.insertComment(body);
+            result = "success";
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
     //게시글 내 댓글, 대댓글 수정
     @PostMapping(value = "/updateComment")
     @ResponseBody
-    public void updateComment(@RequestBody HashMap<String, Object> body) throws Exception{
-        communityService.updateComment(body);
+    public String updateComment(@RequestBody HashMap<String, Object> body) throws Exception{
+        String result = "fail";
+        try{
+            communityService.updateComment(body);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+
     }
 
     //게시글 내 댓글, 대댓글 삭제
     @PostMapping(value = "/delComment")
     @ResponseBody
-    public void delComment(@RequestBody HashMap<String, Object> body) throws Exception{
-        communityService.delComment(body);
+    public String delComment(@RequestBody HashMap<String, Object> body) throws Exception{
+        String result = "fail";
+        try{
+            communityService.delComment(body);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     //게시글 내 댓글, 대댓글 상태변경
     @PostMapping(value = "/insertCommentLike")
     @ResponseBody
-    public void insertCommentLike(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String,Object> body) throws Exception{
+    public String insertCommentLike(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String,Object> body) throws Exception{
+        String result = "fail";
         body.put("user_id", header.get("user_id"));
         try{
             //좋아요 추가하고
             communityService.insertCommentLike(body);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }finally {
             //성공하면 카운트도 업데이트 해주기
             communityService.updateTotalCommentLike(body);
+
+            result = "success";
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-
-
+        return result;
     }
 
     // ckeditor 이미지 업로드
@@ -258,35 +338,42 @@ public class CommunityController {
     // 파일 업로드
     @PostMapping(value = "/uploadFile")
     @ResponseBody
-    public void uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam("content_id") String content_id) throws Exception{
+    public String uploadFile(@RequestParam("files") List<MultipartFile> files, @RequestParam("content_id") String content_id) throws Exception{
+        String result = "fail";
 
-        if(!files.isEmpty()){
-            for(int i=0; i<files.size(); i++){
-                StringBuilder ImgPath = new StringBuilder();
-                ImageLink link = new ImageLink();
+        try{
+            if(!files.isEmpty()){
+                for(int i=0; i<files.size(); i++){
+                    StringBuilder ImgPath = new StringBuilder();
+                    ImageLink link = new ImageLink();
 
-                String fileName = fileService.fileNameGenerator(files.get(i));
-                String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+                    String fileName = fileService.fileNameGenerator(files.get(i));
+                    String formatName = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
 
-                // 파일 업로드
-                HashMap<String, String> uploadParams = new HashMap<>();
-                uploadParams.put("filePath", "/img/community/attachFile/");
-                uploadParams.put("fileName", fileName);
+                    // 파일 업로드
+                    HashMap<String, String> uploadParams = new HashMap<>();
+                    uploadParams.put("filePath", "/img/community/attachFile/");
+                    uploadParams.put("fileName", fileName);
 
-                // db저장
-                HashMap<String, Object> dbParams = new HashMap<>();
-                dbParams.put("content_id", Integer.parseInt(content_id));
-                dbParams.put("file_name", files.get(i).getOriginalFilename());
-                dbParams.put("generate_name", fileName);
+                    // db저장
+                    HashMap<String, Object> dbParams = new HashMap<>();
+                    dbParams.put("content_id", Integer.parseInt(content_id));
+                    dbParams.put("file_name", files.get(i).getOriginalFilename());
+                    dbParams.put("generate_name", fileName);
 
-                try{
-                    String result = fileService.uploadFile(files.get(i), uploadParams);
-                    if(result.equals("success"))  communityService.insertFile(dbParams);
-                }catch(Exception e){
-                    e.printStackTrace();
+                    try{
+                        String fileResult = fileService.uploadFile(files.get(i), uploadParams);
+                        if(fileResult.equals("success"))  communityService.insertFile(dbParams);
+                        result = "success";
+                    }catch(Exception e2){
+                        e2.printStackTrace();
+                    }
                 }
             }
+        }catch(Exception e){
+            e.printStackTrace();
         }
+        return result;
     }
 
     // 파일 불러오기

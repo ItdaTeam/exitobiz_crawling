@@ -47,6 +47,8 @@ public interface CommunityService {
 
     void updateComment(HashMap<String, Object> params) throws ParseException;
 
+    void insertComment(HashMap<String, Object> params) throws ParseException;
+
     void delComment(HashMap<String, Object> params) throws ParseException;
 
     void reviewViews(int id) throws ParseException;

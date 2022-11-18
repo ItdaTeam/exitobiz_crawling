@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="co.kr.exitobiz.Mappers.Mobile.CommunityMapper">
-
-
     <select id="getCommunityList" parameterType="HashMap" resultType="hashMap">
         select * from (
               select cc.id, cc.user_id, cc.category, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
@@ -126,6 +124,27 @@
     <insert id="insertReport" parameterType="HashMap">
         INSERT INTO  itda_app.report ( targetidx, category, report_user_id, target_user_id, description, status, cret_dt )
                             VALUES ( #{target_idx}, #{category}, #{user_id}, #{target_user_id}, #{description}, #{status}, NOW() )
+    </insert>
+
+    <insert id="insertComment" parameterType="HashMap">
+        <selectKey keyProperty="selectParentCommentId" order="BEFORE" resultType="int">
+            select max(cc.id) + 1 from itda_app.community_comment cc limit 1
+        </selectKey>
+        INSERT INTO itda_app.community_comment (
+            c_content_id, user_id, description, like_count, delete_yn, cret_dt, updt_dt, step, parent_comment_id, report_yn
+        )
+        VALUES (
+            #{c_content_id}, #{user_id},#{description}, 0, false, NOW(), NOW(), #{step},
+            <choose>
+                <when test='step == 1'>
+                    #{selectParentCommentId}
+                </when>
+                <otherwise>
+                    #{parent_comment_id}
+                </otherwise>
+            </choose>
+          , 'N'
+        )
     </insert>
 
     <insert id="insertCommentLike" parameterType="HashMap">
@@ -268,7 +287,7 @@
             from itda_app.user_block ub
             where 1=1
           and ub.cret_id = #{user_id}
-            )
+            ) order by cret_dt desc
     </select>
 
     <select id="getRecommentList" parameterType="HashMap" resultType="HashMap">

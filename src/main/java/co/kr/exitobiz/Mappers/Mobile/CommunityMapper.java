@@ -46,6 +46,8 @@ public interface CommunityMapper {
 
     public List<HashMap> getRecommentList(HashMap<String, Object> params); // 커뮤니티 내 대댓글 리스트
 
+    public void insertComment(HashMap<String, Object> params); // 커뮤니티 내 댓글 추가
+
     public void updateComment(HashMap<String, Object> params); // 커뮤니티 댓글 수정
 
     public void delComment(HashMap<String, Object> params); // 커뮤니티 댓글 삭제
@@ -57,7 +59,4 @@ public interface CommunityMapper {
     public void insertCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 flag 변경
 
     public void updateTotalCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 개수 변경
-
-
-
 }

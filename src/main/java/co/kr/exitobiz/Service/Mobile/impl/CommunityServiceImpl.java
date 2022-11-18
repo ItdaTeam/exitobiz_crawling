@@ -173,6 +173,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public void insertComment(HashMap<String, Object> params) throws ParseException {
+        communityMapper.insertComment(params);
+    }
+
+    @Override
     public void delComment(HashMap<String, Object> params) throws ParseException {
         communityMapper.delComment(params);
     }
