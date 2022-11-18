@@ -7,17 +7,20 @@
         where 1=1
           and tl.tl_button_name like '%검색%'
           and tl.tl_cret_dt > (NOW() +'-10 days')::DATE
-        group by tl.tl_event having count(*) > 1 order by cnt desc
+        group by tl.tl_event having count(*) > 1 order by cnt desc, tl.tl_event collate "C"
     </select>
 
     <select id="getMyRecentKeyword" resultType="HashMap" parameterType="HashMap">
-        select tl.tl_cd, tl.tl_event from itda_app.time_line tl
-            where tl_cret_id =#{tl_cret_id} and tl_button_name ='검색버튼' and tl_memo != '검색어삭제'
-        order by tl_cret_dt desc
+        select tl_cd, tl_event, tl_cret_dt
+        FROM  (
+                  SELECT DISTINCT ON (tl.tl_event) * FROM itda_app.time_line tl
+                  where tl_cret_id =#{tl_cret_id} and tl_button_name ='검색버튼' and tl_memo != '검색어삭제' order by tl.tl_event, tl.tl_cret_dt desc
+              ) sub
+        ORDER  BY  tl_cd desc
     </select>
 
     <update id="delMyRecentKeyword" parameterType="HashMap">
-        update itda_app.time_line set tl_memo = '검색어삭제' where tl_cd = #{tl_cd}
+        update itda_app.time_line set tl_memo = '검색어삭제' where tl_event =#{tl_event} and  tl_cret_id =#{tl_cret_id}
     </update>
 
     <update id="delMyAllRecentKeyword" parameterType="HashMap">
@@ -46,10 +49,16 @@
         select array_to_string(array_agg(keyword),',')as keyword from itda_app.user_keyword uk where uk.user_id = #{user_id}
     </select>
 
-    <insert id="insertKeyword" parameterType="HashMap">
-        INSERT INTO itda_app.user_keyword (
+    <insert id= "insertKeyword" parameterType="HashMap">
+        <selectKey keyProperty="hasKeyword" resultType="int" order="BEFORE">
+            select count(*) from itda_app.user_keyword where user_id = #{user_id} and keyword = #{keyword}
+        </selectKey>
+        <if test='hasKeyword == 0'>
+            INSERT INTO itda_app.user_keyword (
             user_id, keyword, cret_dt)
-        VALUES ( #{user_id} ,#{keyword}, NOW() )
+            VALUES ( #{user_id} ,#{keyword}, NOW() )
+        </if>
+
     </insert>
 
     <delete id="delKeyword" parameterType="HashMap">
@@ -63,14 +72,17 @@
     <select id="getPopularList" parameterType="HashMap" resultType="HashMap">
         select * from itda_app.support_info si
         <choose>
-            <when test='cat = "실시간"'>
+            <when test='cat == "실시간"'>
                 order by si.view_cnt
             </when>
-            <when test='cat = "찜"'>
+            <when test='cat == "찜"'>
                 order by si.save_cnt
             </when>
+            <when test='cat == "예비창업자"'>
+                where si.business_type = '01' order by si.view_cnt
+            </when>
         </choose>
-         desc limit 5
+        desc limit 5
     </select>
 
     <select id="getPushBookList" parameterType="HashMap" resultType="HashMap">
