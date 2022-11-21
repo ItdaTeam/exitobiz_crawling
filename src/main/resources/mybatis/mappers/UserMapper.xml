@@ -194,9 +194,11 @@ WHERE id=#{id}
         UPDATE itda_app.usertable
         SET
             usernickname = #{usernickname}
+        <if test="useremail != null">
+            ,useremail = #{useremail}
+        </if>
         WHERE 1=1
             AND id=#{userid}
     </update>
-
 
 </mapper>
