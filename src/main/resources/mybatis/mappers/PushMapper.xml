@@ -33,12 +33,19 @@
 
     <select id ="getKeywordPushUser" parameterType="HashMap" resultType="PushVo">
         select uk.user_id, uk.keyword, u.usertoken
-          from itda_app.user_keyword uk 
-          left outer join itda_app.usertable u on uk.user_id = u.id
+          from itda_app.user_keyword uk
+                   left outer join itda_app.usertable u on uk.user_id = u.id and date_trunc('day',u.last_time) <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
           inner join itda_app.user_push_setting ups on u.id = ups.user_id and ups.sp_keyword_push = 'Y'
         where 1=1
           and uk.keyword = #{keyword}
-          
+        union
+        select uk.user_id, uk.keyword, ud.usertoken
+        from itda_app.user_keyword uk
+                 left outer join itda_app.user_device ud on uk.user_id = ud.user_id and date_trunc('day',ud.updt_dt) <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+                 inner join itda_app.user_push_setting ups on ud.user_id = ups.user_id and ups.sp_keyword_push = 'Y'
+        where 1=1
+          and uk.keyword = #{keyword}
+
     </select>
 
     <select id="getBookmarkSupportInfo" resultType="PushVo">

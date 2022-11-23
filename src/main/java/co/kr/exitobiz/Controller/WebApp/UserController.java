@@ -73,10 +73,11 @@ public class UserController {
      */
     @PostMapping("/updatePushSetting")
     @ResponseBody
-    public String updatePushSetting(@RequestHeader Map<String,Object> params) {
+    public String updatePushSetting(@RequestBody Map<String,Object> params, @RequestHeader Map<String,Object> data) {
         String result = "fail";
-        if(params.get("userid") != null) {
+        if(data.get("userid") != null) {
             try {
+                params.put("userid",data.get("userid"));
                 userService.updatePushSetting(params);
                 result = "success";
             } catch (Exception e) {

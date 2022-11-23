@@ -6,10 +6,7 @@ import co.kr.exitobiz.Service.WebApp.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -43,12 +40,12 @@ public class PushController {
     @ResponseBody
     public String sendPush(@RequestParam HashMap<String,String> params ) throws Exception {
 
-        String userToken = userService.getUserToken(params); // DB에서 사용자 토큰 가져오기
+        List<Map<String,Object>> userToken = userService.getUserToken(params); // DB에서 사용자 토큰 가져오기
         String result ="fail";
-        if(userToken.length() > 0){ // 토큰이 존재하는 경우에만 처리
-                params.put("userToken",userService.getUserToken(params)); // 사용자 토큰 추가 
-                params.put("firebaseKeyPath",environment.getProperty("firebase.path.key")); // key파일 path 가져오기
-                result = pushService.sendPush(params);
+        if(userToken.size() > 0){ // 토큰이 존재하는 경우에만 처리
+            params.put("firebaseKeyPath", environment.getProperty("firebase.path.key")); // key파일 path 가져오기
+            pushMultipleService.sendListPush(params, userToken);
+            result = "success";
         }
         return result;
     }
@@ -116,7 +113,7 @@ public class PushController {
             params2.put("userlocs", userlocs);
         }
 
-        List<Map<String, Object>> userTokens = userService.getUserTokenByLocation(params2);
+        List<Map<String, Object>> userTokens = userService.getUserTokenByLocationTest(params2);
         System.out.println(userTokens.toString());
         System.out.println(userTokens.size());
 
@@ -147,14 +144,13 @@ public class PushController {
 
         params.put("id",params.get("userId")); // 쿼리 공통 사용을 위한 변수 id(사용자 아이디) 추가
 
-        String userToken = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
-        String result ="fail";
-        if(userToken != null){ // 토큰이 존재하는 경우에만 처리
-                params.put("userToken",userToken); // 사용자 토큰 추가 
+        List<Map<String,Object>>  userTokens = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
+        if(!userTokens.isEmpty()){ // 토큰이 존재하는 경우에만 처리
                 params.put("firebaseKeyPath",environment.getProperty("firebase.path.key")); // key파일 path 가져오기
-                result = pushService.sendPush(params);
+                pushMultipleService.sendListPush(params, userTokens);
         }
-        return result;
+
+        return "success";
     }
 
     @PostMapping(value="/sendNotice")

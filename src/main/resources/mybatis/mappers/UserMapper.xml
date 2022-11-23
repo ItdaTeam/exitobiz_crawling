@@ -3,10 +3,27 @@
 
 <mapper namespace="co.kr.exitobiz.Mappers.WebApp.UserMapper">
 
-<select id="getUserToken" parameterType="hashMap" resultType="String">
+<select id="getUserToken" parameterType="hashMap" resultType="Map">
 SELECT usertoken
   FROM itda_app.usertable
 WHERE id=#{id}
+  and date_trunc('day',last_time)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+union
+SELECT usertoken
+  FROM (
+             select *
+             from (
+                      -- 오늘 날짜 기준 61일 전부터 update 된 토큰 기준으로만 발송
+                      -- 발송 기준은 user_id, mos, minfo 기준 앱버전이 가장 최신인 토큰만 발송
+                      select RANK() over (partition by user_id, mos, minfo order by appversion desc) ord , *
+                      from itda_app.user_device ud
+                      where 1=1
+                        AND user_id = #{id}
+                        and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+                  ) data
+             where 1=1
+               and data.ord = 1
+   ) ud
 </select>
 
 
@@ -22,9 +39,31 @@ WHERE id=#{id}
                   #{loc}
               </foreach>
           </if>
+      union
+      SELECT ud.usertoken
+      FROM itda_app.usertable u
+      left outer join(
+          select data.user_id, data.usertoken
+          from (
+              select ud.user_id,RANK() over (partition by ud.user_id, ud.mos, ud.minfo order by ud.appversion desc) ord, ud.usertoken
+              from itda_app.usertable u
+              inner join itda_app.user_device ud on ud.user_id = u.id
+              where 1=1
+              <if test="loc != null">
+                  AND u.userloc in
+                  <foreach collection="params" item="loc" index="idx" separator="," open="(" close=")">
+                      #{loc}
+                  </foreach>
+              </if>
+              and date_trunc('day',ud.updt_dt) >= date_trunc('day', current_timestamp  + '-61 days')
+          ) data
+          where 1=1
+          and data.ord = 1
+      ) ud on u.id = ud.user_id
+      WHERE ud.usertoken not in ('', 'null')
   </select>
 
-  <select id="getUserTokenByKeyId" parameterType="hashMap" resultType="String">
+  <select id="getUserTokenByKeyId" parameterType="hashMap" resultType="map">
     SELECT usertoken
     FROM itda_app.usertable u 
      left outer join itda_app.user_push_setting ups on u.id = ups.user_id
@@ -71,14 +110,62 @@ WHERE id=#{id}
             and coalesce(cops.push_yn, true) != false
         </when>
     </choose>
+    union
+      SELECT usertoken
+      FROM itda_app.user_device ud
+      left outer join itda_app.user_push_setting ups on ud.user_id = ups.user_id
+      left outer join itda_app.admin_push_setting aps on ud.user_id = aps.user_id
+      left outer join itda_app.chatrooms_one_push_setting cops on ud.user_id = cops.user_id
+      WHERE 1=1
+      and ud.user_id=#{id}
+      and ud.usertoken not in ('', 'null')
+      and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+      <choose>
+          <when test="keyId == 1 ">
+              and coalesce(ups.sp_receive_push,'') != 'N'
+              <if test="userlocs != null">
+                  AND userloc in
+                  <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
+                      #{loc}
+                  </foreach>
+              </if>
+          </when>
+          <when test="keyId == 2 ">
+              and coalesce(ups.sp_keyword_push,'') != 'N'
+          </when>
+          <when test="keyId == 3 ">
+              and coalesce(ups.sp_recomment_push,'') != 'N'
+          </when>
+          <when test="keyId == 4 ">
+              and coalesce(ups.sp_commentlike_push,'') != 'N'
+          </when>
+          <when test="keyId == 5 ">
+              and coalesce(ups.sp_bookmark_push,'') != 'N'
+          </when>
+          <when test="keyId == 6 ">
+              and coalesce(ups.sp_content_comment_push,'') != 'N'
+          </when>
+          <when test="keyId == 7 ">
+              and coalesce(ups.sp_community_commentlike_push,'') != 'N'
+          </when>
+          <when test="keyId == 8 ">
+              and coalesce(ups.sp_community_recomment_push,'') != 'N'
+          </when>
+          <when test="keyId == 12 ">
+              and coalesce(aps.chat_push ,'') != 'N'
+          </when>
+          <when test="keyId == 13 ">
+              and coalesce(cops.push_yn, true) != false
+          </when>
+      </choose>
   </select>
-  <!-- 
+  <!--
      getUserTokenByLocation Original
 
       SELECT usertoken
     FROM itda_app.usertable
     WHERE usertoken not in ('', 'null')
-      AND 
+      AND
           <if test="userlocs != null">
               AND userloc in
               <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
@@ -89,16 +176,42 @@ WHERE id=#{id}
   -->
 
     <select id="getUserTokenByLocationTest" parameterType="hashMap" resultType="map">
-        SELECT usertoken, userloc
-        FROM itda_app.usertable
-        WHERE usertoken not in ('', 'null')
-        AND username in ('권혁남', '전승희', '이소연', '김호준', '박준호', '최찬미', '김은영')
-        AND admin_flag = 'Y'
+        SELECT u.usertoken, userloc
+        FROM itda_app.usertable u
+        WHERE u.usertoken not in ('', 'null')
+          and u.id='1592864754'
+        AND u.admin_flag = 'Y'
         <if test="loc != null">
-        AND userloc in
+        AND u,userloc in
         <foreach collection="params" item="loc" index="idx" separator="," open="(" close=")">
             #{loc}
         </foreach>
+        </if>
+        union
+        SELECT ud.usertoken, u.userloc
+        FROM itda_app.usertable u
+        left outer join
+        (
+            select *
+            from (
+            -- 오늘 날짜 기준 61일 전부터 update 된 토큰 기준으로만 발송
+            -- 발송 기준은 user_id, mos, minfo 기준 앱버전이 가장 최신인 토큰만 발송
+                select RANK() over (partition by user_id, mos, minfo order by appversion desc) ord , *
+                from itda_app.user_device ud
+                where 1=1
+                and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+                and ud.user_id='1592864754'
+            ) data
+            where 1=1
+            and data.ord = 1
+        ) ud on u.id = ud.user_id
+        WHERE ud.usertoken not in ('', 'null')
+        AND u.admin_flag = 'Y'
+        <if test="loc != null">
+            AND u,userloc in
+            <foreach collection="params" item="loc" index="idx" separator="," open="(" close=")">
+                #{loc}
+            </foreach>
         </if>
     </select>
 
@@ -107,11 +220,27 @@ WHERE id=#{id}
         FROM itda_app.usertable u
         WHERE 1=1
            AND u.usertoken not in ('', 'null')
---           AND username in ('강태욱', '권혁남')
+          and date_trunc('day',last_time)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+        union
+        SELECT usertoken
+        FROM (
+                 select *
+                     from (
+                              -- 오늘 날짜 기준 61일 전부터 update 된 토큰 기준으로만 발송
+                              -- 발송 기준은 user_id, mos, minfo 기준 앱버전이 가장 최신인 토큰만 발송
+                              select RANK() over (partition by user_id, mos, minfo order by appversion desc) ord , *
+                              from itda_app.user_device ud
+                              where 1=1
+                                and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+                          ) data
+                 where 1=1
+                   and data.ord = 1
+             )
+        WHERE 1=1
     </select>
 
     <select id="getUserInfo" parameterType="map" resultType="map">
-        SELECT  u.usernickname, u.useremail, u.id
+        SELECT  u.usernickname, u.useremail, u.id, u.*
         FROM itda_app.usertable u
         WHERE id=#{userid}
     </select>
@@ -127,39 +256,42 @@ WHERE id=#{id}
         UPDATE itda_app.user_push_setting
         set
             <choose>
-                <when test="spbookmarkpush != null">
-                    sp_bookmark_push =#{spbookmarkpush}
+                <when test="spBookmarkPush != null">
+                    sp_bookmark_push =#{spBookmarkPush}
                 </when>
               <otherwise>
                   sp_bookmark_push ='N'
               </otherwise>
             </choose>
-            <if test="spreceivepush != null">
-                ,sp_receive_push =#{spreceivepush}
+            <if test="spReceivePush != null">
+                ,sp_receive_push =#{spReceivePush}
             </if>
-            <if test="spkeywordpush != null">
-                ,sp_keyword_push =#{spkeywordpush}
+            <if test="spkeywordPush != null">
+                ,sp_keyword_push =#{spkeywordPush}
             </if>
-            <if test="sprecommentpush != null">
-                ,sp_recomment_push =#{sprecommentpush}
+            <if test="spRecommentPush != null">
+                ,sp_recomment_push =#{spRecommentPush}
             </if>
-            <if test="spcommentlikepush != null">
-                ,sp_commentlike_push =#{spcommentlikepush}
+            <if test="spCommentlikePush != null">
+                ,sp_commentlike_push =#{spCommentlikePush}
             </if>
-            <if test="spcontentcommentpush != null">
-                ,sp_content_comment_push =#{spcontentcommentpush}
+            <if test="spContentcommentPush != null">
+                ,sp_content_comment_push =#{spContentcommentPush}
             </if>
-            <if test="spcommunitycommentlikepush != null">
-                ,sp_community_commentlike_push =#{spcommunitycommentlikepush}
+            <if test="spCommunityCommentlikePush != null">
+                ,sp_community_commentlike_push =#{spCommunityCommentlikePush}
             </if>
-            <if test="spcommunityrecommentpush != null">
-                ,sp_community_recomment_push =#{spcommunityrecommentpush}
+            <if test="spCommunityRecommentPush != null">
+                ,sp_community_recomment_push =#{spCommunityRecommentPush}
             </if>
+<!--            <if test="marketingPush != null">-->
+<!--                ,                                                          =#{marketingPush}-->
+<!--            </if>-->
         WHERE 1=1
             AND user_id=#{userid}
     </update>
     <select id="getPushSetting" parameterType="map" resultType="map">
-        SELECT user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push
+        SELECT user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push
         FROM itda_app.user_push_setting
      WHERE 1=1
         AND user_id = #{userid}

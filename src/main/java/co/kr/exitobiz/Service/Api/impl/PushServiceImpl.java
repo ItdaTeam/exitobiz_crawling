@@ -84,7 +84,7 @@ public class PushServiceImpl implements PushService {
     @Override
     @Async
     public String sendPush(HashMap<String, String> params) throws Exception {
-
+        System.out.println("        sendPUsh Params User Token!!! : " +params.get("userToken"));
         String result="";
         try {    
             //FCM처리를 위한 기본 셋팅
@@ -145,6 +145,7 @@ public class PushServiceImpl implements PushService {
             RestTemplate rt = new RestTemplate();
 
             System.out.println("파이어베이스 시작::" + LocalTime.now());
+            System.out.println(" Push token :" + messageData.get("token").toString());
 
             // FCM Push메세지 발송
             ResponseEntity<String> res = rt.exchange("https://fcm.googleapis.com/v1/projects/itda001/messages:send"

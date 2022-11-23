@@ -2,7 +2,6 @@ package co.kr.exitobiz.Service.WebApp.impl;
 
 import co.kr.exitobiz.Mappers.WebApp.UserMapper;
 import co.kr.exitobiz.Service.WebApp.UserService;
-import co.kr.exitobiz.Vo.usertableVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     @Override
-    public String getUserToken(HashMap<String,String> params) {
+    public List<Map<String, Object>> getUserToken(HashMap<String,String> params) {
         return userMapper.getUserToken(params);
     }
 
@@ -27,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Map<String, usertableVo>> getUserTokenByLocationTest(List params){
+    public List<Map<String, Object>> getUserTokenByLocationTest(HashMap<String, Object> params){
         return userMapper.getUserTokenByLocationTest(params);
     }
 
@@ -36,8 +35,7 @@ public class UserServiceImpl implements UserService {
      * 개별푸쉬를 위한 keyId 유형별 토큰 가져오기
      */
     @Override
-    public String getUserTokenByKeyId(HashMap<String, String> params) {
-        // TODO Auto-generated method stub
+    public List<Map<String, Object>> getUserTokenByKeyId(HashMap<String, String> params) {
         return userMapper.getUserTokenByKeyId(params);
     }
 
