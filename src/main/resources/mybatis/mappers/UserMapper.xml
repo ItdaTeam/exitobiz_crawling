@@ -41,14 +41,15 @@ SELECT usertoken
           </if>
       union
       SELECT ud.usertoken
-      FROM itda_app.usertable u
-      left outer join(
+      from(
           select data.user_id, data.usertoken
           from (
               select ud.user_id,RANK() over (partition by ud.user_id, ud.mos, ud.minfo order by ud.appversion desc) ord, ud.usertoken
               from itda_app.usertable u
               inner join itda_app.user_device ud on ud.user_id = u.id
-              where 1=1
+              left outer join itda_app.user_push_setting ups on u.id = ups.user_id
+                where 1=1
+                AND coalesce(ups.sp_receive_push, '')  != 'N'
               <if test="loc != null">
                   AND u.userloc in
                   <foreach collection="params" item="loc" index="idx" separator="," open="(" close=")">
@@ -59,7 +60,7 @@ SELECT usertoken
           ) data
           where 1=1
           and data.ord = 1
-      ) ud on u.id = ud.user_id
+      ) ud
       WHERE ud.usertoken not in ('', 'null')
   </select>
 
