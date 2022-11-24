@@ -109,6 +109,7 @@ public class GyeongnamGntpCrawling implements Crawling {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 supportVo.setErrorYn("Y");
+                e.printStackTrace();
             }
         }
 
@@ -120,6 +121,7 @@ public class GyeongnamGntpCrawling implements Crawling {
                 supportVos.clear();
             }catch (Exception e){
                 supportVo.setErrorYn("Y");
+                e.printStackTrace();
                 crawlingMapper.createMaster(supportVo);
             }
         }else {

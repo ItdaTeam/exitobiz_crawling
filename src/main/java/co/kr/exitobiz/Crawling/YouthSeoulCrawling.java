@@ -135,8 +135,8 @@ public class YouthSeoulCrawling implements Crawling {
 
             } catch (Exception e) {
                 supportVo.setErrorYn("Y");
-                crawlingMapper.createMaster(supportVo);
                 e.printStackTrace();
+                crawlingMapper.createMaster(supportVo);
             } finally {
                 /* 빈 리스트가 아니면 크레이트 */
                 if (!supportVos.isEmpty()) {

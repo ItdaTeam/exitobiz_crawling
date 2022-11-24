@@ -99,6 +99,7 @@ public class SbizCrawling {
                         crawlingMapper.createMaster(supportVo);
                     }catch (Exception e){
                         supportVo.setErrorYn("Y");
+                        e.printStackTrace();
                         crawlingMapper.createMaster(supportVo);
                     }
                 }else {
@@ -119,6 +120,7 @@ public class SbizCrawling {
         } catch (Exception e) {
             System.out.println(e);
             supportVo.setErrorYn("Y");
+            e.printStackTrace();
             crawlingMapper.createMaster(supportVo);
         }
 

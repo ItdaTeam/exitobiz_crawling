@@ -130,6 +130,7 @@ public class KStartUpCrawling implements Crawling {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             supportVo.setErrorYn("Y");
+            e.printStackTrace();
         }
 
             /* 빈 리스트가 아니면 크레이트 */
@@ -139,6 +140,7 @@ public class KStartUpCrawling implements Crawling {
                     crawlingMapper.createMaster(supportVo);
                 }catch (Exception e){
                     supportVo.setErrorYn("Y");
+                    e.printStackTrace();
                     crawlingMapper.createMaster(supportVo);
                 }
             }else {

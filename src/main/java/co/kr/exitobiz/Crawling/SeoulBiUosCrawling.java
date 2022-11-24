@@ -123,6 +123,7 @@ public class SeoulBiUosCrawling implements Crawling {
 
                 } catch (Exception e) {
                     supportVo.setErrorYn("Y");
+                    e.printStackTrace();
                     crawlingMapper.createMaster(supportVo);
                     System.out.println(e.getMessage());
                 }
@@ -139,6 +140,7 @@ public class SeoulBiUosCrawling implements Crawling {
                 crawlingMapper.createMaster(supportVo);
             }catch (Exception e){
                 supportVo.setErrorYn("Y");
+                e.printStackTrace();
                 crawlingMapper.createMaster(supportVo);
             }
         }

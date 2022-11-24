@@ -13,8 +13,7 @@
             si_idx, target_name, target_cat_name, loc_code, si_title, mobile_url, pc_url, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt
         )
         values
-        <foreach collection="supportVos" item="vo" index="index" separator=",">
-
+        <foreach collection="list" item="vo" index="index" separator=",">
             (
              (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info), #{vo.targetName}, #{vo.targetCatName}, #{vo.locCode}, #{vo.siTitle}, #{vo.mobileUrl},
                 #{vo.pcUrl}, NOW(), 'N', 0, 0, 0

@@ -114,6 +114,7 @@ public class SeoulGaseCrawling implements Crawling {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                     supportVo.setErrorYn("Y");
+                    e.printStackTrace();
                 }
 
             }
