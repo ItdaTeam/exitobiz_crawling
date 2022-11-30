@@ -91,7 +91,9 @@
                             and user_id not in (
                               select target_id from itda_app.user_block ub
                               where 1=1
-                                and ub.cret_id = #{userId}
+                                 <if test="user_id != null">
+                                    and ub.cret_id = #{userId}
+                                 </if>
                           )
                       ) as T1 order by (comment_cnt + view_count + like_cnt) desc limit 3;
     </select>
@@ -264,7 +266,9 @@
                 select target_id
                 from itda_app.user_block ub
                 where 1=1
-                and ub.cret_id = #{user_id}
+                <if test="user_id != null">
+                    and ub.cret_id = #{user_id}
+                </if>
                 )
                 and cc2.parent_comment_id = cc.id) as comment_cnt
         from itda_app.community_comment cc
@@ -274,7 +278,9 @@
             select comment_like_history_id
             from itda_app.community_comment_like_history
             where 1=1
-            and user_id = #{user_id}
+            <if test="user_id != null">
+                and user_id = #{user_id}
+              </if>
             and comment_id = cc.id
             )
         where 1=1
@@ -286,7 +292,9 @@
             select target_id
             from itda_app.user_block ub
             where 1=1
-          and ub.cret_id = #{user_id}
+        <if test="user_id != null">
+            and ub.cret_id = #{user_id}
+        </if>
             ) order by cret_dt desc
     </select>
 
@@ -302,7 +310,9 @@
                 	select target_id
                 	from itda_app.user_block ub
                 	where 1=1
-                	and ub.cret_id = #{user_id}
+                    <if test="user_id != null">
+                	    and ub.cret_id = #{user_id}
+                    </if>
                 )
           and cc.parent_comment_id = #{parent_comment_id};
     </select>

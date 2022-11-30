@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -219,10 +220,13 @@ public class SavedController {
         body.put("user_id", header.get("user_id"));
 
         String result = "fail";
+        int hasUserNeed = 0;
 
         try{
             //현 아이디로 데이터가 있는 지 확인
-            int hasUserNeed = savedService.getUserNeed(body).size();
+            Map<String,Object> data =  savedService.getUserNeed(body);
+            if(data != null)
+                hasUserNeed = savedService.getUserNeed(body).size();
 
             if(body.get("idx") == null && hasUserNeed == 0){
                 savedService.insertUserNeed(body);
