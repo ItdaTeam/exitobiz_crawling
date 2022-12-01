@@ -91,7 +91,7 @@
                             and user_id not in (
                               select target_id from itda_app.user_block ub
                               where 1=1
-                                 <if test="user_id != null">
+                                 <if test="userId != null">
                                     and ub.cret_id = #{userId}
                                  </if>
                           )

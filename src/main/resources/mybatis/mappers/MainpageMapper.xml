@@ -73,16 +73,16 @@
         select * from itda_app.support_info si
         <choose>
             <when test='cat == "실시간"'>
-                order by si.view_cnt
+                order by si.view_cnt desc
             </when>
             <when test='cat == "찜"'>
-                order by si.save_cnt
+                order by si.save_cnt desc
             </when>
             <when test='cat == "예비창업자"'>
-                where si.business_type = '01' order by si.view_cnt
+                where si.business_type = '01' order by si.view_cnt desc
             </when>
         </choose>
-        desc limit 5
+         limit 5
     </select>
 
     <select id="getPushBookList" parameterType="HashMap" resultType="HashMap">
