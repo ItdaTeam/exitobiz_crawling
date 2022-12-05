@@ -80,7 +80,7 @@ public class SavedController {
         String result = "fail";
 
         try{
-            if(body.get("mb_save_yn").equals("")){
+            if(body.get("mb_save_yn") == null || body.get("mb_save_yn").equals("")){
                 savedService.insertSavedMyBook(body);
             }else if(body.get("mb_save_yn").equals("Y")){
                 body.replace("mb_save_yn", "N");
@@ -105,7 +105,8 @@ public class SavedController {
         String result = "fail";
         body.put("mb_cret_id", header.get("user_id"));
 
-        if(body.get("mb_req_save_yn").equals("")){
+
+        if(body.get("mb_req_save_yn") == null || body.get("mb_req_save_yn").equals("")){
             //값이 없을 경우, 생성일자도 추가한다.
             body.replace("mb_req_save_yn", "Y");
             body.put("mb_req_cret_dt", "");
@@ -141,7 +142,7 @@ public class SavedController {
 
         String result = "fail";
 
-        if(body.get("mb_done_save_yn").equals("")){
+        if(body.get("mb_done_save_yn") == null || body.get("mb_done_save_yn").equals("")){
             //값이 없을 경우, 생성일자도 추가한다.
             body.replace("mb_done_save_yn", "Y");
             body.put("mb_done_cret_dt", "");
