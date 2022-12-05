@@ -241,7 +241,7 @@ SELECT usertoken
     </select>
 
     <select id="getUserInfo" parameterType="map" resultType="map">
-        SELECT  u.usernickname, u.useremail, u.id, u.*
+        SELECT id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userloc, userlocname, usertitle, userhp, companyname, companytype, companyloc, mos, minfo, check_flag, admin_flag, cret_time, last_time,   lat, lng, sido, sigugun, dongmyun, jibun, lastloc,   rep_name, test_bool, deliver_email, biz_intro
         FROM itda_app.usertable u
         WHERE id=#{userid}
     </select>
@@ -327,8 +327,14 @@ SELECT usertoken
         UPDATE itda_app.usertable
         SET
             usernickname = #{usernickname}
-        <if test="useremail != null">
-            ,useremail = #{useremail}
+        <if test="repName != null">
+            ,rep_name = #{repName}
+        </if>
+        <if test="compayname  != null">
+            ,compayname = #{compayname}
+        </if>
+        <if test="biz_intro != null">
+            ,biz_intro = #{bizIntro}
         </if>
         WHERE 1=1
             AND id=#{userid}
