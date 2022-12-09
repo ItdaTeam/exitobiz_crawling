@@ -143,6 +143,8 @@ public class SeoulBiUosCrawling implements Crawling {
                 e.printStackTrace();
                 crawlingMapper.createMaster(supportVo);
             }
+        }else{
+            crawlingMapper.createMaster(supportVo);
         }
 
         driver.close();

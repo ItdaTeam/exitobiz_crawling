@@ -4,7 +4,9 @@
 <mapper namespace="co.kr.exitobiz.Mappers.Mobile.CommunityMapper">
     <select id="getCommunityList" parameterType="HashMap" resultType="hashMap">
         select * from (
-              select cc.id, cc.user_id, cc.category, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
+              select cc.id, cc.user_id, cc.category, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt,
+                ,coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id), 0) thumb_up
+                    from itda_web.community_content cc
                     left outer join itda_app.usertable u on cc.user_id  = u.id
                     left outer join (
                         select c_content_id, count(*) as cnt from itda_app.community_comment
@@ -211,14 +213,17 @@
     </select>
 
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
-        select * from (
-        select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt from itda_web.community_content cc
-        left outer join itda_app.usertable u on cc.user_id  = u.id
-        left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
-        where 1=1
-        and delete_yn = false
-        and declare_yn = false
-        and cc.id = #{id}
+        select *
+        from (
+            select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt
+            , coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id),0) thum_up
+            from itda_web.community_content cc
+            left outer join itda_app.usertable u on cc.user_id  = u.id
+            left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
+            where 1=1
+            and delete_yn = false
+            and declare_yn = false
+            and cc.id = #{id}
         ) as T1
     </select>
 
@@ -273,16 +278,7 @@
                 and cc2.parent_comment_id = cc.id) as comment_cnt
         from itda_app.community_comment cc
             left outer join itda_app.usertable u on u.id = cc.user_id
-            left outer join itda_app.community_comment_like_history cclh on cclh.comment_id = cc.id
-            and cclh.comment_like_history_id  = (
-            select comment_like_history_id
-            from itda_app.community_comment_like_history
-            where 1=1
-            <if test="user_id != null">
-                and user_id = #{user_id}
-              </if>
-            and comment_id = cc.id
-            )
+            left outer join itda_app.community_comment_like_history cclh on cclh.comment_id = cc.id and cclh.user_id = cc.user_id
         where 1=1
           and cc.step = 1
           and cc.report_yn != 'Y'
@@ -299,9 +295,10 @@
     </select>
 
     <select id="getRecommentList" parameterType="HashMap" resultType="HashMap">
-        select cc.*,u.idprofile ,u.usernickname
+        select cc.*,u.idprofile ,u.usernickname, cc.like_count,cclh.thumb_up
         from itda_app.community_comment cc
                  left outer join itda_app.usertable u on u.id = cc.user_id
+        left outer join itda_app.community_comment_like_history cclh on cc.id = cclh.comment_id and cc.user_id = cclh.user_id
         where 1=1
           and cc.step = 2
           and cc.report_yn != 'Y'

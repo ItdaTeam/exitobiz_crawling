@@ -117,8 +117,8 @@ public class SavedController {
         }else if(body.get("mb_req_save_yn").equals("Y")){
             body.replace("mb_req_save_yn", "N");
 
-            if(body.get("mb_done_save_yn").equals("N")){
-                body.replace("mb_done_save_yn", "");
+            if(body.get("mb_done_save_yn") == null || body.get("mb_done_save_yn").equals("N")){
+                body.replace("mb_done_save_yn", "Y");
             }else if(body.get("mb_done_save_yn").equals("Y")){
                 // 지원을 해제할 때만 선정도 해제해줌.
                 body.replace("mb_done_save_yn", "N");

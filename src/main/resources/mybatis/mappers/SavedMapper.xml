@@ -8,23 +8,17 @@
                mb.mb_save_yn, mb.mb_req_save_yn, mb.mb_done_save_yn,
                tl.tl_cret_dt
         from (
-        select tl_type_cd, tl_cret_id , max(tl_cret_dt) as tl_cret_dt from itda_app.time_line
-        where 1=1
-        and tl_type_cd != 0
-        and tl_cret_id = #{user_id}
-        group by tl_type_cd, tl_cret_id , date_trunc('year',tl_cret_dt)
-        order by tl_cret_dt desc
+                select rank() over (partition by tl_type_cd order by tl_cret_dt desc ) as sort
+                ,to_char(tl_cret_dt, 'yyyy-mm-dd') tl_cret_dt, tl_type_cd, tl_cret_id
+                from itda_app.time_line
+                where 1=1
+                and tl_type_cd != 0
+                and tl_cret_id = #{user_id}
         ) tl
         left outer join itda_app.support_info si on tl.tl_type_cd = si.si_idx
-        left join itda_app.my_bookmark mb on si.si_idx = mb.mb_addidx and
-        mb.mb_idx = (
-        select mb_idx from itda_app.my_bookmark
+        left outer join itda_app.my_bookmark mb on mb.mb_addidx = si.si_idx and mb.mb_cret_id = tl_cret_id
         where 1=1
-        and mb_cret_id = #{user_id}
-        and mb_addidx = si.si_idx
-        order by mb_cret_dt desc
-        limit 1
-        )
+        and tl.sort=1
         <if test='ord != null'>
             <choose>
                 <when test="ord == '인기순'">
@@ -37,16 +31,24 @@
                     order by si_end_dt
                 </when>
                 <otherwise>
-
+                    order by tl_cret_dt desc
                 </otherwise>
             </choose>
         </if>
     </select>
 
     <select id="getMySavedBook" resultType="HashMap" parameterType="HashMap">
-        select  *
+        select  mb.*, si.*, tl.tl_cret_dt
         from itda_app.my_bookmark mb
-            left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
+        left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
+        left outer join (
+                select
+                rank() over (partition by tl_type_cd order by tl_cret_dt desc ) as sort
+                ,to_char(tl_cret_dt,'yyyy-mm-dd') tl_cret_dt, tl_type_cd,tl_cret_id
+                from itda_app.time_line
+                where 1=1
+                and tl_type_cd != 0
+        ) tl on mb.mb_addidx = tl.tl_type_cd and tl.sort=1 and mb.mb_cret_id = tl.tl_cret_id
         where 1=1
             and mb.mb_cret_id = #{user_id}
             and si.si_active_yn = 'Y'
