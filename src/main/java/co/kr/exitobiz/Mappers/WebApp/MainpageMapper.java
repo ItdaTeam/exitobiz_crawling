@@ -33,4 +33,6 @@ public interface MainpageMapper {
     public List<HashMap> getPopularList(HashMap<String, Object> params); // 엑시토 (실시간 인기 | 찜 인기 ) 리스트
 
     public List<HashMap> getPushBookList(HashMap<String, Object> params); // 엑시토 추천 리스트
+
+    void upViewCnt(HashMap<String, Object> params);
 }

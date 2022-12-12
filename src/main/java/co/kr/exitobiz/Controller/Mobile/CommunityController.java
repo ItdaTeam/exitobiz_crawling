@@ -468,5 +468,17 @@ public class CommunityController {
         return "/community/community";
     }
 
+    @RequestMapping("/myContent")
+    @ResponseBody
+    public List<Map<String,Object>> getMyContent(@RequestHeader Map<String, String> header){
+        return communityService.getMyContent(header);
+    }
+
+    @RequestMapping("/myComment")
+    @ResponseBody
+    public List<Map<String,Object>> getMyComment(@RequestHeader Map<String, String> header){
+        return communityService.getMyComment(header);
+    }
+
 
 }

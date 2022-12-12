@@ -331,7 +331,7 @@ SELECT usertoken
             ,rep_name = #{repName}
         </if>
         <if test="compayname  != null">
-            ,compayname = #{compayname}
+            ,companyname = #{companyname}
         </if>
         <if test="biz_intro != null">
             ,biz_intro = #{bizIntro}

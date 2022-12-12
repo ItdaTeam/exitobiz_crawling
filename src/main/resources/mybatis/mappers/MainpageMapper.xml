@@ -105,4 +105,12 @@
         where mp.mp_loc_code like concat('%', u.userloc, '%')
         order by mp.mp_cret_dt desc limit 5
     </select>
+
+    <update id="upViewCnt" parameterType="HashMap">
+        update itda_app.support_info
+            set view_cnt = view_cnt + 1
+        where 1=1
+          and si_idx = #{si_idx}::integer
+
+    </update>
 </mapper>

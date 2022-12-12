@@ -78,4 +78,9 @@ public class MainpageServiceImpl implements MainpageService {
     public List<HashMap> getPushBookList(HashMap<String, Object> params) throws ParseException {
         return mainpageMapper.getPushBookList(params);
     }
+
+    @Override
+    public void upViewCnt(HashMap<String, Object> params) {
+        mainpageMapper.upViewCnt(params);
+    }
 }

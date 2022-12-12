@@ -151,10 +151,12 @@ public class UserController {
      */
     @RequestMapping("/updateUserInfo")
     @ResponseBody
-    public String updateUserInfo(@RequestHeader Map<String,Object> params){
+    public String updateUserInfo(@RequestHeader Map<String,Object> header, @RequestParam Map<String,Object> params){
         String result = "fail";
-        if(params.get("usernickname") != null && params.get("userid") != null){
+
+        if(params.get("usernickname") != null && header.get("userid") != null){
             params.put("usernickname", URLDecoder.decode(params.get("usernickname").toString()));
+            params.put("userid",header.get("userid"));
             try{
                 userService.updateUserInfo(params);
                 result = "success";

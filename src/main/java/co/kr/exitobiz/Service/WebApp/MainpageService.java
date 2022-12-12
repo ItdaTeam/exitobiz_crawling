@@ -32,4 +32,6 @@ public interface MainpageService {
     List<HashMap> getPopularList(HashMap<String, Object> params); // 엑시토 (실시간 인기 | 찜 인기 ) 리스트
 
     List<HashMap> getPushBookList(HashMap<String, Object> params) throws ParseException; // 엑시토 추천 리스트
+
+    void upViewCnt(HashMap<String, Object> params);
 }

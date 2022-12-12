@@ -58,4 +58,8 @@ public interface CommunityService {
     void insertCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 flag 변경
 
     void updateTotalCommentLike(HashMap<String, Object> params); // 커뮤니티 내 댓글 좋아요 개수 변경
+
+    List<Map<String, Object>> getMyContent(Map<String, String> header);
+
+    List<Map<String, Object>> getMyComment(Map<String, String> header);
 }

@@ -4,7 +4,7 @@
 <mapper namespace="co.kr.exitobiz.Mappers.Mobile.CommunityMapper">
     <select id="getCommunityList" parameterType="HashMap" resultType="hashMap">
         select * from (
-              select cc.id, cc.user_id, cc.category, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt,
+              select cc.id, cc.user_id, cc.category, cc.title, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt
                 ,coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id), 0) thumb_up
                     from itda_web.community_content cc
                     left outer join itda_app.usertable u on cc.user_id  = u.id
@@ -329,4 +329,27 @@
     <update id="reviewViews" parameterType="int">
         update itda_web.community_content set view_count = view_count + 1 where id = #{id}
     </update>
+
+    <select id="getMyContent" parameterType="HashMap" resultType="Map">
+        select category, title, content, view_count, coalesce(sum(cclh.thumb_up::integer),0) thum_up, coalesce(count(ccom.*),0) comment_cnt
+        from itda_web.community_content  cc
+                 left outer join itda_web.community_content_like_history cclh on cc.id = cclh.content_id
+                 left outer join itda_app.community_comment ccom on cc.id = ccom.c_content_id and  ccom.delete_yn = false and ccom.report_yn = false
+        where 1=1
+          and cc.user_id = #{user_id}
+        group by cc.category, cc.title, cc.content, cc.view_count
+
+    </select>
+
+    <select id="getMyComment" parameterType="HashMap" resultType="Map">
+        select to_char(cret_dt, 'yyyy-mm-dd HH24:MI') cret_dt, description, like_count
+        from itda_app.community_comment
+        where 1=1
+          and user_id = #{user_id}
+          and delete_yn = false
+          and report_yn = false
+
+    </select>
+
+
 </mapper>

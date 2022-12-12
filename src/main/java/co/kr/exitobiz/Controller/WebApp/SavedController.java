@@ -229,7 +229,7 @@ public class SavedController {
             if(data != null)
                 hasUserNeed = savedService.getUserNeed(body).size();
 
-            if(body.get("idx") == null && hasUserNeed == 0){
+            if ((body.get("idx") == null && hasUserNeed == 0) || data == null){
                 savedService.insertUserNeed(body);
             }else if(body.get("idx") != null && hasUserNeed != 0){
                 savedService.updateUserNeed(body);

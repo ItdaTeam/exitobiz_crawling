@@ -201,4 +201,14 @@ public class CommunityServiceImpl implements CommunityService {
     public void updateTotalCommentLike(HashMap<String, Object> params) {
         communityMapper.updateTotalCommentLike(params);
     }
+
+    @Override
+    public List<Map<String, Object>> getMyContent(Map<String, String> header) {
+        return communityMapper.getMyContent(header);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMyComment(Map<String, String> header) {
+        return communityMapper.getMyComment(header);
+    }
 }

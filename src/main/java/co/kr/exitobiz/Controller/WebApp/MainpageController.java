@@ -216,4 +216,20 @@ public class MainpageController {
         return jsonStr;
     }
 
+    /**
+     * 조회수 증가
+     */
+    @PostMapping("/upViewCnt")
+    @ResponseBody
+    public String upViewCnt(@RequestParam HashMap<String, Object> params) throws ParseException, JsonProcessingException {
+        String result = "fail";
+        try{
+            mainpageService.upViewCnt(params);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

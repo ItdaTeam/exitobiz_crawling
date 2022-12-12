@@ -84,6 +84,14 @@
                 </foreach>
             </trim>
         </if>
+        <if test='keyword != null and keyword != "" '>
+            and si_title in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "keyword"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
         order by
         <choose>
             <when test='ord == "인기순"'>

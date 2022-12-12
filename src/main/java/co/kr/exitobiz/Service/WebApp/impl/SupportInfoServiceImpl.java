@@ -28,6 +28,8 @@ public class SupportInfoServiceImpl implements SupportInfoService {
             params.replace("target_cat_name", Util.makeForeach((String)params.get("target_cat_name"), ","));
         if(params.get("company_type") != null)
             params.replace("company_type", Util.makeForeach((String)params.get("company_type"), ","));
+        if(params.get("keyword") != null)
+            params.replace("keyword", Util.makeForeach((String)params.get("keyword"), " "));
         return supportInfoMapper.getSupportInfoList(params);
     }
 }
