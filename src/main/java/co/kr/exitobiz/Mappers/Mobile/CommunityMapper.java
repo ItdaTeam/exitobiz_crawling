@@ -63,4 +63,6 @@ public interface CommunityMapper {
     List<Map<String, Object>> getMyContent(Map<String, String> header);
 
     List<Map<String, Object>> getMyComment(Map<String, String> header);
+
+    Map<String, Object> getTotalCnt();
 }

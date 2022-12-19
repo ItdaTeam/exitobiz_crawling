@@ -34,25 +34,31 @@
         <if test='business_type != null and business_type != "01"'>
             and business_type = #{business_type}
         </if>
-        <if test='start_period != null and start_period != "999"'>
-            <choose>
-                <when test='start_period.substring(1.2) == "2"'>
-                    and #{start_period} > start_period
-                </when>
-                <when test='start_period.substring(1.2) == "0"'>
-                    and start_period >= #{start_period}
-                </when>
-            </choose>
-        </if>
-        <if test='company_type != null and company_type.get(0) != "01"'>
-            and company_type in
+        <if test='start_period != null and start_period.get(0) != "999"'>
+                and
             <trim prefix="(" prefixOverrides="," suffix=")">
-                <foreach item="item" index="index" collection = "company_type"  separator=",">
-                    #{item}
+                <foreach item="item" index="index" collection = "start_period"  separator="or">
+                    <choose>
+                        <when test='item.substring(1.2) == "2"'>
+                            #{item} <![CDATA[>]]> start_period
+                        </when>
+                        <when test='item.substring(1.2) == "0"'>
+                            start_period <![CDATA[>=]]> #{item}
+                        </when>
+                    </choose>
+                </foreach>
+            </trim>
+            and start_period != '999'
+        </if>
+        <if test='company_type != null and  company_type != "" and company_type.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "company_type"  separator="or">
+                    company_type  like '%' || #{item} || '%'
                 </foreach>
             </trim>
         </if>
-        <if test='target_cat_name != null and target_cat_name.get(0) != "01"'>
+        <if test='target_cat_name != null and target_car_name != "" and target_cat_name.get(0) != "01"'>
             and target_cat_name in
             <trim prefix="(" prefixOverrides="," suffix=")">
                 <foreach item="item" index="index" collection = "target_cat_name"  separator=",">
@@ -60,35 +66,35 @@
                 </foreach>
             </trim>
         </if>
-        <if test='business_ctg != null and business_ctg.get(0)  != "01"'>
-            and business_ctg in
+        <if test='business_ctg != null and business_ctg != "" and business_ctg.get(0)  != "01"'>
+            and
             <trim prefix="(" prefixOverrides="," suffix=")">
-                <foreach item="item" index="index" collection = "business_ctg"  separator=",">
-                    #{item}
+                <foreach item="item" index="index" collection = "business_ctg"  separator="or">
+                    business_ctg like '%' || #{item} || '%'
                 </foreach>
             </trim>
         </if>
-        <if test='tech_ctg != null and tech_ctg.get(0) != "01"'>
+        <if test='tech_ctg != null and tech_ctg != "" and tech_ctg.get(0) != "01"'>
             and tech_ctg in
             <trim prefix="(" prefixOverrides="," suffix=")">
-                <foreach item="item" index="index" collection = "tech_ctg"  separator=",">
-                    #{item}
+                <foreach item="item" index="index" collection = "tech_ctg"  separator="or">
+                    tech_ctg like '%' || #{item} ||'%'
                 </foreach>
             </trim>
         </if>
         <if test='loc_code != null and loc_code.get(loc_code.size -1) != "C99" '>
             and loc_code in
             <trim prefix="(" prefixOverrides="," suffix=")">
-                <foreach item="item" index="index" collection = "loc_code"  separator=",">
+                <foreach item="item" index="index" collection = "loc_code"  separator="or">
                     #{item}
                 </foreach>
             </trim>
         </if>
         <if test='keyword != null and keyword != "" '>
-            and si_title in
+            and
             <trim prefix="(" prefixOverrides="," suffix=")">
-                <foreach item="item" index="index" collection = "keyword"  separator=",">
-                    #{item}
+                <foreach item="item" index="index" collection = "keyword"  separator="or">
+                    si_title like '%' || #{item} || '%'
                 </foreach>
             </trim>
         </if>
@@ -104,7 +110,7 @@
                 si_end_dt desc
             </when>
             <otherwise>
-                1=1
+                si.si_cret_dt desc
             </otherwise>
         </choose>
     </select>

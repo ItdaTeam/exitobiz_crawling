@@ -156,7 +156,7 @@ SELECT usertoken
               and coalesce(aps.chat_push ,'') != 'N'
           </when>
           <when test="keyId == 13 ">
-              and coalesce(cops.push_yn, true) != false
+              and coalesce(cops.push_yn, true) != fals
           </when>
       </choose>
   </select>
@@ -241,20 +241,33 @@ SELECT usertoken
     </select>
 
     <select id="getUserInfo" parameterType="map" resultType="map">
-        SELECT id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userloc, userlocname, usertitle, userhp, companyname, companytype, companyloc, mos, minfo, check_flag, admin_flag, cret_time, last_time,   lat, lng, sido, sigugun, dongmyun, jibun, lastloc,   rep_name, test_bool, deliver_email, biz_intro
+        SELECT id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userloc, userlocname, usertitle, userhp,  mos, minfo, check_flag, admin_flag, cret_time, last_time,   lat, lng, sido, sigugun, dongmyun, jibun, lastloc,  test_bool, deliver_email
         FROM itda_app.usertable u
         WHERE id=#{userid}
     </select>
 
     <select id = "getCompanyInfo" parameterType="map" resultType="map">
-        SELECT  user_id, company_name, rep_name, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg, to_char(cret_dt, 'yyyy-mm-dd') cret_dt, cret_id, to_char(updt_dt, 'yyyy-mm-dd') updt_dt, updt_id
+        SELECT  user_id, company_name, rep_name, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg, to_char(cret_dt, 'yyyy-mm-dd') cret_dt, cret_id, to_char(updt_dt, 'yyyy-mm-dd') updt_dt, updt_id, intro
         FROM itda_web.user_support
         WHERE 1=1
           AND user_id=#{userid}
     </select>
 
     <update id="updatePushSetting" parameterType="map">
-        UPDATE itda_app.user_push_setting
+
+        INSERT INTO itda_app.user_push_setting
+        (user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push)
+        VALUES(#{userid}, #{spReceivePush}, #{spKeywordPush}, #{spRecommentPush}, #{spCommentlikePush}
+        <choose>
+        <when test="spBookmarkPush != null">
+            ,#{spBookmarkPush}
+        </when>
+        <otherwise>
+           ,'N'
+        </otherwise>
+        </choose>
+               ,#{spContentCommentPush},#{spCommunityCommentlikePush}, #{spCommunityRecommentPush},#{marketingPush})
+        ON CONFLICT ( user_id) DO UPDATE
         set
             <choose>
                 <when test="spBookmarkPush != null">
@@ -267,8 +280,8 @@ SELECT usertoken
             <if test="spReceivePush != null">
                 ,sp_receive_push =#{spReceivePush}
             </if>
-            <if test="spkeywordPush != null">
-                ,sp_keyword_push =#{spkeywordPush}
+            <if test="spKeywordPush != null">
+                ,sp_keyword_push =#{spKeywordPush}
             </if>
             <if test="spRecommentPush != null">
                 ,sp_recomment_push =#{spRecommentPush}
@@ -276,8 +289,8 @@ SELECT usertoken
             <if test="spCommentlikePush != null">
                 ,sp_commentlike_push =#{spCommentlikePush}
             </if>
-            <if test="spContentcommentPush != null">
-                ,sp_content_comment_push =#{spContentcommentPush}
+            <if test="spContentCommentPush != null">
+                ,sp_content_comment_push =#{spContentCommentPush}
             </if>
             <if test="spCommunityCommentlikePush != null">
                 ,sp_community_commentlike_push =#{spCommunityCommentlikePush}
@@ -285,11 +298,9 @@ SELECT usertoken
             <if test="spCommunityRecommentPush != null">
                 ,sp_community_recomment_push =#{spCommunityRecommentPush}
             </if>
-<!--            <if test="marketingPush != null">-->
-<!--                ,                                                          =#{marketingPush}-->
-<!--            </if>-->
-        WHERE 1=1
-            AND user_id=#{userid}
+            <if test="marketingPush != null">
+                , marketing_push =#{marketingPush}
+            </if>
     </update>
     <select id="getPushSetting" parameterType="map" resultType="map">
         SELECT user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push
@@ -327,17 +338,48 @@ SELECT usertoken
         UPDATE itda_app.usertable
         SET
             usernickname = #{usernickname}
-        <if test="repName != null">
-            ,rep_name = #{repName}
-        </if>
-        <if test="compayname  != null">
-            ,companyname = #{companyname}
-        </if>
-        <if test="biz_intro != null">
-            ,biz_intro = #{bizIntro}
-        </if>
         WHERE 1=1
             AND id=#{userid}
+    </update>
+
+    <update id="updateCompanyInfo" parameterType="map">
+        INSERT INTO itda_web.user_support
+        (user_id, company_name, rep_name, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg, cret_dt, cret_id,intro)
+        VALUES(#{user_id}, #{companyName}, #{repName}, #{supportTarget}, #{startPeriod}, #{locCtg}, #{companyType}, #{businessType}, #{supportType}, #{businessCtg}, #{techCtg}, now(), #{user_id}, #{intro})
+        ON CONFLICT (user_id) DO UPDATE
+        SET
+             company_name = #{companyName}
+            ,rep_name = #{repName}
+        <if test="supportTarget != null and supportTarget != '' ">
+            ,support_target = #{supportTarget}
+        </if>
+        <if test="startPeriod != null and startPeriod != '' ">
+            ,start_period = #{startPeriod}
+        </if>
+        <if test="locCtg != null and locCtg != '' ">
+            ,loc_ctg = #{locCtg}
+        </if>
+        <if test="companyType != null and companyType != '' ">
+            ,company_type = #{companyType}
+        </if>
+        <if test="businessType != null and businessType != '' ">
+            ,business_type = #{businessType}
+        </if>
+        <if test="supportType != null and supportType != '' ">
+            ,support_type = #{supportType}
+        </if>
+        <if test="businessCtg != null and businessCtg != '' ">
+            ,business_ctg = #{businessCtg}
+        </if>
+        <if test="techCtg != null and techCtg != '' ">
+            ,tech_ctg = #{techCtg}
+        </if>
+        <if test="intro != null and intro != '' ">
+            ,intro = #{intro}
+        </if>
+            ,updt_dt = now()
+            ,updt_id = #{user_id}
+
     </update>
 
 </mapper>

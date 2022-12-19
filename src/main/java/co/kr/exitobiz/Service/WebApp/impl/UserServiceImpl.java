@@ -80,4 +80,9 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUserInfo(params);
     }
 
+    @Override
+    public void updateCompanyInfo(Map<String, Object> params) {
+        userMapper.updateCompanyInfo(params);
+    }
+
 }

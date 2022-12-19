@@ -480,5 +480,13 @@ public class CommunityController {
         return communityService.getMyComment(header);
     }
 
+    @RequestMapping("/totalCnt")
+    @ResponseBody
+    public Map<String,Object> getTotalCnt(){
+        return communityService.getTotalCnt();
+    }
+
+
+
 
 }

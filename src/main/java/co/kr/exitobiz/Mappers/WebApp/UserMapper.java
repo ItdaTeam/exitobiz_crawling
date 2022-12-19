@@ -30,4 +30,6 @@ public interface UserMapper {
     int checkNickname(Map<String, Object> params);
 
     void updateUserInfo(Map<String, Object> params);
+
+    void updateCompanyInfo(Map<String, Object> params);
 }

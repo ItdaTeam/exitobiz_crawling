@@ -211,4 +211,10 @@ public class CommunityServiceImpl implements CommunityService {
     public List<Map<String, Object>> getMyComment(Map<String, String> header) {
         return communityMapper.getMyComment(header);
     }
+
+    @Override
+    public Map<String, Object> getTotalCnt() {
+        return communityMapper.getTotalCnt();
+    }
+
 }

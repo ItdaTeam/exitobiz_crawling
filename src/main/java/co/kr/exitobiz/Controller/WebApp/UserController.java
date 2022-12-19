@@ -167,5 +167,30 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 마이페이지 기업 정보 업데이트
+     * @param params userid 사용자아이디
+     * @return 기업 정보
+     */
+    @PostMapping("/updateCompanyInfo")
+    @ResponseBody
+    public String updateCompanyInfo(@RequestParam Map<String,Object> params, @RequestHeader Map<String,Object> header) throws  Exception {
+        String result = "fail";
+
+
+        if( header.get("userid") != null) {
+            params.put("user_id",header.get("userid"));
+            try {
+                userService.updateCompanyInfo(params);
+                result = "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+         return result;
+
+    }
+
 
 }

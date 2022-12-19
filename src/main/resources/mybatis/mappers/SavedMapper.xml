@@ -48,6 +48,7 @@
                 from itda_app.time_line
                 where 1=1
                 and tl_type_cd != 0
+                and tl_cret_id = #{user_id}
         ) tl on mb.mb_addidx = tl.tl_type_cd and tl.sort=1 and mb.mb_cret_id = tl.tl_cret_id
         where 1=1
             and mb.mb_cret_id = #{user_id}
