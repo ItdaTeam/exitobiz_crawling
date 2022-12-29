@@ -381,7 +381,7 @@ public class CrawlingScheduler {
     @Autowired
     SongpaCrawling songpaCrawling;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "20 1 18 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
         kStartUpCrawling.craw();
@@ -454,13 +454,13 @@ public class CrawlingScheduler {
         System.out.println("--------그룹2 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 10 0 * * ?")
+    @Scheduled(cron = "30 58 9 * * ?")
     public void CrawlingGroup3() throws InterruptedException, IOException {
         /* 경북콘텐츠진흥원 */
         gyeongbukGcubeCrawling.craw();
 
         /* 문경시1인창조기업지원센터 */
-        gyeongbukMgbizCrawling.craw();
+//        gyeongbukMgbizCrawling.craw();
 
         /* 포항테크노파크 */
         gyeongbukPtpCrawling.craw();
@@ -679,7 +679,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹7 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 50 0 * * ?")
+    @Scheduled(cron = "50 1 10 * * ?")
     public void CrawlingGroup8() throws InterruptedException {
 
 

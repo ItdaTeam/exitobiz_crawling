@@ -382,7 +382,7 @@ public class CommunityController {
     public String getFile(@RequestBody HashMap<String, Object> body) throws Exception{
         List<HashMap> List = communityService.getFile(body);
         for(int i=0; i<List.size(); i++){
-            List.get(i).replace("file_url" , "https://exitobiz.co.kr/img/community/attachFile/" + List.get(i).get("generate_name"));
+            List.get(i).replace("file_url" , "https://exitobiz.co.kr/img/community/attachFile/" + List.get(i).get("file_url"));
         }
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = mapper.writeValueAsString(List);
@@ -482,8 +482,14 @@ public class CommunityController {
 
     @RequestMapping("/totalCnt")
     @ResponseBody
-    public Map<String,Object> getTotalCnt(){
-        return communityService.getTotalCnt();
+    public Map<String,Object> getTotalCnt(@RequestBody Map<String,Object> params){
+
+        if(params.get("search_array") != null){
+            String search_array = (String) params.get("search_array");
+            String[] array = search_array.trim().split(",");
+            params.put("search_array", array);
+        }
+        return communityService.getTotalCnt(params);
     }
 
 

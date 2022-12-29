@@ -8,7 +8,7 @@
                mb.mb_save_yn, mb.mb_req_save_yn, mb.mb_done_save_yn,
                tl.tl_cret_dt
         from (
-                select rank() over (partition by tl_type_cd order by tl_cret_dt desc ) as sort
+                select row_number() over (partition by tl_type_cd order by tl_cret_dt, tl_page_depth desc ) as sort
                 ,to_char(tl_cret_dt, 'yyyy-mm-dd') tl_cret_dt, tl_type_cd, tl_cret_id
                 from itda_app.time_line
                 where 1=1
@@ -43,7 +43,7 @@
         left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
         left outer join (
                 select
-                rank() over (partition by tl_type_cd order by tl_cret_dt desc ) as sort
+                row_number() over (partition by tl_type_cd order by tl_cret_dt, tl_page_depth desc ) as sort
                 ,to_char(tl_cret_dt,'yyyy-mm-dd') tl_cret_dt, tl_type_cd,tl_cret_id
                 from itda_app.time_line
                 where 1=1

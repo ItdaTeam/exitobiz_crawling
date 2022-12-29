@@ -37,4 +37,22 @@ select ch.*
 	    and (c.sales_to_dt + interval '1 day' )::date = now()::date
 </select>
 
+    <insert id="login" parameterType="Map">
+        INSERT INTO itda_app.usertable
+        (id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userhp, check_flag, admin_flag, cret_time, last_time)
+        VALUES(#{userid},
+               <choose>
+                    <when test="idprofile != null and idprofile != '' ">
+                        #{idprofile},
+                    </when>
+                    <otherwise>
+                        'https://exitobiz.co.kr/img/profile/default3.png',
+                    </otherwise>
+               </choose>
+               #{userbirthday}, #{useragerange}, #{usergender}, #{usernickname},#{useremail}, #{username}, #{userhp}, 'Y', 'N', now(), now())
+        ON CONFLICT (id) DO UPDATE
+        SET
+            last_time = now()
+    </insert>
+
 </mapper>

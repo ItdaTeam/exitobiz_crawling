@@ -1,10 +1,8 @@
 package co.kr.exitobiz.Mappers.Mobile;
 
-import co.kr.exitobiz.Vo.Cms.UserVo;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.sql.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,5 +62,5 @@ public interface CommunityMapper {
 
     List<Map<String, Object>> getMyComment(Map<String, String> header);
 
-    Map<String, Object> getTotalCnt();
+    Map<String, Object> getTotalCnt(Map<String, Object> params);
 }

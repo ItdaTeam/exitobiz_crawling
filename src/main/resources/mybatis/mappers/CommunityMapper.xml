@@ -49,7 +49,8 @@
                     </otherwise>
                 </choose>
                 <if test='search_array != null'>
-                    <trim prefix="and" prefixOverrides="or">
+                    and
+                    <trim prefix="(" prefixOverrides="or" suffix=")">
                         <foreach item="item" index="index" collection = "search_array">
                             <trim prefix="OR">
                                 TITLE LIKE '%'||#{item}||'%' OR CONTENT LIKE '%'||#{item}||'%'
@@ -334,19 +335,20 @@
     </update>
 
     <select id="getMyContent" parameterType="HashMap" resultType="Map">
-        select category, title, content, view_count, coalesce(sum(cclh.thumb_up::integer),0) thum_up, coalesce(count(ccom.*),0) comment_cnt, to_char(cc.cret_dt, 'yyyy-mm-dd HH24:MI') cret_dt, cc.id
+        select category, title, content, view_count, coalesce(sum(cclh.thumb_up::integer),0) like_cnt, coalesce(count(ccom.*),0) comment_cnt, to_char(cc.cret_dt, 'yyyy-mm-dd HH24:MI') cret_dt, cc.id
         from itda_web.community_content  cc
                  left outer join itda_web.community_content_like_history cclh on cc.id = cclh.content_id
                  left outer join itda_app.community_comment ccom on cc.id = ccom.c_content_id and  ccom.delete_yn = false and ccom.report_yn = false
         where 1=1
           and cc.user_id = #{user_id}
+          and cc.delete_yn = false
         group by cc.category, cc.title, cc.content, cc.view_count, cc.cret_dt, cc.id
         order by cc.cret_dt desc
 
     </select>
 
     <select id="getMyComment" parameterType="HashMap" resultType="Map">
-        select to_char(cc.cret_dt, 'yyyy-mm-dd HH24:MI') cret_dt, description, like_count, c_content_id, cclh.thumb_up
+        select to_char(cc.cret_dt, 'yyyy-mm-dd HH24:MI') cret_dt, description, like_count, c_content_id, cclh.thumb_up, cc.id
         from itda_app.community_comment cc
         left outer join itda_app.community_comment_like_history cclh on cc.id = cclh.comment_id and cc.user_id = cclh.user_id
         where 1=1
@@ -363,6 +365,19 @@
         where 1=1
           and delete_yn = false
           and declare_yn = false
+        <if test="category != null">
+            and category = #{category}
+        </if>
+        <if test='search_array != null'>
+            and
+            <trim prefix="(" prefixOverrides="or" suffix=")">
+                <foreach item="item" index="index" collection = "search_array">
+                    <trim prefix="OR">
+                        TITLE LIKE '%'||#{item}||'%' OR CONTENT LIKE '%'||#{item}||'%'
+                    </trim>
+                </foreach>
+            </trim>
+        </if>
      </select>
 
 

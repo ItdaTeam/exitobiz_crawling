@@ -1,9 +1,7 @@
 package co.kr.exitobiz.Service.Mobile;
 
-import co.kr.exitobiz.Vo.Cms.UserVo;
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
 
-import java.sql.Array;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -63,5 +61,5 @@ public interface CommunityService {
 
     List<Map<String, Object>> getMyComment(Map<String, String> header);
 
-    Map<String, Object> getTotalCnt();
+    Map<String, Object> getTotalCnt(Map<String, Object> params);
 }

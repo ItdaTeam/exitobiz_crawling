@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -213,8 +212,8 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
-    public Map<String, Object> getTotalCnt() {
-        return communityMapper.getTotalCnt();
+    public Map<String, Object> getTotalCnt(Map<String, Object> params) {
+        return communityMapper.getTotalCnt(params);
     }
 
 }

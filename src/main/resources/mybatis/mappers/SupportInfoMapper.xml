@@ -4,10 +4,10 @@
 <mapper namespace="co.kr.exitobiz.Mappers.WebApp.SupportInfoMapper">
     <select id="getSupportInfoList" parameterType="HashMap" resultType="HashMap">
         select si_idx, target_name, target_cat_name, target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
-        (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt
+        (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt, to_char(info.tl_cret_Dt, 'yyyy-mm-dd') tl_cret_dt
         from itda_app.support_info si
         left outer join (
-                select rank() over (partition by mb_addidx order by mb_cret_dt desc ) as sort ,*
+                select row_number() over (partition by mb_addidx order by mb_cret_dt desc ) as sort ,*
                 from itda_app.my_bookmark
                 where 1=1
                 <if test='user_id != null'>
@@ -15,7 +15,7 @@
                 </if>
                 ) mb on mb.mb_addidx = si.si_idx and mb.sort = 1
         left join (select loccode, locname from itda_app.loccode) as l on l.loccode = si.loc_code
-        left join (select rank() over (partition by tl_type_cd order by tl_cret_dt desc) sort
+        left join (select row_number() over (partition by tl_type_cd order by tl_cret_dt desc) sort
                     , tl_type_cd, tl_cret_dt
                     from itda_app.time_line tl
                     where 1=1
@@ -32,7 +32,12 @@
             </when>
         </choose>
         <if test='business_type != null and business_type != "01"'>
-            and business_type = #{business_type}
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_type"  separator="or">
+                    business_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
         </if>
         <if test='start_period != null and start_period.get(0) != "999"'>
                 and
@@ -43,9 +48,10 @@
                             #{item} <![CDATA[>]]> start_period
                         </when>
                         <when test='item.substring(1.2) == "0"'>
-                            start_period <![CDATA[>=]]> #{item}
+                            start_period <![CDATA[<=]]> #{item}
                         </when>
                     </choose>
+                    or start_period = '70,72'
                 </foreach>
             </trim>
             and start_period != '999'
@@ -75,7 +81,7 @@
             </trim>
         </if>
         <if test='tech_ctg != null and tech_ctg != "" and tech_ctg.get(0) != "01"'>
-            and tech_ctg in
+            and
             <trim prefix="(" prefixOverrides="," suffix=")">
                 <foreach item="item" index="index" collection = "tech_ctg"  separator="or">
                     tech_ctg like '%' || #{item} ||'%'
@@ -85,7 +91,7 @@
         <if test='loc_code != null and loc_code.get(loc_code.size -1) != "C99" '>
             and loc_code in
             <trim prefix="(" prefixOverrides="," suffix=")">
-                <foreach item="item" index="index" collection = "loc_code"  separator="or">
+                <foreach item="item" index="index" collection = "loc_code"  separator=",">
                     #{item}
                 </foreach>
             </trim>
@@ -107,7 +113,7 @@
                 target_cost_value desc
             </when>
             <when test='ord == "마감임박순"'>
-                si_end_dt desc
+                si_end_dt
             </when>
             <otherwise>
                 si.si_cret_dt desc

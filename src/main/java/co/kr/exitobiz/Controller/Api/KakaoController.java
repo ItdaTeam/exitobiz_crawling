@@ -2,13 +2,11 @@ package co.kr.exitobiz.Controller.Api;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import co.kr.exitobiz.Service.Api.KakaoService;
 import co.kr.exitobiz.Vo.Api.KakaoVo;
@@ -90,5 +88,18 @@ public class KakaoController {
         return result;
     }
 
+    @RequestMapping("/login")
+    @ResponseBody
+    public String login(@RequestHeader Map<String,Object> params){
+
+        String result = "fail";
+        try{
+            kakaoService.login(params);
+            result = "success";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
     
 }

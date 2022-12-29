@@ -18,6 +18,8 @@ public class SupportInfoServiceImpl implements SupportInfoService {
 
     @Override
     public List<HashMap> getSupportInfoList(HashMap<String, Object> params) throws ParseException {
+        if(params.get("business_type") != null && !params.get("business_type").equals("01"))
+            params.replace("business_type", Util.makeForeach((String)params.get("business_type"), ","));
         if(params.get("loc_code") != null)
             params.replace("loc_code", Util.makeForeach((String)params.get("loc_code"), ","));
         if(params.get("tech_ctg") != null && params.get("tech_ctg") != "")

@@ -2,6 +2,7 @@ package co.kr.exitobiz.Service.Api.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,12 @@ public class KakaoServiceImpl implements KakaoService{
     public List<KakaoVo> kakaoSendList() {
         return kakaoMapper.kakaoSendList();
     }
-    
+
+    @Override
+    public void login(Map<String, Object> params) {
+
+        kakaoMapper.login(params);
+
+    }
+
 }
