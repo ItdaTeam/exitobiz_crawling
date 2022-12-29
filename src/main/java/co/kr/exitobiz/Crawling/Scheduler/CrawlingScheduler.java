@@ -381,7 +381,7 @@ public class CrawlingScheduler {
     @Autowired
     SongpaCrawling songpaCrawling;
 
-    @Scheduled(cron = "20 1 18 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
         kStartUpCrawling.craw();
@@ -679,7 +679,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹7 크롤링완료---------");
     }
 
-    @Scheduled(cron = "50 1 10 * * ?")
+    @Scheduled(cron = "0 50 0 * * ?")
     public void CrawlingGroup8() throws InterruptedException {
 
 
