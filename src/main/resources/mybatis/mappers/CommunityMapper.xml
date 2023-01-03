@@ -218,7 +218,7 @@
 
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
         with up_view as (
-            update itda_web.community_content set view_count = view_count+1 where id= '72' returning *
+            update itda_web.community_content set view_count = view_count+1 where id= #{id} returning *
         )
         select (select view_count from up_view) view_count,*
         from (
@@ -255,7 +255,7 @@
     </update>
 
     <insert id="insertFile" parameterType="HashMap">
-        insert into itda_web.community_content_file (
+        insert into itda_web.community_content_file (메
                 content_id, file_name, generate_name) values(
                 #{content_id}, #{file_name}, #{generate_name}
             )
@@ -305,7 +305,7 @@
         select cc.*,u.idprofile ,u.usernickname, cc.like_count,cclh.thumb_up
         from itda_app.community_comment cc
                  left outer join itda_app.usertable u on u.id = cc.user_id
-        left outer join itda_app.community_comment_like_history cclh on cc.id = cclh.comment_id and cc.user_id = cclh.user_id
+        left outer join itda_app.community_comment_like_history cclh on cc.id = cclh.comment_id and cc.user_id = #{user_id}
         where 1=1
           and cc.step = 2
           and cc.report_yn != 'Y'

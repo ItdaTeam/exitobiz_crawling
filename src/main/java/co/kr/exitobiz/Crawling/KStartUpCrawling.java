@@ -85,7 +85,7 @@ public class KStartUpCrawling implements Crawling {
         List<SupportVo> supportVos = new ArrayList<>();
 
         try {
-            for (int i=page+2; i>2; i--) {
+            for (int i=1; i<5 ; i++) {
 
                 driver.get(url);
 
