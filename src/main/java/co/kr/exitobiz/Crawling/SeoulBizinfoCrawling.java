@@ -92,7 +92,7 @@ public class SeoulBizinfoCrawling implements Crawling {
                 WebElement dateXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[6]"));
                 String date = dateXpath.getText();
 //                if(date.equals(yesterday)){
-                    try {정
+                    try {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[3]/a"));
                         SupportVo vo = new SupportVo();
 
