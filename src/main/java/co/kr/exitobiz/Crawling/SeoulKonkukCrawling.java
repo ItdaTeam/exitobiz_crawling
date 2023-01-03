@@ -118,7 +118,7 @@ public class SeoulKonkukCrawling implements Crawling {
 
 
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", url);
+                    params.put("bodyurl", bodyurl);
                     boolean isUrl = crawlingMapper.isUrl(params);
                     if (!isUrl) {
                         supportVos.add(vo);

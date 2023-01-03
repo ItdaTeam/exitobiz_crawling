@@ -91,8 +91,8 @@ public class SeoulBizinfoCrawling implements Crawling {
             for(int j=1; j<16; j++) {
                 WebElement dateXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[6]"));
                 String date = dateXpath.getText();
-                if(date.equals(yesterday)){
-                    try {
+//                if(date.equals(yesterday)){
+                    try {정
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[3]/a"));
                         SupportVo vo = new SupportVo();
 
@@ -120,7 +120,7 @@ public class SeoulBizinfoCrawling implements Crawling {
                         System.out.println(e.getMessage());
                         supportVo.setErrorYn("Y");
                     }
-                }
+//                }
             }
 
             Thread.sleep(500);

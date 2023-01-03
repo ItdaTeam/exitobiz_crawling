@@ -8,12 +8,13 @@
                mb.mb_save_yn, mb.mb_req_save_yn, mb.mb_done_save_yn,
                tl.tl_cret_dt
         from (
-                select row_number() over (partition by tl_type_cd order by tl_cret_dt, tl_page_depth desc ) as sort
+                select row_number() over (partition by tl_type_cd order by  tl_cd desc, tl_cret_dt desc, tl_page_depth desc ) as sort
                 ,to_char(tl_cret_dt, 'yyyy-mm-dd') tl_cret_dt, tl_type_cd, tl_cret_id
                 from itda_app.time_line
                 where 1=1
                 and tl_type_cd != 0
                 and tl_cret_id = #{user_id}
+                order by tl_cd desc
         ) tl
         left outer join itda_app.support_info si on tl.tl_type_cd = si.si_idx
         left outer join itda_app.my_bookmark mb on mb.mb_addidx = si.si_idx and mb.mb_cret_id = tl_cret_id

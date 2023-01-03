@@ -87,7 +87,7 @@ public class BusanStartupCrawling implements Crawling {
 
             // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
             int k = list.size();
-            for(int j=1; j<k; j++) {
+            for(int j=1; j<=k; j++) {
                     try {
 
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"cms_board_article\"]/div[4]/ul/li["+ j +"]/span[3]/a"));
@@ -105,6 +105,7 @@ public class BusanStartupCrawling implements Crawling {
 
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyurl);
+                        params.put("title", title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
                             supportVos.add(vo);

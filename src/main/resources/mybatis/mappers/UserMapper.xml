@@ -333,7 +333,6 @@ SELECT usertoken
             FROM itda_app.usertable
         WHERE 1=1
             AND usernickname =#{usernickname}
-            and id !=#{userid}
     </select>
 
     <update id="updateUserInfo" parameterType="map">
