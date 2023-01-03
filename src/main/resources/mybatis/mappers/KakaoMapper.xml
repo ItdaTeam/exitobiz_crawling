@@ -52,7 +52,8 @@ select ch.*
                #{userbirthday}, #{useragerange}, #{usergender}, #{usernickname},#{useremail}, #{username}, #{userhp}, 'Y', 'N', now(), now())
         ON CONFLICT (id) DO UPDATE
         SET
-            last_time = now()
+            last_time = now(),
+            usermeail = #{useremail}
     </insert>
 
 </mapper>

@@ -217,9 +217,12 @@
     </select>
 
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
-        select *
+        with up_view as (
+            update itda_web.community_content set view_count = view_count+1 where id= '72' returning *
+        )
+        select (select view_count from up_view) view_count,*
         from (
-            select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt
+            select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, coalesce(cc2.cnt, 0) as comment_cnt
             , coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id),0) like_cnt
             from itda_web.community_content cc
             left outer join itda_app.usertable u on cc.user_id  = u.id
@@ -282,7 +285,7 @@
                 and cc2.parent_comment_id = cc.id) as comment_cnt
         from itda_app.community_comment cc
             left outer join itda_app.usertable u on u.id = cc.user_id
-            left outer join itda_app.community_comment_like_history cclh on cclh.comment_id = cc.id and cclh.user_id = cc.user_id
+            left outer join itda_app.community_comment_like_history cclh on cclh.comment_id = cc.id and cclh.user_id = #{user_id}
         where 1=1
           and cc.step = 1
           and cc.report_yn != 'Y'
@@ -365,7 +368,7 @@
         where 1=1
           and delete_yn = false
           and declare_yn = false
-        <if test="category != null">
+        <if test="category != null and category != '전체' ">
             and category = #{category}
         </if>
         <if test='search_array != null'>

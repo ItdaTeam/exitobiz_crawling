@@ -107,16 +107,16 @@
         order by
         <choose>
             <when test='ord == "인기순"'>
-                totalCnt desc
+                totalCnt desc, si.si_idx
             </when>
             <when test='ord == "금액높은순"'>
-                target_cost_value desc
+                target_cost_value desc, si.si_idx
             </when>
             <when test='ord == "마감임박순"'>
-                si_end_dt
+                si_end_dt, si.si_idx
             </when>
             <otherwise>
-                si.si_cret_dt desc
+                si.si_cret_dt desc , si.si_idx
             </otherwise>
         </choose>
     </select>
