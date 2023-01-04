@@ -255,7 +255,7 @@
     </update>
 
     <insert id="insertFile" parameterType="HashMap">
-        insert into itda_web.community_content_file (메
+        insert into itda_web.community_content_file (
                 content_id, file_name, generate_name) values(
                 #{content_id}, #{file_name}, #{generate_name}
             )
