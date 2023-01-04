@@ -50,9 +50,9 @@ SELECT usertoken
               left outer join itda_app.user_push_setting ups on u.id = ups.user_id
                 where 1=1
                 AND coalesce(ups.sp_receive_push, '')  != 'N'
-              <if test="loc != null">
+              <if test="userlocs != null">
                   AND u.userloc in
-                  <foreach collection="params" item="loc" index="idx" separator="," open="(" close=")">
+                  <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
                       #{loc}
                   </foreach>
               </if>

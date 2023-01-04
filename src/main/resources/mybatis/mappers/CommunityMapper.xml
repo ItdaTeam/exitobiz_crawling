@@ -305,7 +305,7 @@
         select cc.*,u.idprofile ,u.usernickname, cc.like_count,cclh.thumb_up
         from itda_app.community_comment cc
                  left outer join itda_app.usertable u on u.id = cc.user_id
-        left outer join itda_app.community_comment_like_history cclh on cc.id = cclh.comment_id and cc.user_id = #{user_id}
+        left outer join itda_app.community_comment_like_history cclh on cc.id = cclh.comment_id and cclh.user_id = #{user_id}
         where 1=1
           and cc.step = 2
           and cc.report_yn != 'Y'
