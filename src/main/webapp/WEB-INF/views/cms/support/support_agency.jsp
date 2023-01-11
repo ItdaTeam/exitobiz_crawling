@@ -52,7 +52,7 @@
     <%@ include file="../include/nav.jsp" %>
     <div class="main">
         <section class="top">
-            <h1>지원기관 관리</h1>
+            <h1><span class="material-icons-round"> done_outline</span>지원기관 관리</h1>
             <div class="topMenu">
                 <section class="topMenu1">
                     <p>전체 기관수</p>
