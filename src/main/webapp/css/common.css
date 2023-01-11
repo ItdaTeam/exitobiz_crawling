@@ -828,6 +828,8 @@ label {
 .main_summary.dashboard {
   height: auto;
   font-size: 0.8rem;
+  padding: 20px 10px;
+  box-sizing: border-box;
 }
 
 .main_summary.dashboard dl {
