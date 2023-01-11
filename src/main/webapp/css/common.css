@@ -1850,6 +1850,7 @@ h5 {
 
 div.wj-flexgrid{height: auto;}
 .pager{text-align: center;padding: 10px 0px}
+.pager span{cursor: pointer;}
 .pager span{padding: 3px;}
 
 /* 로딩바 */

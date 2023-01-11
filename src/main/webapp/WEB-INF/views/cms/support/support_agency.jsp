@@ -54,7 +54,6 @@
         <section class="top">
             <h1><span class="material-icons-round"> done_outline</span>지원기관 관리</h1>
             <div class="main_summary main_summary5">
-
                 <dl>
                     <dt>전체 기관 수</dt>
                     <dd>${agencyData.totalAgencyCnt}개</dd>
@@ -75,7 +74,6 @@
                     <dt>최근 크롤링 시간</dt>
                     <dd>${agencyData.lastCrawlingDt}</dd>
                 </dl>
-
             </div>
         </section>
         <div class="mainnav">
