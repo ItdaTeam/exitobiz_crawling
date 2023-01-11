@@ -75,7 +75,7 @@
         <div class="popup_container">
             <div class="popup_head">
                 <p class="popup_title">공지추가</p>
-                <button type="button" class="popup_close">x</button>
+                <button type="button" class="popup_close" onclick="noticeManagementX()">x</button>
             </div>
             <div class="popup_inner">
                 <dfn>필수항목 <i>*</i></dfn>
@@ -452,4 +452,12 @@
                 console.error( error );
             } );
     });
+
+    function noticeManagementX(){
+        document.querySelector("#noticeManagement").classList.remove("is_on")
+    }
+
+
+
+
 </script>
