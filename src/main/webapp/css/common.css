@@ -1832,6 +1832,9 @@ h5 {
   margin-top:10px;
 }
 
+div.wj-flexgrid{height: auto;}
+.pager{text-align: center;}
+.pager span{padding: 3px;}
 
 /* 로딩바 */
 .loading_bar_wrap {position:fixed;z-index:99;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;}
