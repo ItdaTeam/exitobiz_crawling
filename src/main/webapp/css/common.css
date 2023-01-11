@@ -1833,7 +1833,7 @@ h5 {
 }
 
 div.wj-flexgrid{height: auto;}
-.pager{text-align: center;}
+.pager{text-align: center;padding: 10px 0px}
 .pager span{padding: 3px;}
 
 /* 로딩바 */
