@@ -454,7 +454,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹2 크롤링완료---------");
     }
 
-    @Scheduled(cron = "30 58 9 * * ?")
+    @Scheduled(cron = "0 10 0 * * ?")
     public void CrawlingGroup3() throws InterruptedException, IOException {
         /* 경북콘텐츠진흥원 */
         gyeongbukGcubeCrawling.craw();
@@ -769,11 +769,10 @@ public class CrawlingScheduler {
     }
 
 //    테스트용
-//    @Scheduled(cron = "0 0/5 * * * *")
-//    public void CrawlingGroup10() throws InterruptedException {
-//        /* 송파구일자리통합지원센터 */
-//        songpaCrawling.craw();
-//    }
+    @Scheduled(cron = "40 56 13 * * *")
+    public void CrawlingGroup10() throws InterruptedException {
+        seoulBizinfoCrawling.craw();
+    }
 
     @Scheduled(cron = "0 0 1 * * ?")
     public void CleanUpData() throws InterruptedException {

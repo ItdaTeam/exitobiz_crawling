@@ -106,6 +106,11 @@
     <insert id="insertSavedMyBook" parameterType="HashMap">
         INSERT INTO itda_app.my_bookmark ( mb_addidx, mb_cret_id, mb_active_yn, mb_save_yn, mb_cret_dt, mb_updt_dt)
                                     VALUES (#{mb_addidx},#{mb_cret_id},'Y' ,'Y' , NOW() , NOW() )
+        on conflict (mb_addidx, mb_cret_id) DO UPDATE
+        SET
+            mb_active_yn = 'Y'
+            , mb_save_yn = 'Y'
+            , mb_updt_dt = now()
     </insert>
 
     <update id="updateSavedMyBook" parameterType="HashMap">

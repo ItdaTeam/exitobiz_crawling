@@ -51,9 +51,9 @@ public class BusanBtpCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
-        options.addArguments("no-sandbox");
-        options.addArguments("disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
@@ -104,6 +104,7 @@ public class BusanBtpCrawling implements Crawling {
 
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyurl);
+                        params.put("title", title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
                             supportVos.add(vo);

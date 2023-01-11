@@ -71,6 +71,8 @@
 
     <select id="getPopularList" parameterType="HashMap" resultType="HashMap">
         select * from itda_app.support_info si
+        where 1=1
+        and si.si_end_dt <![CDATA[>=]]> now()::date
         <choose>
             <when test='cat == "실시간"'>
                 order by si.view_cnt desc
@@ -79,7 +81,7 @@
                 order by si.save_cnt desc
             </when>
             <when test='cat == "예비창업자"'>
-                where si.business_type like '%' || '02' || '%' order by si.view_cnt desc
+                and si.business_type like '%' || '02' || '%' order by si.view_cnt desc
             </when>
         </choose>
          limit 5
@@ -103,6 +105,7 @@
             left outer join itda_app.my_bookmark mb on si.si_idx = mb.mb_addidx and mb.mb_cret_id = #{user_id}
             left outer join itda_app.usertable u on id = mb.mb_cret_id
         where mp.mp_loc_code like concat('%', u.userloc, '%')
+          and si.si_end_dt <![CDATA[>=]]> now()::date
         order by mp.mp_cret_dt desc limit 5
     </select>
 

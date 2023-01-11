@@ -21,7 +21,7 @@ public class SupportInfoController {
     //지원사업 리스트(정렬조건, 검색조건, 조회필터 포함)
     @PostMapping("/getSupportInfoList")
     @ResponseBody
-    public String getSupportInfoList(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+    public String getSupportInfoList(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body, @RequestParam HashMap<String,String> data1) throws ParseException, JsonProcessingException {
         if(header.get("user_id") != null) body.put("user_id", header.get("user_id"));
 
         ObjectMapper mapper = new ObjectMapper();

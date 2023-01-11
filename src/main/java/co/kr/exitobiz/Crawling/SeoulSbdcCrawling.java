@@ -38,7 +38,7 @@ public class SeoulSbdcCrawling implements Crawling {
      *  */
 
     private String url = "https://www.seoulsbdc.or.kr/cs/businessSearch.do";
-    private int page = 1;
+    private int page = 10;
 
     @Override
     public void setPage(int page) {
@@ -57,9 +57,9 @@ public class SeoulSbdcCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
-        options.addArguments("no-sandbox");
-        options.addArguments("disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)

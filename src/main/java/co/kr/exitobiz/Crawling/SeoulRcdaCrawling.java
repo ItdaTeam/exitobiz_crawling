@@ -55,9 +55,9 @@ public class SeoulRcdaCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
-        options.addArguments("no-sandbox");
-        options.addArguments("disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)

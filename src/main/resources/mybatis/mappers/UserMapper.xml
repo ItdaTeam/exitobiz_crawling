@@ -241,7 +241,7 @@ SELECT usertoken
     </select>
 
     <select id="getUserInfo" parameterType="map" resultType="map">
-        SELECT id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userloc, userlocname, usertitle, userhp,  mos, minfo, check_flag, admin_flag, cret_time, last_time,   lat, lng, sido, sigugun, dongmyun, jibun, lastloc,  test_bool, deliver_email
+        SELECT id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userloc, userlocname, usertitle, userhp,  mos, minfo, check_flag, admin_flag, cret_time, last_time,   lat, lng, sido, sigugun, dongmyun, jibun, lastloc,  deliver_email
                  , case when cret_time = last_time then 'true' else 'false' end flag
         FROM itda_app.usertable u
         WHERE id=#{userid}

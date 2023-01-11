@@ -3,7 +3,9 @@
 
 <mapper namespace="co.kr.exitobiz.Mappers.WebApp.SupportInfoMapper">
     <select id="getSupportInfoList" parameterType="HashMap" resultType="HashMap">
-        select si_idx, target_name, target_cat_name, target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
+        select si_idx, target_name,
+            target_cat_cd as  target_cat_name,
+        target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
         (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt, to_char(info.tl_cret_Dt, 'yyyy-mm-dd') tl_cret_dt
         from itda_app.support_info si
         left outer join (
@@ -14,7 +16,7 @@
                     and mb_cret_id = #{user_id}
                 </if>
                 ) mb on mb.mb_addidx = si.si_idx and mb.sort = 1
-        left join (select loccode, locname from itda_app.loccode) as l on l.loccode = si.loc_code
+        left join (select code as loccode, code_nm as locname from itda_web.common_code_dtl where ctg_cd = 'loc_cd') as l on l.loccode = si.loc_code
         left join (select row_number() over (partition by tl_type_cd order by tl_cret_dt desc) sort
                     , tl_type_cd, tl_cret_dt
                     from itda_app.time_line tl
@@ -65,7 +67,7 @@
             </trim>
         </if>
         <if test='target_cat_name != null and target_car_name != "" and target_cat_name.get(0) != "01"'>
-            and target_cat_name in
+            and target_cat_cd in
             <trim prefix="(" prefixOverrides="," suffix=")">
                 <foreach item="item" index="index" collection = "target_cat_name"  separator=",">
                     #{item}

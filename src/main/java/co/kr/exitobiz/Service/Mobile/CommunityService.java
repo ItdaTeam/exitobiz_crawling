@@ -62,4 +62,6 @@ public interface CommunityService {
     List<Map<String, Object>> getMyComment(Map<String, String> header);
 
     Map<String, Object> getTotalCnt(Map<String, Object> params);
+
+    Map<String, Object> deleteOne(Map<String, Object> params);
 }

@@ -56,9 +56,9 @@ public class KStartUpCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless");
-        options.addArguments("no-sandbox");
-        options.addArguments("disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
@@ -119,7 +119,7 @@ public class KStartUpCrawling implements Crawling {
                     params.put("bodyurl", bodyUrl);
                     boolean isUrl = crawlingMapper.isUrl(params);
                     if (!isUrl) {
-                        supportVos.add(vo);
+//                        supportVos.add(vo);
                     }
 
                 }
@@ -134,19 +134,19 @@ public class KStartUpCrawling implements Crawling {
         }
 
             /* 빈 리스트가 아니면 크레이트 */
-            if (!supportVos.isEmpty()) {
-                try{
-                    crawlingMapper.create(supportVos);
-                    crawlingMapper.createMaster(supportVo);
-                }catch (Exception e){
-                    supportVo.setErrorYn("Y");
-                    e.printStackTrace();
-                    crawlingMapper.createMaster(supportVo);
-                }
-            }else {
-                supportVo.setErrorYn("N");
-                crawlingMapper.createMaster(supportVo);
-            }
+//            if (!supportVos.isEmpty()) {
+//                try{
+//                    crawlingMapper.create(supportVos);
+//                    crawlingMapper.createMaster(supportVo);
+//                }catch (Exception e){
+//                    supportVo.setErrorYn("Y");
+//                    e.printStackTrace();
+//                    crawlingMapper.createMaster(supportVo);
+//                }
+//            }else {
+//                supportVo.setErrorYn("N");
+//                crawlingMapper.createMaster(supportVo);
+//            }
 
             driver.close();
             driver.quit();

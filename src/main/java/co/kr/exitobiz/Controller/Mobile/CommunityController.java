@@ -147,7 +147,9 @@ public class CommunityController {
     // 게시글 상세
     @GetMapping("/one")
     @ResponseBody
-    public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo) throws ParseException {
+    public HashMap<String, Object> getCommunityDetail(CommunityVo communityVo, @RequestHeader Map<String,Object> params) throws ParseException {
+        if(params.get("user_id") != null)
+            communityVo.setUserId(params.get("user_id").toString());
         return communityService.getCommunityDetail(communityVo);
     }
 
@@ -454,7 +456,7 @@ public class CommunityController {
 
             res.addCookie(cookie);
 
-            communityService.reviewViews(id); // 조회수 업데이트
+//            communityService.reviewViews(id); // 조회수 업데이트
         }
 
         return "/community/community2";

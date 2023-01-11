@@ -216,4 +216,9 @@ public class CommunityServiceImpl implements CommunityService {
         return communityMapper.getTotalCnt(params);
     }
 
+    @Override
+    public Map<String, Object> deleteOne(Map<String, Object> params) {
+        return communityMapper.deleteOne(params);
+    }
+
 }

@@ -70,7 +70,15 @@
                         cret_dt desc
                     </otherwise>
                </choose>
-                limit #{cnt_sql}::integer offset #{page}::integer
+                <choose>
+                    <when test="page != null and page != '' ">
+                        limit #{cnt_sql}::integer offset #{page}::integer
+                    </when>
+                    <otherwise>
+                        limit 30 offset #{cnt_sql}
+                    </otherwise>
+                </choose>
+
     </select>
 
     <select id="getPopularCommunityList" parameterType="CommunityVo" resultType="HashMap">
@@ -224,9 +232,15 @@
         from (
             select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, coalesce(cc2.cnt, 0) as comment_cnt
             , coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id),0) like_cnt
+        <if test="userId != null and userId != '' ">
+            ,cclh.thumb_up
+        </if>
             from itda_web.community_content cc
             left outer join itda_app.usertable u on cc.user_id  = u.id
             left outer join (select c_content_id, count(distinct c_content_id) as cnt from itda_app.community_comment group by c_content_id) as cc2 on cc2.c_content_id = cc.id
+        <if test="userId != null and userId != '' ">
+            left outer join itda_web.community_content_like_history cclh on cc.id = cclh.content_id and cclh.user_id = #{userId}
+        </if>
             where 1=1
             and delete_yn = false
             and declare_yn = false
@@ -382,6 +396,5 @@
             </trim>
         </if>
      </select>
-
 
 </mapper>
