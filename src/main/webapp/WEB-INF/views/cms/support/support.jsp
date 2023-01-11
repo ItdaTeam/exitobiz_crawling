@@ -459,6 +459,7 @@
                 {binding: 'siIdx', header: 'INDEX', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'targetName', header: '기관', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'targetCatName', header: '분류', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'targetCatCd', header: '분류코드', isReadOnly: true, width: 200, align: "center"},
                 {binding: 'targetCostValue', header: '금액', isReadOnly: true, width: 120, align: "center"},
                 {binding: 'locCode', header: '지역코드', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'siTitle', header: '제목', isReadOnly: true, width: 100, align: "center"},
@@ -480,6 +481,11 @@
                     align: "center",
                     dataMap: onoffYnMap
                 },
+                {binding: 'businessCtg', header: '사업분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'techCtg', header: '기술분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'businessType', header: '사업자형태', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'companyType', header: '기업형태', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'startPeriod', header: '창업기간', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'viewCnt', header: '조회수', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'shareCnt', header: '공유수', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'saveCnt', header: '저장수', isReadOnly: true, width: 100, align: "center"}
@@ -518,6 +524,7 @@
                 {binding: 'siIdx', header: 'Index', isReadOnly: true, width: 100, align: "center", dataType: "Number"},
                 {binding: 'targetName', header: '기관', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'targetCatName', header: '분류', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'targetCatCd', header: '분류코드', isReadOnly: true, width: 200, align: "center"},
                 {binding: 'targetCostValue', header: '금액', isReadOnly: true, width: 120, align: "center"},
                 {binding: 'locCode', header: '지역코드', isReadOnly: true, width: 100, align: "center"},
                 {binding: 'siTitle', header: '제목', isReadOnly: true, width: 100, align: "center"},
@@ -532,7 +539,12 @@
                     width: 200,
                     align: "center",
                     dataMap: onoffYnMap
-                }
+                },
+                {binding: 'businessCtg', header: '사업분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'techCtg', header: '기술분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'businessType', header: '사업자형태', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'companyType', header: '기업형태', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'startPeriod', header: '창업기간', isReadOnly: true, width: 100, align: "center"}
             ];
             excelGrid = new wijmo.grid.FlexGrid('#excelGrid', {
                 autoGenerateColumns: false,
@@ -784,7 +796,13 @@
                 siTitle: excelGrid.collectionView.items[i].제목,
                 mobileUrl: excelGrid.collectionView.items[i].모바일주소,
                 pcUrl: excelGrid.collectionView.items[i].피시주소,
-                locCode: excelGrid.collectionView.items[i].지역코드
+                locCode: excelGrid.collectionView.items[i].지역코드,
+                businessCtg : excelGrid.collectionView.items[i].사업분야,
+                techCtg : excelGrid.collectionView.items[i].기술분야,
+                businessType : excelGrid.collectionView.items[i].사업자형태,
+                companyType : excelGrid.collectionView.items[i].기업형태,
+                startPeriod : excelGrid.collectionView.items[i].창업기간,
+                targetCatCd : excelGrid.collectionView.items[i].분류코드
             }
 
             rows.push(params);

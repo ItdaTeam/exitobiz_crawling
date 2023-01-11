@@ -50,6 +50,26 @@ public class Support {
     @Column(name = "si_active_yn")
     private String siActiveYn;
 
+    // 추가컬럼 2022-01-11
+    @Column(name = "business_ctg")
+    private String businessCtg;
+
+    @Column(name = "tech_ctg")
+    private String techCtg;
+
+    @Column(name = "business_type")
+    private String businessType;
+
+    @Column(name = "company_type")
+    private String companyType;
+
+    @Column(name = "start_period")
+    private String startPeriod;
+
+    @Column(name = "target_cat_cd")
+    private String targetCatCd;
+    //추가컬럼 끝
+
     @Column(name = "view_cnt")
     private Integer viewCnt;
 
