@@ -831,5 +831,6 @@
 
     $(document).ready(function () {
         pageOnLoad();
+        getSupportList();
     });
 </script>
