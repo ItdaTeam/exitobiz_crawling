@@ -23,6 +23,14 @@ public class SupportVo {
     private Integer shareCnt;
     private Integer saveCnt;
 
+    private String targetCatCd;
+    private String businessCtg;
+    private String techCtg;
+    private String businessType;
+    private String companyType;
+    private String startPeriod;
+
+
     //마스터
     private String title;
     private String url;

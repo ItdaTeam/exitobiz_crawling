@@ -116,6 +116,13 @@ public class SupportServiceImpl implements SupportService {
                     support.setShareCnt(0);
                     support.setSaveCnt(0);
 
+                    support.setTargetCatCd(vo.getTargetCatCd());
+                    support.setBusinessCtg(vo.getBusinessCtg());
+                    support.setTechCtg(vo.getTechCtg());
+                    support.setBusinessType(vo.getBusinessType());
+                    support.setCompanyType(vo.getCompanyType());
+                    support.setStartPeriod(vo.getStartPeriod());
+
                     System.out.println("#############" + support);
 
                    supportRepository.save(support);

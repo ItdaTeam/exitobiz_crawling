@@ -151,6 +151,12 @@ public class SupportRepository {
                 .set(support.siActiveYn, vo.getSiActiveYn())
                 .set(support.siEndDt, LocalDate.parse(vo.getSiEndDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .set(support.siCretDt, formatter.parse(vo.getSiCretDt()))
+                .set(support.targetCatCd, vo.getTargetCatCd())
+                .set(support.businessCtg, vo.getBusinessCtg())
+                .set(support.techCtg, vo.getTechCtg())
+                .set(support.businessType, vo.getBusinessType())
+                .set(support.companyType, vo.getCompanyType())
+                .set(support.startPeriod, vo.getStartPeriod())
                 //.set(support.siCretDt, LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .where(support.siIdx.eq(vo.getSiIdx()))
                 .execute();
