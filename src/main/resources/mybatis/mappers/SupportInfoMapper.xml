@@ -105,6 +105,7 @@
                     si_title like '%' || #{item} || '%'
                 </foreach>
             </trim>
+            and si_end_dt <![CDATA[>=]]> now()::date
         </if>
         order by
         <choose>
