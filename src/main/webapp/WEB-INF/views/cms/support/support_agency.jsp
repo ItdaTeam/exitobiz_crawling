@@ -52,32 +52,28 @@
     <%@ include file="../include/nav.jsp" %>
     <div class="main">
         <section class="top">
-            <h1>지원기관 관리</h1>
-            <div class="topMenu">
-                <section class="topMenu1">
-                    <p>전체 기관수</p>
-                    <p>${agencyData.totalAgencyCnt}개</p>
-                </section>
-
-                <section class="topMenu2">
-                    <p>활성화</p>
-                    <p>${agencyData.avtiveAgencyCnt}개</p>
-                </section>
-
-                <section class="topMenu3">
-                    <p>전체 크롤링 개수(Y)</p>
-                    <p>${allCrawlingCnt}개</p>
-                </section>
-
-                <section class="topMenu4">
-                    <p>에러상태</p>
-                    <p>${agencyData.errorCnt}개</p>
-                </section>
-
-                <section class="topMenu5">
-                    <p>최근 크롤링 시간</p>
-                    <p>${agencyData.lastCrawlingDt}</p>
-                </section>
+            <h1><span class="material-icons-round"> done_outline</span>지원기관 관리</h1>
+            <div class="main_summary main_summary5">
+                <dl>
+                    <dt>전체 기관 수</dt>
+                    <dd>${agencyData.totalAgencyCnt}개</dd>
+                </dl>
+                <dl>
+                    <dt>전체 활성화</dt>
+                    <dd>${agencyData.avtiveAgencyCnt}개</dd>
+                </dl>
+                <dl>
+                    <dt>전체 크롤링 수</dt>
+                    <dd>${allCrawlingCnt}개</dd>
+                </dl>
+                <dl>
+                    <dt>에러 상태</dt>
+                    <dd>${agencyData.errorCnt}개</dd>
+                </dl>
+                <dl>
+                    <dt>최근 크롤링 시간</dt>
+                    <dd>${agencyData.lastCrawlingDt}</dd>
+                </dl>
             </div>
         </section>
         <div class="mainnav">

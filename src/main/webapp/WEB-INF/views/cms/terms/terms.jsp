@@ -13,7 +13,7 @@
     <%@ include file="../include/nav.jsp" %>
         <div class="main_container">
             <section class="main_section">
-                <h2 class="main_title">약관관리</h2>
+                <h2 class="main_title"><span class="material-icons-round"> done_outline</span>약관관리</h2>
                 <!-- 탭 메뉴-->
                 <div class="main_tab">
                      <!-- 탭 리스트-->

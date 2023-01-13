@@ -49,17 +49,6 @@ img {
   float: right;
 }
 
-/*로고*/
-.logo {
-  display: block;
-  width: 200px;
-  height: 76px;
-  margin: 0 auto 50px;
-  font-size: 0;
-  background: url(../image/logo_cms.png) center/contain no-repeat;
-  font-size: 0;
-}
-
 .logo_nav {
   margin: 36px auto;
   width: 120px;
@@ -614,23 +603,6 @@ label {
   overflow: hidden;
 }
 
-.main_sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 220px;
-  height: 100%;
-  min-height: 800px;
-  background-color: #fff;
-  box-shadow:0 5px 15px -7px rgba(0,0,0,1);
-  box-sizing: border-box;
-}
-
-.main_sidebar .terms_area {
-  position: absolute;
-  bottom: 9%;
-  left: 8%;
-}
 
 .main_sidebar .terms_area a {
   display: block;
@@ -639,26 +611,6 @@ label {
   font-size: 0.9em;
 }
 
-.main_nav .dept1 {
-  display: block;
-  position: relative;
-  margin: 12px 0;
-  /* padding: 8px 26px; */
-  padding: 17px 6px;
-  border-left: 6px solid transparent;
-  color: #333;
-  font-size: 1.13em;
-}
-
-.main_nav .dept1:before {
-  display: inline-block;
-  margin: 0 12px 0 0;
-  width: 17px;
-  height: 17px;
-  content: "";
-  background: url(../image/icon_sidebar.png) no-repeat;
-  background-size: auto 40px;
-}
 
 .main_nav .dept1.member:before {
   background-position: -25px 0;
@@ -674,13 +626,6 @@ label {
 
 .main_nav .dept1.terms:before {
   background-position: -100px 0;
-}
-
-.main_nav .dept1.current {
-  border-color: #37f1aa;
-  color: #37f1aa;
-  font-weight: bold;
-  background-color: #fafafa;
 }
 
 .main_nav .dept1.current.home:before {
@@ -715,22 +660,6 @@ label {
   font-weight: 600;
 }
 
-.main_out {
-  display: inline-block;
-  position: absolute;
-  bottom: 3%;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-  margin: 0 auto;
-  width: 180px;
-  height: 50px;
-  border: 1px solid #eee;
-  line-height: 50px;
-  color: #808080;
-  text-align: center;
-  font-size: 0.9em;
-}
 
 .main_out:hover {
   border-color: #fafafa;

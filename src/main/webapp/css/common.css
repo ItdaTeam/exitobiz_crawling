@@ -522,6 +522,21 @@ label {
   background-color: #37f1aa;
 }
 
+/*----------------------------*/
+.main_nav .dept1.current {
+  position: relative;
+  color: #000;
+  opacity: 1;
+  background-color: #37f1aa;
+}
+
+.main_nav .dept1.current span {
+  background: #fff;
+  padding: 4px;
+  border-radius: 50%;
+  color: #37f1aa;
+}
+/*----------------------------*/
 .main_nav .dept1.active:before {
   top: -26px;
 }
@@ -703,7 +718,7 @@ label {
   margin-bottom: 25px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 15px 0;
+  /*padding: 15px 0;*/
   height: 100px;
 }
 
@@ -722,6 +737,7 @@ label {
   -ms-flex-preferred-size: 25%;
       flex-basis: 25%;
 }
+
 
 .main_summary.quarter a > i {
   left: -25%;
@@ -812,6 +828,8 @@ label {
 .main_summary.dashboard {
   height: auto;
   font-size: 0.8rem;
+  padding: 20px 10px;
+  box-sizing: border-box;
 }
 
 .main_summary.dashboard dl {
@@ -1832,6 +1850,9 @@ h5 {
   margin-top:10px;
 }
 
+div.wj-flexgrid{height: auto;}
+.pager{text-align: center;padding: 10px 0px}
+.pager span{padding: 3px;cursor: pointer;}
 
 /* 로딩바 */
 .loading_bar_wrap {position:fixed;z-index:99;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7);display:none;}

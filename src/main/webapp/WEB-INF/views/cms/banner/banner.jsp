@@ -14,7 +14,7 @@
     <%@ include file="../include/nav.jsp" %>
         <div class="main_container">
             <section class="main_section">
-                <h2 class="main_title">배너관리</h2>
+                <h2 class="main_title"><span class="material-icons-round"> done_outline</span>배너관리</h2>
                 <div class="main_summary">
                     <dl>
                         <dt>배너수</dt>
