@@ -71,6 +71,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateReSignIn(Map<String, Object> params) {
+        userMapper.updateReSignIn(params);
+    }
+
+
+    @Override
     public int checkNickname(Map<String, Object> params) {
         return userMapper.checkNickname(params);
     }

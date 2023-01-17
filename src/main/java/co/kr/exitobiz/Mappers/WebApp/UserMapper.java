@@ -27,6 +27,8 @@ public interface UserMapper {
 
     void withdraw(Map<String, Object> params);
 
+    void updateReSignIn(Map<String, Object> params);
+
     int checkNickname(Map<String, Object> params);
 
     void updateUserInfo(Map<String, Object> params);

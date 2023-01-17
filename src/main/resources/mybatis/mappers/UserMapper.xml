@@ -328,6 +328,17 @@ SELECT usertoken
             AND id = #{userid}
     </update>
 
+    <update id="updateReSignIn" parameterType="map">
+        update itda_app.usertable
+        SET usernickname = #{nickname}
+          , userbirthday = #{birth}
+          , idprofile = #{profile}
+          , useragerange = #{agerange}
+          , usergender = #{gender}
+          , useremail = #{email}
+        WHERE id = #{id}
+    </update>
+
     <select id="checkNickname" parameterType="map" resultType="int">
         SELECT count(usernickname)
             FROM itda_app.usertable

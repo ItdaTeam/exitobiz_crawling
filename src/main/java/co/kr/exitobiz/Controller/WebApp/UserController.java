@@ -126,6 +126,27 @@ public class UserController {
     }
 
     /**
+     * 탈퇴후 재가입
+     * @param params id 사용자아이디, nickname, birth, profile, ageRange, gender, email
+     * @return success / fail
+     * @throws Exception
+     */
+    @PostMapping("/updateReSignIn")
+    @ResponseBody
+    public String updateReSignIn(@RequestHeader Map<String,Object> params)  {
+        String result = "fail";
+        if(params.get("id") != null){
+            try {
+                userService.updateReSignIn(params);
+                result = "success";
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
      * 닉네임 중복 확인
      * @param params usernickname 닉네임
      * @return  boolean 가능여부
