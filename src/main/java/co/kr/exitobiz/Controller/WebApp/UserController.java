@@ -4,6 +4,7 @@ import co.kr.exitobiz.Service.WebApp.UserService;
 import co.kr.exitobiz.Service.WebApp.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.ReadingConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,9 +134,10 @@ public class UserController {
      */
     @PostMapping("/updateReSignIn")
     @ResponseBody
-    public String updateReSignIn(@RequestHeader Map<String,Object> params)  {
+    public String updateReSignIn(@RequestHeader Map<String,Object> header, @RequestParam Map<String,Object> params )  {
         String result = "fail";
-        if(params.get("id") != null){
+        if(header.get("id") != null){
+            params.put(("id"), header.get("id"));
             try {
                 userService.updateReSignIn(params);
                 result = "success";
@@ -210,8 +212,82 @@ public class UserController {
 
         }
          return result;
-
     }
 
+    /**
+     *  앱버전 가져오기
+     * @return 앱 버전 리스트
+     * @throws Exception
+     */
+    @PostMapping ("/checkAppVer")
+    @ResponseBody
+    public String checkAppVer() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(userService.checkAppVer());
+    }
+
+    /**
+     * 출입기록 적재
+     * @param params id 사용자아이디
+     * @return 성공여부
+     */
+    @PostMapping("/insertLogin")
+    @ResponseBody
+    public String insertLogin(@RequestHeader Map<String,Object> params) throws  Exception {
+        String result = "fail";
+
+        if( params.get("id") != null) {
+            try {
+                userService.insertLogin(params);
+                result = "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        return result;
+    }
+
+    /**
+     * 사용자 단말기 정보 누적 관리
+     * @param params userId 사용자아이디, mos, mInfo, userToken, appVersion
+     * @return 성공여부
+     */
+    @PostMapping("/insertUserSmartDeviceInfo")
+    @ResponseBody
+    public String insertUserSmartDeviceInfo(@RequestHeader Map<String,Object> params) throws  Exception {
+        String result = "fail";
+
+        if( params.get("userid") != null && params.get("usertoken") != null) {
+            try {
+                userService.insertUserSmartDeviceInfo(params);
+                result = "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 사용자 단말기 정보 갱신
+     * @param params id 사용자아이디
+     * @return 성공여부
+     */
+    @PostMapping("/updateMobileInfo")
+    @ResponseBody
+    public String updateMobileInfo(@RequestHeader Map<String,Object> params) throws  Exception {
+        String result = "fail";
+
+        if( params.get("userid") != null && params.get("usertoken") != null) {
+            try {
+                userService.updateMobileInfo(params);
+                result = "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
 
 }

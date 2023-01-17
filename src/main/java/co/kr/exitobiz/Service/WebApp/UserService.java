@@ -29,4 +29,12 @@ public interface UserService {
     void updateUserInfo(Map<String, Object> params);
 
     void updateCompanyInfo(Map<String, Object> params);
+
+    public List<Map<String, Object>> checkAppVer();
+
+    void insertLogin(Map<String, Object> params);
+
+    void insertUserSmartDeviceInfo(Map<String, Object> params);
+
+    void updateMobileInfo(Map<String, Object> params);
 }
