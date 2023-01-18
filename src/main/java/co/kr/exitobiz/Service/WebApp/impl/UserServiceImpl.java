@@ -71,6 +71,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateReSignIn(Map<String, Object> params) {
+        userMapper.updateReSignIn(params);
+    }
+
+
+    @Override
     public int checkNickname(Map<String, Object> params) {
         return userMapper.checkNickname(params);
     }
@@ -83,6 +89,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateCompanyInfo(Map<String, Object> params) {
         userMapper.updateCompanyInfo(params);
+    }
+
+    @Override
+    public List<Map<String, Object>> checkAppVer() {
+        return userMapper.checkAppVer();
+    }
+
+    @Override
+    public void insertLogin(Map<String, Object> params) {
+        userMapper.insertLogin(params);
+    }
+
+    @Override
+    public void insertUserSmartDeviceInfo(Map<String, Object> params) {
+        userMapper.insertUserSmartDeviceInfo(params);
+    }
+
+    @Override
+    public void updateMobileInfo(Map<String, Object> params) {
+        userMapper.updateMobileInfo(params);
     }
 
 }
