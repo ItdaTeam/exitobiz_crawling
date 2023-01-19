@@ -1860,3 +1860,108 @@ div.wj-flexgrid{height: auto;}
 .loading_bar_wrap.active{display:block;}
 @keyframes loader-rotate {0% {transform: rotate(0); }  100% {transform: rotate(360deg); } }
 
+
+
+/*Business(사업공고 관리 페이지)*/
+.business .Msearch2, .business .lastBt{
+  box-sizing: border-box;
+  min-width: 400px;
+}
+
+.business .Msearch2 li, .business lastBt li {
+  min-width: 120px;
+}
+
+.business .Msearch2 span, .business .lastBt span{
+  color:#888;
+}
+
+.business .lastBt li:hover span, .business .Msearch2 li:hover span{
+  color: #000;
+}
+
+
+#search{
+  cursor: pointer;
+}
+
+.business .lastBt > ul {
+  box-sizing: border-box;
+  position: absolute;
+  right: 0%;
+  width: 10%;
+  padding: 2% 0%;
+  min-width: 380px;
+}
+
+.business .lastBt > ul > li {
+  position: relative;
+  box-sizing: border-box;
+  line-height: 35px;
+  min-width: 120px;
+}
+.business .Msearch2{
+  box-sizing: border-box;
+  position: relative;
+}
+
+.business .Msearch2 > select{
+  position: absolute;
+  left:-80px;
+  top:0px;
+}
+
+.business .Msearch2 select{
+  box-sizing: border-box;
+}
+
+.business .middle > .Msearch2 {
+  float: right;
+  width: 10%;
+  box-sizing: border-box;
+  margin-top: 0%;
+  min-width: 380px;
+}
+
+/*.business .Msearch3{*/
+/*  border:1px solid red;*/
+/*  box-sizing: border-box;*/
+/*}*/
+
+.business .Msearch3 ul{
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+
+.business .Msearch3 li{
+  position: relative;
+  float: left;
+  border: 1px solid #888;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-right: 0.5%;
+  text-align: center;
+  padding: 0.5% 0%;
+  background: #fff;
+  transition: all 0.6s ease 0s;
+  min-width: 130px;
+}
+
+.business .Msearch3 li:hover > a,.business .Msearch3 li:hover span{
+  color:#000;
+}
+
+.business .Msearch3 a{
+  position: relative;
+  color:#888;
+}
+
+.business .Msearch3 span{
+  position: unset;
+  margin-right: 10px;
+  color:#888;
+}

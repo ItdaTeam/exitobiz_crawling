@@ -93,4 +93,11 @@ public class SupportController {
             supportService.editAgencyData(vo);
         });
     }
+
+    @GetMapping("/business")
+    public String businessTmp(Model model){
+
+        return "/cms/Business/Business";
+    }
+
 }
