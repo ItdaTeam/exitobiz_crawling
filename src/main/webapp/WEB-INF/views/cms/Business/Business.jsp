@@ -48,11 +48,49 @@
 </head>
 
 <body>
+<div id="graybg"></div>
+<%--사업공고 모달--%>
+<div class="modal business_modal">
+    <h1>제목<span class="X" onclick="modalOFF()">X</span></h1>
+    <p>필수항목<span class="Essential">*</span></p>
+    <div>
+        <section>
+            <p>활성화<span class="Essential">*</span></p>
+            <input type="radio" name="or" id="or">
+            <label for="or">활성화</label>
+            <input type="radio" name="or" id="Nor">
+            <label for="Nor">비활성화</label>
+        </section>
+        <section>
+            <p>사업개요<span class="Essential">*</span></p>
+            <textarea name="" id="" cols="30" rows="10" placeholder="사업 개요를 작성하세요"></textarea>
+        </section>
+        <section>
+            <p>지원자격<span class="Essential">*</span></p>
+            <textarea name="" id="" cols="30" rows="10" placeholder="지원자격을 작성하세요"></textarea>
+        </section>
+        <section>
+            <p>지원내용<span class="Essential">*</span></p>
+            <textarea name="" id="" cols="30" rows="10" placeholder="페이지에 대해 소개글을 작성하세요"></textarea>
+        </section>
+        <section>
+            <p>신청방법 및 서류<span class="Essential">*</span></p>
+            <textarea name="" id="" cols="30" rows="10" placeholder="지원자격을 작성하세요"></textarea>
+        </section>
+    </div>
+    <div class="B_btns">
+        <section>
+            <p>삭제</p>
+            <p>저장</p>
+        </section>
+    </div>
+</div>
+<%--사업공고 모달 끝--%>
 <div class="wrap business">
     <%@ include file="../include/nav.jsp" %>
     <div class="main">
         <section class="top">
-            <h1><span class="material-icons-round"> done_outline</span>사업공고 관리</h1>
+            <h1 onclick="modalON()"><span class="material-icons-round"> done_outline</span>사업공고 관리</h1>
             <div class="main_summary main_summary3">
                 <dl>
                     <dt>전체</dt>
@@ -136,168 +174,185 @@
 </body>
 </html>
 <script>
-    // var agencyGrid;
-    // var agencyView;
-    // var agencyGridPager;
-    // var agencyColumns;
-    //
-    // function pageOnLoad() {
-    //     loadGridAgencyList('init');
-    //     document.getElementById("agency").classList.add("active");
-    //     $("#excelDiv").hide();
-    //     $("#importFile").on('change', function (params) {
-    //         importExcel();
-    //     });
-    // }
-    //
-    // function enterkey() {
-    //     if (window.event.keyCode == 13) {
-    //
-    //     }
-    // }
-    //
-    // //그리드 초기 셋팅
-    // function loadGridAgencyList(type, result) {
-    //     if (type == "init") {
-    //         agencyView = new wijmo.collections.CollectionView(result, {
-    //             pageSize: 100,
-    //             trackChanges: true
-    //         });
-    //
-    //         agencyGridPager = new wijmo.input.CollectionViewNavigator('#agencyGridPager', {
-    //             byPage: true,
-    //             headerFormat: '{currentPage:n0} / {pageCount:n0}',
-    //             cv: agencyView
-    //         });
-    //
-    //         var onoffYnMap = "N,Y".split(",");	//온/오프라인 콤보박스
-    //
-    //         agencyColumns = [
-    //             {binding: 'id', header: 'INDEX', isReadOnly: true, width: 80, align: "center"},
-    //             {binding: 'title', header: '기관명', isReadOnly: true, width: 200, align: "center"},
-    //             {binding: 'url', header: 'URL', isReadOnly: true, width: 300, align: "center", maxWidth: 300},
-    //             {binding: 'locCode', header: '지역', isReadOnly: true, width: 100, align: "center"},
-    //             {binding: 'crawlingcnt', header: '크롤링개수(Y)', isReadOnly: true, width: 100, align: "center"},
-    //             {binding: 'activeYn', header: '활성화', isReadOnly: false, width: 100, align: "center", dataMap: onoffYnMap},
-    //             {binding: 'errorYn', header: '에러상태', isReadOnly: false, width: 100, align: "center", dataMap: onoffYnMap},
-    //             {binding: 'remark', header: '비고', isReadOnly: true, width: 100, align: "center"},
-    //             {binding: 'lastCrawlingDt', header: '마지막크롤링시간', isReadOnly: true, width: 200, align: "center"},
-    //             {binding: 'createdAt', header: '생성날짜', isReadOnly: true, width: 200, align: "center"},
-    //         ];
-    //
-    //         agencyGrid = new wijmo.grid.FlexGrid('#agencyGrid', {
-    //             autoGenerateColumns: false,
-    //             alternatingRowStep: 0,
-    //             columns: agencyColumns,
-    //             itemsSource: agencyView,
-    //             //컬럼 길이 자동정렬
-    //             loadedRows: function (s, e) {
-    //                 s.autoSizeColumns();
-    //                 for (var i = 0; i < s.rows.length; i++) {
-    //                     var row = s.rows[i];
-    //                     var item = row.dataItem;
-    //                     if (item.activeFlag == 'N') {
-    //                         row.cssClass = 'change_dup';
-    //                     }
-    //                     if (item.expectCloseFlag == 'Y') {
-    //                         row.cssClass = 'change_close';
-    //                     }
-    //                 }
-    //             }
-    //         });
-    //
-    //         agencyGrid.itemFormatter = function (panel, r, c, cell) {
-    //             if (panel.cellType == wijmo.grid.CellType.RowHeader) {
-    //                 cell.textContent = (r + 1).toString();
-    //             }
-    //         };
-    //
-    //         _setUserGridLayout('agencyLayout', agencyGrid, agencyColumns);
-    //     } else {
-    //         agencyView = new wijmo.collections.CollectionView(result, {
-    //             pageSize: Number($('#viewNum').val()),
-    //             trackChanges: true
-    //         });
-    //         agencyGridPager.cv = agencyView;
-    //         agencyGrid.itemsSource = agencyView;
-    //     }
-    //
-    //     refreshPaging(agencyGrid.collectionView.totalItemCount, 1, agencyGrid, 'agencyGrid');  // 페이징 초기 셋팅
-    // }
-    //
-    // const getData = async (form) => {
-    //
-    //     // form.limit.value = document.getElementById("viewNum").value;
-    //     form.viewType.value = document.getElementById("viewType").value;
-    //
-    //     try{
-    //         return await axios.get("/cms/support/agency/api",{
-    //             params : {
-    //                 inq : form.keyword.value,
-    //                 con : form.category.value,
-    //                 viewType : form.viewType.value
-    //             }
-    //         })
-    //     }catch (error){
-    //         console.log(error);
-    //     }
-    // }
-    //
-    // const showGrid = (form) => {
-    //     const gridData = getData(form)
-    //         .then(res => {
-    //             loadGridAgencyList('search', res.data)
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         })
-    //     return false;
-    // }
-    //
-    // const editGrid = async () => {
-    //     const editItem = agencyView.itemsEdited;
-    //
-    //
-    //     if (editItem.length < 1) {
-    //         alert("수정된 내역이 없습니다.");
-    //         return false;
-    //     }
-    //
-    //     if (!confirm(editItem.length + "건의 상태를 변경하시겠습니까?")) return false;
-    //
-    //     /* observer배열에서 기본배열로 옮겨담는다 */
-    //     let rows = editItem.map(obj => obj);
-    //
-    //     await axios.put("/cms/support/agency/api", rows).then((res) => {
-    //         if (res.status == 200) {
-    //             alert("저장했습니다.");
-    //             showGrid(document.search_form)
-    //         } else {
-    //             alert("오류가 발생했습니다. 다시 시도해 주세요.");
-    //         }
-    //     })
-    // }
-    //
-    // function exportManageExcel(){
-    //
-    //     var gridView = agencyGrid.collectionView;
-    //     var oldPgSize = gridView.pageSize;
-    //     var oldPgIndex = gridView.pageIndex;
-    //
-    //     //전체 데이터를 엑셀다운받기 위해서는 페이징 제거 > 엑셀 다운 > 페이징 재적용 하여야 함.
-    //     agencyGrid.beginUpdate();
-    //     agencyView.pageSize = 0;
-    //
-    //     wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(agencyGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원기관리스트.xlsx',
-    //         saved => {
-    //             gridView.pageSize = oldPgSize;
-    //             gridView.moveToPage(oldPgIndex);
-    //             agencyGrid.endUpdate();
-    //         }, null
-    //     );
-    // }
-    //
-    // $(document).ready(function () {
-    //     pageOnLoad();
-    // });
+<%--  모달창 On/Off  --%>
+function modalON(){
+    document.querySelector(".modal").classList.add("active")
+    document.getElementById("graybg").classList.add("active")
+}
+
+function modalOFF(){
+    document.querySelector(".modal").classList.remove("active")
+    document.getElementById("graybg").classList.remove("active")
+}
+<%--    --%>
+
+
+    var agencyGrid;
+    var agencyView;
+    var agencyGridPager;
+    var agencyColumns;
+
+    function pageOnLoad() {
+        loadGridAgencyList('init');
+        document.getElementById("agency").classList.add("active");
+        $("#excelDiv").hide();
+        $("#importFile").on('change', function (params) {
+            importExcel();
+        });
+    }
+
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+
+        }
+    }
+
+    //그리드 초기 셋팅
+    function loadGridAgencyList(type, result) {
+        if (type == "init") {
+            agencyView = new wijmo.collections.CollectionView(result, {
+                pageSize: 100,
+                trackChanges: true
+            });
+
+            agencyGridPager = new wijmo.input.CollectionViewNavigator('#agencyGridPager', {
+                byPage: true,
+                headerFormat: '{currentPage:n0} / {pageCount:n0}',
+                cv: agencyView
+            });
+
+            var onoffYnMap = "N,Y".split(",");	//온/오프라인 콤보박스
+
+            agencyColumns = [
+                {binding: 'id', header: 'INDEX', isReadOnly: true, width: 80, align: "center"},
+                {binding: 'title', header: '정보제공기관', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'url', header: '기업형태', isReadOnly: true, width: 300, align: "center", maxWidth: 300},
+                {binding: 'locCode', header: '지원분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'crawlingcnt', header: '기술분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'activeYn', header: '지원금', isReadOnly: false, width: 100, align: "center", dataMap: onoffYnMap},
+                {binding: 'errorYn', header: '지역코드', isReadOnly: false, width: 100, align: "center", dataMap: onoffYnMap},
+                {binding: 'remark', header: 'URL', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'lastCrawlingDt', header: '사업공고명', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'createdAt', header: '마감일자', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'createdAt', header: '생성일자', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'createdAt', header: '활성화여부', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'createdAt', header: '조회수', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'createdAt', header: '세부내용', isReadOnly: true, width: 200, align: "center"},
+            ];
+
+            agencyGrid = new wijmo.grid.FlexGrid('#agencyGrid', {
+                autoGenerateColumns: false,
+                alternatingRowStep: 0,
+                columns: agencyColumns,
+                itemsSource: agencyView,
+                //컬럼 길이 자동정렬
+                loadedRows: function (s, e) {
+                    s.autoSizeColumns();
+                    for (var i = 0; i < s.rows.length; i++) {
+                        var row = s.rows[i];
+                        var item = row.dataItem;
+                        if (item.activeFlag == 'N') {
+                            row.cssClass = 'change_dup';
+                        }
+                        if (item.expectCloseFlag == 'Y') {
+                            row.cssClass = 'change_close';
+                        }
+                    }
+                }
+            });
+
+            agencyGrid.itemFormatter = function (panel, r, c, cell) {
+                if (panel.cellType == wijmo.grid.CellType.RowHeader) {
+                    cell.textContent = (r + 1).toString();
+                }
+            };
+
+            _setUserGridLayout('agencyLayout', agencyGrid, agencyColumns);
+        } else {
+            agencyView = new wijmo.collections.CollectionView(result, {
+                pageSize: Number($('#viewNum').val()),
+                trackChanges: true
+            });
+            agencyGridPager.cv = agencyView;
+            agencyGrid.itemsSource = agencyView;
+        }
+
+        refreshPaging(agencyGrid.collectionView.totalItemCount, 1, agencyGrid, 'agencyGrid');  // 페이징 초기 셋팅
+    }
+
+    const getData = async (form) => {
+
+        // form.limit.value = document.getElementById("viewNum").value;
+        form.viewType.value = document.getElementById("viewType").value;
+
+        try{
+            return await axios.get("/cms/support/agency/api",{
+                params : {
+                    inq : form.keyword.value,
+                    con : form.category.value,
+                    viewType : form.viewType.value
+                }
+            })
+        }catch (error){
+            console.log(error);
+        }
+    }
+
+    const showGrid = (form) => {
+        const gridData = getData(form)
+            .then(res => {
+                loadGridAgencyList('search', res.data)
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        return false;
+    }
+
+    const editGrid = async () => {
+        const editItem = agencyView.itemsEdited;
+
+
+        if (editItem.length < 1) {
+            alert("수정된 내역이 없습니다.");
+            return false;
+        }
+
+        if (!confirm(editItem.length + "건의 상태를 변경하시겠습니까?")) return false;
+
+        /* observer배열에서 기본배열로 옮겨담는다 */
+        let rows = editItem.map(obj => obj);
+
+        await axios.put("/cms/support/agency/api", rows).then((res) => {
+            if (res.status == 200) {
+                alert("저장했습니다.");
+                showGrid(document.search_form)
+            } else {
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        })
+    }
+
+    function exportManageExcel(){
+
+        var gridView = agencyGrid.collectionView;
+        var oldPgSize = gridView.pageSize;
+        var oldPgIndex = gridView.pageIndex;
+
+        //전체 데이터를 엑셀다운받기 위해서는 페이징 제거 > 엑셀 다운 > 페이징 재적용 하여야 함.
+        agencyGrid.beginUpdate();
+        agencyView.pageSize = 0;
+
+        wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(agencyGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원기관리스트.xlsx',
+            saved => {
+                gridView.pageSize = oldPgSize;
+                gridView.moveToPage(oldPgIndex);
+                agencyGrid.endUpdate();
+            }, null
+        );
+    }
+
+    $(document).ready(function () {
+        pageOnLoad();
+    });
 </script>
