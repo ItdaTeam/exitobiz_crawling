@@ -31,6 +31,11 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
+    public HashMap<String, Object> getBanner(HashMap<String, Object> params) {
+        return bannerMapper.getBanner(params);
+    }
+
+    @Override
     public void saveNewBanner(BannerVo vo) {
 
         bannerMapper.saveNewBanner(vo);
