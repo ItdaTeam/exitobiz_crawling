@@ -70,8 +70,8 @@
         </section>
         <div class="Msearch3">
             <ul>
-                <li><a href="#"><span class="material-icons-outlined">view_list</span>칼럼위치저장</a></li>
-                <li><a href="#"><span class="material-icons-outlined">restart_alt</span>칼럼초기화</a></li>
+                <li><a href="#"><span class="material-icons-outlined">view_list</span>엑셀템플릿</a></li>
+                <li><a href="#"><span class="material-icons-outlined">restart_alt</span>엑셀업로드</a></li>
                 <li><a href="#"><span class="material-icons-outlined">file_download</span>엑셀 다운로드</a></li>
             </ul>
         </div>
@@ -121,6 +121,15 @@
                     <li><span class="material-icons-outlined">save</span><a href="#" onclick="editGrid()">저장</a></li>
                 </ul>
             </div>
+
+            <div class="grid_wrap" id="supportDiv" style="position:relative;">
+                <div id="supportGrid"></div>
+                <div id="supportGridPager" class="pager"></div>
+            </div>
+            <div class="grid_wrap" id="excelDiv" style="position:relative;">
+                <div id="excelGrid"></div>
+            </div>
+
         </div>
     </div>
 </div>
