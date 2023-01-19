@@ -13,6 +13,8 @@ public interface BannerMapper {
 
     public List<BannerVo> getBannerList(HashMap<String, Object> params);
 
+    public HashMap<String, Object> getBanner(HashMap<String, Object> params);
+
     public void saveNewBanner(BannerVo vo);
 
     public void updateBanner(BannerVo vo);

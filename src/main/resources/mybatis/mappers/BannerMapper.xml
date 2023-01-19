@@ -11,6 +11,10 @@
         select count(*) from itda_web.banner where active_yn = 'Y'
     </select>
 
+    <select id="getBanner" resultType="HashMap" parameterType="HashMap">
+        select index, banner_ctg, banner_link, banner_noti_idx from itda_web.banner where index=#{index}::integer
+    </select>
+
     <select id="getBannerList" parameterType="hashMap" resultType="BannerVo">
         select index
         , banner_ctg_nm

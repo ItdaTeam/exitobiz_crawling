@@ -47,7 +47,7 @@
                 <foreach item="item" index="index" collection = "start_period"  separator="or">
                     <choose>
                         <when test='item.substring(1.2) == "2"'>
-                            #{item} <![CDATA[>]]> start_period
+                            #{item} <![CDATA[<=]]> start_period
                         </when>
                         <when test='item.substring(1.2) == "0"'>
                             start_period <![CDATA[<=]]> #{item}
@@ -105,6 +105,7 @@
                     si_title like '%' || #{item} || '%'
                 </foreach>
             </trim>
+            and si_end_dt <![CDATA[>=]]> now()::date
         </if>
         order by
         <choose>

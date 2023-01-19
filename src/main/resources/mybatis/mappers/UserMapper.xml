@@ -328,6 +328,17 @@ SELECT usertoken
             AND id = #{userid}
     </update>
 
+    <update id="updateReSignIn" parameterType="map">
+        update itda_app.usertable
+        SET usernickname = #{nickname}
+          , userbirthday = #{birth}
+          , idprofile = #{profile}
+          , useragerange = #{agerange}
+          , usergender = #{gender}
+          , useremail = #{email}
+        WHERE id = #{id}
+    </update>
+
     <select id="checkNickname" parameterType="map" resultType="int">
         SELECT count(usernickname)
             FROM itda_app.usertable
@@ -381,6 +392,41 @@ SELECT usertoken
             ,updt_dt = now()
             ,updt_id = #{user_id}
 
+    </update>
+
+    <select id="checkAppVer" resultType="map">
+        select * from itda_app.appver_check
+    </select>
+
+    <insert id="insertLogin" parameterType="map">
+        INSERT INTO  itda_app.loginsaver ( userid,login_time)
+        VALUES ( #{id} , NOW() )
+    </insert>
+
+    <update id="insertUserSmartDeviceInfo" parameterType="map">
+        insert into itda_app.user_device(
+            device_id,
+            user_id, cret_dt, updt_dt, mos, minfo, usertoken, appversion
+        ) values(
+                (select coalesce(max(device_id)+1,1) as device_id from itda_app.user_device),
+                #{userid}, NOW(), NOW(),  #{mos}, #{minfo},  #{usertoken}, #{appversion}
+            ) ON CONFLICT(user_id,usertoken)
+        DO UPDATE
+             SET updt_dt = NOW(),
+             mos = #{mos},
+             minfo = #{minfo},
+             usertoken = #{usertoken},
+             appversion = #{appversion}
+    </update>
+
+    <update id="updateMobileInfo" parameterType="map">
+        update itda_app.usertable u
+        SET mos= #{mos},
+            minfo= #{minfo},
+            usertoken=#{userToken},
+            last_time = NOW(),
+            appversion = #{appversion}
+        WHERE id = #{userid}
     </update>
 
 </mapper>

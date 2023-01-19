@@ -100,6 +100,17 @@ public class MainpageController {
             params.put("tl_type_cd", Integer.parseInt((String) body.get("support_info")));
             params.put("tl_event", "진입완료");
             params.put("tl_memo", "-");
+        }else if(body.get("comm_memo") != null){
+
+            //커뮤니티 상세 진입 저장
+            params.put("tl_cret_id", header.get("user_id"));
+            params.put("tl_page_type", "커뮤니티-상세화면");
+            params.put("tl_page_dept", "2");
+            params.put("tl_page_name", "커뮤니티-상세화면");
+            params.put("tl_button_name", "화면진입");
+            params.put("tl_type_cd",  Integer.parseInt((String)body.get("comm_id")));
+            params.put("tl_event", "진입완료");
+            params.put("tl_memo", body.get("comm_memo"));
         }
 
         try{

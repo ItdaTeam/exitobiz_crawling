@@ -4,7 +4,7 @@
 <mapper namespace="co.kr.exitobiz.Mappers.WebApp.SavedMapper">
 
     <select id="getRecentlyMySavedBook" parameterType="HashMap" resultType="hashMap">
-        select si.si_idx, si.target_name, si.target_cat_name, si.target_cost_value, si.loc_code, si.si_title, si.mobile_url, si.si_end_dt, si.view_cnt,
+        select si.si_idx, si.target_name, si.target_cat_cd as target_cat_name, si.target_cost_value, si.loc_code, si.si_title, si.mobile_url, si.si_end_dt, si.view_cnt,
                mb.mb_save_yn, mb.mb_req_save_yn, mb.mb_done_save_yn,
                tl.tl_cret_dt
         from (
@@ -21,6 +21,7 @@
         from itda_app.my_bookmark  ) mb on mb.mb_addidx = si.si_idx and mb.mb_cret_id = tl_cret_id and mb.sort=1
         where 1=1
         and tl.sort=1
+        and si.si_active_yn = 'Y'
         <if test='ord != null'>
             <choose>
                 <when test="ord == '인기순'">
@@ -40,7 +41,8 @@
     </select>
 
     <select id="getMySavedBook" resultType="HashMap" parameterType="HashMap">
-        select  mb.*, si.*, tl.tl_cret_dt
+        select  mb.*, si_idx, target_name, target_cost_value, loc_code, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, naughty_cnt, lovely_cnt, dandy_cnt, happy_cnt, from_dt, to_dt, business_type, start_period, company_type, business_ctg, tech_ctg, target_cat_cd as target_cat_name
+, tl.tl_cret_dt
         from itda_app.my_bookmark mb
         left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
         left outer join (
@@ -94,13 +96,13 @@
     </select>
 
     <select id="getCatList" parameterType="HashMap" resultType="HashMap">
-        select  si.target_cat_name, count(*)
+        select  si.target_cat_cd as target_cat_name, count(*)
         from itda_app.my_bookmark mb
             left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
         where 1=1
           and mb.mb_cret_id = #{mb_cret_id}
           and mb.mb_save_yn = 'Y'
-        group by si.target_cat_name
+        group by si.target_cat_cd
     </select>
 
     <insert id="insertSavedMyBook" parameterType="HashMap">
