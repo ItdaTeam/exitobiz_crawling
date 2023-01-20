@@ -253,15 +253,15 @@
             <div class="NewExitoModalRight">
                 <ul class="areaList NewAreaList">
                     <li>
-                        <input type="radio" id="Newpoint2" name="category" value="9">
+                        <input type="radio" id="Newpoint2" name="category" value="noti">
                         <label for="Newpoint2">공지사항</label>
                     </li>
                     <li>
-                        <input type="radio" id="Newpoint3" name="category" value="10">
+                        <input type="radio" id="Newpoint3" name="category" value="bann">
                         <label for="Newpoint3">배너</label>
                     </li>
                     <li>
-                        <input type="radio" id="Newpoint4" name="category" value="11">
+                        <input type="radio" id="Newpoint4" name="category" value="cus1">
                         <label for="Newpoint4">커뮤니티</label>
                     </li>
                 </ul>
@@ -283,14 +283,6 @@
 
         <p id="send"><a href="javascript:void(0);" onclick="sendNoticePush()">발송</a></p>
     </div>
-
-
-
-
-
-
-
-
 </div>
 </body>
 </html>
@@ -382,13 +374,17 @@
             result += el.value + ',';
         });
 
+        let params = {
+
+        }
+
         const response = axios.post("/push/sendSplit", null, {
             params : {
                 userloc : result.slice(0,-1),
                 title : encodeURIComponent(push_form.title.value),
                 body : encodeURIComponent(push_form.body.value),
                 idx : encodeURIComponent(push_form.idx.value),
-                keyId : 1
+                keyId : 'cont'
             }
         });
 
