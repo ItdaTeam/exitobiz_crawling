@@ -1324,7 +1324,7 @@ label {
   display: block;
 }
 
-.popup_grid .grid_wrap {
+.popup_grid .grid_wrap{
   margin-top: 10px;
   border: 1px solid #ddd;
   padding: 5px;
@@ -1869,7 +1869,7 @@ div.wj-flexgrid{height: auto;}
 }
 
 .business .Msearch2 li, .business lastBt li {
-  min-width: 120px;
+  min-width: 130px;
 }
 
 .business .Msearch2 span, .business .lastBt span{
@@ -1891,14 +1891,14 @@ div.wj-flexgrid{height: auto;}
   right: 0%;
   width: 10%;
   padding: 2% 0%;
-  min-width: 380px;
+  min-width: 700px;
 }
 
 .business .lastBt > ul > li {
   position: relative;
   box-sizing: border-box;
   line-height: 35px;
-  min-width: 120px;
+  min-width: 130px;
 }
 .business .Msearch2{
   box-sizing: border-box;
@@ -1920,7 +1920,7 @@ div.wj-flexgrid{height: auto;}
   width: 10%;
   box-sizing: border-box;
   margin-top: 0%;
-  min-width: 380px;
+  min-width: 710px;
 }
 
 /*.business .Msearch3{*/

@@ -73,6 +73,10 @@ function refreshPaging(totalData, currentPage, grid, gridId, gridView, gridPager
     const pages = $('#' + gridId + 'Pager');
     pages.empty();
 
+    // function a(){
+    //     alert("나온다");
+    // };
+
     // <<  <
     pages.append('<span onClick="clickPager(1, ' + gridId + ', ' + "'" + gridId + "'" + ')" > << </span>');
     if (first > pageCount) {

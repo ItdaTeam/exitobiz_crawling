@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="../../../../css/manage.css">
     <link rel="stylesheet" href="../../../../css/common.css">
+
     <script src="../../../../js/common.js"></script>
     <!-- wijmo css -->
     <link rel="stylesheet" href="../../../../wijmo/styles/custom.css"/>
@@ -93,12 +94,12 @@
             <h1 onclick="modalON()"><span class="material-icons-round"> done_outline</span>사업공고 관리</h1>
             <div class="main_summary main_summary3">
                 <dl>
-                    <dt>전체</dt>
-                    <dd>${agencyData.totalAgencyCnt}개</dd>
+                    <dt onclick="a()">전체</dt>
+                    <dd>${businessData.totalAgencyCnt}개</dd>
                 </dl>
                 <dl>
                     <dt>활성화 사업공고</dt>
-                    <dd>${agencyData.avtiveAgencyCnt}개</dd>
+                    <dd>${businessDataData.avtivebusinessDataCnt}개</dd>
                 </dl>
                 <dl>
                     <dt>비활성화 사업공고</dt>
@@ -121,7 +122,7 @@
                         <label for="category">검색조건:</label>
                         <select name="category" id="category">
                             <option value="all" selected>전체</option>
-                            <option value="agency">기관명</option>
+                            <option value="businessData">기관명</option>
                             <option value="url">URL</option>
                             <option value="location">지역</option>
                             <option value="remark">비고</option>
@@ -138,6 +139,8 @@
                         <option value="100" selected>100</option>
                     </select>
                     <ul>
+                        <li><span class="material-icons-outlined">view_list</span><a href="#" onClick="_getUserGridLayout('supportLayout', supportGrid);">칼럼위치저장</a></li>
+                        <li><span class="material-icons-outlined">restart_alt</span><a href="#" onClick="_resetUserGridLayout('supportLayout', supportGrid,supportColumns);">칼럼초기화</a></li>
                         <li><span class="material-icons-outlined">add_circle</span><a href="#" onclick="editGrid()">추가</a></li>
                         <li><span class="material-icons-outlined">do_not_disturb_on</span><a href="#" onclick="editGrid()">삭제</a></li>
                         <li><span class="material-icons-outlined">save</span><a href="#" onclick="editGrid()">저장</a></li>
@@ -145,28 +148,28 @@
                 </div>
             </section>
 
-            <section class="table">
-                <div class="TableDiv">
-                    <div id="agencyGrid"></div>
-                    <div id="agencyGridPager" class="pager"></div>
-                </div>
-            </section>
+            <div class="grid_wrap" style="position:relative;">
+                <div id="businessGrid"></div>
+                <div id="businessGridPager" class="pager"></div>
+            </div>
 
             <div class="lastBt">
                 <ul>
+                    <li><span class="material-icons-outlined">view_list</span><a href="#" onClick="_getUserGridLayout('supportLayout', supportGrid);">칼럼위치저장</a></li>
+                    <li><span class="material-icons-outlined">restart_alt</span><a href="#" onClick="_resetUserGridLayout('supportLayout', supportGrid,supportColumns);">칼럼초기화</a></li>
                     <li><span class="material-icons-outlined">add_circle</span><a href="#" onclick="editGrid()">추가</a></li>
                     <li><span class="material-icons-outlined">do_not_disturb_on</span><a href="#" onclick="editGrid()">삭제</a></li>
                     <li><span class="material-icons-outlined">save</span><a href="#" onclick="editGrid()">저장</a></li>
                 </ul>
             </div>
 
-            <div class="grid_wrap" id="supportDiv" style="position:relative;">
-                <div id="supportGrid"></div>
-                <div id="supportGridPager" class="pager"></div>
-            </div>
-            <div class="grid_wrap" id="excelDiv" style="position:relative;">
-                <div id="excelGrid"></div>
-            </div>
+<%--            <div class="grid_wrap" id="supportDiv" style="position:relative;">--%>
+<%--                <div id="supportGrid"></div>--%>
+<%--                <div id="supportGridPager" class="pager"></div>--%>
+<%--            </div>--%>
+<%--            <div class="grid_wrap" id="excelDiv" style="position:relative;">--%>
+<%--                <div id="excelGrid"></div>--%>
+<%--            </div>--%>
 
         </div>
     </div>
@@ -184,13 +187,13 @@ function modalOFF(){
     document.querySelector(".modal").classList.remove("active")
     document.getElementById("graybg").classList.remove("active")
 }
-<%--    --%>
+<%--  모달창 On/Off 끝  --%>
 
 
-    var agencyGrid;
-    var agencyView;
-    var agencyGridPager;
-    var agencyColumns;
+    var businessGrid;
+    var businessView;
+    var businessGridPager;
+    var businessColumns;
 
     function pageOnLoad() {
         loadGridAgencyList('init');
@@ -210,20 +213,20 @@ function modalOFF(){
     //그리드 초기 셋팅
     function loadGridAgencyList(type, result) {
         if (type == "init") {
-            agencyView = new wijmo.collections.CollectionView(result, {
+            businessView = new wijmo.collections.CollectionView(result, {
                 pageSize: 100,
                 trackChanges: true
             });
 
-            agencyGridPager = new wijmo.input.CollectionViewNavigator('#agencyGridPager', {
+            businessGridPager = new wijmo.input.CollectionViewNavigator('#businessGridPager', {
                 byPage: true,
                 headerFormat: '{currentPage:n0} / {pageCount:n0}',
-                cv: agencyView
+                cv: businessView
             });
 
             var onoffYnMap = "N,Y".split(",");	//온/오프라인 콤보박스
 
-            agencyColumns = [
+            businessColumns = [
                 {binding: 'id', header: 'INDEX', isReadOnly: true, width: 80, align: "center"},
                 {binding: 'title', header: '정보제공기관', isReadOnly: true, width: 200, align: "center"},
                 {binding: 'url', header: '기업형태', isReadOnly: true, width: 300, align: "center", maxWidth: 300},
@@ -240,11 +243,11 @@ function modalOFF(){
                 {binding: 'createdAt', header: '세부내용', isReadOnly: true, width: 200, align: "center"},
             ];
 
-            agencyGrid = new wijmo.grid.FlexGrid('#agencyGrid', {
+            businessGrid = new wijmo.grid.FlexGrid('#businessGrid', {
                 autoGenerateColumns: false,
                 alternatingRowStep: 0,
-                columns: agencyColumns,
-                itemsSource: agencyView,
+                columns: businessColumns,
+                itemsSource: businessView,
                 //컬럼 길이 자동정렬
                 loadedRows: function (s, e) {
                     s.autoSizeColumns();
@@ -261,23 +264,23 @@ function modalOFF(){
                 }
             });
 
-            agencyGrid.itemFormatter = function (panel, r, c, cell) {
+            businessGrid.itemFormatter = function (panel, r, c, cell) {
                 if (panel.cellType == wijmo.grid.CellType.RowHeader) {
                     cell.textContent = (r + 1).toString();
                 }
             };
 
-            _setUserGridLayout('agencyLayout', agencyGrid, agencyColumns);
+            _setUserGridLayout('businessLayout', businessGrid, businessColumns);
         } else {
-            agencyView = new wijmo.collections.CollectionView(result, {
+            businessView = new wijmo.collections.CollectionView(result, {
                 pageSize: Number($('#viewNum').val()),
                 trackChanges: true
             });
-            agencyGridPager.cv = agencyView;
-            agencyGrid.itemsSource = agencyView;
+            businessGridPager.cv = businessView;
+            businessGrid.itemsSource = businessView;
         }
 
-        refreshPaging(agencyGrid.collectionView.totalItemCount, 1, agencyGrid, 'agencyGrid');  // 페이징 초기 셋팅
+        refreshPaging(businessGrid.collectionView.totalItemCount, 1, businessGrid, 'businessGrid');  // 페이징 초기 셋팅
     }
 
     const getData = async (form) => {
@@ -310,7 +313,7 @@ function modalOFF(){
     }
 
     const editGrid = async () => {
-        const editItem = agencyView.itemsEdited;
+        const editItem = businessView.itemsEdited;
 
 
         if (editItem.length < 1) {
@@ -335,19 +338,19 @@ function modalOFF(){
 
     function exportManageExcel(){
 
-        var gridView = agencyGrid.collectionView;
+        var gridView = businessGrid.collectionView;
         var oldPgSize = gridView.pageSize;
         var oldPgIndex = gridView.pageIndex;
 
         //전체 데이터를 엑셀다운받기 위해서는 페이징 제거 > 엑셀 다운 > 페이징 재적용 하여야 함.
-        agencyGrid.beginUpdate();
-        agencyView.pageSize = 0;
+        businessGrid.beginUpdate();
+        businessView.pageSize = 0;
 
-        wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(agencyGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원기관리스트.xlsx',
+        wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(businessGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원기관리스트.xlsx',
             saved => {
                 gridView.pageSize = oldPgSize;
                 gridView.moveToPage(oldPgIndex);
-                agencyGrid.endUpdate();
+                businessGrid.endUpdate();
             }, null
         );
     }
