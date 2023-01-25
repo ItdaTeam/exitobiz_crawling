@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Api.AppleMapper">
+
+    <insert id="login" parameterType="Map">
+        INSERT INTO itda_app.usertable
+        (id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userhp, check_flag, admin_flag, cret_time, last_time)
+        VALUES(#{id}, 'https://exitobiz.co.kr/img/profile/default3.png',
+               '-', '-', '-', '엑시토','-', '-', '-', 'Y', 'N', now(), now())
+        ON CONFLICT (id) DO UPDATE
+        SET
+            last_time = now()
+    </insert>
+    <select id ="getUserInfo" parameterType="Map" resultType="Map">
+        select coalesce(useremail,'') useremail, coalesce(usernickname, '') usernickname
+            from itda_app.usertable
+        where 1=1
+            and id=#{id}
+            and usernickname != '탈퇴회원'
+    </select>
+
+</mapper>
