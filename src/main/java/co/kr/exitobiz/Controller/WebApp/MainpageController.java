@@ -78,39 +78,44 @@ public class MainpageController {
     public String insertTimeLine(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         String result = "fail";
         HashMap<String, Object> params = new HashMap<>();
-        if(body.get("search_text") != null){
 
-            // 나의 최근 검색어 저장
-            params.put("tl_cret_id", header.get("user_id"));
-            params.put("tl_page_type", "지원사업");
-            params.put("tl_page_depth", "2");
-            params.put("tl_page_name", "지원사업-검색화면");
-            params.put("tl_button_name", "검색버튼");
-            params.put("tl_type_cd", 0);
-            params.put("tl_event", body.get("search_text"));
-            params.put("tl_memo", "-");
-        }else if(body.get("support_info") != null){
+        params.put("tl_cret_id", header.get("user_id"));
 
-            // 최근 본 지원사업 저장
-            params.put("tl_cret_id", header.get("user_id"));
-            params.put("tl_page_type", "지원사업");
-            params.put("tl_page_depth", "3");
-            params.put("tl_page_name", "지원사업-웹뷰");
-            params.put("tl_button_name", "화면진입");
-            params.put("tl_type_cd", Integer.parseInt((String) body.get("support_info")));
-            params.put("tl_event", "진입완료");
-            params.put("tl_memo", "-");
-        }else if(body.get("comm_memo") != null){
+        if(body.get("btn_type") != null){
+            //앱에서 호출할 경우
+            if(body.get("btn_type").equals("하단저장버튼")){
+                //찜 저장
 
-            //커뮤니티 상세 진입 저장
-            params.put("tl_cret_id", header.get("user_id"));
-            params.put("tl_page_type", "커뮤니티-상세화면");
-            params.put("tl_page_dept", "2");
-            params.put("tl_page_name", "커뮤니티-상세화면");
-            params.put("tl_button_name", "화면진입");
-            params.put("tl_type_cd",  Integer.parseInt((String)body.get("comm_id")));
-            params.put("tl_event", "진입완료");
-            params.put("tl_memo", body.get("comm_memo"));
+                params.put("tl_page_type", "지원사업-상세페이지");
+                params.put("tl_page_dept", "2");
+                params.put("tl_page_name", "상세페이지");
+                params.put("tl_button_name", "하단저장버튼");
+                params.put("tl_type_cd",  0);
+                params.put("tl_event", "이동");
+                params.put("tl_memo", "-");
+            }else if(body.get("btn_type").equals("하단공유버튼")){
+
+                //공유버튼 클릭
+                params.put("tl_page_type", "지원사업-상세페이지");
+                params.put("tl_page_dept", "2");
+                params.put("tl_page_name", "상세페이지");
+                params.put("tl_button_name", "하단공유버튼");
+                params.put("tl_type_cd",  0);
+                params.put("tl_event", "공유");
+                params.put("tl_memo", "-");
+            }else if(body.get("btn_type").equals("뒤로가기버튼")){
+
+                //뒤로가기 버튼 클릭
+                params.put("tl_page_type", "지원사업-상세페이지");
+                params.put("tl_page_dept", "2");
+                params.put("tl_page_name", "상세페이지-상세보기");
+                params.put("tl_button_name", "뒤로가기버튼");
+                params.put("tl_type_cd",  0);
+                params.put("tl_event", "이동");
+                params.put("tl_memo", "-");
+            }
+        }else{
+            params.putAll(body);
         }
 
         try{
