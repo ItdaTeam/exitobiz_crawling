@@ -37,10 +37,6 @@ public class CrawlingScheduler {
     @Autowired
     SbaCrawling sbaCrawling;
 
-    /* 서울시 자영업지원센터 */
-    @Autowired
-    SeoulSbdcCrawling seoulSbdcCrawling;
-
     /* 서대문구-서울시립대학교 창업지원센터 */
     @Autowired
     SeoulBiUosCrawling seoulBiUosCrawling;
@@ -109,10 +105,6 @@ public class CrawlingScheduler {
     @Autowired
     SeoulBizinfoCrawling seoulBizinfoCrawling;
 
-    /* 서울테크노파크 */
-    @Autowired
-    SeoulTpCrawling seoulTpCrawling;
-
     /* 지역문화진흥원 */
     @Autowired
     SeoulRcdaCrawling seoulRcdaCrawling;
@@ -141,18 +133,6 @@ public class CrawlingScheduler {
     @Autowired
     SeoulKiatCrawling seoulKiatCrawling;
 
-    /* 부산테크노파크 */
-    @Autowired
-    BusanBtpCrawling busanBtpCrawling;
-
-    /* 경남테크노파크 */
-    @Autowired
-    GyeongnamGntpCrawling gyeongnamGntpCrawling;
-
-    /* SMTECH */
-    @Autowired
-    SmtechCrawling smtechCrawling;
-
     /* 연구개발특구사업관리시스템 */
     @Autowired
     PmsCrawling pmsCrawling;
@@ -169,65 +149,9 @@ public class CrawlingScheduler {
     @Autowired
     KpipaCrawling kpipaCrawling;
 
-    /* 경기테크노파크 */
-    @Autowired
-    GyeonggiGtpCrawling gyeonggiGtpCrawling;
-
     /* 제주창조경제혁신센터 */
     @Autowired
     JejuCceiCrawling jejuCceiCrawling;
-
-    /* 제주테크노파크 */
-    @Autowired
-    JejuTpCrawling jejuTpCrawling;
-
-    /* 인천테크노파크 */
-    @Autowired
-    IncheonTpCrawling incheonTpCrawling;
-
-    /* 전북테크노파크 */
-    @Autowired
-    JeonbukTpCrawling jeonbukTpCrawling;
-
-    /* 전남테크노파크 */
-    @Autowired
-    JeonnamTpCrawling jeonnamTpCrawling;
-
-    /* 세종테크노파크 */
-    @Autowired
-    SejongTpCrawling sejongTpCrawling;
-
-    /* 울산테크노파크 */
-    @Autowired
-    UlsanTpCrawling ulsanTpCrawling;
-
-    /* 강원테크노파크 */
-    @Autowired
-    GangwonTpCrawling gangwonTpCrawling;
-
-    /* 충북테크노파크 */
-    @Autowired
-    ChungbukTpCrawling chungbukTpCrawling;
-
-    /* 충남테크노파크 */
-    @Autowired
-    ChungnamTpCrawling chungnamTpCrawling;
-
-    /* 경북테크노파크 */
-    @Autowired
-    GyeongbukTpCrawling gyeongbukTpCrawling;
-
-    /* 대전테크노파크 */
-    @Autowired
-    DaejeonTpCrawling daejeonTpCrawling;
-
-    /* 광주테크노파크 */
-    @Autowired
-    GwangjuTpCrawling gwangjuTpCrawling;
-    
-    /* 대구테크노파크 */
-    @Autowired
-    DaeguTpCrawling daeguTpCrawling;
 
     /* 소상공인마당 창업지원 */
     @Autowired
@@ -357,10 +281,6 @@ public class CrawlingScheduler {
     @Autowired
     GyeongbukMgbizCrawling gyeongbukMgbizCrawling;
 
-    /* 포항테크노파크 */
-    @Autowired
-    GyeongbukPtpCrawling gyeongbukPtpCrawling;
-
     /* 창조경제혁신센터 */
     @Autowired
     CeciCrawling ceciCrawling;
@@ -381,7 +301,131 @@ public class CrawlingScheduler {
     @Autowired
     SongpaCrawling songpaCrawling;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    /* 한국테크노파크 */
+    @Autowired
+    KoreaTpCrawling koreaTpCrawling;
+
+    /** KOTRA*/
+    @Autowired
+    KortaCrawling kortaCrawling;
+
+    /**소상공인마당Web */
+    @Autowired
+    SbizWebCrawling sbizWebCrawling;
+
+    /** 기술보호울타리 */
+    @Autowired
+    UltariCrawling ultariCrawling;
+
+    /** 중소기업해외전시포탈 */
+    @Autowired
+    SmesCrawling smesCrawling;
+
+
+    /**
+     * 현대 일렉트로닉스 전용 크롤링 대상들
+     */
+
+    /** 한국에너지공단 */
+    @Autowired
+    KnrecCrawling knrecCrawling;
+
+    /** 한국환경공단*/
+    @Autowired
+    KecoCrawling kecoCrawling;
+
+    /** 경기환경에너지진흥원 */
+    @Autowired
+    GgEnergyCrawling ggenergyCrawling;
+
+    /** 충남에너지센터   */
+    @Autowired
+    CnEnergyCrawling cnEnergyCrawling;
+
+    /** 당진에너지센터 */
+    @Autowired
+    DjEnercyCrawling djEnercyCrawling;
+
+    /*  한국화학융합시험연구원 */
+    @Autowired
+    KoreaTrCrawling koreaTrCrawling;
+
+    /** 녹색에너지연구원 */
+    @Autowired
+    GreenEICrawling greenEICrawling;
+
+    /** (사)한국신,재생에너지협회 */
+    @Autowired
+    KnreaCrawling knreaCrawling;
+
+    /** 안산환경재단 */
+    @Autowired
+    AnsanCrawling ansanCrawling;
+
+    /** 스마트제조혁신추진단 */
+    @Autowired
+    SmartFactoryCrawling smartFactoryCrawling;
+
+    /** 중소기업중앙회 - 스마트공장 */
+    @Autowired
+    KbizFactoryCrawling kbizFactoryCrawling;
+
+    /** 한국생산기술연구원*/
+    @Autowired
+    KitechCrawling kitechCrawling;
+
+    /** 환경부 */
+    @Autowired
+    MinistryCrawling ministryCrawling;
+
+    /** 에너지기술평가원*/
+    @Autowired
+    KetepCrawling ketepCrawling;
+
+    /** 정보통신산업진흥원*/
+    @Autowired
+    NipaCrawling nipaCrawling;
+
+    /** 한국환경산업기술원 */
+    @Autowired
+    KoneticCrawling koneticCrawling;
+
+    /** 캠틱종합기술원 */
+    @Autowired
+    CamticCrawling camticCrawling;
+
+    /** 경북구미강소특구*/
+    @Autowired
+    KumohCrawling kumohCrawling;
+
+    /** 연구개발특구진흥재단 */
+    @Autowired
+    InnopolisCrawling innopolisCrawling;
+
+    /** 한국산업단지공단*/
+    @Autowired
+    KicoxCrawling kicoxCrawling;
+
+    /** 강릉과학산업진흥원*/
+    @Autowired
+    GsipaACrawling gsipaACrawling;
+    /** 한국산업인력공단 */
+    @Autowired
+    HrdkoreaCrawling hrdkoreaCrawling;
+
+    /** 현대전용 끝 */
+
+
+
+
+    //    테스트용
+    @Scheduled(cron = "30 7 20 * * *")
+    public void CrawlingGroup10() throws InterruptedException, IOException {
+        seoulSvhcCrawling.craw();
+    }
+
+
+    @Scheduled(cron = "20 19 10 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
         kStartUpCrawling.craw();
@@ -398,14 +442,8 @@ public class CrawlingScheduler {
         /* 서울산업진흥원 */
         sbaCrawling.craw();
 
-        /* 서울시 자영업지원센터 */
-        seoulSbdcCrawling.craw();
-
         /* 서울시 청년활동지원센터 */
         seoulBiUosCrawling.craw();
-
-        /* 한국콘텐츠진흥원 */
-        seoulKoccaCrawling.craw();
 
         /* 서울R&D지원센터 */
         seoulRnbdCrawling.craw();
@@ -424,17 +462,8 @@ public class CrawlingScheduler {
         /* 관악 사회적경제 */
         seoulGaseCrawling.craw();
 
-        /* 가톨릭대학교 창업대학 */
-        seoulCatholicCrawling.craw();
-
-        /* 양천디지털상상캠퍼스 */
-        seoulYcstartupCrawling.craw();
-
         /* 건국대학교 창업지원단 */
         seoulKonkukCrawling.craw();
-
-        /* 건국대학교 창업보육센터 */
-        seoulKkuCrawling.craw();
 
         /* 서울창업카페상봉점 */
         seoulSangbongCrawling.craw();
@@ -456,26 +485,12 @@ public class CrawlingScheduler {
 
     @Scheduled(cron = "0 10 0 * * ?")
     public void CrawlingGroup3() throws InterruptedException, IOException {
-        /* 경북콘텐츠진흥원 */
-        gyeongbukGcubeCrawling.craw();
-
-        /* 문경시1인창조기업지원센터 */
-//        gyeongbukMgbizCrawling.craw();
-
-        /* 포항테크노파크 */
-        gyeongbukPtpCrawling.craw();
 
         /* 한국여성벤처협회 */
         seoulKovwaCrawling.craw();
 
         /* 숭실대학교 창업지원단 */
         seoulSsuCrawling.craw();
-
-        /* 상명대학교 창업지원센터 */
-        seoulSmuCrawling.craw();
-
-        /* 동덕여자대학교 창업지원센터 */
-        seoulDongdukCrawling.craw();
 
         /* 기업마당 */
         seoulBizinfoCrawling.craw();
@@ -513,23 +528,8 @@ public class CrawlingScheduler {
         /* 서울 소셜벤처허브 */
         seoulSvhcCrawling.craw();
 
-        /* 부산테크노파크 */
-        busanBtpCrawling.craw();
-
-        /* 경남테크노파크 */
-        gyeongnamGntpCrawling.craw();
-
-        /* SMTECH */
-        smtechCrawling.craw();
-
-        /* 연구개발특구사업관리시스템 */
-        pmsCrawling.craw();
-
         /* 여성기업종합정보포털 */
         wbizCrawling.craw();
-
-        /* 한국산업기술진흥원 */
-        seoulKiatCrawling.craw();
         System.out.println("--------그룹4 크롤링완료---------");
     }
 
@@ -609,63 +609,8 @@ public class CrawlingScheduler {
     @Scheduled(cron = "0 35 0 * * ?")
     public void CrawlingGroup6() throws InterruptedException {
 
-
-        /* 한국여성과학기술인지원센터 */
-        wisetCrawling.craw();
-
         /* 한국출판문화산업진흥원 */
         kpipaCrawling.craw();
-
-        /* 제주테크노파크 */
-        jejuTpCrawling.craw();
-
-        /* 경기테크노파크 */
-        gyeonggiGtpCrawling.craw();
-
-        /* 서울테크노파크 */
-        seoulTpCrawling.craw();
-
-        /* 전북테크노파크 */
-        jeonbukTpCrawling.craw();
-
-        /* 전남테크노파크 */
-        jeonnamTpCrawling.craw();
-
-        /* 세종테크노파크 */
-        sejongTpCrawling.craw();
-
-        /* 울산테크노파크 */
-        ulsanTpCrawling.craw();
-
-        /* 인천테크노파크 */
-        incheonTpCrawling.craw();
-
-        System.out.println("--------그룹6 크롤링완료---------");
-    }
-
-    @Scheduled(cron = "0 40 0 * * ?")
-    public void CrawlingGroup7() throws InterruptedException {
-
-        /* 강원테크노파크 */
-        gangwonTpCrawling.craw();
-
-        /* 충북테크노파크 */
-        chungbukTpCrawling.craw();
-
-        /* 충남테크노파크 */
-        chungnamTpCrawling.craw();
-
-        /* 경북테크노파크 */
-        gyeongbukTpCrawling.craw();
-
-        /* 대전테크노파크 */
-        daejeonTpCrawling.craw();
-
-        /* 광주테크노파크 */
-        gwangjuTpCrawling.craw();
-        
-        /* 대구테크노파크 */
-        daeguTpCrawling.craw();
 
         /* 경기도경제과학진흥원 */
         gyeonggiEgbizCrawling.craw();
@@ -676,7 +621,8 @@ public class CrawlingScheduler {
         /* 한국관광공사 */
         visitKoreaCrawling.craw();
 
-        System.out.println("--------그룹7 크롤링완료---------");
+
+        System.out.println("--------그룹6 크롤링완료---------");
     }
 
     @Scheduled(cron = "0 50 0 * * ?")
@@ -689,14 +635,9 @@ public class CrawlingScheduler {
         /* 대전정보문화산업진흥원 */
         daejeonDiciaCrawling.craw();
 
-        /* 대전디자인진흥원 */
-        daejeonDidpCrawling.craw();
 
         /* 강원디자인진흥원 */
         gangwonGidpCrawling.craw();
-
-        /* 강원정보문화산업진흥원 */
-        gangwonGicaCrawling.craw();
 
         /* 충남정보문화산업진흥원 */
         chungnamCtiaCrawling.craw();
@@ -710,11 +651,6 @@ public class CrawlingScheduler {
         /* 경남문화예술진흥원 */
         gyeongnamGcafCrawling.craw();
 
-        /* 경남관광기업진원센터 */
-        gyeongnamTourCrawling.craw();
-
-        /* 경남경제진흥원 */
-        gyeongnamGnepaCrawling.craw();
 
         /* 경남사회적경제통합지원센터 */
         gyeongnamGseicCrawling.craw();
@@ -727,9 +663,6 @@ public class CrawlingScheduler {
 
         /* 부산정보산업진흥원 */
         busanItCrawling.craw();
-
-        /* 창원대산학협력단 */
-        gyeongnamChSanhakCrawling.craw();
 
         /* 김해의생명산업진흥원 */
         gyeongnamGbiaCrawling.craw();
@@ -755,23 +688,11 @@ public class CrawlingScheduler {
         /* 창원산업진흥원 */
         changwonCwipCrawling.craw();
 
-        /* 창업진흥원 */
-        kisedCrawling.craw();
-
         /* 한국무역협회 */
         kitaCrawling.craw();
 
-        /* 송파구일자리통합지원센터 */
-        songpaCrawling.craw();
-
 
         System.out.println("--------그룹9 크롤링완료---------");
-    }
-
-//    테스트용
-    @Scheduled(cron = "40 56 13 * * *")
-    public void CrawlingGroup10() throws InterruptedException {
-        seoulBizinfoCrawling.craw();
     }
 
     @Scheduled(cron = "0 0 1 * * ?")

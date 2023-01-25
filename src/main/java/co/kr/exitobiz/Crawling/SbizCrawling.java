@@ -83,7 +83,8 @@ public class SbizCrawling {
                             vo.setMobileUrl(bodyurl);
 
                             HashMap<String, String> params = new HashMap<>();
-                            params.put("bodyurl", bodyurl);
+//                            params.put("bodyurl", bodyurl);
+                            params.put("title",title);
                             boolean isUrl = crawlingMapper.isUrl(params);
                             if (!isUrl) {
                                 supportVos.add(vo);

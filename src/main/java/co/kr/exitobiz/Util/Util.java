@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Util {
 
@@ -87,6 +90,38 @@ public class Util {
         PrintWriter out = response.getWriter();
         out.println("<script>alert('"+message+"');window.close()</script>");
         out.flush();
+    }
+
+    public static String getLocCode(String locName){
+        String locCode  = "";
+
+        switch (locName){
+            case "서울" : locCode = "C02"; break;
+            case "경기" : locCode = "C031"; break;
+            case "인천" : locCode = "C032"; break;
+            case "강원" : locCode = "C033"; break;
+            case "대전" : locCode = "C042"; break;
+            case "충북" : locCode = "C043"; break;
+            case "충남" : locCode = "C041"; break;
+            case "세종" : locCode = "C044"; break;
+            case "광주" : locCode = "C062"; break;
+            case "전북" : locCode = "C063"; break;
+            case "전남" : locCode = "C061"; break;
+            case "부산" : locCode = "C051"; break;
+            case "울산" : locCode = "C052"; break;
+            case "대구" : locCode = "C053"; break;
+            case "경북" : locCode = "C054"; break;
+            case "경남" : locCode = "C055"; break;
+            case "제주" : locCode = "C064"; break;
+            default : locCode = "C82";  break;
+        }
+
+        return locCode;
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
 

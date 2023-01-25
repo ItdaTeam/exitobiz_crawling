@@ -31,10 +31,10 @@ public class SeoulSvhcCrawling implements Crawling {
 
     /*
      * 서울 소셜벤처허브
-     * http://www.svhc.or.kr/
+     * https://www.svhc.or.kr/
      *  */
 
-    private String url = "http://www.svhc.or.kr/m/venture/news.php?page=";
+    private String url = "https://www.svhc.or.kr/SocialVentureNews/?page=";
     private int page = 1;
 
     @Override
@@ -53,92 +53,102 @@ public class SeoulSvhcCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
+        ChromeDriverService service = null;
+        WebDriver driver = null;
+
+        SupportVo supportVo = new SupportVo();
+        supportVo.setTitle("소셜벤처허브");
+        supportVo.setUrl("https://www.svhc.or.kr/");
+        supportVo.setLocCode("C02");
+        supportVo.setActiveYn("Y");
+        supportVo.setErrorYn("N");
+
+        try {
+            service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
                 //.usingPort(5000)
                 .usingAnyFreePort()
                 .build();
 
-        try {
             service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            driver = new ChromeDriver(service,options);
 
-        WebDriver driver = new ChromeDriver(service,options);
+            List<SupportVo> supportVos = new ArrayList<>();
 
-        List<SupportVo> supportVos = new ArrayList<>();
+            for (int i=page; i>0; i--) {
 
-        SupportVo supportVo = new SupportVo();
-        supportVo.setTitle("소셜벤처허브");
-        supportVo.setUrl("http://www.svhc.or.kr/");
-        supportVo.setLocCode("C02");
-        supportVo.setActiveYn("Y");
-        supportVo.setErrorYn("N");
+                driver.get(url+i);
 
-        for (int i=page; i>0; i--) {
+                Thread.sleep(1500);
 
-            driver.get(url+i);
+                for(int j=1; j<; j++) {
 
-            Thread.sleep(1500);
+                    try {
 
-            for(int j=1; j<16; j++) {
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"w202210044146c3f85c311\"]/div/div[2]/div["+j+"]/ul[2]/li[4]/a[2]"));
 
-                try {
+                        String title = titleXpath.getText();
+                        String bodyUrl = titleXpath.getAttribute("href");
 
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"content\"]/div[2]/div["+j+"]/div/p[2]/a"));
+                        SupportVo vo = new SupportVo();
+                        vo.setTargetName("소셜벤처허브");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C02");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyUrl);
+                        vo.setPcUrl("-");
 
-                    String title = titleXpath.getText();
-                    String bodyUrl = titleXpath.getAttribute("href");
+                        HashMap<String, String> params = new HashMap<>();
+//                        params.put("bodyurl", bodyUrl);
+                        params.put("title",title);
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
 
-                    SupportVo vo = new SupportVo();
-                    vo.setTargetName("소셜벤처허브");
-                    vo.setTargetCatName("-");
-                    vo.setLocCode("C02");
-                    vo.setSiTitle(title);
-                    vo.setMobileUrl(bodyUrl);
-                    vo.setPcUrl("-");
-
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyUrl);
-                    boolean isUrl = crawlingMapper.isUrl(params);
-                    if (!isUrl) {
-                        supportVos.add(vo);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        supportVo.setErrorYn("Y");
+                        e.printStackTrace();
                     }
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                }
+            }
+            /* 빈 리스트가 아니면 크레이트 */
+            if (!supportVos.isEmpty()) {
+                try{
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
+                }catch (Exception e){
                     supportVo.setErrorYn("Y");
                     e.printStackTrace();
+                    crawlingMapper.createMaster(supportVo);
                 }
-
-            }
-
-        }
-
-        /* 빈 리스트가 아니면 크레이트 */
-        if (!supportVos.isEmpty()) {
-            try{
-                crawlingMapper.create(supportVos);
+            }else {
+                supportVo.setErrorYn("N");
                 crawlingMapper.createMaster(supportVo);
-            }catch (Exception e){
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
                 supportVo.setErrorYn("Y");
-                e.printStackTrace();
                 crawlingMapper.createMaster(supportVo);
             }
-        }else {
-            supportVo.setErrorYn("N");
-            crawlingMapper.createMaster(supportVo);
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
     }
-
-
 }

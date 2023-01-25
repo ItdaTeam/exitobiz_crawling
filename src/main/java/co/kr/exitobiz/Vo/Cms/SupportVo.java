@@ -67,4 +67,39 @@ public class SupportVo {
         this.pcUrl = pcUrl;
     }
 
+    @Override
+    public String toString() {
+        return "SupportVo{" +
+                "siIdx=" + siIdx +
+                ", locCode='" + locCode + '\'' +
+                ", siTitle='" + siTitle + '\'' +
+                ", mobileUrl='" + mobileUrl + '\'' +
+                ", pcUrl='" + pcUrl + '\'' +
+                ", targetName='" + targetName + '\'' +
+                ", targetCatName='" + targetCatName + '\'' +
+                ", targetCostValue=" + targetCostValue +
+                ", siEndDt='" + siEndDt + '\'' +
+                ", siCretDt='" + siCretDt + '\'' +
+                ", viewCnt=" + viewCnt +
+                ", shareCnt=" + shareCnt +
+                ", saveCnt=" + saveCnt +
+                ", targetCatCd='" + targetCatCd + '\'' +
+                ", businessCtg='" + businessCtg + '\'' +
+                ", techCtg='" + techCtg + '\'' +
+                ", businessType='" + businessType + '\'' +
+                ", companyType='" + companyType + '\'' +
+                ", startPeriod='" + startPeriod + '\'' +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", activeYn='" + activeYn + '\'' +
+                ", siActiveYn='" + siActiveYn + '\'' +
+                ", errorYn='" + errorYn + '\'' +
+                ", totalSupportCnt=" + totalSupportCnt +
+                ", activeYCnt=" + activeYCnt +
+                ", activeNCnt=" + activeNCnt +
+                ", allViewCnt=" + allViewCnt +
+                ", ViewCntLoc='" + ViewCntLoc + '\'' +
+                ", SupportCntLoc='" + SupportCntLoc + '\'' +
+                '}';
+    }
 }

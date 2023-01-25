@@ -106,6 +106,7 @@ public class BusanCceiCrawling implements Crawling {
 
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyurl);
+                        params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
                             supportVos.add(vo);

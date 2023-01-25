@@ -105,6 +105,8 @@
                     si_title like '%' || #{item} || '%'
                 </foreach>
             </trim>
+        </if>
+        <if test='keyword == nul or keyword == "" '>
             and si_end_dt <![CDATA[>=]]> now()::date
         </if>
         order by

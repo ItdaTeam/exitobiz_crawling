@@ -4,7 +4,14 @@
 <mapper namespace="co.kr.exitobiz.Mappers.Api.CrawlingMapper">
 
     <select id="isUrl" parameterType="map" resultType="boolean">
-        select exists(select 1 from itda_app.support_info where mobile_url = #{bodyurl})
+        select exists(select 1 from itda_app.support_info where 1=1
+          <if test="title != null ">
+          and si_title = #{title}
+          </if>
+        <if test="bodyurl != null ">
+            and mobile_url = #{bodyurl}
+        </if>
+            )
     </select>
 
     <insert id="create" parameterType="SupportVo">
