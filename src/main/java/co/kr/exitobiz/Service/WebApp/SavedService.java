@@ -19,6 +19,8 @@ public interface SavedService {
 
     void updateDoneSavedMyBook(HashMap<String, Object> params) throws ParseException; // 선정 flag 변경
 
+    public HashMap checkSavedFlag(HashMap<String, Object> params) throws ParseException; // 변경 값 리턴
+
     public HashMap getUserNeed(HashMap<String, Object> params); // 우리 회사에서 필요한 것 조회
 
     public void insertUserNeed(HashMap<String, Object> params); // 우리 회사에서 필요한 것 추가

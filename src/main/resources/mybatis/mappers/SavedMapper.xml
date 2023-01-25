@@ -105,6 +105,10 @@
         group by si.target_cat_cd
     </select>
 
+    <select id="checkSavedFlag" parameterType="HashMap" resultType="HashMap">
+        select  ${what_flag} from itda_app.my_bookmark where mb_cret_id = #{mb_cret_id} and mb_addidx = #{mb_addidx};
+    </select>
+
     <insert id="insertSavedMyBook" parameterType="HashMap">
         INSERT INTO itda_app.my_bookmark ( mb_addidx, mb_cret_id, mb_active_yn, mb_save_yn, mb_cret_dt, mb_updt_dt)
                                     VALUES (#{mb_addidx},#{mb_cret_id},'Y' ,'Y' , NOW() , NOW() )
