@@ -123,4 +123,25 @@
             </otherwise>
         </choose>
     </select>
+
+    <select id="getSPDetailData" parameterType="HashMap" resultType="HashMap">
+        select *,(
+            select count(*)
+            from itda_app.support_comment sc
+            where 1=1
+              and sc.report_yn != 'Y'
+                and sc.delete_type != true
+                and sc.step = 1
+                and sc.user_id not in (
+                select target_id
+                from itda_app.user_block ub
+                where 1=1
+                and ub.cret_id = #{mb_cret_id}
+                )
+                and sc.post_id = si.si_idx
+                ) as comment_cnt
+        from itda_app.support_info si
+            left outer join itda_app.my_bookmark mb  on si.si_idx = mb.mb_addidx and mb.mb_cret_id = #{mb_cret_id}
+        where si_idx = #{si_idx}
+    </select>
 </mapper>

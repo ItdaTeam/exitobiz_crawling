@@ -36,4 +36,11 @@ public class SupportInfoServiceImpl implements SupportInfoService {
             params.replace("start_period", Util.makeForeach((String)params.get("start_period"), ","));
         return supportInfoMapper.getSupportInfoList(params);
     }
+
+    @Override
+    public HashMap<String, Object> getSPDetailData(HashMap<String, Object> params) throws ParseException {
+        return supportInfoMapper.getSPDetailData(params);
+    }
+
+
 }

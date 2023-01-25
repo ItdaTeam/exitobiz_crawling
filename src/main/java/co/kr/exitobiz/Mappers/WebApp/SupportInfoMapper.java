@@ -9,5 +9,6 @@ import java.util.List;
 public interface SupportInfoMapper {
     public List<HashMap> getSupportInfoList(HashMap<String, Object> params); // 지원사업 리스트(정렬조건, 검색조건 포함)
 
+    public HashMap<String, Object> getSPDetailData(HashMap<String, Object> params); // 지원사업 상세 조회
 
 }
