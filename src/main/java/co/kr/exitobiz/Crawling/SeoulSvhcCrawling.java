@@ -86,14 +86,16 @@ public class SeoulSvhcCrawling implements Crawling {
 
                 Thread.sleep(1500);
 
-                for(int j=1; j<; j++) {
+                List<WebElement>  list = driver.findElements(By.xpath("//*[@id=\"w202210044146c3f85c311\"]/div/div[2]/div[1]/ul"));
+
+                for(int j=2; j<=list.size(); j++) {
 
                     try {
 
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"w202210044146c3f85c311\"]/div/div[2]/div["+j+"]/ul[2]/li[4]/a[2]"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"w202210044146c3f85c311\"]/div/div[2]/div[1]/ul["+j+"]/li[4]/a[2]"));
 
                         String title = titleXpath.getText();
-                        String bodyUrl = titleXpath.getAttribute("href");
+                        String bodyUrl = "https://www.svhc.or.kr/SocialVentureNews/?" +titleXpath.getAttribute("href").substring(titleXpath.getAttribute("href").indexOf("bmode"));
 
                         SupportVo vo = new SupportVo();
                         vo.setTargetName("소셜벤처허브");
