@@ -87,7 +87,7 @@ public class MainpageController {
                 //찜 저장
 
                 params.put("tl_page_type", "지원사업-상세페이지");
-                params.put("tl_page_dept", "2");
+                params.put("tl_page_depth", "2");
                 params.put("tl_page_name", "상세페이지");
                 params.put("tl_button_name", "하단저장버튼");
                 params.put("tl_type_cd",  0);
@@ -97,7 +97,7 @@ public class MainpageController {
 
                 //공유버튼 클릭
                 params.put("tl_page_type", "지원사업-상세페이지");
-                params.put("tl_page_dept", "2");
+                params.put("tl_page_depth", "2");
                 params.put("tl_page_name", "상세페이지");
                 params.put("tl_button_name", "하단공유버튼");
                 params.put("tl_type_cd",  0);
@@ -107,7 +107,7 @@ public class MainpageController {
 
                 //뒤로가기 버튼 클릭
                 params.put("tl_page_type", "지원사업-상세페이지");
-                params.put("tl_page_dept", "2");
+                params.put("tl_page_depth", "2");
                 params.put("tl_page_name", "상세페이지-상세보기");
                 params.put("tl_button_name", "뒤로가기버튼");
                 params.put("tl_type_cd",  0);
