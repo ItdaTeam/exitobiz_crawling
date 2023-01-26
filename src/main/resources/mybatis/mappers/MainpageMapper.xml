@@ -30,7 +30,7 @@
     <insert id="insertTimeLine" parameterType="HashMap">
         INSERT INTO  itda_app.time_line (
             tl_cret_dt, tl_cret_id, tl_page_type, tl_page_depth, tl_page_name, tl_button_name, tl_type_cd, tl_event, tl_memo)
-        VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}, #{tl_event}, #{tl_memo} )
+        VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}::numeric, #{tl_event}, #{tl_memo} )
     </insert>
 
     <select id="getBannerList" resultType="hashMap">

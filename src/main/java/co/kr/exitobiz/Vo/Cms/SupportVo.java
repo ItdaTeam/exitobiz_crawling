@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Getter @Setter @ToString
+@Getter @Setter
 public class SupportVo {
     private Long siIdx;
     private String locCode;
