@@ -28,6 +28,7 @@
         ) as info on tl_type_cd = si.si_idx and info.sort = 1
         where 1=1
         and si.si_active_yn = 'Y'
+        and length(si.loc_code) <![CDATA[<]]> 5
         <choose>
             <when test='searchText != null'>
                 and si_title like concat('%', ${searchText}, '%') or target_name like concat('%', ${searchText}, '%') or locname like concat('%', ${searchText}, '%')

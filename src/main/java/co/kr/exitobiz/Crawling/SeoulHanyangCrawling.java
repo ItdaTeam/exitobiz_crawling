@@ -86,7 +86,7 @@ public class SeoulHanyangCrawling implements Crawling {
                 driver.get(url + i);
                 Thread.sleep(1000);
                 List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"wrap\"]/div[2]/section/div[1]/table/tbody/tr"));
-                for(int j=4; j<list.size(); j++) {
+                for(int j=4; j<=list.size(); j++) {
 
                     try {
 

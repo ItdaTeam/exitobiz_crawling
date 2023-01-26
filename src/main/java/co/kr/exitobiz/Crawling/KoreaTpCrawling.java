@@ -89,7 +89,7 @@ public class KoreaTpCrawling implements Crawling {
                 driver.get(url + i);
                 List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"contents\"]/div/table/tbody/tr"));
                 Thread.sleep(1000);
-                for (int j = 1; j < list.size(); j++) {
+                for (int j = 1; j <= list.size(); j++) {
                     try {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/table/tbody/tr["+j+"]/td[3]/a"));
                         WebElement loc = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/table/tbody/tr["+j+"]/td[2]"));

@@ -45,7 +45,7 @@ public class ContentServiceImpl implements ContentService {
                 params.put("filePath", "/img/popup/");
                 params.put("fileName", fileName);
 
-                ImgPath.append("https://exitobiz.co.kr/img/popup/").append(fileName);
+                ImgPath.append("https://api.exitobiz.co.kr/img/popup/").append(fileName);
                 try {
                     System.out.println("check");
                     fileService.uploadFile(popupVo.getUpFile(), params);
@@ -157,7 +157,7 @@ public class ContentServiceImpl implements ContentService {
                 params.put("filePath", "/img/content/");
                 params.put("fileName", fileName);
 
-                ImgPath.append("https://exitobiz.co.kr/img/content/").append(fileName);
+                ImgPath.append("https://api.exitobiz.co.kr/img/content/").append(fileName);
                 try {
                     fileService.uploadFile(contentVo.getUpFile(), params);
                     content.setThumbnail(ImgPath.toString());
@@ -236,7 +236,7 @@ public class ContentServiceImpl implements ContentService {
                 params.put("filePath", "/img/popup/");
                 params.put("fileName", fileName);
 
-                ImgPath.append("https://exitobiz.co.kr/img/popup/").append(fileName);
+                ImgPath.append("https://api.exitobiz.co.kr/img/popup/").append(fileName);
                 try {
                     fileService.uploadFile(popupVo.getUpFile(), params);
                     popup.setImage(ImgPath.toString());
@@ -272,7 +272,7 @@ public class ContentServiceImpl implements ContentService {
                 params.put("filePath", "/img/content/");
                 params.put("fileName", fileName);
 
-                ImgPath.append("https://exitobiz.co.kr/img/content/").append(fileName);
+                ImgPath.append("https://api.exitobiz.co.kr/img/content/").append(fileName);
                 try {
                     fileService.uploadFile(contentVo.getUpFile(), params);
                 } catch (Exception e) {

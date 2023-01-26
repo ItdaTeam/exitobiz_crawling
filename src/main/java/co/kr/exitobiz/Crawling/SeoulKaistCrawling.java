@@ -85,7 +85,7 @@ public class SeoulKaistCrawling implements Crawling {
                 driver.get(url + i);
                 Thread.sleep(1000);
                 List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"con\"]/div/div/div[2]/ul/li"));
-                for(int j=1; j<list.size(); j++) {
+                for(int j=1; j<=list.size(); j++) {
                     try {
 
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"con\"]/div/div/div[2]/ul/li["+j+"]/a/div/strong"));

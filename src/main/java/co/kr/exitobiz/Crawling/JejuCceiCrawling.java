@@ -52,23 +52,13 @@ public class JejuCceiCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
-
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
+        ChromeDriverService service = null;
+        WebDriver driver = null;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("제주창조경제혁신센터");
@@ -76,14 +66,25 @@ public class JejuCceiCrawling implements Crawling {
         supportVo.setLocCode("C064");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
-        List<SupportVo> supportVos = new ArrayList<>();
 
-        for (int i=page; i>0; i--) {
+        try {
+            service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
 
-            driver.get(url+i);
-            Thread.sleep(1000);
+            service.start();
+            driver = new ChromeDriver(service,options);
 
-            for(int j=1; j<21; j++) {
+            List<SupportVo> supportVos = new ArrayList<>();
+
+            for (int i=page; i>0; i--) {
+
+                driver.get(url+i);
+                Thread.sleep(1000);
+
+                for(int j=1; j<21; j++) {
                     try {
 
                         WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"sub-content\"]/div/div[3]/table/tbody/tr["+ j +"]/td[2]/a"));
@@ -100,7 +101,8 @@ public class JejuCceiCrawling implements Crawling {
                         vo.setPcUrl("-");
 
                         HashMap<String, String> params = new HashMap<>();
-                        params.put("bodyurl", bodyurl);
+//                            params.put("bodyurl", bodyurl);
+                        params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
                             supportVos.add(vo);
@@ -113,28 +115,39 @@ public class JejuCceiCrawling implements Crawling {
                     }
             }
 
-            Thread.sleep(500);
-        }
+                Thread.sleep(500);
+            }
 
-        /* 빈 리스트가 아니면 크레이트 */
-        if (!supportVos.isEmpty()) {
-            try{
-                crawlingMapper.create(supportVos);
-                crawlingMapper.createMaster(supportVo);
-            }catch (Exception e){
-                supportVo.setErrorYn("Y");
-                e.printStackTrace();
+                /* 빈 리스트가 아니면 크레이트 */
+            if (!supportVos.isEmpty()) {
+                try{
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
+                }catch (Exception e){
+                    supportVo.setErrorYn("Y");
+                    e.printStackTrace();
+                    crawlingMapper.createMaster(supportVo);
+                }
+            }else {
+                supportVo.setErrorYn("N");
                 crawlingMapper.createMaster(supportVo);
             }
-        }else {
-            supportVo.setErrorYn("N");
-            crawlingMapper.createMaster(supportVo);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
     }
-
-
 }

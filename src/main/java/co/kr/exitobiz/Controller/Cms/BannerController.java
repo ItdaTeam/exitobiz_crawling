@@ -54,8 +54,8 @@ public class BannerController {
                 if(!file.exists()) // 해당 경로가 없을 경우
                     file.mkdirs();  // 폴더 생성
                 vo.getImage().transferTo(file);
-                String url = "https://exitobiz.co.kr/img/banner/"+saveFileName;
-                vo.setBannerImg("https://exitobiz.co.kr/img/banner/"+saveFileName);
+                String url = "https://api.exitobiz.co.kr/img/banner/"+saveFileName;
+                vo.setBannerImg("https://api.exitobiz.co.kr/img/banner/"+saveFileName);
             }
             bannerService.saveNewBanner(vo);
 
@@ -86,7 +86,7 @@ public class BannerController {
                 if(!file.exists()) // 해당 경로가 없을 경우
                     file.mkdirs();  // 폴더 생성
                 vo.getImage().transferTo(file);
-                String url = "https://exitobiz.co.kr/img/banner/"+saveFileName;
+                String url = "https://api.exitobiz.co.kr/img/banner/"+saveFileName;
                 vo.setBannerImg(url);
             }else {
                 vo.setBannerImg(null);

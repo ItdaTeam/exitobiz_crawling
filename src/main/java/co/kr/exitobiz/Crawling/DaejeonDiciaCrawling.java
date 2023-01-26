@@ -54,24 +54,13 @@ public class DaejeonDiciaCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
-
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        ChromeDriverService service = null;
+        WebDriver driver = null;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("대전정보문화산업진흥원");
@@ -79,22 +68,36 @@ public class DaejeonDiciaCrawling implements Crawling {
         supportVo.setLocCode("C042");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
-        List<SupportVo> supportVos = new ArrayList<>();
 
+        try {
+            service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
+
+            service.start();
+            driver = new ChromeDriver(service,options);
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        List<SupportVo> supportVos = new ArrayList<>();
 
         for (int i=page; i>0; i--) {
 
             driver.get(url + i);
             Thread.sleep(1000);
 
-            for(int j=1; j<11; j++) {
+            List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"listForm\"]/div/div/table/tbody/tr"));
+
+            for(int j=1; j<= list.size(); j++) {
                     try {
 
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"listForm\"]/table/tbody/tr["+ j +"]/td[2]/a"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"listForm\"]/div/div/table/tbody/tr["+j+"]/td[2]/a"));
 
                         String title = titleXpath.getText().trim();
                         String url = titleXpath.getAttribute("href");
-                        String bodyurl = "http://www.dicia.or.kr/sub.do" + url.substring(url.lastIndexOf("?"),url.length());
+                        String bodyurl = "http://www.dicia.or.kr/sub.do" + url.substring(url.lastIndexOf("?"));
 
                         SupportVo vo = new SupportVo();
 
@@ -106,7 +109,8 @@ public class DaejeonDiciaCrawling implements Crawling {
                         vo.setPcUrl("-");
 
                         HashMap<String, String> params = new HashMap<>();
-                        params.put("bodyurl", bodyurl);
+//                        params.put("bodyurl", bodyurl);
+                        params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
                             supportVos.add(vo);
@@ -135,11 +139,22 @@ public class DaejeonDiciaCrawling implements Crawling {
             supportVo.setErrorYn("N");
             crawlingMapper.createMaster(supportVo);
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
+        }
     }
-
-
 }

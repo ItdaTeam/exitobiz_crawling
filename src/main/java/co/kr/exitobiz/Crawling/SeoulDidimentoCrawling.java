@@ -83,7 +83,7 @@ public class SeoulDidimentoCrawling implements Crawling {
             for (int i=page; i>0; i--) {
                 driver.get(url + i);
                 List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"kboard-default-list\"]/div[4]/table/tbody/tr"));
-                for(int j=1; j<list.size(); j++) {
+                for(int j=1; j<=list.size(); j++) {
                     try {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[4]/table/tbody/tr[" + j + "]/td[2]/a/div"));
                         WebElement urlXpath = driver.findElement(By.xpath("//*[@id='kboard-default-list']/div[4]/table/tbody/tr[" + j + "]/td[2]/a"));
