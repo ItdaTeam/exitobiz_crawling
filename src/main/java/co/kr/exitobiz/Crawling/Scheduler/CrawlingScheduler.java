@@ -413,6 +413,7 @@ public class CrawlingScheduler {
     @Autowired
     HrdkoreaCrawling hrdkoreaCrawling;
 
+
     /** 현대전용 끝 */
 
 
@@ -691,6 +692,20 @@ public class CrawlingScheduler {
         /* 한국무역협회 */
         kitaCrawling.craw();
 
+        /* 한국테크노파크 */
+        koreaTpCrawling.craw();
+
+        /** KOTRA*/
+        kortaCrawling.craw();
+
+        /**소상공인마당Web */
+        sbizWebCrawling.craw();
+
+        /** 기술보호울타리 */
+        ultariCrawling.craw();
+
+        /** 중소기업해외전시포탈 */
+        smesCrawling.craw();
 
         System.out.println("--------그룹9 크롤링완료---------");
     }
