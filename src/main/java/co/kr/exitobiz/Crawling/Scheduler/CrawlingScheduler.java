@@ -419,13 +419,13 @@ public class CrawlingScheduler {
 
 
     //    테스트용
-    @Scheduled(cron = "30 7 20 * * *")
+//    @Scheduled(cron = "35 19 15 * * *")
     public void CrawlingGroup10() throws InterruptedException, IOException {
-        seoulSvhcCrawling.craw();
+        kitaCrawling.craw();
     }
 
 
-    @Scheduled(cron = "20 19 10 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
         kStartUpCrawling.craw();
@@ -510,7 +510,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹3 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 20 0 * * ?")
+    @Scheduled(cron = "0 15 0 * * ?")
     public void CrawlingGroup4() throws InterruptedException {
 
         /* 북부여성발전센터 */
@@ -533,7 +533,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹4 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 25 0 * * ?")
+    @Scheduled(cron = "0 20 0 * * ?")
     public void CrawlingGroup5() throws InterruptedException {
         CeciCrawVo seoul = new CeciCrawVo("서울창조경제혁신센터","https://ccei.creativekorea.or.kr/seoul",1,"C02");
         CeciCrawVo gyeongnam = new CeciCrawVo("경남창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongnam",1,"C055");
@@ -606,7 +606,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹5 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 35 0 * * ?")
+    @Scheduled(cron = "0 25 0 * * ?")
     public void CrawlingGroup6() throws InterruptedException {
 
         /* 한국출판문화산업진흥원 */
@@ -625,7 +625,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹6 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 50 0 * * ?")
+    @Scheduled(cron = "0 30 0 * * ?")
     public void CrawlingGroup8() throws InterruptedException {
 
 
@@ -683,7 +683,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹8 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 55 0 * * ?")
+    @Scheduled(cron = "0 35 0 * * ?")
     public void CrawlingGroup9() throws InterruptedException {
         /* 창원산업진흥원 */
         changwonCwipCrawling.craw();
@@ -693,6 +693,76 @@ public class CrawlingScheduler {
 
 
         System.out.println("--------그룹9 크롤링완료---------");
+    }
+
+    @Scheduled(cron ="0 40 0 * * ?")
+    public void CrawlingHyunDai() throws InterruptedException{
+
+        /** 한국환경공단*/
+        kecoCrawling.craw();
+
+
+        /** 경기환경에너지진흥원 */
+        ggenergyCrawling.craw();
+
+        /** 충남에너지센터   */
+        cnEnergyCrawling.craw();
+
+        /** 당진에너지센터 */
+        djEnercyCrawling.craw();
+
+        /*  한국화학융합시험연구원 */
+        koreaTrCrawling.craw();
+        /** 녹색에너지연구원 */
+        greenEICrawling.craw();
+
+        /** (사)한국신,재생에너지협회 */
+        knreaCrawling.craw();
+
+        /** 안산환경재단 */
+        ansanCrawling.craw();
+
+        /** 스마트제조혁신추진단 */
+        smartFactoryCrawling.craw();
+
+        /** 중소기업중앙회 - 스마트공장 */
+        kbizFactoryCrawling.craw();
+
+        /** 한국생산기술연구원*/
+        kitechCrawling.craw();
+
+        /** 환경부 */
+        ministryCrawling.craw();
+
+        /** 에너지기술평가원*/
+        ketepCrawling.craw();
+
+        /** 정보통신산업진흥원*/
+        nipaCrawling.craw();
+
+        /** 한국에너지공단 */
+        knrecCrawling.craw();
+
+        /** 한국환경산업기술원 */
+        koneticCrawling.craw();
+
+        /** 캠틱종합기술원 */
+        camticCrawling.craw();
+
+        /** 경북구미강소특구*/
+        kumohCrawling.craw();
+
+        /** 연구개발특구진흥재단 */
+        innopolisCrawling.craw();
+
+        /** 한국산업단지공단*/
+        kicoxCrawling.craw();
+
+        /** 강릉과학산업진흥원*/
+        gsipaACrawling.craw();
+
+        /** 한국산업인력공단 */
+        hrdkoreaCrawling.craw();
     }
 
     @Scheduled(cron = "0 0 1 * * ?")
