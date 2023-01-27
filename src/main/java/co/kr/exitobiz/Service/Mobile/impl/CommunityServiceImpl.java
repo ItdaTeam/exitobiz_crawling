@@ -70,7 +70,7 @@ public class CommunityServiceImpl implements CommunityService {
                 String fileName = fileService.fileNameGenerator(communityVo.getUpFile());
 
                 HashMap<String, String> params = new HashMap<>();
-                params.put("filePath", "/img/community/");
+                params.put("filePath", "/img/community");
                 params.put("fileName", fileName);
 
                 //컨텐츠 내 이미지 저장
@@ -86,11 +86,11 @@ public class CommunityServiceImpl implements CommunityService {
                     HashMap<String, String> fileParams = new HashMap<>();
                     ArrayList<String> fileArray = new ArrayList<>();
 
-                    fileParams.put("filePath", "/img/community/");
+                    fileParams.put("filePath", "/img/community");
                     communityVo.getAttachFile().forEach(file ->{
                         try{
                             String genName = fileService.fileNameGenerator(file);
-                            communityVo.getContent().replace(file.getOriginalFilename(),genName);
+                            communityVo.setContent(communityVo.getContent().replace(file.getOriginalFilename(),genName));
 
                             fileParams.put("fileName",genName);
                             fileService.uploadFile(file, fileParams);

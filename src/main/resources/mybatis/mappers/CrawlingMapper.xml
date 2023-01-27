@@ -54,6 +54,7 @@
 
     <update id="removeBlank">
         update itda_app.support_info set <![CDATA[ si_title = ltrim(regexp_replace(si_title, '\<[^)]+\>' ,'')) ]]>
+        where target_name != '서울청년정책'
 
     </update>
 

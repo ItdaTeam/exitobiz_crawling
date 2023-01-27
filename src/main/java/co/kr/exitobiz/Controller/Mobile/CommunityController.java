@@ -159,9 +159,8 @@ public class CommunityController {
     public int createCommunity(CommunityVo communityVo) throws ParseException {
         int id = 0;
         try{
-            id = communityService.getNewId();
-            communityVo.setId(id);
             communityService.insertCommunity(communityVo);
+            id = communityService.getNewId();
         }catch(Exception e){
             e.printStackTrace();
         }

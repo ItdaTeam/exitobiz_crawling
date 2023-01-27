@@ -125,7 +125,7 @@ public class GyeongnamGseicCrawling implements Crawling {
                 for(int j=1; j<=notiList.size(); j++) {
                     try {
 
-                        WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[2]/div[2]/div[2]/div[2]/div/div[3]/table[2]/tbody/tr["+ j +"]/td/table/tbody/tr/td[2]/table/tbody/tr/td[1]/div/a"));
+                        WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[3]/div[2]/div[2]/div[2]/div/div[3]/table[2]/tbody/tr["+ j +"]/td/table/tbody/tr/td[2]/table/tbody/tr/td[1]/div/a"));
 
                         String title = titleXpath.getText().replace("기타","").trim();
                         String url = titleXpath.getAttribute("href");
