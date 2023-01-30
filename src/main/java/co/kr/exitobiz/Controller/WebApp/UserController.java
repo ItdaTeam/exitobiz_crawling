@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -223,7 +224,10 @@ public class UserController {
     @ResponseBody
     public String checkAppVer() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(userService.checkAppVer());
+
+        HashMap<String, Object> params = (HashMap<String, Object>) userService.checkAppVer().get(0);
+
+        return mapper.writeValueAsString(params);
     }
 
     /**
