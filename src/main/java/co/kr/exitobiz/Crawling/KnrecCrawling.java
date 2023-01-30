@@ -113,7 +113,7 @@ public class KnrecCrawling implements Crawling {
 
                             String title = titleXpath.getText();
                             String url = titleXpath.getAttribute("href");
-                            vo.setTargetName("한국테크노파크");
+                            vo.setTargetName("한국에너지공단");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C02");
                             vo.setSiTitle(title);

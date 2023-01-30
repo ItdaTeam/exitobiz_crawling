@@ -109,8 +109,8 @@ public class KecoCrawling implements Crawling {
                             SupportVo vo = new SupportVo();
 
                             String title = titleXpath.getText();
-                            String url = titleXpath.getAttribute("href");
-                            vo.setTargetName("한국테크노파크");
+                            String url = "https://www.keco.or.kr/kr/open/communityid/1/view.do?idx=" + titleXpath.getAttribute("href").replace("javascript:getView(","").replace(");","");
+                            vo.setTargetName("한국환경공단");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C02");
                             vo.setSiTitle(title);
