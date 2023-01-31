@@ -63,14 +63,14 @@ public class PushScheduler{
                 push.put("body","지금 해당 지원사업을 확인해보세요");
                 push.put("keyId","kwrd");
                 push.put("idx",keyword.getKeyword());
-                push.put("url", "https://exitobiz.co.kr/support/supportList?keyword=" + keyword.getKeyword());
+                push.put("url", "http://210.114.19.202:3000/support/supportList?keyword=" + keyword.getKeyword());
                 usertokens.clear();
                 for(PushVo user : users){ // 푸쉬를 발송할 사용자 토큰 처리
                     Map<String,Object> usertoken = new HashMap<String,Object>();
                     usertoken.put("usertoken",user.getUsertoken());
                     usertokens.add(usertoken);
                 }
-                
+
                 //푸쉬 발송
                 pushMultiService.sendListPush(push, usertokens);
                 

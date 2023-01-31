@@ -80,13 +80,7 @@ public class PushController {
             params2.put("userlocs", userlocs);
         }
 
-        List<Map<String, Object>> userTokens = new ArrayList<>();
-
-        Map<String,Object> usertoken = new HashMap<String,Object>();
-        usertoken.put("usertoken", "e9lDCbfGTl-WF8isL10xi0:APA91bHE-A68f4sHnI10vqLnLRUjXc8l2Caw129D6HW0J-L8gNVEirrrIAlUfCkTxWHbDPdl3gzFQXP9GzkLB9ASyBYO_GbgzcGulu4NPfm17sJFh8nxTgbLf3ah5J-vDKYWQxkjI0Kx");
-
-        userTokens.add(usertoken);
-                //userService.getUserTokenByLocation(params2);
+        List<Map<String, Object>> userTokens =  userService.getUserTokenByLocation(params2);
 
         String result ="fail";
         int failCount = 0;
@@ -153,10 +147,10 @@ public class PushController {
 
         params.put("id",params.get("userId")); // 쿼리 공통 사용을 위한 변수 id(사용자 아이디) 추가
         if(params.get("keyId").equals("comm") || params.get("keyId").equals("like") || params.get("keyId").equals("reco")){
-            params.put("url" , "https://exitobiz.co.kr/community/communityView/" + params.get("idx"));
+            params.put("url" , "http://210.114.19.202:3000/community/communityView/" + params.get("idx"));
         }
 
-        List<Map<String,Object>>  userTokens = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
+        List<Map<String, Object>> userTokens = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
 
 //        Map<String,Object> usertoken = new HashMap<String,Object>();
 //        usertoken.put("usertoken", "e9lDCbfGTl-WF8isL10xi0:APA91bHE-A68f4sHnI10vqLnLRUjXc8l2Caw129D6HW0J-L8gNVEirrrIAlUfCkTxWHbDPdl3gzFQXP9GzkLB9ASyBYO_GbgzcGulu4NPfm17sJFh8nxTgbLf3ah5J-vDKYWQxkjI0Kx");
@@ -185,26 +179,20 @@ public class PushController {
         HashMap<String, Object> bannObj = bannerService.getBanner(bannParams);
 
         if(params.get("keyId").equals("noti")){
-            params.put("url" , "https://exitobiz.co.kr/notice/noticeView/" + params.get("idx"));
+            params.put("url" , "http://210.114.19.202:3000/notice/noticeView/" + params.get("idx"));
         }else if(params.get("keyId").equals("cus1")){
-            params.put("url" , "https://exitobiz.co.kr/community/communityView/" + params.get("idx"));
+            params.put("url" , "http://210.114.19.202:3000/community/communityView/" + params.get("idx"));
         }else if(params.get("keyId").equals("bann")){
             if(bannObj.get("banner_ctg").equals("I") || bannObj.get("banner_ctg").equals("O")){
                 params.put("url", (String) bannObj.get("banner_link"));
             }else if(bannObj.get("banner_ctg").equals("N")){
-                params.put("url", "https://exitobiz.co.kr/notice/noticeList");
+                params.put("url", "http://210.114.19.202:3000/notice/noticeList");
             }else if(bannObj.get("banner_ctg").equals("ND")){
-                params.put("url", "https://exitobiz.co.kr/notice/noticeList/" + params.get("idx"));
+                params.put("url", "http://210.114.19.202:3000/notice/noticeList/" + params.get("idx"));
             }
         }
 
-        List<Map<String, Object>> userTokens = new ArrayList<>();
-        //userService.getUserTokens();
-
-        Map<String,Object> usertoken = new HashMap<String,Object>();
-        usertoken.put("usertoken", "e9lDCbfGTl-WF8isL10xi0:APA91bHE-A68f4sHnI10vqLnLRUjXc8l2Caw129D6HW0J-L8gNVEirrrIAlUfCkTxWHbDPdl3gzFQXP9GzkLB9ASyBYO_GbgzcGulu4NPfm17sJFh8nxTgbLf3ah5J-vDKYWQxkjI0Kx");
-
-        userTokens.add(usertoken);
+        List<Map<String, Object>> userTokens = userService.getUserTokens();
 
         String result = "fail";
         if(!userTokens.isEmpty()){
