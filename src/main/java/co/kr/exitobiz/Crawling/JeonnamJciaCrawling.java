@@ -76,7 +76,7 @@ public class JeonnamJciaCrawling implements Crawling {
                 .build();
 
             service.start();
-            driver = new ChromeDriver(service);
+            driver = new ChromeDriver(service, options);
 
             List<SupportVo> supportVos = new ArrayList<>();
 
