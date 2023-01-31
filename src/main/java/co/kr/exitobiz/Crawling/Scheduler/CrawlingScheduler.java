@@ -784,7 +784,7 @@ public class CrawlingScheduler {
     public void CleanUpData() throws InterruptedException {
         crawlingMapper.removeLNew();
         crawlingMapper.removeRNew();
-        crawlingMapper.removeBlank();
+//        crawlingMapper.removeBlank();
 
         System.out.println("--------데이터 정리 완료---------");
     }
