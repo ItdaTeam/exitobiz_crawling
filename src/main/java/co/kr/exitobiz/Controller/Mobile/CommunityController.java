@@ -48,6 +48,10 @@ public class CommunityController {
             params.put("search_array", array);
         }
 
+        if(header.get("user_id") != null){
+            params.put("user_id", header.get("user_id"));
+        }
+
 
         // Date Format 설정
         ObjectMapper mapper = new ObjectMapper();
