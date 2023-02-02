@@ -18,7 +18,10 @@
         ) tl
         left outer join itda_app.support_info si on tl.tl_type_cd = si.si_idx and length(si.loc_code) <![CDATA[<]]> 5
         left outer join ( select  row_number() over (partition by mb_addidx order by  mb_cret_dt desc) as sort, mb_save_yn,mb_req_save_yn,mb_done_save_yn,mb_addidx,mb_cret_id
-        from itda_app.my_bookmark  ) mb on mb.mb_addidx = si.si_idx and mb.mb_cret_id = tl_cret_id and mb.sort=1
+                            from itda_app.my_bookmark
+                            where 1=1
+                            and mb_cret_id = #{user_id}
+        ) mb on mb.mb_addidx = si.si_idx and mb.mb_cret_id = tl_cret_id and mb.sort=1
         where 1=1
         and tl.sort=1
         and si.si_active_yn = 'Y'
