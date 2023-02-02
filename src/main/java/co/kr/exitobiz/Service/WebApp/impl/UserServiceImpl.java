@@ -111,4 +111,9 @@ public class UserServiceImpl implements UserService {
         userMapper.updateMobileInfo(params);
     }
 
+    @Override
+    public void delUserToken(Map<String, Object> params) {
+        userMapper.delUserToken(params);
+    }
+
 }

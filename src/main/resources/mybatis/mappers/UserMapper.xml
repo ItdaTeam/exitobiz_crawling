@@ -73,6 +73,7 @@ SELECT usertoken
     WHERE 1=1
       and u.id=#{id}
       and u.usertoken not in ('', 'null')
+      and usernickname  != '탈퇴회원'
     <choose>
        <when test="keyId == 'cont' ">
           and coalesce(ups.sp_receive_push,'') != 'N'
@@ -112,8 +113,9 @@ SELECT usertoken
 <!--        </when>-->
     </choose>
     union
-      SELECT usertoken
+      SELECT ud.usertoken
       FROM itda_app.user_device ud
+      inner join itda_app.usertable u on ud.user_id = u.id and u.usernickname !='탈퇴회원'
       left outer join itda_app.user_push_setting ups on ud.user_id = ups.user_id
       left outer join itda_app.admin_push_setting aps on ud.user_id = aps.user_id
       left outer join itda_app.chatrooms_one_push_setting cops on ud.user_id = cops.user_id
@@ -430,5 +432,13 @@ SELECT usertoken
             appversion = #{appversion}
         WHERE id = #{userid}
     </update>
+
+    <delete id="delUserToken" parameterType="map">
+        delete from itda_app.user_device
+        where 1=1
+          and user_id = #{userid}
+          and minfo  = #{minfo}
+          and usertoken  = #{usertoken}
+    </delete>
 
 </mapper>

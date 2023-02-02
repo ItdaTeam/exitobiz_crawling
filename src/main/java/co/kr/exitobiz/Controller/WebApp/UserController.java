@@ -294,4 +294,26 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 토큰값 삭제
+     * @param params userid 사용자아이디, usertoken 토큰값, minfo 모바일정보
+     * @return 성공여부
+     */
+    @PostMapping("/delUserToken")
+    @ResponseBody
+    public String delUserToken(@RequestHeader Map<String,Object> params) throws  Exception {
+        String result = "fail";
+
+        if( params.get("userid") != null && params.get("usertoken") != null) {
+            try {
+                userService.delUserToken(params);
+                result = "success";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+
 }
