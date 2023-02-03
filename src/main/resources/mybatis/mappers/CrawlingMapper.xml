@@ -44,12 +44,12 @@
 
     <update id="removeLNew">
         update itda_app.support_info set si_title = replace(si_title, si_title, ltrim(si_title, 'New'))
-        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd')
+        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd') and si_title like 'New%'
     </update>
 
     <update id="removeRNew">
         update itda_app.support_info set si_title = replace(si_title, si_title, rtrim(si_title, 'NEW'))
-        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd')
+        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd') and si_title like '%NEW'
     </update>
 
     <update id="removeBlank">

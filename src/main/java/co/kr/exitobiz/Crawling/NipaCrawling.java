@@ -105,6 +105,9 @@ public class NipaCrawling implements Crawling {
 
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
+                            if(title.substring(title.length()-2, title.length()).equals("새글")){
+                                title = title.substring(0,title.length()-2);
+                            }
                             String url = titleXpath.getAttribute("href");
                             String bodyUrl = url.replace("&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex="+i,"");
 
