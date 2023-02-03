@@ -199,6 +199,20 @@ public class CommunityController {
      return result;
     }
 
+    //게시글 첨부파일 삭제
+    @RequestMapping(value = "/delAttachFile", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String delAttachFile(@RequestBody @Valid HashMap<String, Object> params) throws Exception{
+        String result = "fail";
+        try{
+            communityService.delAttachFile(params);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     // 게시글 좋아요
     @PostMapping(value = "/like")
     @ResponseBody

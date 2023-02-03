@@ -141,9 +141,9 @@ public class CommunityServiceImpl implements CommunityService {
                         e.printStackTrace();
                     }
                 });
-                communityMapper.updateCommunity(communityVo);
 
             }
+            communityMapper.updateCommunity(communityVo);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -239,6 +239,11 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public Map<String, Object> deleteOne(Map<String, Object> params) {
         return communityMapper.deleteOne(params);
+    }
+
+    @Override
+    public void delAttachFile(Map<String, Object> params) {
+        communityMapper.delAttachFile(params);
     }
 
 }
