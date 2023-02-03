@@ -120,13 +120,31 @@ public class CommunityServiceImpl implements CommunityService {
 
                 ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
                 try{
+
                     fileService.uploadFile(communityVo.getUpFile(), params);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
+            }else if(communityVo.getAttachFile() != null){
+                HashMap<String, String> fileParams = new HashMap<>();
+                ArrayList<String> fileArray = new ArrayList<>();
+
+                fileParams.put("filePath", "/img/community");
+                communityVo.getAttachFile().forEach(file ->{
+                    try{
+                        String genName = fileService.fileNameGenerator(file);
+                        communityVo.setContent(communityVo.getContent().replace(file.getOriginalFilename(),genName));
+
+                        fileParams.put("fileName",genName);
+                        fileService.uploadFile(file, fileParams);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                });
+                communityMapper.updateCommunity(communityVo);
+
             }
 
-            communityMapper.updateCommunity(communityVo);
         }catch(Exception e){
             e.printStackTrace();
         }
