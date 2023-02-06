@@ -147,7 +147,7 @@ public class PushController {
 
         params.put("id",params.get("userId")); // 쿼리 공통 사용을 위한 변수 id(사용자 아이디) 추가
         if(params.get("keyId").equals("comm") || params.get("keyId").equals("like") || params.get("keyId").equals("reco")){
-            params.put("url" , "http://210.114.19.202:3000/community/communityView/" + params.get("idx"));
+            params.put("url" , "exitobiz.co.kr/community/communityView/" + params.get("idx"));
         }
 
         List<Map<String, Object>> userTokens = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
@@ -179,16 +179,16 @@ public class PushController {
         HashMap<String, Object> bannObj = bannerService.getBanner(bannParams);
 
         if(params.get("keyId").equals("noti")){
-            params.put("url" , "http://210.114.19.202:3000/notice/noticeView/" + params.get("idx"));
+            params.put("url" , "exitobiz.co.kr/notice/noticeView/" + params.get("idx"));
         }else if(params.get("keyId").equals("cus1")){
-            params.put("url" , "http://210.114.19.202:3000/community/communityView/" + params.get("idx"));
+            params.put("url" , "exitobiz.co.kr/community/communityView/" + params.get("idx"));
         }else if(params.get("keyId").equals("bann")){
             if(bannObj.get("banner_ctg").equals("I") || bannObj.get("banner_ctg").equals("O")){
                 params.put("url", (String) bannObj.get("banner_link"));
             }else if(bannObj.get("banner_ctg").equals("N")){
-                params.put("url", "http://210.114.19.202:3000/notice/noticeList");
+                params.put("url", "exitobiz.co.kr/notice/noticeList");
             }else if(bannObj.get("banner_ctg").equals("ND")){
-                params.put("url", "http://210.114.19.202:3000/notice/noticeList/" + params.get("idx"));
+                params.put("url", "exitobiz.co.kr/notice/noticeList/" + params.get("idx"));
             }
         }
 
