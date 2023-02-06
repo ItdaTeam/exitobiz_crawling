@@ -441,5 +441,10 @@ SELECT usertoken
           and minfo  = #{minfo}
           and usertoken  = #{usertoken}
     </delete>
+    <delete id="delUserTokenById" parameterType="map">
+        delete from itda_app.user_device
+        where 1=1
+          and user_id = #{userid}
+    </delete>
 
 </mapper>

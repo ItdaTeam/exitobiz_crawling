@@ -44,4 +44,6 @@ public interface UserMapper {
     void updateMobileInfo(Map<String, Object> params);
 
     void delUserToken(Map<String, Object> params);
+
+    void delUserTokenById(Map<String, Object> params);
 }
