@@ -53,23 +53,11 @@ public class SeoulBiUosCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
-
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서대문구-서울시립대학교 창업지원센터");
@@ -78,78 +66,103 @@ public class SeoulBiUosCrawling implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
-        List<SupportVo> supportVos = new ArrayList<>();
+        ChromeDriverService service = null;
+        WebDriver driver = null;
+        try {
+             service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
+
+            service.start();
+            driver = new ChromeDriver(service,options);
+            List<SupportVo> supportVos = new ArrayList<>();
 
 
-        for (int i=page; i>0; i--) {
+            for (int i=page; i>0; i--) {
 
-            driver.get(url + i);
+                driver.get(url + i);
 
-            for(int j=1; j<11; j++) {
+                for(int j=1; j<11; j++) {
 
-                try {
+                    try {
 
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"sub_contents_wrpabox\"]/div[2]/form[1]/div/div[2]/table/tbody/tr["+j+"]/td[2]/div/a"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"sub_contents_wrpabox\"]/div[2]/form[1]/div/div[2]/table/tbody/tr["+j+"]/td[2]/div/a"));
 
-                    String baseUrl = "http://bi.uos.ac.kr/em/em_1.php?p_page=1&code=b_1&p_mode=view&p_idx=";
-                    String title = titleXpath.getText();
-                    String url = titleXpath.getAttribute("href");
+                        String baseUrl = "http://bi.uos.ac.kr/em/em_1.php?p_page=1&code=b_1&p_mode=view&p_idx=";
+                        String title = titleXpath.getText();
+                        String url = titleXpath.getAttribute("href");
 
-                    String bodyUrl = baseUrl + url.replaceAll("[^0-9]", "");
+                        String bodyUrl = baseUrl + url.replaceAll("[^0-9]", "");
 
-                    WebElement targetTypeXpath = driver.findElement(By.xpath("//*[@id=\"sub_contents_wrpabox\"]/div[2]/form[1]/div/div[2]/table/tbody/tr["+j+"]/td[2]/div"));
-                    Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
-                    Matcher typeMatcher = typePattern.matcher(targetTypeXpath.getText());
-                    ArrayList<String> typePatternArray = new ArrayList<String>();
+                        WebElement targetTypeXpath = driver.findElement(By.xpath("//*[@id=\"sub_contents_wrpabox\"]/div[2]/form[1]/div/div[2]/table/tbody/tr["+j+"]/td[2]/div"));
+                        Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
+                        Matcher typeMatcher = typePattern.matcher(targetTypeXpath.getText());
+                        ArrayList<String> typePatternArray = new ArrayList<String>();
 
-                    while (typeMatcher.find()) {
-                        typePatternArray.add(typeMatcher.group());
+                        while (typeMatcher.find()) {
+                            typePatternArray.add(typeMatcher.group());
+                        }
+
+                        SupportVo vo = new SupportVo();
+                        vo.setTargetName("서대문구-서울시립대학교 창업지원센터");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C02");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyUrl);
+                        vo.setPcUrl("-");
+
+                        HashMap<String, String> params = new HashMap<>();
+//                        params.put("bodyurl", bodyUrl);
+                        params.put("title",title);
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
+
+                    } catch (Exception e) {
+                        supportVo.setErrorYn("Y");
+                        e.printStackTrace();
+                        crawlingMapper.createMaster(supportVo);
+                        System.out.println(e.getMessage());
                     }
 
-                    SupportVo vo = new SupportVo();
-                    vo.setTargetName("서대문구-서울시립대학교 창업지원센터");
-                    vo.setTargetCatName("-");
-                    vo.setLocCode("C02");
-                    vo.setSiTitle(title);
-                    vo.setMobileUrl(bodyUrl);
-                    vo.setPcUrl("-");
+                }
 
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyUrl);
-                    boolean isUrl = crawlingMapper.isUrl(params);
-                    if (!isUrl) {
-                        supportVos.add(vo);
-                    }
+                Thread.sleep(500);
+            }
 
-                } catch (Exception e) {
+            /* 빈 리스트가 아니면 크레이트 */
+            if (!supportVos.isEmpty()) {
+                try{
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
+                }catch (Exception e){
                     supportVo.setErrorYn("Y");
                     e.printStackTrace();
                     crawlingMapper.createMaster(supportVo);
-                    System.out.println(e.getMessage());
                 }
-
-            }
-
-            Thread.sleep(500);
-        }
-
-        /* 빈 리스트가 아니면 크레이트 */
-        if (!supportVos.isEmpty()) {
-            try{
-                crawlingMapper.create(supportVos);
+            }else{
                 crawlingMapper.createMaster(supportVo);
-            }catch (Exception e){
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
                 supportVo.setErrorYn("Y");
-                e.printStackTrace();
                 crawlingMapper.createMaster(supportVo);
             }
-        }else{
-            crawlingMapper.createMaster(supportVo);
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
     }
 
 

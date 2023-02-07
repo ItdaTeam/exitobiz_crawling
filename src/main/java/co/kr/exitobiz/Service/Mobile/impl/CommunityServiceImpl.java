@@ -68,35 +68,37 @@ public class CommunityServiceImpl implements CommunityService {
         try{
             if(communityVo.getUpFile() != null){
                 String fileName = fileService.fileNameGenerator(communityVo.getUpFile());
+
                 HashMap<String, String> params = new HashMap<>();
-                params.put("filePath", "/img/community/");
+                params.put("filePath", "/img/community");
                 params.put("fileName", fileName);
 
                 //컨텐츠 내 이미지 저장
-                ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
+                ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
                 try{
                     fileService.uploadFile(communityVo.getUpFile(), params);
 
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-
-                //다중첨부파일 저장
-                if(communityVo.getAttachFile() != null){
-                    final String url = "https://exitobiz.co.kr/file/community/";  // 임시
+            }else if(communityVo.getAttachFile() != null){ //다중첨부파일 저장
+                    final String url = "https://api.exitobiz.co.kr/file/community/";  // 임시
                     HashMap<String, String> fileParams = new HashMap<>();
                     ArrayList<String> fileArray = new ArrayList<>();
 
-                    fileParams.put("filePath", "/img");
+                    fileParams.put("filePath", "/img/community");
                     communityVo.getAttachFile().forEach(file ->{
-                       try{
+                        try{
+                            String genName = fileService.fileNameGenerator(file);
+                            communityVo.setContent(communityVo.getContent().replace(file.getOriginalFilename(),genName));
+
+                            fileParams.put("fileName",genName);
                             fileService.uploadFile(file, fileParams);
-                       }catch(Exception e){
-                           e.printStackTrace();
-                       }
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
                     });
                 }
-            }
             communityMapper.insertCommunity(communityVo);
         }catch(Exception e){
             e.printStackTrace();
@@ -116,15 +118,33 @@ public class CommunityServiceImpl implements CommunityService {
                 params.put("filePath", "/img/community/");
                 params.put("fileName", fileName);
 
-                ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
+                ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
                 try{
+
                     fileService.uploadFile(communityVo.getUpFile(), params);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-            }
+            }else if(communityVo.getAttachFile() != null){
+                HashMap<String, String> fileParams = new HashMap<>();
+                ArrayList<String> fileArray = new ArrayList<>();
 
+                fileParams.put("filePath", "/img/community");
+                communityVo.getAttachFile().forEach(file ->{
+                    try{
+                        String genName = fileService.fileNameGenerator(file);
+                        communityVo.setContent(communityVo.getContent().replace(file.getOriginalFilename(),genName));
+
+                        fileParams.put("fileName",genName);
+                        fileService.uploadFile(file, fileParams);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                });
+
+            }
             communityMapper.updateCommunity(communityVo);
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -219,6 +239,11 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public Map<String, Object> deleteOne(Map<String, Object> params) {
         return communityMapper.deleteOne(params);
+    }
+
+    @Override
+    public void delAttachFile(Map<String, Object> params) {
+        communityMapper.delAttachFile(params);
     }
 
 }

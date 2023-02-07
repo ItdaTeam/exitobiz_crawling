@@ -63,6 +63,7 @@ public class ContentRepository {
         return jpaQueryFactory
                 .selectFrom(notice)
                 .where(builder)
+                .where(notice.mustYn.eq("Y"))
                 .orderBy(notice.createAt.desc())
                 .fetch();
     }

@@ -29,4 +29,15 @@ public class SupportInfoController {
         return jsonStr;
     }
 
+    //게시물 데이터 상세 불러오기
+    @PostMapping("/getSPDetailData")
+    @ResponseBody
+    public String getSPDetailData(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+        if(header.get("user_id") != null) body.put("mb_cret_id", header.get("user_id"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(supportService.getSPDetailData(body));
+        return jsonStr;
+    }
+
 }

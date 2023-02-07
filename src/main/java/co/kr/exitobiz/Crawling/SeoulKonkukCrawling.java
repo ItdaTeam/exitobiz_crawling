@@ -54,25 +54,14 @@ public class SeoulKonkukCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
+        ChromeDriverService service = null;
+        WebDriver driver = null;
 
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
-
-        List<SupportVo> supportVos = new ArrayList<>();
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("건국대학교 창업지원단");
         supportVo.setUrl("https://kkubi.konkuk.ac.kr");
@@ -80,78 +69,96 @@ public class SeoulKonkukCrawling implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
-        for (int i=page; i>=0; i--) {
+        try {
+        service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
 
-            driver.get(url + i);
+            service.start();
+            driver = new ChromeDriver(service,options);
 
-            Thread.sleep(1000);
+            List<SupportVo> supportVos = new ArrayList<>();
 
-            List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"container\"]/section/div[2]/div[2]/div/div[2]/table/tbody[2]/tr"));
+            for (int i=page; i>=0; i--) {
 
-            // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
-            int k = list.size();
+                driver.get(url + i);
+                Thread.sleep(1000);
 
-            for(int j=1; j<k+1; j++) {
+                List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"container\"]/section/div[2]/div[2]/div/div[2]/table/tbody[2]/tr"));
+                // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
+                int k = list.size();
+                for(int j=1; j<k+1; j++) {
+                    try {
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/section/div[2]/div[2]/div/div[2]/table/tbody[2]/tr["+ j +"]/td[2]/div/div/dl/dt/a"));
+                        Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
+                        Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
+                        ArrayList<String> typePatternArray = new ArrayList<String>();
+                        while (typeMatcher.find()) {
+                            typePatternArray.add(typeMatcher.group());
+                        }
+                        String title = titleXpath.getText();
+                        String url = titleXpath.getAttribute("data-itsp-view-link");
+                        String bodyurl = "https://startup.konkuk.ac.kr/BoardView.do?menuSeq=43850&configSeq=51126&seq=" + url;
 
-                try {
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/section/div[2]/div[2]/div/div[2]/table/tbody[2]/tr["+ j +"]/td[2]/div/div/dl/dt/a"));
+                        SupportVo vo = new SupportVo();
+                        vo.setTargetName("건국대학교 창업지원단");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C02");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyurl);
+                        vo.setPcUrl("-");
 
-                    Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
-                    Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
-                    ArrayList<String> typePatternArray = new ArrayList<String>();
+                        HashMap<String, String> params = new HashMap<>();
+//                        params.put("bodyurl", bodyurl);
+                        params.put("title",title);
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
 
-                    while (typeMatcher.find()) {
-                        typePatternArray.add(typeMatcher.group());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        supportVo.setErrorYn("Y");
+                        e.printStackTrace();
                     }
+                }
 
-                    String title = titleXpath.getText();
-                    String url = titleXpath.getAttribute("data-itsp-view-link");
-                    String bodyurl = "https://startup.konkuk.ac.kr/BoardView.do?menuSeq=43850&configSeq=51126&seq=" + url;
+                Thread.sleep(500);
+            }
 
-                    SupportVo vo = new SupportVo();
-                    vo.setTargetName("건국대학교 창업지원단");
-                    vo.setTargetCatName("-");
-                    vo.setLocCode("C02");
-                    vo.setSiTitle(title);
-                    vo.setMobileUrl(bodyurl);
-                    vo.setPcUrl("-");
-
-
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyurl);
-                    boolean isUrl = crawlingMapper.isUrl(params);
-                    if (!isUrl) {
-                        supportVos.add(vo);
-                    }
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+            /* 빈 리스트가 아니면 크레이트 */
+            if (!supportVos.isEmpty()) {
+                try{
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
+                }catch (Exception e){
                     supportVo.setErrorYn("Y");
                     e.printStackTrace();
+                    crawlingMapper.createMaster(supportVo);
                 }
-            }
-
-            Thread.sleep(500);
-        }
-
-        /* 빈 리스트가 아니면 크레이트 */
-        if (!supportVos.isEmpty()) {
-            try{
-                crawlingMapper.create(supportVos);
+            }else {
+                supportVo.setErrorYn("N");
                 crawlingMapper.createMaster(supportVo);
-            }catch (Exception e){
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
                 supportVo.setErrorYn("Y");
-                e.printStackTrace();
                 crawlingMapper.createMaster(supportVo);
             }
-        }else {
-            supportVo.setErrorYn("N");
-            crawlingMapper.createMaster(supportVo);
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
     }
 
 

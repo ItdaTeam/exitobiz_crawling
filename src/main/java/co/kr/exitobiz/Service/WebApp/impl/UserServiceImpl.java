@@ -68,6 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void withdraw(Map<String, Object> params) {
         userMapper.withdraw(params);
+        userMapper.delUserTokenById(params);
     }
 
     @Override
@@ -109,6 +110,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateMobileInfo(Map<String, Object> params) {
         userMapper.updateMobileInfo(params);
+    }
+
+    @Override
+    public void delUserToken(Map<String, Object> params) {
+        userMapper.delUserToken(params);
     }
 
 }

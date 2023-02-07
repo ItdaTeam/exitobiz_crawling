@@ -51,6 +51,11 @@ public class SavedServiceImpl implements SavedService {
     }
 
     @Override
+    public HashMap checkSavedFlag(HashMap<String, Object> params) throws ParseException {
+        return savedMapper.checkSavedFlag(params);
+    }
+
+    @Override
     public HashMap getUserNeed(HashMap<String, Object> params) {
         return savedMapper.getUserNeed(params);
     }

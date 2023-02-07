@@ -48,6 +48,10 @@ public class CommunityController {
             params.put("search_array", array);
         }
 
+        if(header.get("user_id") != null){
+            params.put("user_id", header.get("user_id"));
+        }
+
 
         // Date Format 설정
         ObjectMapper mapper = new ObjectMapper();
@@ -195,6 +199,20 @@ public class CommunityController {
      return result;
     }
 
+    //게시글 첨부파일 삭제
+    @RequestMapping(value = "/delAttachFile", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String delAttachFile(@RequestBody @Valid HashMap<String, Object> params) throws Exception{
+        String result = "fail";
+        try{
+            communityService.delAttachFile(params);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     // 게시글 좋아요
     @PostMapping(value = "/like")
     @ResponseBody
@@ -321,7 +339,7 @@ public class CommunityController {
             params.put("filePath", "/img/community/");
             params.put("fileName", fileName);
 
-            ImgPath.append("https://exitobiz.co.kr/img/community/").append(fileName);
+            ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
 
             try {
                 fileService.uploadFile(file, params);
@@ -384,7 +402,7 @@ public class CommunityController {
     public String getFile(@RequestBody HashMap<String, Object> body) throws Exception{
         List<HashMap> List = communityService.getFile(body);
         for(int i=0; i<List.size(); i++){
-            List.get(i).replace("file_url" , "https://exitobiz.co.kr/img/community/attachFile/" + List.get(i).get("file_url"));
+            List.get(i).replace("file_url" , "https://api.exitobiz.co.kr/img/community/attachFile/" + List.get(i).get("file_url"));
         }
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = mapper.writeValueAsString(List);

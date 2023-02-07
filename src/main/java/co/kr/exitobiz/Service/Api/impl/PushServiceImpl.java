@@ -50,7 +50,6 @@ public class PushServiceImpl implements PushService {
     @Autowired
     PushMapper pushMapper;
 
-
     /** Push 서비스
      * FCM 메시지 기본 구조
      * {

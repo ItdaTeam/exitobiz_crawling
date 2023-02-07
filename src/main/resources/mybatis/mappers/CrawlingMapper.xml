@@ -4,7 +4,14 @@
 <mapper namespace="co.kr.exitobiz.Mappers.Api.CrawlingMapper">
 
     <select id="isUrl" parameterType="map" resultType="boolean">
-        select exists(select 1 from itda_app.support_info where mobile_url = #{bodyurl})
+        select exists(select 1 from itda_app.support_info where 1=1
+          <if test="title != null ">
+          and si_title = #{title}
+          </if>
+        <if test="bodyurl != null ">
+            and mobile_url = #{bodyurl}
+        </if>
+            )
     </select>
 
     <insert id="create" parameterType="SupportVo">
@@ -37,16 +44,17 @@
 
     <update id="removeLNew">
         update itda_app.support_info set si_title = replace(si_title, si_title, ltrim(si_title, 'New'))
-        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd')
+        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd') and si_title like 'New%'
     </update>
 
     <update id="removeRNew">
         update itda_app.support_info set si_title = replace(si_title, si_title, rtrim(si_title, 'NEW'))
-        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd')
+        where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd') and si_title like '%NEW'
     </update>
 
     <update id="removeBlank">
         update itda_app.support_info set <![CDATA[ si_title = ltrim(regexp_replace(si_title, '\<[^)]+\>' ,'')) ]]>
+        where target_name != '서울청년정책'
 
     </update>
 

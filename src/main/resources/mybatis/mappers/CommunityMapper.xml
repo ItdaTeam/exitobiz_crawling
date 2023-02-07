@@ -397,4 +397,9 @@
         </if>
      </select>
 
+
+    <delete id="delAttachFile" parameterType="Map">
+        delete from itda_web.community_content_file where content_id = #{content_id}
+    </delete>
+
 </mapper>

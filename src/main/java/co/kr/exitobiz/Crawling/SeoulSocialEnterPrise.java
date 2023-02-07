@@ -53,25 +53,13 @@ public class SeoulSocialEnterPrise implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
-
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
-
-        List<SupportVo> supportVos = new ArrayList<>();
+        ChromeDriverService service = null;
+        WebDriver driver = null;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국사회적기업진흥원");
@@ -80,72 +68,92 @@ public class SeoulSocialEnterPrise implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
+        try {
+            service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
 
-        for (int i=page; i>0; i--) {
-            driver.get(url+i);
+            service.start();
+            driver = new ChromeDriver(service,options);
 
-            Thread.sleep(1500);
+            List<SupportVo> supportVos = new ArrayList<>();
 
-            for(int j=3; j<11; j++) {
+            for (int i=page; i>0; i--) {
+                driver.get(url+i);
 
-                try {
+                Thread.sleep(1500);
 
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/section/table/tbody/tr["+j+"]/td[2]/*/a"));
+                for(int j=3; j<11; j++) {
 
-                    String baseUrl = "https://www.socialenterprise.or.kr/social/board/view.do?m_cd=D019&pg=2&board_code=BO02&category_id=CA92&category_sub_id=&com_certifi_num=&selectyear=&magazine=&title=&search_word=&search_type=&seq_no=";
+                    try {
 
-                    /* 숫자만 남기기 */
-                    String url = titleXpath.getAttribute("onclick");
-                    String intStr = url.replaceAll("goViewPage2", "").replaceAll("[^0-9]", "");
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/section/table/tbody/tr["+j+"]/td[2]/*/a"));
 
-                    String bodyUrl = baseUrl + intStr;
+                        String baseUrl = "https://www.socialenterprise.or.kr/social/board/view.do?m_cd=D019&pg=2&board_code=BO02&category_id=CA92&category_sub_id=&com_certifi_num=&selectyear=&magazine=&title=&search_word=&search_type=&seq_no=";
 
-                    String title = titleXpath.getText();
+                        /* 숫자만 남기기 */
+                        String url = titleXpath.getAttribute("onclick");
+                        String intStr = url.replaceAll("goViewPage2", "").replaceAll("[^0-9]", "");
 
-                    SupportVo vo = new SupportVo();
-                    vo.setTargetName("한국사회적기업진흥원");
-                    vo.setTargetCatName("-");
-                    vo.setLocCode("C02");
-                    vo.setSiTitle(title);
-                    vo.setMobileUrl(bodyUrl);
-                    vo.setPcUrl("-");
+                        String bodyUrl = baseUrl + intStr;
+
+                        String title = titleXpath.getText();
+
+                        SupportVo vo = new SupportVo();
+                        vo.setTargetName("한국사회적기업진흥원");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C02");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyUrl);
+                        vo.setPcUrl("-");
+
+                        HashMap<String, String> params = new HashMap<>();
+//                        params.put("bodyurl", bodyUrl);
+                        params.put("title",title);
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
 
 
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyUrl);
-                    boolean isUrl = crawlingMapper.isUrl(params);
-                    if (!isUrl) {
-                        supportVos.add(vo);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                        supportVo.setErrorYn("Y");
                     }
 
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                    supportVo.setErrorYn("Y");
                 }
-
             }
-
-        }
-
-        /* 빈 리스트가 아니면 크레이트 */
-        if (!supportVos.isEmpty()) {
-            try{
-                crawlingMapper.create(supportVos);
+            /* 빈 리스트가 아니면 크레이트 */
+            if (!supportVos.isEmpty()) {
+                try{
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
+                }catch (Exception e){
+                    supportVo.setErrorYn("Y");
+                    crawlingMapper.createMaster(supportVo);
+                }
+            }else {
+                supportVo.setErrorYn("N");
                 crawlingMapper.createMaster(supportVo);
-            }catch (Exception e){
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
                 supportVo.setErrorYn("Y");
                 crawlingMapper.createMaster(supportVo);
             }
-        }else {
-            supportVo.setErrorYn("N");
-            crawlingMapper.createMaster(supportVo);
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
     }
-
-
 }

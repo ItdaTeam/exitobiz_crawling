@@ -55,24 +55,10 @@ public class YouthSeoulCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
-
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울청년정책");
@@ -81,57 +67,67 @@ public class YouthSeoulCrawling implements Crawling {
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
-        List<SupportVo> supportVos = new ArrayList<>();
+        ChromeDriverService service = null;
+        WebDriver driver = null;
 
         try {
-            for (int i=page; i>0; i--) {
+        service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
+            service.start();
+            driver = new ChromeDriver(service,options);
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            List<SupportVo> supportVos = new ArrayList<>();
 
-                driver.get(url + i);
+            try {
+                for (int i=page; i>0; i--) {
 
-                for(int j=1; j<11; j++) {
-                    WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"searchMove\"]/li["+j+"]/div/a"));
-                    WebElement endTimeXpath = driver.findElement(By.xpath("//*[@id=\"searchMove\"]/li["+j+"]/div/ul/li[1]"));
+                    driver.get(url + i);
 
-                    String title = titleXpath.getText();
-                    String endtime = endTimeXpath.getText().replaceAll("신청기간 : ","");
+                    for(int j=1; j<11; j++) {
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"searchMove\"]/li["+j+"]/div/a"));
+                        WebElement endTimeXpath = driver.findElement(By.xpath("//*[@id=\"searchMove\"]/li["+j+"]/div/ul/li[1]"));
 
-                    String url = titleXpath.getAttribute("onclick");
+                        String title = titleXpath.getText();
+                        String endtime = endTimeXpath.getText().replaceAll("신청기간 : ","");
 
-                    String[] split = url.split(",");
-                    String intStr = split[0].replaceAll("[^0-9]", "");
+                        String url = titleXpath.getAttribute("onclick");
+
+                        String[] split = url.split(",");
+                        String intStr = split[0].replaceAll("[^0-9]", "");
 
 
-                    Pattern p = Pattern.compile("\\[(.*?)\\]");
-                    Matcher m = p.matcher(title);
-                    ArrayList<String> pattern = new ArrayList<String>();
+                        Pattern p = Pattern.compile("\\[(.*?)\\]");
+                        Matcher m = p.matcher(title);
+                        ArrayList<String> pattern = new ArrayList<String>();
 
-                    while (m.find()) {
-                        pattern.add(m.group());
+                        while (m.find()) {
+                            pattern.add(m.group());
+                        }
+
+                        String bodyurl = "https://youth.seoul.go.kr/site/main/youth/politics/user/detail/" + intStr;
+                        String targettype = pattern.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
+
+                        SupportVo vo = new SupportVo();
+                        vo.setTargetName("서울청년정책");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C02");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyurl);
+                        vo.setPcUrl("-");
+
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("title",title);
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
                     }
 
-                    String bodyurl = "https://youth.seoul.go.kr/site/main/youth/politics/user/detail/" + intStr;
-                    String targettype = pattern.get(0).replaceAll("\\[", "").replaceAll("\\]", "");
-
-                    SupportVo vo = new SupportVo();
-                    vo.setTargetName("서울청년정책");
-                    vo.setTargetCatName("-");
-                    vo.setLocCode("C02");
-                    vo.setSiTitle(title);
-                    vo.setMobileUrl(bodyurl);
-                    vo.setPcUrl("-");
-
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("bodyurl", bodyurl);
-                    boolean isUrl = crawlingMapper.isUrl(params);
-                    System.out.println("이미 수집된 URL입니다::" + isUrl);
-                    if (!isUrl) {
-                        supportVos.add(vo);
-                    }
-
+                    Thread.sleep(500);
                 }
-
-                Thread.sleep(500);
-            }
 
             } catch (Exception e) {
                 supportVo.setErrorYn("Y");
@@ -151,11 +147,24 @@ public class YouthSeoulCrawling implements Crawling {
                     supportVo.setErrorYn("N");
                     crawlingMapper.createMaster(supportVo);
                 }
-
-                driver.close();
-                driver.quit();
-                service.stop();
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
+    }
 }

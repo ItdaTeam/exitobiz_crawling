@@ -61,15 +61,16 @@ public class PushScheduler{
                 // 푸쉬를 위한 기본 셋팅 처리
                 push.put("title","[키워드알림]\""+keyword.getKeyword() + "\" 지원사업이 엑시토에 등록되었어요");
                 push.put("body","지금 해당 지원사업을 확인해보세요");
-                push.put("keyId","2");
+                push.put("keyId","kwrd");
                 push.put("idx",keyword.getKeyword());
+                push.put("url", "exitobiz.co.kr/support/supportList?keyword=" + keyword.getKeyword());
                 usertokens.clear();
                 for(PushVo user : users){ // 푸쉬를 발송할 사용자 토큰 처리
                     Map<String,Object> usertoken = new HashMap<String,Object>();
                     usertoken.put("usertoken",user.getUsertoken());
                     usertokens.add(usertoken);
                 }
-                
+
                 //푸쉬 발송
                 pushMultiService.sendListPush(push, usertokens);
                 
@@ -102,14 +103,16 @@ public class PushScheduler{
                 // 푸쉬를 위한 기본 셋팅 처리
                 push.put("title","(마감임박 " + bookmark.getRestDate() + "일전) 찜한 사업 마감일 임박!!!");
                 push.put("body", bookmark.getSiTitle());
-                push.put("keyId","5");
+                push.put("keyId","day");
                 push.put("idx", bookmark.getMbAddidx());
                 usertokens.clear();
 
-                 // 푸쉬를 발송할 사용자 토큰 처리
+                // 푸쉬를 발송할 사용자 토큰 처리
                 Map<String,Object> usertoken = new HashMap<String,Object>();
                 usertoken.put("usertoken",bookmark.getUsertoken());
                 usertokens.add(usertoken);
+
+
 
                 //푸쉬 발송
                 pushMultiService.sendListPush(push, usertokens);

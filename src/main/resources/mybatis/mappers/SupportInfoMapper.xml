@@ -28,6 +28,7 @@
         ) as info on tl_type_cd = si.si_idx and info.sort = 1
         where 1=1
         and si.si_active_yn = 'Y'
+        and length(si.loc_code) <![CDATA[<]]> 5
         <choose>
             <when test='searchText != null'>
                 and si_title like concat('%', ${searchText}, '%') or target_name like concat('%', ${searchText}, '%') or locname like concat('%', ${searchText}, '%')
@@ -105,6 +106,8 @@
                     si_title like '%' || #{item} || '%'
                 </foreach>
             </trim>
+        </if>
+        <if test='keyword == nul or keyword == "" '>
             and si_end_dt <![CDATA[>=]]> now()::date
         </if>
         order by
@@ -122,5 +125,26 @@
                 si.si_cret_dt desc , si.si_idx
             </otherwise>
         </choose>
+    </select>
+
+    <select id="getSPDetailData" parameterType="HashMap" resultType="HashMap">
+        select *,(
+            select count(*)
+            from itda_app.support_comment sc
+            where 1=1
+              and sc.report_yn != 'Y'
+                and sc.delete_type != true
+                and sc.step = 1
+                and sc.user_id not in (
+                select target_id
+                from itda_app.user_block ub
+                where 1=1
+                and ub.cret_id = #{mb_cret_id}
+                )
+                and sc.post_id = si.si_idx
+                ) as comment_cnt
+        from itda_app.support_info si
+            left outer join itda_app.my_bookmark mb  on si.si_idx = mb.mb_addidx and mb.mb_cret_id = #{mb_cret_id}
+        where si_idx = #{si_idx}
     </select>
 </mapper>

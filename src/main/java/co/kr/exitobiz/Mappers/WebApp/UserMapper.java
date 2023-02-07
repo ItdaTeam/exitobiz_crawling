@@ -42,4 +42,8 @@ public interface UserMapper {
     void insertUserSmartDeviceInfo(Map<String, Object> params);
 
     void updateMobileInfo(Map<String, Object> params);
+
+    void delUserToken(Map<String, Object> params);
+
+    void delUserTokenById(Map<String, Object> params);
 }

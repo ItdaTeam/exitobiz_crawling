@@ -65,7 +65,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             /* 500개 제한. 500개넘어가면 푸시보내고 리스트 다시 초기화 */
             if ((i % 499) == 0 && (i != 0)) {
                 //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
-                if(params.get("keyId").equals("5")) {
+                if(params.get("keyId").equals("day")) {
                     // 찜한사업 마감임박 알람용 ( 배열 돌면서 한 지원사업 당 한 명에게 전송 )
                     Message msg = Message.builder()
                             .setNotification(Notification.builder()
@@ -84,25 +84,48 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                             .build();
                     String response = FirebaseMessaging.getInstance().send(msg);
                 }else{
-                    MulticastMessage message = MulticastMessage.builder()
-                            .setNotification(Notification.builder()
-                                    .setTitle(params.get("title"))
-                                    .setBody(params.get("body"))
-                                    .build())
-                            .setApnsConfig(ApnsConfig.builder()
-                                    .setAps(Aps.builder()
+                    if(params.get("keyId").equals("cont")){
+                        MulticastMessage message = MulticastMessage.builder()
+                                .setNotification(Notification.builder()
+                                        .setTitle(params.get("title"))
+                                        .setBody(params.get("body"))
+                                        .build())
+                                .setApnsConfig(ApnsConfig.builder()
+                                        .setAps(Aps.builder()
 //                                    .setBadge(42)
-                                            .setSound("default")
-                                            .build())
-                                    .build())
-                            .putData("keyId", params.get("keyId"))
-                            .putData("idx", params.get("idx"))
-                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                            .addAllTokens(tokenList)
-                            .build();
+                                                .setSound("default")
+                                                .build())
+                                        .build())
+                                .putData("keyId", params.get("keyId"))
+                                .putData("idx", params.get("idx"))
+                                .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                                .addAllTokens(tokenList)
+                                .build();
 
-                    tokenList.clear();
-                    BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                        tokenList.clear();
+                        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                    }else{
+                        MulticastMessage message = MulticastMessage.builder()
+                                .setNotification(Notification.builder()
+                                        .setTitle(params.get("title"))
+                                        .setBody(params.get("body"))
+                                        .build())
+                                .setApnsConfig(ApnsConfig.builder()
+                                        .setAps(Aps.builder()
+//                                    .setBadge(42)
+                                                .setSound("default")
+                                                .build())
+                                        .build())
+                                .putData("keyId", params.get("keyId"))
+                                .putData("idx", params.get("idx"))
+                                .putData("url", params.get("url"))
+                                .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                                .addAllTokens(tokenList)
+                                .build();
+
+                        tokenList.clear();
+                        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                    }
                 }
 
 //                if(response.getFailureCount() > 0){
@@ -127,7 +150,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             System.out.println(tokenList.size());
 
             //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
-            if(params.get("keyId").equals("5")) {
+            if(params.get("keyId").equals("day")) {
                 // 찜한사업 마감임박 알람용 ( 배열 돌면서 한 지원사업 당 한 명에게 전송(multi아님) )
                 Message msg = Message.builder()
                         .setNotification(Notification.builder()
@@ -146,24 +169,48 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                         .build();
                 String response = FirebaseMessaging.getInstance().send(msg);
             }else{
-                MulticastMessage message = MulticastMessage.builder()
-                        .setNotification(Notification.builder()
-                                .setTitle(params.get("title"))
-                                .setBody(params.get("body"))
-                                .build())
-                        .setApnsConfig(ApnsConfig.builder()
-                                .setAps(Aps.builder()
+                if(params.get("keyId").equals("cont")){
+                    MulticastMessage message = MulticastMessage.builder()
+                            .setNotification(Notification.builder()
+                                    .setTitle(params.get("title"))
+                                    .setBody(params.get("body"))
+                                    .build())
+                            .setApnsConfig(ApnsConfig.builder()
+                                    .setAps(Aps.builder()
 //                                    .setBadge(42)
-                                        .setSound("default")
-                                        .build())
-                                .build())
-                        .putData("keyId", params.get("keyId"))
-                        .putData("idx", params.get("idx"))
-                        .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                        .addAllTokens(tokenList)
-                        .build();
+                                            .setSound("default")
+                                            .build())
+                                    .build())
+                            .putData("keyId", params.get("keyId"))
+                            .putData("idx", params.get("idx"))
+                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                            .addAllTokens(tokenList)
+                            .build();
 
-                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                    tokenList.clear();
+                    BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                }else{
+                    MulticastMessage message = MulticastMessage.builder()
+                            .setNotification(Notification.builder()
+                                    .setTitle(params.get("title"))
+                                    .setBody(params.get("body"))
+                                    .build())
+                            .setApnsConfig(ApnsConfig.builder()
+                                    .setAps(Aps.builder()
+//                                    .setBadge(42)
+                                            .setSound("default")
+                                            .build())
+                                    .build())
+                            .putData("keyId", params.get("keyId"))
+                            .putData("idx", params.get("idx"))
+                            .putData("url", params.get("url"))
+                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+                            .addAllTokens(tokenList)
+                            .build();
+
+                    tokenList.clear();
+                    BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                }
             }
 //            if(response.getFailureCount() > 0){
 //                List<SendResponse> responses = response.getResponses();
@@ -233,7 +280,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
 
 
                 //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
-                if(params.get("keyId").equals("5")) {
+                if(params.get("keyId").equals("day")) {
 
                     message = MulticastMessage.builder()
                             .setNotification(Notification.builder()
@@ -302,7 +349,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             MulticastMessage message;
 
             //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
-            if(params.get("keyId").equals("5")) {
+            if(params.get("keyId").equals("day")) {
                 message = MulticastMessage.builder()
                         .setNotification(Notification.builder()
                                 .setTitle(params.get("title") + "마지막리스트")

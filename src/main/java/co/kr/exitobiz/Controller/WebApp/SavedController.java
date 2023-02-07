@@ -77,23 +77,38 @@ public class SavedController {
     public String isSavedMyBook(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
         body.put("mb_cret_id", header.get("user_id"));
 
-        String result = "fail";
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("result", "fail");
 
-        try{
-            if(body.get("mb_save_yn") == null || body.get("mb_save_yn").equals("")){
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            if (body.get("mb_save_yn") == null || body.get("mb_save_yn").equals("")) {
                 savedService.insertSavedMyBook(body);
-            }else if(body.get("mb_save_yn").equals("Y")){
+            } else if (body.get("mb_save_yn").equals("Y")) {
                 body.replace("mb_save_yn", "N");
                 savedService.updateSavedMyBook(body);
-            }else if(body.get("mb_save_yn").equals("N")){
+            } else if (body.get("mb_save_yn").equals("N")) {
                 body.replace("mb_save_yn", "Y");
                 savedService.updateSavedMyBook(body);
             }
-            result = "success";
-        }catch(Exception e){
+
+            HashMap chkParams = new HashMap();
+            chkParams.put("what_flag", "mb_save_yn");
+            chkParams.put("mb_cret_id", header.get("user_id"));
+            chkParams.put("mb_addidx", body.get("mb_addidx"));
+
+            result.replace("result", "success");
+
+            result.putAll(savedService.checkSavedFlag(chkParams));
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+
+        String tojsonStr = mapper.writeValueAsString(result);
+
+        return tojsonStr;
 
     }
 

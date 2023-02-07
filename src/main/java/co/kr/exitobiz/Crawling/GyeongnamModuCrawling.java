@@ -52,23 +52,13 @@ public class GyeongnamModuCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
-        ChromeDriverService service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
-
-        try {
-            service.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        WebDriver driver = new ChromeDriver(service,options);
+        ChromeDriverService service = null;
+        WebDriver driver = null;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("경남모두의경제");
@@ -76,64 +66,81 @@ public class GyeongnamModuCrawling implements Crawling {
         supportVo.setLocCode("C055");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
-        List<SupportVo> supportVos = new ArrayList<>();
 
+        try {
+            service = new ChromeDriverService.Builder()
+                .usingDriverExecutable(driverFile)
+                //.usingPort(5000)
+                .usingAnyFreePort()
+                .build();
 
-        for (int i=page; i>0; i--) {
+            service.start();
+            driver = new ChromeDriver(service,options);
 
-            driver.get(url+i);
-            Thread.sleep(1000);
+            List<SupportVo> supportVos = new ArrayList<>();
+            for (int i=page; i>0; i--) {
+                driver.get(url+i);
+                Thread.sleep(1000);
+                for(int j=1; j<21; j++) {
+                        try {
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr["+ j +"]/td[2]/a[2]"));
+                            SupportVo vo = new SupportVo();
+                            String bodyurl = titleXpath.getAttribute("href").substring(0,titleXpath.getAttribute("href").lastIndexOf("page") - 1);
+                            String title = titleXpath.getText();
 
-            for(int j=1; j<21; j++) {
-                    try {
+                            vo.setTargetName("경남모두의경제");
+                            vo.setTargetCatName("-");
+                            vo.setLocCode("C055");
+                            vo.setSiTitle(title);
+                            vo.setMobileUrl(bodyurl);
+                            vo.setPcUrl("-");
 
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr["+ j +"]/td[2]/a[2]"));
-                        SupportVo vo = new SupportVo();
-                        String bodyurl = titleXpath.getAttribute("href").substring(0,titleXpath.getAttribute("href").lastIndexOf("page") - 1);
-                        String title = titleXpath.getText();
+                            HashMap<String, String> params = new HashMap<>();
+    //                        params.put("bodyurl", bodyurl);
+                            params.put("title",title);
+                            boolean isUrl = crawlingMapper.isUrl(params);
+                            if (!isUrl) {
+                                supportVos.add(vo);
+                            }
 
-                        vo.setTargetName("경남모두의경제");
-                        vo.setTargetCatName("-");
-                        vo.setLocCode("C055");
-                        vo.setSiTitle(title);
-                        vo.setMobileUrl(bodyurl);
-                        vo.setPcUrl("-");
-
-                        HashMap<String, String> params = new HashMap<>();
-                        params.put("bodyurl", bodyurl);
-
-                        boolean isUrl = crawlingMapper.isUrl(params);
-                        if (!isUrl) {
-                            supportVos.add(vo);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                            supportVo.setErrorYn("Y");
                         }
+                }
 
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                        supportVo.setErrorYn("Y");
-                    }
+                Thread.sleep(500);
             }
 
-            Thread.sleep(500);
-        }
-
-        /* 빈 리스트가 아니면 크레이트 */
-        if (!supportVos.isEmpty()) {
-            try{
-                crawlingMapper.create(supportVos);
+            /* 빈 리스트가 아니면 크레이트 */
+            if (!supportVos.isEmpty()) {
+                try{
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
+                }catch (Exception e){
+                    supportVo.setErrorYn("Y");
+                    crawlingMapper.createMaster(supportVo);
+                }
+            }else {
+                supportVo.setErrorYn("N");
                 crawlingMapper.createMaster(supportVo);
-            }catch (Exception e){
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(driver != null){
+                driver.close();
+                driver.quit();
+            }else{
                 supportVo.setErrorYn("Y");
                 crawlingMapper.createMaster(supportVo);
             }
-        }else {
-            supportVo.setErrorYn("N");
-            crawlingMapper.createMaster(supportVo);
+            if(service != null){
+                service.stop();
+            }else{
+                supportVo.setErrorYn("Y");
+                crawlingMapper.createMaster(supportVo);
+            }
         }
-
-        driver.close();
-        driver.quit();
-        service.stop();
     }
-
-
 }

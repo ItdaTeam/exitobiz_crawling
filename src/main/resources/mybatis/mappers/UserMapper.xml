@@ -64,7 +64,7 @@ SELECT usertoken
       WHERE ud.usertoken not in ('', 'null')
   </select>
 
-  <select id="getUserTokenByKeyId" parameterType="hashMap" resultType="map">
+  <select id="getUserTokenByKeyId" parameterType="hashMap" resultType="HashMap">
     SELECT usertoken
     FROM itda_app.usertable u 
      left outer join itda_app.user_push_setting ups on u.id = ups.user_id
@@ -73,8 +73,9 @@ SELECT usertoken
     WHERE 1=1
       and u.id=#{id}
       and u.usertoken not in ('', 'null')
+      and usernickname  != '탈퇴회원'
     <choose>
-       <when test="keyId == 1 ">
+       <when test="keyId == 'cont' ">
           and coalesce(ups.sp_receive_push,'') != 'N'
           <if test="userlocs != null">
               AND userloc in
@@ -83,37 +84,38 @@ SELECT usertoken
               </foreach>
           </if>
        </when>
-       <when test="keyId == 2 ">
+       <when test="keyId == 'kwrd' ">
           and coalesce(ups.sp_keyword_push,'') != 'N'
        </when>
-       <when test="keyId == 3 ">
-          and coalesce(ups.sp_recomment_push,'') != 'N'
-       </when>
-       <when test="keyId == 4 ">
-          and coalesce(ups.sp_commentlike_push,'') != 'N'
-       </when>
-        <when test="keyId == 5 ">
+<!--       <when test="keyId == 3 ">-->
+<!--          and coalesce(ups.sp_recomment_push,'') != 'N'-->
+<!--       </when>-->
+<!--       <when test="keyId == 4 ">-->
+<!--          and coalesce(ups.sp_commentlike_push,'') != 'N'-->
+<!--       </when>-->
+        <when test="keyId == 'day' ">
             and coalesce(ups.sp_bookmark_push,'') != 'N'
         </when>
-        <when test="keyId == 6 ">
+        <when test="keyId == 'comm' ">
             and coalesce(ups.sp_content_comment_push,'') != 'N'
         </when>
-        <when test="keyId == 7 ">
+        <when test="keyId == 'like' ">
             and coalesce(ups.sp_community_commentlike_push,'') != 'N'
         </when>
-        <when test="keyId == 8 ">
+        <when test="keyId == 'reco' ">
             and coalesce(ups.sp_community_recomment_push,'') != 'N'
         </when>
-        <when test="keyId == 12 ">
-            and coalesce(aps.chat_push ,'') != 'N'
-        </when>
-        <when test="keyId == 13 ">
-            and coalesce(cops.push_yn, true) != false
-        </when>
+<!--        <when test="keyId == 12 ">-->
+<!--            and coalesce(aps.chat_push ,'') != 'N'-->
+<!--        </when>-->
+<!--        <when test="keyId == 13 ">-->
+<!--            and coalesce(cops.push_yn, true) != false-->
+<!--        </when>-->
     </choose>
     union
-      SELECT usertoken
+      SELECT ud.usertoken
       FROM itda_app.user_device ud
+      inner join itda_app.usertable u on ud.user_id = u.id and u.usernickname !='탈퇴회원'
       left outer join itda_app.user_push_setting ups on ud.user_id = ups.user_id
       left outer join itda_app.admin_push_setting aps on ud.user_id = aps.user_id
       left outer join itda_app.chatrooms_one_push_setting cops on ud.user_id = cops.user_id
@@ -122,7 +124,7 @@ SELECT usertoken
       and ud.usertoken not in ('', 'null')
       and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
       <choose>
-          <when test="keyId == 1 ">
+          <when test="keyId == 'cont' ">
               and coalesce(ups.sp_receive_push,'') != 'N'
               <if test="userlocs != null">
                   AND userloc in
@@ -131,33 +133,34 @@ SELECT usertoken
                   </foreach>
               </if>
           </when>
-          <when test="keyId == 2 ">
+          <when test="keyId == 'kwrd' ">
               and coalesce(ups.sp_keyword_push,'') != 'N'
           </when>
-          <when test="keyId == 3 ">
-              and coalesce(ups.sp_recomment_push,'') != 'N'
-          </when>
-          <when test="keyId == 4 ">
-              and coalesce(ups.sp_commentlike_push,'') != 'N'
-          </when>
-          <when test="keyId == 5 ">
+<!--          <when test="keyId == 3 ">-->
+<!--              and coalesce(ups.sp_recomment_push,'') != 'N'-->
+<!--          </when>-->
+<!--          <when test="keyId == 4 ">-->
+<!--              and coalesce(ups.sp_commentlike_push,'') != 'N'-->
+<!--          </when>-->
+          <when test="keyId == 'day' ">
               and coalesce(ups.sp_bookmark_push,'') != 'N'
           </when>
-          <when test="keyId == 6 ">
+          <when test="keyId == 'comm' ">
               and coalesce(ups.sp_content_comment_push,'') != 'N'
           </when>
-          <when test="keyId == 7 ">
+          <when test="keyId == 'like' ">
               and coalesce(ups.sp_community_commentlike_push,'') != 'N'
           </when>
-          <when test="keyId == 8 ">
+          <when test="keyId == 'reco' ">
               and coalesce(ups.sp_community_recomment_push,'') != 'N'
           </when>
-          <when test="keyId == 12 ">
-              and coalesce(aps.chat_push ,'') != 'N'
-          </when>
-          <when test="keyId == 13 ">
-              and coalesce(cops.push_yn, true) != fals
-          </when>
+
+<!--          <when test="keyId == 12 ">-->
+<!--              and coalesce(aps.chat_push ,'') != 'N'-->
+<!--          </when>-->
+<!--          <when test="keyId == 13 ">-->
+<!--              and coalesce(cops.push_yn, true) != fals-->
+<!--          </when>-->
       </choose>
   </select>
   <!--
@@ -222,6 +225,7 @@ SELECT usertoken
         WHERE 1=1
            AND u.usertoken not in ('', 'null')
           and date_trunc('day',last_time)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+          and usertoken != '-'
         union
         SELECT usertoken
         FROM (
@@ -410,13 +414,14 @@ SELECT usertoken
         ) values(
                 (select coalesce(max(device_id)+1,1) as device_id from itda_app.user_device),
                 #{userid}, NOW(), NOW(),  #{mos}, #{minfo},  #{usertoken}, #{appversion}
-            ) ON CONFLICT(user_id,usertoken)
+            ) ON CONFLICT(usertoken)
         DO UPDATE
              SET updt_dt = NOW(),
              mos = #{mos},
              minfo = #{minfo},
              usertoken = #{usertoken},
-             appversion = #{appversion}
+             appversion = #{appversion},
+             user_id = #{userid}
     </update>
 
     <update id="updateMobileInfo" parameterType="map">
@@ -428,5 +433,18 @@ SELECT usertoken
             appversion = #{appversion}
         WHERE id = #{userid}
     </update>
+
+    <delete id="delUserToken" parameterType="map">
+        delete from itda_app.user_device
+        where 1=1
+          and user_id = #{userid}
+          and minfo  = #{minfo}
+          and usertoken  = #{usertoken}
+    </delete>
+    <delete id="delUserTokenById" parameterType="map">
+        delete from itda_app.user_device
+        where 1=1
+          and user_id = #{userid}
+    </delete>
 
 </mapper>

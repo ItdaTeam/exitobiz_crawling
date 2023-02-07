@@ -64,4 +64,6 @@ public interface CommunityService {
     Map<String, Object> getTotalCnt(Map<String, Object> params);
 
     Map<String, Object> deleteOne(Map<String, Object> params);
+
+    void delAttachFile(Map<String, Object> params);
 }

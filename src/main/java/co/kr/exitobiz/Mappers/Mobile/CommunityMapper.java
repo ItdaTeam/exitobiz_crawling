@@ -65,4 +65,6 @@ public interface CommunityMapper {
     Map<String, Object> getTotalCnt(Map<String, Object> params);
 
     Map<String, Object> deleteOne(Map<String, Object> params);
+
+    Map<String, Object> delAttachFile(Map<String, Object> params); //첨부파일 삭제
 }
