@@ -114,6 +114,15 @@
                 <li><a href="#"><span class="material-icons-outlined">file_download</span>엑셀 다운로드</a></li>
             </ul>
         </div>
+
+        <div class="tabMenu">
+            <ul>
+                <li class="TabM1">탭메뉴 1</li>
+                <li class="TabM2">탭메뉴 2</li>
+            </ul>
+        </div>
+
+
         <div class="mainnav">
             <section class="middle">
                 <fieldset class="Msearch1">
@@ -357,5 +366,23 @@ function modalOFF(){
 
     $(document).ready(function () {
         pageOnLoad();
+
+
+
+        //  사업공고관리 탭메뉴
+        $(".TabM1").click(function(){
+            $(".TabM1").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#businessGrid").css("display","block");
+            $("#businessGrid2").css("display","none");
+        });
+
+        $(".TabM2").click(function(){
+            $(".TabM2").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#businessGrid").css("display","none");
+            $("#businessGrid2").css("display","block");
+        });
+
     });
 </script>

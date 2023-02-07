@@ -53,7 +53,7 @@
                 <input type="date" id="fromDate" name="from">
                 -
                 <input type="date" id="toDate" name="to">
-                <div class="btn_wrap">
+                <div class="btn_wrap support_btn_wrap">
                     <input type="file" class="form-control" style="display:none" id="importFile"
                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"/>
                     <button class="btn stroke" onclick="downTemplate()"><span class="material-icons">attach_file</span>엑셀
