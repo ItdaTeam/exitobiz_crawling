@@ -66,6 +66,12 @@
                     </button>
                 </div>
             </div>
+            <div class="tabMenu">
+                <ul>
+                    <li class="TabM1">탭메뉴 1</li>
+                    <li class="TabM2">탭메뉴 2</li>
+                </ul>
+            </div>
             <div class="main_content">
                 <!-- 필터 영역 main_filter-->
                 <div class="main_filter">
@@ -114,10 +120,16 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="grid_wrap" id="supportDiv" style="position:relative;">
                         <div id="supportGrid"></div>
                         <div id="supportGridPager" class="pager"></div>
                     </div>
+                    <div class="grid_wrap" id="supportDiv2" style="position:relative;">
+                        <div id="supportGrid2"></div>
+                        <div id="supportGridPager2" class="pager"></div>
+                    </div>
+
                     <div class="grid_wrap" id="excelDiv" style="position:relative;">
                         <div id="excelGrid"></div>
                     </div>
@@ -303,6 +315,7 @@
     var excelView;
     var excelSelector;
     var excelColumns;
+
 
 
     //조회일 기본값 설정
@@ -829,8 +842,25 @@
         }
     }
 
+
     $(document).ready(function () {
         pageOnLoad();
         getSupportList();
+
+        //  지원사업관리 탭메뉴
+        $(".TabM1").click(function(){
+            $(".TabM1").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#supportDiv").css("display","block");
+            $("#supportDiv2").css("display","none");
+        });
+
+        $(".TabM2").click(function(){
+            $(".TabM2").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#supportDiv").css("display","none");
+            $("#supportDiv2").css("display","block");
+        });
+
     });
 </script>

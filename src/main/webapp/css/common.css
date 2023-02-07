@@ -843,7 +843,7 @@ label {
 .main_content {
   border: 1px solid #ddd;
   border-radius: 10px;
-  padding: 12px;
+  padding: 12px;;
 }
 
 .main_utility {
@@ -2084,3 +2084,44 @@ div.wj-flexgrid{height: auto;}
 .B_btns p:first-of-type{
   margin-right: 10px;
 }
+
+
+/*지원사업 관리 - 탭매뉴*/
+.tabMenu{
+  box-sizing: border-box;
+  margin-top: 40px;
+}
+
+.tabMenu ul{
+  display: flex;
+  box-sizing: border-box;
+}
+
+.tabMenu li{
+  border:1px solid #ddd;
+  border-bottom: none;
+  box-sizing: border-box;
+  width:200px;
+  text-align: center;
+  line-height: 35px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  cursor: pointer;
+  transition: all 0.1s ease 0s;
+}
+
+.tabMenu li.TabM1{
+  background-color: #37f1aa;
+  border:1px solid #37f1aa;
+  box-sizing: border-box;
+}
+
+
+/*지원사업관리 탭매뉴*/
+#supportDiv2{
+  border:1px solid red;
+  box-sizing: border-box;
+  display: none;
+}
+
+
