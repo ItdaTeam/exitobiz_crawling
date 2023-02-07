@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SupportCorpController {
 
-    private final SupportCorpService supportCorpService;발
+    private final SupportCorpService supportCorpService;
 
 //    @GetMapping("/support")
 //    public String disSupport(Model model){
