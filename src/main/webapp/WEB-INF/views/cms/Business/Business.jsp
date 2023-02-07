@@ -197,7 +197,7 @@ function modalOFF(){
 
     function pageOnLoad() {
         loadGridAgencyList('init');
-        document.getElementById("agency").classList.add("active");
+        document.getElementById("business").classList.add("active");
         $("#excelDiv").hide();
         $("#importFile").on('change', function (params) {
             importExcel();

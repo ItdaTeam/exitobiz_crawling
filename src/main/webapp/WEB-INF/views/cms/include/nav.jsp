@@ -35,7 +35,7 @@
             <a href="/cms/terms" id="terms" class="dept1"><span class="material-icons-round">summarize</span>약관관리</a>
         </li>
         <li>
-            <a href="/cms/business" id="" class="dept1"><span class="material-icons-round">work</span>사업공고 관리</a>
+            <a href="/cms/business" id="business" class="dept1"><span class="material-icons-round">work</span>사업공고 관리</a>
         </li>
     </ul>
     <div class="terms_area">
