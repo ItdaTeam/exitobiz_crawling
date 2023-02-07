@@ -1975,7 +1975,7 @@ div.wj-flexgrid{height: auto;}
   display: none;
   position: fixed;
   left:calc((100% - 50%) - 275px);
-  top:140px;
+  top:200px;
   width:550px;
   height:800px;
   border-radius: 10px;
@@ -1984,7 +1984,14 @@ div.wj-flexgrid{height: auto;}
   padding: 0px 20px;
   box-sizing: border-box;
   overflow-y: scroll;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }
+
+.business_modal::-webkit-scrollbar{
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
+
 
 .business_modal.active{
   display: block;
