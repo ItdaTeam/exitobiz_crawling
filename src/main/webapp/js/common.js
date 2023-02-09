@@ -34,7 +34,7 @@ function _setUserGridLayout(layoutId, grid, initColumns, selector) {
 
         grid.columns.clear();
         let checkIndex = 0;
-        columnsArr.forEach((col) => {
+        columnsArr.forEach((col, index) => {
             initColumns.forEach((col2) => {
                 if (col.binding == col2.binding) {
                     if(col.binding == 'check'){
@@ -44,7 +44,8 @@ function _setUserGridLayout(layoutId, grid, initColumns, selector) {
                 }
             });
         });
-        selector.column = grid.columns[checkIndex];
+        if(selector != null)
+            selector.column = grid.columns[checkIndex];
     }
 }
 
@@ -141,8 +142,9 @@ function pagingCountChange(grid, gridView, gridPager){
 //그리드 초기 레이아웃 복원
 function _resetUserGridLayout(layoutId, grid, initColumns,selector) {
 
+
     grid.columns.clear();
-    initColumns.forEach((col) => {
+    initColumns.forEach((col, index) => {
         grid.columns.push(new wijmo.grid.Column(col));
 
         if(col.binding == 'check')
