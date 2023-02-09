@@ -56,10 +56,13 @@
                 <div class="btn_wrap support_btn_wrap">
                     <input type="file" class="form-control" style="display:none" id="importFile"
                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12"/>
-                    <button class="btn stroke" onclick="downTemplate()"><span class="material-icons">attach_file</span>엑셀
+                    <button class="btn stroke" onclick="downTemplateExito()"><span class="material-icons">attach_file</span>엑시토 엑셀
                         템플릿
                     </button>
-                    <button class="btn stroke" onClick="findFile();"><span class="material-icons"> upload</span>엑셀 업로드
+                    <button class="btn stroke" onclick="downTemplateCorp()"><span class="material-icons">attach_file</span>고객용 엑셀
+                        템플릿
+                    </button>
+                    <button class="btn stroke uploadExcel" style="display:none" onClick="findFile();"><span class="material-icons"> upload</span>엑셀 업로드
                     </button>
                     <button class="btn stroke" onclick="exportExcel()"><span class="material-icons-outlined">file_download</span>엑셀
                         다운로드
@@ -67,9 +70,10 @@
                 </div>
             </div>
             <div class="tabMenu">
-                <ul>
-                    <li class="TabM1">탭메뉴 1</li>
-                    <li class="TabM2">탭메뉴 2</li>
+                <ul id="tabList">
+                    <li class="TabM1">크롤링 리스트</li>
+                    <li class="TabM2">엑시토 리스트</li>
+                    <li class="TabM3">고객용 리스트</li>
                 </ul>
             </div>
             <div class="main_content">
@@ -84,14 +88,14 @@
                         </select>
                         <label for="inq" onkeyup="enterkey()">조회</label>
                         <input id="inq" name="inq" type="text" placeholder=",로 다중검색 가능" onkeyup="enterkey()">
-                        <button type="button" class="main_filter_btn" onclick="getSupportList()"><i>조회</i></button>
+                        <button type="button" class="main_filter_btn" onclick="getList()"><i>조회</i></button>
                     </form>
                 </div>
                 <!-- 보드 영역 main_dashboard-->
                 <div class="main_dashboard">
                     <div class="sub_cont">
                         <div class="btn_wrap">
-                            <select name="viewType" id="viewType" onchange="getSupportList()">
+                            <select name="viewType" id="viewType" onchange="getList()">
                                 <option value="opt1">전체</option>
                                 <option value="opt2">비활성화</option>
                                 <option value="opt3">활성화</option>
@@ -99,20 +103,28 @@
                                 <option value="opt5">실시간인기순</option>
                                 <option value="opt6">금액높은순</option>
                             </select>
-                            <select name="viewNum" id="viewNum" onchange="getSupportList()">
+                            <select name="viewNum" id="viewNum" onchange="getList()">
                                 <option value="100">100개씩</option>
                                 <option value="50">50개씩</option>
                                 <option value="30">30개씩</option>
                             </select>
                             <button type="button" class="btn stroke"
-                                    onClick="_getUserGridLayout('supportLayout', supportGrid);"><span
+                                    onClick="getGrid();"><span
                                     class="material-icons-outlined">view_list</span>칼럼위치저장
                             </button>
                             <button type="button" class="btn stroke"
-                                    onClick="_resetUserGridLayout('supportLayout', supportGrid,supportColumns);"><span
+                                    onClick="resetGrid();"><span
                                     class="material-icons-outlined">restart_alt</span>칼럼초기화
                             </button>
-                            <button type="button" class="btn stroke" onClick="editGrid();" id="gridBtn"><span
+                            <button type="button" class="btn stroke addGrid" style="display:none;"
+                                    onClick="addGrid();"><span
+                                    class="material-icons-outlined">add_circle</span>그리드추가
+                            </button>
+                            <button type="button" class="btn stroke delGrid"  style="display:none;"
+                                    onClick="delGrid();"><span
+                                    class="material-icons-outlined">do_not_disturb_on</span>그리드삭제
+                            </button>
+                            <button type="button" class="btn stroke editGrid" onClick="editGrid();" style="display:none;" id="gridBtn"><span
                                     class="material-icons-outlined" style="width:28px;">save_grid</span>그리드저장
                             </button>
                             <button type="button" class="btn stroke" onClick="saveGrid();" id="excelBtn"><span
@@ -120,18 +132,20 @@
                             </button>
                         </div>
                     </div>
-
                     <div class="grid_wrap" id="supportDiv" style="position:relative;">
                         <div id="supportGrid"></div>
                         <div id="supportGridPager" class="pager"></div>
                     </div>
                     <div class="grid_wrap" id="supportDiv2" style="position:relative;">
-                        <div id="supportGrid2"></div>
-                        <div id="supportGridPager2" class="pager"></div>
+                        <div id="corpGrid"></div>
+                        <div id="corpGridPager" class="pager"></div>
                     </div>
 
                     <div class="grid_wrap" id="excelDiv" style="position:relative;">
                         <div id="excelGrid"></div>
+                    </div>
+                    <div class="grid_wrap" id="corpExcelDiv" style="position:relative;">
+                        <div id="corpExcelGrid"></div>
                     </div>
                 </div>
             </div>
@@ -246,10 +260,6 @@
 
     </div>
 
-
-
-
-
     <div class="NewExitoModal">
         <section class="NewExitoModal1">
             <h1>공지 푸쉬 알람 발송<span onclick="closeModal()">X</span></h1>
@@ -299,16 +309,67 @@
 </body>
 </html>
 <script>
+    //고객용 리스트는 컬럼이 달라 따로 구분
     var supportGrid;
     var supportView;
     var supportGridPager;
     var supportColumns;
+
     var excelGrid;
     var excelView;
     var excelSelector;
     var excelColumns;
 
+    var corpGrid;
+    var corpView;
+    var corpGridPager;
+    var corpColumns;
 
+    var corpExcelGrid;
+    var corpExcelView;
+    var corpExcelSelector;
+    var corpExcelColumns;
+
+    var text = 'crawling'; // 탭 텍스트
+
+    $(document).ready(function () {
+        pageOnLoad();
+        getList();
+
+        //  지원사업관리 탭메뉴
+        $(".TabM1").click(function(){
+            $(".TabM1").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
+            $(".TabM3").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#supportDiv").css("display","block");
+            $('.uploadExcel, .addGrid, .delGrid, .editGrid, #supportDiv2').css('display', 'none');
+            text = 'crawling';
+            getList();
+        });
+
+        $(".TabM2").click(function(){
+            $(".TabM2").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
+            $(".TabM3").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#supportDiv2, .addGrid, .delGrid, .editGrid").css("display","none");
+            $("#supportDiv").css("display","block");
+            $('.uploadExcel').css('display', 'inline');
+            text = 'support';
+            getList();
+        });
+
+        $(".TabM3").click(function(){
+            $(".TabM3").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
+            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
+            $("#supportDiv").css("display","none");
+            $("#supportDiv2").css("display","block");
+            $('.uploadExcel, .addGrid, .delGrid, .editGrid').css('display', 'inline');
+            text = 'corp';
+            getList();
+        });
+
+    });
 
     //조회일 기본값 설정
     const month = new Date().getMonth();
@@ -318,9 +379,11 @@
 
     function pageOnLoad() {
         loadGridSupportList('init');
-        // sessionCheck(staffId);
+        loadGridCorpList('init');
+        // sessionCheck(staffId);가
         document.getElementById("support").classList.add("active");
         $("#excelDiv").hide();
+        $("#corpExcelDiv").hide();
         $("#importFile").on('change', function (params) {
             importExcel();
         });
@@ -334,6 +397,10 @@
         checkboxes.forEach((checkbox) => {
             checkbox.checked = selectAll.checked;
         })
+    }
+
+    function getList(){
+        getAPIList(text);
     }
 
 
@@ -387,11 +454,8 @@
             result += el.value + ',';
         });
 
-        let params = {
 
-        }
-
-        const response = axios.post("/push/sendSplit", null, {
+        axios.post("/push/sendSplit", null, {
             params : {
                 userloc : result.slice(0,-1),
                 title : encodeURIComponent(push_form.title.value),
@@ -403,11 +467,10 @@
 
         alert("전송을 완료했습니다.");
         closeModal();
-        // $('.exitoModal').removeClass('on');
 
     }
 
-//공지Push발송
+    //공지Push발송
     function sendNoticePush(){
         const query = 'input[name="category"]:checked';
         const selectedEl = document.querySelector(query);
@@ -428,7 +491,7 @@
             alert("본문을 입력해주세요.")
             return false;
         }
-        const response = axios.post("/push/sendNotice", null, {
+        axios.post("/push/sendNotice", null, {
             params : {
                 title : encodeURIComponent(push_form1.title.value),
                 body : encodeURIComponent(push_form1.body.value),
@@ -439,17 +502,17 @@
 
         alert("전송을 완료했습니다.");
         closeModal();
-        // $('.NewExitoModal').removeClass('on');
     }
 
     function enterkey() {
         if (window.event.keyCode == 13) {
-            getSupportList();
+            getList();
         }
     }
 
     //그리드 초기 셋팅
     function loadGridSupportList(type, result) {
+
         if (type == "init") {
             supportView = new wijmo.collections.CollectionView(result, {
                 pageSize: 100,
@@ -526,8 +589,7 @@
                     cell.textContent = (r + 1).toString();
                 }
             };
-
-            _setUserGridLayout('supportLayout', supportGrid, supportColumns);
+            _setUserGridLayout(text + 'Layout', supportGrid, supportColumns);
 
             excelColumns = [
                 {binding: 'siIdx', header: 'Index', isReadOnly: true, width: 100, align: "center", dataType: "Number"},
@@ -592,11 +654,155 @@
             supportGrid.itemsSource = supportView;
         }
 
-        refreshPaging(supportGrid.collectionView.totalItemCount, 1, supportGrid, 'supportGrid');  // 페이징 초기 셋팅
+        refreshPaging(supportGrid.collectionView.totalItemCount, 1, supportGrid, text+'Grid');  // 페이징 초기 셋팅
 
     }
 
-    function getSupportList() {
+    //그리드 초기 셋팅
+    function loadGridCorpList(type, result) {
+        if (type == "init") {
+            corpView = new wijmo.collections.CollectionView(result, {
+                pageSize: 100,
+                trackChanges: true
+            });
+
+            corpGridPager = new wijmo.input.CollectionViewNavigator('#corpGridPager', {
+                byPage: true,
+                headerFormat: '{currentPage:n0} / {pageCount:n0}',
+                cv: corpView
+            });
+
+            var onoffYnMap = "N,Y".split(",");	//온/오프라인 콤보박스
+
+            corpColumns = [
+                {binding: 'siIdx', header: 'Index', isReadOnly: true, width: 100, align: "center", dataType: "Number"},
+                {binding: 'targetName', header: '기관', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'targetCatName', header: '분류', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'targetCatCd', header: '분류코드', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'targetCostValue', header: '금액', isReadOnly: true, width: 120, align: "center"},
+                {binding: 'locCode', header: '지역코드', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'siTitle', header: '제목', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'mobileUrl', header: '모바일주소', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'pcUrl', header: '피시주소', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'siEndDt', header: '마감일', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'siCretDt', header: '생성일', isReadOnly: true, width: 200, align: "center"},
+                {
+                    binding: 'siActiveYn',
+                    header: '활성화여부',
+                    isReadOnly: true,
+                    width: 200,
+                    align: "center",
+                    dataMap: onoffYnMap
+                },
+                {binding: 'businessCtg', header: '사업분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'techCtg', header: '기술분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'businessType', header: '사업자형태', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'companyType', header: '기업형태', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'startPeriod', header: '창업기간', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'corpCd', header: '고객사코드', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'detail', header: '세부내용', isReadOnly: true, width: 100, align: "center"}
+            ];
+            corpGrid = new wijmo.grid.FlexGrid('#corpGrid', {
+                autoGenerateColumns: false,
+                alternatingRowStep: 0,
+                columns: corpColumns,
+                itemsSource: corpView,
+                //컬럼 길이 자동정렬
+                loadedRows: function (s, e) {
+                    s.autoSizeColumns();
+                    for (var i = 0; i < s.rows.length; i++) {
+                        var row = s.rows[i];
+                        var item = row.dataItem;
+                        if (item.activeFlag == 'N') {
+                            row.cssClass = 'change_dup';
+                        }
+                        if (item.expectCloseFlag == 'Y') {
+                            row.cssClass = 'change_close';
+                        }
+                    }
+                }
+            });
+
+            corpGrid.itemFormatter = function (panel, r, c, cell) {
+                if (panel.cellType == wijmo.grid.CellType.RowHeader) {
+                    cell.textContent = (r + 1).toString();
+                }
+            };
+
+            _setUserGridLayout('corpLayout', corpGrid, corpColumns);
+
+            corpExcelColumns = [
+                {binding: 'siIdx', header: 'Index', isReadOnly: true, width: 100, align: "center", dataType: "Number"},
+                {binding: 'targetName', header: '기관', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'targetCatName', header: '분류', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'targetCatCd', header: '분류코드', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'targetCostValue', header: '금액', isReadOnly: true, width: 120, align: "center"},
+                {binding: 'locCode', header: '지역코드', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'siTitle', header: '제목', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'mobileUrl', header: '모바일주소', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'pcUrl', header: '피시주소', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'siEndDt', header: '마감일', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'siCretDt', header: '생성일', isReadOnly: true, width: 200, align: "center"},
+                {
+                    binding: 'siActiveYn',
+                    header: '활성화여부',
+                    isReadOnly: true,
+                    width: 200,
+                    align: "center",
+                    dataMap: onoffYnMap
+                },
+                {binding: 'businessCtg', header: '사업분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'techCtg', header: '기술분야', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'businessType', header: '사업자형태', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'companyType', header: '기업형태', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'startPeriod', header: '창업기간', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'corpCd', header: '고객사코드', isReadOnly: true, width: 100, align: "center"}
+            ];
+            corpExcelGrid = new wijmo.grid.FlexGrid('#corpExcelGrid', {
+                autoGenerateColumns: false,
+                alternatingRowStep: 0,
+                columns: corpColumns,
+                itemsSource: corpExcelView,
+                //컬럼 길이 자동정렬
+                loadedRows: function (s, e) {
+                    s.autoSizeColumns();
+                    for (var i = 0; i < s.rows.length; i++) {
+                        var row = s.rows[i];
+                        var item = row.dataItem;
+                        if (item.activeFlag == 'N') {
+                            row.cssClass = 'change_dup';
+                        }
+                        if (item.expectCloseFlag == 'Y') {
+                            row.cssClass = 'change_close';
+                        }
+                    }
+                }
+            });
+
+            //행번호 표시하기
+            corpExcelGrid.itemFormatter = function (panel, r, c, cell) {
+                if (panel.cellType == wijmo.grid.CellType.RowHeader) {
+                    cell.textContent = (r + 1).toString();
+                }
+            };
+
+        } else {
+            corpView = new wijmo.collections.CollectionView(result, {
+                pageSize: Number($('#viewNum').val()),
+                trackChanges: true
+            });
+
+            console.log(corpView);
+
+            corpGridPager.cv = corpView;
+            corpGrid.itemsSource = corpView;
+        }
+
+        refreshPaging(corpGrid.collectionView.totalItemCount, 1, corpGrid, 'corpGrid');  // 페이징 초기 셋팅
+
+    }
+
+    function getAPIList(type) {
 
         //db데이터에는 시간까지 출력되기 때문에 날짜 데이터만 가져오면 범위에 포함되지 않기 때문에 하루 더해서 범위값 설정한다.
         let to = new Date($('#toDate').val());
@@ -610,15 +816,20 @@
             , to : to
         };
 
+        let url;
+        type == 'crawling' ? url = '/cms/crawling/allCrawling' : type == 'support' ? url = '/cms/allSupport' : url = '/cms/corp/allSupport';
+
         $.ajax({
             type: 'GET',
-            url: '/cms/allSupport',
+            url: url,
             dataType: null,
             data: param,
             success: function (result) {
-                console.log("getSupportList success");
-                console.log(result);
-                loadGridSupportList('search', result);
+                if(type == 'corp') loadGridCorpList('search', result);
+                else loadGridSupportList('search', result);
+
+                console.log("result>>", result);
+
             },
             error: function (request, status, error) {
                 alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -627,15 +838,25 @@
         });
     }
 
-    //템플릿 다운로드
-    function downTemplate() {
+
+
+    //엑시토 템플릿 다운로드
+    function downTemplateExito() {
         window.location.assign("<%=request.getContextPath()%>" + "/template/지원사업관리양식.xlsx");
+    }
+
+    //고객용 템플릿 다운로드
+    function downTemplateCorp() {
+        window.location.assign("<%=request.getContextPath()%>" + "/template/사업공고관리양식.xlsx");
     }
 
     //엑셀 다운로드
     function exportExcel() {
 
-        var gridView = supportGrid.collectionView;
+        var gridView ;
+
+        text == 'corp' ? gridView = corpGrid.collectionView : gridView = supportGrid.collectionView;
+
         var oldPgSize = gridView.pageSize;
         var oldPgIndex = gridView.pageIndex;
 
@@ -650,21 +871,35 @@
 
         // 로딩 이미지가 활성화 된 상태에서 실행하기 위해 지연시간을 둠
         setTimeout(function(){
-            supportGrid.beginUpdate();
-            supportView.pageSize = gridView._src.length;
 
-            wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(supportGrid, {includeCellStyles: true, includeColumnHeaders: true}, '지원사업리스트.xlsx',
-                saved => {
-                    loadingBarEnd();
-                   gridView.pageSize = oldPgSize;
-                   gridView.moveToPage(oldPgIndex);
-                    supportGrid.endUpdate();
-                }, null
-            );
+            if(text =='corp'){
+                corpGrid.beginUpdate();
+                corpView.pageSize = gridView._src.length;
+
+                wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(corpGrid, {includeCellStyles: true, includeColumnHeaders: true}, '고객용지원사업리스트.xlsx',
+                    saved => {
+                        loadingBarEnd();
+                        gridView.pageSize = oldPgSize;
+                        gridView.moveToPage(oldPgIndex);
+                        corpGrid.endUpdate();
+                    }, null
+                );
+            }else{
+                supportGrid.beginUpdate();
+                supportView.pageSize = gridView._src.length;
+
+                let listTxt = text == 'support' ? '엑시토지원사업리스트.xlsx' : '크롤링지원사업리스트.xlsx';
+
+                wijmo.grid.xlsx.FlexGridXlsxConverter.saveAsync(supportGrid, {includeCellStyles: true, includeColumnHeaders: true}, listTxt,
+                    saved => {
+                        loadingBarEnd();
+                        gridView.pageSize = oldPgSize;
+                        gridView.moveToPage(oldPgIndex);
+                        supportGrid.endUpdate();
+                    }, null
+                );
+            }
         }, 100);
-
-
-
     }
 
     //업로드 파일 찾기
@@ -675,25 +910,52 @@
 
     //엑셀 업로드
     function importExcel() {
-        $("#supportDiv").hide();
-        supportView = new wijmo.collections.CollectionView(null, {
-            pageSize: 100
-        });
-        $("#excelDiv").show();
+
         var inputEle = document.querySelector('#importFile');
-        if (inputEle.files[0]) {
-            wijmo.grid.xlsx.FlexGridXlsxConverter.loadAsync(excelGrid, inputEle.files[0], {includeColumnHeaders: true}, (w) => {
-                // 데이터 바인딩할 함수 호출
-                bindImportedDataIntoModel(excelGrid);
-                excelGrid.columns.forEach(col => {
-                    col.width = 160,
-                        col.align = "center"
-                })
+
+        if(text == 'support'){
+
+            $("#supportDiv").hide();
+            $('#supportDiv2').hide();
+            $('#corpExcelDiv').hide();
+            $("#excelDiv").show();
+
+            supportView = new wijmo.collections.CollectionView(null, {
+                pageSize: 100
             });
+
+            if (inputEle.files[0]) {
+                wijmo.grid.xlsx.FlexGridXlsxConverter.loadAsync(excelGrid, inputEle.files[0], {includeColumnHeaders: true}, (w) => {
+                    // 데이터 바인딩할 함수 호출
+                    bindImportedDataIntoModel(excelGrid);
+                    excelGrid.columns.forEach(col => {
+                        col.width = 160,
+                            col.align = "center"
+                    })
+                });
+            }
+        }else{
+
+            $("#supportDiv2").hide();
+            $('#supportDiv').hide();
+            $('#excelDiv').hide();
+            $("#corpExcelDiv").show();
+
+            corpView = new wijmo.collections.CollectionView(null, {
+                pageSize: 100
+            });
+
+            if (inputEle.files[0]) {
+                wijmo.grid.xlsx.FlexGridXlsxConverter.loadAsync(corpExcelGrid, inputEle.files[0], {includeColumnHeaders: true}, (w) => {
+                    // 데이터 바인딩할 함수 호출
+                    bindImportedDataIntoModel(corpExcelGrid);
+                    corpExcelGrid.columns.forEach(col => {
+                        col.width = 160,
+                            col.align = "center"
+                    })
+                });
+            }
         }
-        // 체크박스 생성
-        // excelSelector = new wijmo.grid.selector.Selector(excelGrid);
-        // excelSelector.column = excelGrid.columns[0];
     }
 
     const editGrid = async () => {
@@ -713,11 +975,31 @@
         await axios.put("/cms/support", rows).then((res) => {
             if (res.status == 200) {
                 alert("저장했습니다.");
-                getSupportList();
+                getList();
             } else {
                 alert("오류가 발생했습니다. 다시 시도해 주세요.");
             }
         })
+    }
+
+    //컬럼위치저장
+    function getGrid(){
+        _getUserGridLayout(text+'Layout', supportGrid);
+    }
+
+    //컬럼초기화
+    function resetGrid(){
+        _resetUserGridLayout(text+'Layout', supportGrid,supportColumns);
+    }
+
+    //컬럼추가
+    function addGrid(){
+
+    }
+
+    //컬럼삭제
+    function delGrid(){
+
     }
 
     // 엑셀그리드 저장
@@ -817,7 +1099,6 @@
             rows.push(params);
             console.log(rows);
         }
-        console.log('#######3' , rows);
         if (confirm("저장 하시겠습니까?")) {
             $.ajax({
                 url: "/cms/support/uploadExcel",
@@ -829,7 +1110,7 @@
                     alert("총 " + result + "건이 저장되었습니다.");
                     $("#excelDiv").hide();
                     $("#supportDiv").show();
-                    getSupportList();
+                    getList();
                 },
                 error: function (request, status, error) {
                     alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -839,24 +1120,5 @@
     }
 
 
-    $(document).ready(function () {
-        pageOnLoad();
-        getSupportList();
 
-        //  지원사업관리 탭메뉴
-        $(".TabM1").click(function(){
-            $(".TabM1").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
-            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
-            $("#supportDiv").css("display","block");
-            $("#supportDiv2").css("display","none");
-        });
-
-        $(".TabM2").click(function(){
-            $(".TabM2").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
-            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
-            $("#supportDiv").css("display","none");
-            $("#supportDiv2").css("display","block");
-        });
-
-    });
 </script>

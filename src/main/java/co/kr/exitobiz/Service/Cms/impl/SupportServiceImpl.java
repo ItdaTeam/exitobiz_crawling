@@ -96,7 +96,6 @@ public class SupportServiceImpl implements SupportService {
 
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 if(checkFlag){
-                    System.out.println("@@@@@@@@" + vo);
                     supportRepository.update(vo);
                 }else {
                     Support support = new Support();
@@ -123,7 +122,6 @@ public class SupportServiceImpl implements SupportService {
                     support.setCompanyType(vo.getCompanyType());
                     support.setStartPeriod(vo.getStartPeriod());
 
-                    System.out.println("#############" + support);
 
                    supportRepository.save(support);
                 }

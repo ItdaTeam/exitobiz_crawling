@@ -2111,6 +2111,7 @@ div.wj-flexgrid{height: auto;}
 }
 
 .tabMenu li{
+  background-color:#fff;
   border:1px solid #ddd;
   border-bottom: none;
   box-sizing: border-box;
