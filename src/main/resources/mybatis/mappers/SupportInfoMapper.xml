@@ -107,9 +107,7 @@
                 </foreach>
             </trim>
         </if>
-        <if test='keyword == nul or keyword == "" '>
             and si_end_dt <![CDATA[>=]]> now()::date
-        </if>
         order by
         <choose>
             <when test='ord == "인기순"'>
