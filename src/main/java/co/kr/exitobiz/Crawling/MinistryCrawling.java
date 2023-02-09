@@ -106,7 +106,7 @@ public class MinistryCrawling implements Crawling {
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getAttribute("title");
                             String url = titleXpath.getAttribute("href");
-                            url = url.replace("&searchKey=&searchValue=","").replace("&boardCategoryId=&decorator=","").replace("&orgCd=","").replace("pagerOffset="+(i*10),"");
+                            url = url.replace("&searchKey=&searchValue=","").replace("&boardCategoryId=&decorator=","").replace("&orgCd=","").replace("pagerOffset="+(i*10),"").replace(";","");
                             String bodyUrl = null;
                             if(url.indexOf("jsess") != -1){
                                 bodyUrl = url.substring(0,url.indexOf("jsess")) + url.substring(url.indexOf("?"));
