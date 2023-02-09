@@ -10,13 +10,18 @@ function _logOut() {
 }
 
 //그리드 레이아웃 저장
-function _getUserGridLayout(layoutId, grid) {
+function _getUserGridLayout(layoutId, grid, selector) {
     localStorage.setItem(layoutId, grid.columnLayout);
     alert("컬럼위치를 저장하였습니다.");
+    let columnsArr = JSON.parse(window.localStorage[layoutId]).columns;
+    columnsArr.forEach((col,index) => {
+        if(col.binding == 'check')
+            selector.column = grid.columns[index];
+    });
 }
 
 //그리드 레이아웃 복원
-function _setUserGridLayout(layoutId, grid, initColumns) {
+function _setUserGridLayout(layoutId, grid, initColumns, selector) {
     /*  // 주석 소스처럼 진행하여도 컬럼위치는 복원되나, cellTemplate 설정이 저장되지않음.
     	var layout = localStorage.getItem(layoutId);
         if (layout) {
@@ -28,13 +33,18 @@ function _setUserGridLayout(layoutId, grid, initColumns) {
         let columnsArr = JSON.parse(window.localStorage[layoutId]).columns;
 
         grid.columns.clear();
+        let checkIndex = 0;
         columnsArr.forEach((col) => {
             initColumns.forEach((col2) => {
                 if (col.binding == col2.binding) {
+                    if(col.binding == 'check'){
+                        checkIndex = index;
+                    }
                     grid.columns.push(new wijmo.grid.Column(col2));
                 }
             });
         });
+        selector.column = grid.columns[checkIndex];
     }
 }
 
@@ -129,16 +139,19 @@ function pagingCountChange(grid, gridView, gridPager){
 }
 
 //그리드 초기 레이아웃 복원
-function _resetUserGridLayout(layoutId, grid, initColumns) {
+function _resetUserGridLayout(layoutId, grid, initColumns,selector) {
 
     grid.columns.clear();
     initColumns.forEach((col) => {
         grid.columns.push(new wijmo.grid.Column(col));
+
+        if(col.binding == 'check')
+            selector.column = grid.columns[index];
     });
 
     localStorage.setItem(layoutId, grid.columnLayout);
     alert("컬컴위치를 초기화하였습니다.");
-    _setUserGridLayout(layoutId, grid, initColumns);
+    _setUserGridLayout(layoutId, grid, initColumns, selector);
 }
 
 function sessionCheck(staffId){
