@@ -16,4 +16,6 @@ public interface SupportCorpService {
 
     public Integer uploadExcelSupport(List<SupportCorpVo> supportVos);
 
+    public Integer deleteSupport(List<SupportCorpVo> supportCorpVos);
+
 }

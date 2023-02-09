@@ -48,5 +48,11 @@ public class SupportCorpController {
         return supportCorpService.uploadExcelSupport(supportVos);
     }
 
+    @PostMapping("/support/delete")
+    @ResponseBody
+    public Integer deleteSupport(@RequestBody List<SupportCorpVo> supportCorpVos){
+        return supportCorpService.deleteSupport(supportCorpVos);
+    }
+
 
 }

@@ -132,6 +132,11 @@ public class SupportCorpRepository {
                 .execute();
     }
 
+    //삭제
+    public void delete(SupportCorpVo vo) throws ParseException{
+        jpaQueryFactory.delete(supportCorp).where(supportCorp.siIdx.eq(vo.getSiIdx())).execute();
+    }
+
     private BooleanExpression searchSupportEq(SearchVo searchVo){
         if(searchVo.getInq() != ""){
             if(searchVo.getCon().equals("all")){

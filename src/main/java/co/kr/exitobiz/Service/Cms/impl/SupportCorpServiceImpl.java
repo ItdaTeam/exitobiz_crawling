@@ -108,4 +108,19 @@ public class SupportCorpServiceImpl implements SupportCorpService {
 
         return cnt;
     }
+
+    @Override
+    public Integer deleteSupport(List<SupportCorpVo> supportCorpVos) {
+        int cnt = 0;
+
+        for(SupportCorpVo vo : supportCorpVos) {
+            try {
+                supportCorpRepository.delete(vo);
+                cnt++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return cnt;
+    }
 }
