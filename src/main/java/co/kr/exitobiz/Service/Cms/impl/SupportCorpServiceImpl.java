@@ -21,12 +21,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class SupportCorpServiceImpl implements SupportCorpService {
 
     private final SupportCorpRepository supportCorpRepository;
+
 
 
     @Override
