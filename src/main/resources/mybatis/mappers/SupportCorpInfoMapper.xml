@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.WebApp.SupportCorpInfoMapper">
+    <select id="getCrawlingInfoList" parameterType="HashMap" resultType="HashMap">
+        select si_idx, target_name,
+            target_cat_cd as  target_cat_name,
+        target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
+        (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt, to_char(info.tl_cret_Dt, 'yyyy-mm-dd') tl_cret_dt
+        from itda_app.crawling_data si
+        left outer join (
+                select row_number() over (partition by mb_addidx order by mb_cret_dt desc ) as sort ,*
+                from itda_app.my_bookmark
+                where 1=1
+                <if test='user_id != null'>
+                    and mb_cret_id = #{user_id}
+                </if>
+                ) mb on mb.mb_addidx = si.si_idx and mb.sort = 1
+        left join (select code as loccode, code_nm as locname from itda_web.common_code_dtl where ctg_cd = 'loc_cd') as l on l.loccode = si.loc_code
+        left join (select row_number() over (partition by tl_type_cd order by tl_cret_dt desc) sort
+                    , tl_type_cd, tl_cret_dt
+                    from itda_app.time_line tl
+                    where 1=1
+                    and tl.tl_page_type = '지원사업'
+        <if test='user_id != null'>
+            and tl.tl_cret_id = #{user_id}
+        </if>
+        ) as info on tl_type_cd = si.si_idx and info.sort = 1
+        where 1=1
+        and si.si_active_yn = 'Y'
+        and length(si.loc_code) <![CDATA[<]]> 5
+        <choose>
+            <when test='searchText != null'>
+                and si_title like concat('%', ${searchText}, '%') or target_name like concat('%', ${searchText}, '%') or locname like concat('%', ${searchText}, '%')
+            </when>
+        </choose>
+        <if test='business_type != null and business_type != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_type"  separator="or">
+                    business_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='start_period != null and start_period.get(0) != "999"'>
+                and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "start_period"  separator="or">
+                    <choose>
+                        <when test='item.substring(1.2) == "2"'>
+                            #{item} <![CDATA[<=]]> start_period
+                        </when>
+                        <when test='item.substring(1.2) == "0"'>
+                            start_period <![CDATA[<=]]> #{item}
+                        </when>
+                    </choose>
+                    or start_period = '70,72'
+                </foreach>
+            </trim>
+            and start_period != '999'
+        </if>
+        <if test='company_type != null and  company_type != "" and company_type.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "company_type"  separator="or">
+                    company_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='target_cat_name != null and target_car_name != "" and target_cat_name.get(0) != "01"'>
+            and target_cat_cd in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "target_cat_name"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
+        <if test='business_ctg != null and business_ctg != "" and business_ctg.get(0)  != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_ctg"  separator="or">
+                    business_ctg like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='tech_ctg != null and tech_ctg != "" and tech_ctg.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "tech_ctg"  separator="or">
+                    tech_ctg like '%' || #{item} ||'%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='loc_code != null and loc_code.get(loc_code.size -1) != "C99" '>
+            and loc_code in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "loc_code"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
+        <if test='keyword != null and keyword != "" '>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "keyword"  separator="or">
+                    si_title like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='keyword == nul or keyword == "" '>
+            and si_end_dt <![CDATA[>=]]> now()::date
+        </if>
+        order by
+        <choose>
+            <when test='ord == "인기순"'>
+                totalCnt desc, si.si_idx
+            </when>
+            <when test='ord == "금액높은순"'>
+                target_cost_value desc, si.si_idx
+            </when>
+            <when test='ord == "마감임박순"'>
+                si_end_dt, si.si_idx
+            </when>
+            <otherwise>
+                si.si_cret_dt desc , si.si_idx
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getSupportCorpInfoList" parameterType="HashMap" resultType="HashMap">
+        select si_idx, target_name,
+        target_cat_cd as  target_cat_name,
+        target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
+        (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt, to_char(info.tl_cret_Dt, 'yyyy-mm-dd') tl_cret_dt
+        from itda_app.support_info_corp si
+        left outer join (
+        select row_number() over (partition by mb_addidx order by mb_cret_dt desc ) as sort ,*
+        from itda_app.my_bookmark
+        where 1=1
+        <if test='user_id != null'>
+            and mb_cret_id = #{user_id}
+        </if>
+        ) mb on mb.mb_addidx = si.si_idx and mb.sort = 1
+        left join (select code as loccode, code_nm as locname from itda_web.common_code_dtl where ctg_cd = 'loc_cd') as l on l.loccode = si.loc_code
+        left join (select row_number() over (partition by tl_type_cd order by tl_cret_dt desc) sort
+        , tl_type_cd, tl_cret_dt
+        from itda_app.time_line tl
+        where 1=1
+        and tl.tl_page_type = '지원사업'
+        <if test='user_id != null'>
+            and tl.tl_cret_id = #{user_id}
+        </if>
+        ) as info on tl_type_cd = si.si_idx and info.sort = 1
+        where 1=1
+        and si.si_active_yn = 'Y'
+        and length(si.loc_code) <![CDATA[<]]> 5
+        <choose>
+            <when test='searchText != null'>
+                and si_title like concat('%', ${searchText}, '%') or target_name like concat('%', ${searchText}, '%') or locname like concat('%', ${searchText}, '%')
+            </when>
+        </choose>
+        <if test='business_type != null and business_type != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_type"  separator="or">
+                    business_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='start_period != null and start_period.get(0) != "999"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "start_period"  separator="or">
+                    <choose>
+                        <when test='item.substring(1.2) == "2"'>
+                            #{item} <![CDATA[<=]]> start_period
+                        </when>
+                        <when test='item.substring(1.2) == "0"'>
+                            start_period <![CDATA[<=]]> #{item}
+                        </when>
+                    </choose>
+                    or start_period = '70,72'
+                </foreach>
+            </trim>
+            and start_period != '999'
+        </if>
+        <if test='company_type != null and  company_type != "" and company_type.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "company_type"  separator="or">
+                    company_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='target_cat_name != null and target_car_name != "" and target_cat_name.get(0) != "01"'>
+            and target_cat_cd in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "target_cat_name"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
+        <if test='business_ctg != null and business_ctg != "" and business_ctg.get(0)  != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_ctg"  separator="or">
+                    business_ctg like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='tech_ctg != null and tech_ctg != "" and tech_ctg.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "tech_ctg"  separator="or">
+                    tech_ctg like '%' || #{item} ||'%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='loc_code != null and loc_code.get(loc_code.size -1) != "C99" '>
+            and loc_code in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "loc_code"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
+        <if test='keyword != null and keyword != "" '>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "keyword"  separator="or">
+                    si_title like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='keyword == nul or keyword == "" '>
+            and si_end_dt <![CDATA[>=]]> now()::date
+        </if>
+        order by
+        <choose>
+            <when test='ord == "인기순"'>
+                totalCnt desc, si.si_idx
+            </when>
+            <when test='ord == "금액높은순"'>
+                target_cost_value desc, si.si_idx
+            </when>
+            <when test='ord == "마감임박순"'>
+                si_end_dt, si.si_idx
+            </when>
+            <otherwise>
+                si.si_cret_dt desc , si.si_idx
+            </otherwise>
+        </choose>
+    </select>
+</mapper>
