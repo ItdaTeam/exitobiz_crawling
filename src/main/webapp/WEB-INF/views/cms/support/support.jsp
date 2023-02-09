@@ -341,8 +341,7 @@
         //  지원사업관리 탭메뉴
         $(".TabM1").click(function(){
             $(".TabM1").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
-            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
-            $(".TabM3").css("background-color","#fff").css("border","1px solid #ddd");
+            $(".TabM2, .TabM3").css("background-color","#fff").css("border","1px solid #ddd");
             $("#supportDiv").css("display","block");
             $('.uploadExcel, .addGrid, .delGrid, .editGrid, #supportDiv2').css('display', 'none');
             text = 'crawling';
@@ -351,8 +350,7 @@
 
         $(".TabM2").click(function(){
             $(".TabM2").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
-            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
-            $(".TabM3").css("background-color","#fff").css("border","1px solid #ddd");
+            $(".TabM1, .TabM3").css("background-color","#fff").css("border","1px solid #ddd");
             $("#supportDiv2, .addGrid, .delGrid, .editGrid").css("display","none");
             $("#supportDiv").css("display","block");
             $('.uploadExcel').css('display', 'inline');
@@ -362,8 +360,7 @@
 
         $(".TabM3").click(function(){
             $(".TabM3").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
-            $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
-            $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
+            $(".TabM1, .TabM2").css("background-color","#fff").css("border","1px solid #ddd");
             $("#supportDiv").css("display","none");
             $("#supportDiv2").css("display","block");
             $('.uploadExcel, .addGrid, .delGrid, .editGrid').css('display', 'inline');
@@ -375,6 +372,7 @@
 
     //조회일 기본값 설정
     const month = new Date().getMonth();
+    const day = new Date().getDate();
 
     document.getElementById("fromDate").value = new Date(new Date().setMonth(month - 1)).toISOString().slice(0,10);
     document.getElementById("toDate").value = new Date().toISOString().slice(0,10);
@@ -394,7 +392,6 @@
 
     function selectAll(selectAll)  {
         const checkboxes = document.getElementsByName("location");
-
         checkboxes.forEach((checkbox) => {
             checkbox.checked = selectAll.checked;
         })
@@ -420,7 +417,7 @@
       $('.NewExitoModal').removeClass('on');
     }
 
-// 지원사업관리 push화면 보이기
+    // 지원사업관리 push화면 보이기
     $(".push2").click(function(){
         $('#push_form1')[0].reset();
 
@@ -678,30 +675,29 @@
             corpColumns = [
                 {binding: 'check', header:'선택',isReadOnly: true, width: 50, align: "center"},
                 {binding: 'siIdx', header: 'Index', isReadOnly: true, width: 100, align: "center", dataType: "Number"},
-                {binding: 'targetName', header: '기관', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'targetCatName', header: '분류', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'targetCatCd', header: '분류코드', isReadOnly: true, width: 200, align: "center"},
-                {binding: 'targetCostValue', header: '금액', isReadOnly: true, width: 120, align: "center"},
-                {binding: 'locCode', header: '지역코드', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'siTitle', header: '제목', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'mobileUrl', header: '모바일주소', isReadOnly: true, width: 200, align: "center"},
-                {binding: 'pcUrl', header: '피시주소', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'siEndDt', header: '마감일', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'siCretDt', header: '생성일', isReadOnly: true, width: 200, align: "center"},
+                {binding: 'targetName', header: '기관',  width: 100, align: "center"},
+                {binding: 'targetCatName', header: '분류', width: 100, align: "center"},
+                {binding: 'targetCatCd', header: '분류코드', width: 200, align: "center"},
+                {binding: 'targetCostValue', header: '금액', width: 120, align: "center"},
+                {binding: 'locCode', header: '지역코드', width: 100, align: "center"},
+                {binding: 'siTitle', header: '제목', width: 100, align: "center"},
+                {binding: 'mobileUrl', header: '모바일주소', width: 200, align: "center"},
+                {binding: 'pcUrl', header: '피시주소', width: 100, align: "center"},
+                {binding: 'siEndDt', header: '마감일', width: 100, align: "center"},
+                {binding: 'siCretDt', header: '생성일', width: 200, align: "center"},
                 {
                     binding: 'siActiveYn',
                     header: '활성화여부',
-                    isReadOnly: true,
                     width: 200,
                     align: "center",
                     dataMap: onoffYnMap
                 },
-                {binding: 'businessCtg', header: '사업분야', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'techCtg', header: '기술분야', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'businessType', header: '사업자형태', isReadOnly: true, width: 200, align: "center"},
-                {binding: 'companyType', header: '기업형태', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'startPeriod', header: '창업기간', isReadOnly: true, width: 100, align: "center"},
-                {binding: 'corpCd', header: '고객사코드', isReadOnly: true, width: 100, align: "center"},
+                {binding: 'businessCtg', header: '사업분야', width: 100, align: "center"},
+                {binding: 'techCtg', header: '기술분야', width: 100, align: "center"},
+                {binding: 'businessType', header: '사업자형태', width: 200, align: "center"},
+                {binding: 'companyType', header: '기업형태', width: 100, align: "center"},
+                {binding: 'startPeriod', header: '창업기간', width: 100, align: "center"},
+                {binding: 'corpCd', header: '고객사코드', width: 100, align: "center"},
                 {binding: 'detail', header: '세부내용', isReadOnly: true, width: 100, align: "center"}
             ];
             corpGrid = new wijmo.grid.FlexGrid('#corpGrid', {
@@ -722,24 +718,16 @@
                             row.cssClass = 'change_close';
                         }
                     }
+                },
+                itemFormatter : function (panel, r, c, cell) {
+                    if (panel.cellType == wijmo.grid.CellType.RowHeader) {
+                        cell.textContent = (r + 1).toString();
+                    }
                 }
             });
-
-            console.log("여기");
-
             /* 체크박스 생성 */
-            corpSelector = new wijmo.grid.selector.Selector(corpGrid, {
-                itemChecked: () => {}
-            });
+            corpSelector = new wijmo.grid.selector.Selector(corpGrid);
             corpSelector.column = corpGrid.columns[0];
-
-            console.log("corp >>" , corpSelector);
-
-            corpGrid.itemFormatter = function (panel, r, c, cell) {
-                if (panel.cellType == wijmo.grid.CellType.RowHeader) {
-                    cell.textContent = (r + 1).toString();
-                }
-            };
 
             _setUserGridLayout('corpLayout', corpGrid, corpColumns, corpSelector);
 
@@ -972,7 +960,8 @@
     }
 
     const editGrid = async () => {
-        const editItem = supportView.itemsEdited;
+        //엑시토 리스트는 추후 기능 추가 예정
+        const editItem = text == 'support' ? supportView.itemsEdited : corpView.itemsEdited ;
 
 
         if (editItem.length < 1) {
@@ -985,7 +974,9 @@
         /* observer배열에서 기본배열로 옮겨담는다 */
         let rows = editItem.map(obj => obj);
 
-        await axios.put("/cms/support", rows).then((res) => {
+        let url = text == 'support' ? "/cms/support/uploadExcel" : "/cms/corp/support/uploadExcel";
+
+        await axios.post(url, rows).then((res) => {
             if (res.status == 200) {
                 alert("저장했습니다.");
                 getList();
@@ -1003,8 +994,10 @@
 
     //컬럼초기화
     function resetGrid(){
-        if(text =='corp') _resetUserGridLayout(text+'Layout', corpGrid,corpColumns, corpSelector);
-        else _resetUserGridLayout(text+'Layout', supportGrid, supportColumns);
+        if(text =='corp')
+            _resetUserGridLayout(text+'Layout', corpGrid,corpColumns, corpSelector);
+        else
+            _resetUserGridLayout(text+'Layout', supportGrid, supportColumns);
     }
 
     //컬럼추가
@@ -1031,13 +1024,13 @@
 
             if (confirm("선택한 행들을 삭제 하시겠습니까?")) {
                 $.ajax({
-                    url: "/cms/api/estimate",
+                    url: "/cms/corp/support/delete",
                     async: false, // 비동기모드 : true, 동기식모드 : false
                     type: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify(rows),
                     success: function (result) {
-                        alert("삭제되었습니다.");
+                        alert("총 " + result + "건이 삭제되었습니다.");
                         getList();
                     },
                     error: function (request, status, error) {
@@ -1051,9 +1044,10 @@
     // 엑셀그리드 저장
     function saveGrid() {
         // 엑셀 업로드 저장하기
-        var item = excelGrid.rows;
+        var item = text == 'support ' ? excelGrid.rows : corpExcelGrid.rows;
         var rows = [];
         var params;
+        var grid = text == 'support' ? excelGrid : corpExcelGrid;
         for (var i = 0; i < item.length; i++) {
             var value;
             // if(!wijmo.isNumber(value)){
@@ -1065,13 +1059,13 @@
             //     alert("금액은 숫자만 입력 가능합니다.");
             //     return false;
             // }
-            var flag = wijmo.changeType(excelGrid.collectionView.items[i].활성화여부, wijmo.DataType.String, null);
+            var flag = wijmo.changeType(grid.collectionView.items[i].활성화여부, wijmo.DataType.String, null);
             if (flag != 'Y' && flag != 'N') {
                 alert("활성화여부는 Y/N 중 하나를 입력하시기 바랍니다.");
                 return false;
             }
             if (flag == 'Y') {
-                value = wijmo.changeType(excelGrid.collectionView.items[i].분류, wijmo.DataType.String, null);
+                value = wijmo.changeType(grid.collectionView.items[i].분류, wijmo.DataType.String, null);
                 if (value == null || value == '') {
                     alert("분류를 입력하시기 바랍니다.");
                     return false;
@@ -1089,73 +1083,78 @@
             //     alert("지역코드와 지역명이 일치하지 않습니다.");
             //     return false;
             // }
-            value = wijmo.changeType(excelGrid.collectionView.items[i].마감일, wijmo.DataType.String, null);
+            value = wijmo.changeType(grid.collectionView.items[i].마감일, wijmo.DataType.String, null);
             var dateRegExp = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
             if (value != null && value != '' && !dateRegExp.test(value)) {
                 alert("마감일은 YYYY-MM-DD 형태로 입력하시기 바랍니다.");
                 return false;
             }
 
-            value = wijmo.changeType(excelGrid.collectionView.items[i].기관, wijmo.DataType.String, null);
+            value = wijmo.changeType(grid.collectionView.items[i].기관, wijmo.DataType.String, null);
             if (value == null || value == '') {
                 alert("기관을 입력하시기 바랍니다.");
                 return false;
             }
 
-            value = wijmo.changeType(excelGrid.collectionView.items[i].제목, wijmo.DataType.String, null);
+            value = wijmo.changeType(grid.collectionView.items[i].제목, wijmo.DataType.String, null);
             if (value == null || value == '') {
                 alert("제목을 입력하시기 바랍니다.");
                 return false;
             }
 
-            value = wijmo.changeType(excelGrid.collectionView.items[i].금액, wijmo.DataType.String, null);
+            value = wijmo.changeType(grid.collectionView.items[i].금액, wijmo.DataType.String, null);
             if (value == null || value == '') {
-                excelGrid.collectionView.items[i].금액 = 0;
+                grid.collectionView.items[i].금액 = 0;
             }
-
-            // value = wijmo.changeType(excelGrid.collectionView.items[i].Mobile주소, wijmo.DataType.String, null);
-            // if(value == null || value == ''){
-            //     alert("MOBILE주소를 입력하시기 바랍니다.");
-            //     return false;
-            // }
-
-
 
 
             params = {
-                siIdx: excelGrid.collectionView.items[i].index,
-                targetCostValue: excelGrid.collectionView.items[i].금액,
-                siActiveYn: excelGrid.collectionView.items[i].활성화여부,
-                siEndDt: new Date(excelGrid.collectionView.items[i].마감일).format("yyyy-mm-dd"),
-                siCretDt: new Date(excelGrid.collectionView.items[i].생성일).format("yyyy-mm-dd"),
-                targetName: excelGrid.collectionView.items[i].기관,
-                targetCatName: excelGrid.collectionView.items[i].분류,
-                siTitle: excelGrid.collectionView.items[i].제목,
-                mobileUrl: excelGrid.collectionView.items[i].모바일주소,
-                pcUrl: excelGrid.collectionView.items[i].피시주소,
-                locCode: excelGrid.collectionView.items[i].지역코드,
-                businessCtg : excelGrid.collectionView.items[i].사업분야,
-                techCtg : excelGrid.collectionView.items[i].기술분야,
-                businessType : excelGrid.collectionView.items[i].사업자형태,
-                companyType : excelGrid.collectionView.items[i].기업형태,
-                startPeriod : excelGrid.collectionView.items[i].창업기간,
-                targetCatCd : excelGrid.collectionView.items[i].분류코드
+                siIdx: grid.collectionView.items[i].index,
+                targetCostValue: grid.collectionView.items[i].금액,
+                siActiveYn: grid.collectionView.items[i].활성화여부,
+                siEndDt: new Date(grid.collectionView.items[i].마감일).format("yyyy-mm-dd"),
+                siCretDt: new Date(grid.collectionView.items[i].생성일).format("yyyy-mm-dd"),
+                targetName: grid.collectionView.items[i].기관,
+                targetCatName: grid.collectionView.items[i].분류,
+                siTitle: grid.collectionView.items[i].제목,
+                mobileUrl: grid.collectionView.items[i].모바일주소,
+                pcUrl: grid.collectionView.items[i].피시주소,
+                locCode: grid.collectionView.items[i].지역코드,
+                businessCtg : grid.collectionView.items[i].사업분야,
+                techCtg : grid.collectionView.items[i].기술분야,
+                businessType : grid.collectionView.items[i].사업자형태,
+                companyType : grid.collectionView.items[i].기업형태,
+                startPeriod : grid.collectionView.items[i].창업기간,
+                targetCatCd : grid.collectionView.items[i].분류코드
             }
 
             rows.push(params);
             console.log(rows);
         }
+
+        let url = text == 'support' ? "/cms/support/uploadExcel" : "/cms/corp/support/uploadExcel";
         if (confirm("저장 하시겠습니까?")) {
             $.ajax({
-                url: "/cms/support/uploadExcel",
+                url: url,
                 async: false, // 비동기모드 : true, 동기식모드 : false
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(rows),
                 success: function (result) {
                     alert("총 " + result + "건이 저장되었습니다.");
-                    $("#excelDiv").hide();
-                    $("#supportDiv").show();
+
+                    if(text == 'support'){
+                        $("#excelDiv").hide();
+                        $('#supportDiv2').hide();
+                        $('#corpExcelDiv').hide();
+                        $("#supportDiv").show();
+
+                    }else{
+                        $("#corpExcelDiv").hide();
+                        $('#supportDiv').hide();
+                        $('#excelDiv').hide();
+                        $("#supportDiv2").show();
+                    }
                     getList();
                 },
                 error: function (request, status, error) {
