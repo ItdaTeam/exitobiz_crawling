@@ -88,13 +88,19 @@ span {
   top:60px;
 }
 
-.btn_cell {
+.btn_cell {정
   border: 1px solid #eee;
   width: 80%;
   height: 80%;
   margin-left: 10%;
   background-color: #f5f5f5;
 }
+
+
+#corpGrid input[type="radio"],#corpGrid input[type="checkbox"] {
+  display: block;
+}
+
 
 .btn.stroke {
   border: 1px solid #919191;
