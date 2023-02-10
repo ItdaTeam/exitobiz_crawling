@@ -119,10 +119,10 @@
                                     onClick="resetGrid();"><span
                                     class="material-icons-outlined">restart_alt</span>칼럼초기화
                             </button>
-                            <button type="button" class="btn stroke addGrid" style="display:none;"
-                                    onClick="addGrid();"><span
-                                    class="material-icons-outlined">add_circle</span>그리드추가
-                            </button>
+<%--                            <button type="button" class="btn stroke addGrid" style="display:none;"--%>
+<%--                                    onClick="addGrid();"><span--%>
+<%--                                    class="material-icons-outlined">add_circle</span>그리드추가--%>
+<%--                            </button>--%>
                             <button type="button" class="btn stroke delGrid"  style="display:none;"
                                     onClick="delGrid();"><span
                                     class="material-icons-outlined">do_not_disturb_on</span>그리드삭제
@@ -648,8 +648,11 @@
                 pageSize: Number($('#viewNum').val()),
                 trackChanges: true
             });
+
             supportGridPager.cv = supportView;
             supportGrid.itemsSource = supportView;
+
+            _setUserGridLayout(text+'Layout', supportGrid, supportColumns);
         }
 
         refreshPaging(supportGrid.collectionView.totalItemCount, 1, supportGrid, 'supportGrid');  // 페이징 초기 셋팅
@@ -796,6 +799,8 @@
 
             corpGridPager.cv = corpView;
             corpGrid.itemsSource = corpView;
+
+            _setUserGridLayout('corpLayout', corpGrid, corpColumns);
 
         }
 
@@ -964,18 +969,108 @@
 
     const editGrid = async () => {
         //엑시토 리스트는 추후 기능 추가 예정
-        const editItem = text == 'support' ? supportView.itemsEdited : corpView.itemsEdited ;
+        const editItem = text == 'support' ? supportView.itemsEdited : corpView.itemsEdited;
+        const addItem = text == 'support' ? supportView.itemsAdded : corpView.itemsAdded;
 
+        let arr = [...editItem, ...addItem];
 
-        if (editItem.length < 1) {
-            alert("수정된 내역이 없습니다.");
+        console.log("arr >>>" , arr);
+
+        if (arr.length < 1) {
+            alert("수정 및 추가된 내역이 없습니다.");
             return false;
         }
 
-        if (!confirm(editItem.length + "건의 상태를 변경하시겠습니까?")) return false;
+        for(let i=0; i<arr.length; i++){
+            if (arr[i].siActiveYn == null || wijmo.isEmpty(arr[i].siActiveYn) || arr[i].siActiveYn == "") {
+                alert("활성화여부를 입력 해주세요.");
+                return false;
+            }
+
+            if(arr[i].siActiveYn == 'Y'){
+                if (arr[i].targetName == null || wijmo.isEmpty(arr[i].targetName) || arr[i].targetName == "") {
+                    alert("기관을 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].targetCatName == null || arr[i].targetCatName == "") {
+                    alert("분류를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].targetCatCd == null || wijmo.isEmpty(arr[i].targetCatCd) || arr[i].targetCatCd == "") {
+                    alert("분류코드를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].locCode == null || wijmo.isEmpty(arr[i].locCode) || arr[i].locCode == "") {
+                    alert("지역코드를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].siTitle == null || wijmo.isEmpty(arr[i].siTitle) || arr[i].siTitle == "") {
+                    alert("제목을 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].mobileUrl == null || wijmo.isEmpty(arr[i].mobileUrl) || arr[i].mobileUrl == "") {
+                    alert("모바일주소를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].pcUrl == null || wijmo.isEmpty(arr[i].pcUrl) || arr[i].pcUrl == "") {
+                    alert("피시주소를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].siEndDt == null || wijmo.isEmpty(arr[i].siEndDt) || arr[i].siEndDt == "") {
+                    alert("마감일을 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].siCretDt == null || wijmo.isEmpty(arr[i].siCretDt) || arr[i].siCretDt == "") {
+                    alert("생성일을 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].businessCtg == null || wijmo.isEmpty(arr[i].businessCtg) || arr[i].businessCtg == "") {
+                    alert("사업분야를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].techCtg == null || wijmo.isEmpty(arr[i].techCtg) || arr[i].techCtg == "") {
+                    alert("기술분야를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].businessType == null || wijmo.isEmpty(arr[i].businessType) || arr[i].businessType == "") {
+                    alert("사업자형태를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].companyType == null || wijmo.isEmpty(arr[i].companyType) || arr[i].companyType == "") {
+                    alert("기업형태를 입력 해주세요.");
+                    return false;
+                }
+
+                if (arr[i].startPeriod == null || wijmo.isEmpty(arr[i].startPeriod) || arr[i].startPeriod == "") {
+                    alert("창업기간을 입력 해주세요.");
+                    return false;
+                }
+
+                if(text =='corp'){
+                    if (arr[i].corpCd == null || wijmo.isEmpty(arr[i].corpCd) || arr[i].corpCd == "") {
+                        alert("고객사코드를 입력 해주세요.");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        if (!confirm(arr.length + "건의 상태를 변경하시겠습니까?")) return false;
 
         /* observer배열에서 기본배열로 옮겨담는다 */
-        let rows = editItem.map(obj => obj);
+        let rows = arr.map(obj => obj);
 
         let url = text == 'support' ? "/cms/support/uploadExcel" : "/cms/corp/support/uploadExcel";
 
@@ -992,7 +1087,6 @@
     //컬럼위치저장
     function getGrid(){
 
-        console.log("setGrid >>> " , text);
         if(text == 'corp') _getUserGridLayout(text+'Layout', corpGrid, corpSelector);
         else _getUserGridLayout(text+'Layout', supportGrid);
     }

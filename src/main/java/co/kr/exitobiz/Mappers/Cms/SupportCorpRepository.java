@@ -127,6 +127,7 @@ public class SupportCorpRepository {
                 .set(supportCorp.businessType, vo.getBusinessType())
                 .set(supportCorp.companyType, vo.getCompanyType())
                 .set(supportCorp.startPeriod, vo.getStartPeriod())
+                .set(supportCorp.corpCd, vo.getCorpCd())
                 //.set(support.siCretDt, LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .where(supportCorp.siIdx.eq(vo.getSiIdx()))
                 .execute();
