@@ -23,19 +23,19 @@
             <div class="main_summary">
                 <dl>
                     <dt>전체 수</dt>
-                    <dd><%=request.getAttribute("totalSupportCnt")%>개</dd>
+                    <dd id="totalCnt"><%=request.getAttribute("totalSupportCnt")%>개</dd>
                 </dl>
                 <dl>
                     <dt>지원사업(Y)</dt>
-                    <dd><%=request.getAttribute("activeYCnt")%>개</dd>
+                    <dd id="activeYCnt"><%=request.getAttribute("activeYCnt")%>개</dd>
                 </dl>
                 <dl>
                     <dt>지원사업(N)</dt>
-                    <dd><%=request.getAttribute("activeNCnt")%>개</dd>
+                    <dd id="activeNCnt"><%=request.getAttribute("activeNCnt")%>개</dd>
                 </dl>
                 <dl>
                     <dt>전체 조회수</dt>
-                    <dd><%=request.getAttribute("allViewCnt")%>개</dd>
+                    <dd id="viewCnt"><%=request.getAttribute("allViewCnt")%>개</dd>
                 </dl>
                 <dl>
                     <dt>조회수 TOP 지역</dt>
@@ -652,7 +652,7 @@
             supportGrid.itemsSource = supportView;
         }
 
-        refreshPaging(supportGrid.collectionView.totalItemCount, 1, supportGrid, text+'Grid');  // 페이징 초기 셋팅
+        refreshPaging(supportGrid.collectionView.totalItemCount, 1, supportGrid, 'supportGrid');  // 페이징 초기 셋팅
 
     }
 
@@ -829,7 +829,10 @@
                 if(type == 'corp') loadGridCorpList('search', result);
                 else loadGridSupportList('search', result);
 
-                console.log("result>>", result);
+                document.getElementById('totalCnt').innerText = result.length + "개";
+                document.getElementById('activeYCnt').innerText = result.filter(v => v.siActiveYn == 'Y').length + "개";
+                document.getElementById('activeNCnt').innerText = result.filter(v => v.siActiveYn == 'N').length + "개";
+                document.getElementById('viewCnt').innerText = result.map(v => v.viewCnt).reduce((acc, cur) => acc + cur, 0) + "개";
 
             },
             error: function (request, status, error) {
@@ -988,6 +991,8 @@
 
     //컬럼위치저장
     function getGrid(){
+
+        console.log("setGrid >>> " , text);
         if(text == 'corp') _getUserGridLayout(text+'Layout', corpGrid, corpSelector);
         else _getUserGridLayout(text+'Layout', supportGrid);
     }
