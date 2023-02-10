@@ -28,8 +28,6 @@ public class SupportCorpServiceImpl implements SupportCorpService {
 
     private final SupportCorpRepository supportCorpRepository;
 
-
-
     @Override
     public List<SupportCorp> findByIdx(Integer idx) {
         return null;
