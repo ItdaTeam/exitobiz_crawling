@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -35,17 +36,22 @@ public class FileServiceImpl implements FileService {
 
     // 파일 삭제
     @Override
-    public String deleteFile(HashMap<String, String> params) throws Exception {
-        String filePath = "/var/upload/img" + params.get("filePath");  // 삭제할 파일 경로
-        String fileName = params.get("fileName"); // 삭제할 파일명
-        String result ; // 결과 메세지
+    public String deleteFile(HashMap<String, Object> params) throws Exception {
+        String filePath = "/var/upload" + params.get("filePath");  // 삭제할 파일 경로
+        //String fileName = params.get("fileName"); // 삭제할 파일명
+
+        ArrayList fileNameList = (ArrayList) params.get("fileName");
+        String result ="file delete fail"; // 결과 메세지
         try{
-            File dest = new File(filePath + "/" + fileName);
-            if(dest.exists()){   // 파일이 존재하는 경우
-                dest.delete();
-                result = "file delete success";
-            }else{  // 파일이 존재하지 않는 경우
-                result = "file is not exist";
+            for(int i=0; i< fileNameList.size(); i++){
+                File dest = new File(filePath + "/" + fileNameList.get(i));
+
+                if(dest.exists()){   // 파일이 존재하는 경우
+                    dest.delete();
+                    result = "file delete success";
+                }else{  // 파일이 존재하지 않는 경우
+                    result = "file is not exist";
+                }
             }
         }catch (Exception e){ // 실패시 예외처리
             e.printStackTrace();

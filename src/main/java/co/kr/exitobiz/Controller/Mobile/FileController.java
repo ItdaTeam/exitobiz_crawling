@@ -1,16 +1,16 @@
 package co.kr.exitobiz.Controller.Mobile;
 
 import co.kr.exitobiz.Service.Mobile.FileService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value = "/file")
 public class FileController {
     
@@ -24,10 +24,10 @@ public class FileController {
         return fileService.uploadFile(file, params);
     }
 
-    //앱에서 파일 삭제
-    @RequestMapping(value = "/deleteFile")
+    //앱에서 파일 삭제 (params : filePath, fileName[arr])
+    @PostMapping(value = "/deleteFile")
     @ResponseBody
-    public String deleteFile(@RequestParam HashMap<String,String> params) throws Exception{
+    public String deleteFile(@RequestBody HashMap<String,Object> params) throws Exception{
         return fileService.deleteFile(params);
     }
 }
