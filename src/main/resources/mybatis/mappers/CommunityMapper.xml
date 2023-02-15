@@ -90,7 +90,7 @@
                               where 1=1
                                 and delete_yn = false
                                 and report_yn = false
-                                and step = 1
+--                                 and step = 1
                               group by c_content_id
                           ) as cc2 on cc2.c_content_id = cc.id
                             left outer join (
