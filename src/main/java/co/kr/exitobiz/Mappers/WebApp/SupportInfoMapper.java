@@ -2,6 +2,7 @@ package co.kr.exitobiz.Mappers.WebApp;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface SupportInfoMapper {
 
     public HashMap<String, Object> getSPDetailData(HashMap<String, Object> params); // 지원사업 상세 조회
 
+    public void updateViewCnt(HashMap<String, Object> params) throws ParseException; // 지원사업 조회수 1증가
 }

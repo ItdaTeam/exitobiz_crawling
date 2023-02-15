@@ -43,4 +43,8 @@ public class SupportInfoServiceImpl implements SupportInfoService {
     }
 
 
+    @Override
+    public void updateViewCnt(HashMap<String, Object> params) throws ParseException {
+        supportInfoMapper.updateViewCnt(params);
+    }
 }

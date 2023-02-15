@@ -14,8 +14,6 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 @RequestMapping("/support")
 public class SupportInfoController {
-
-
     private final SupportInfoService supportService;
 
     //지원사업 리스트(정렬조건, 검색조건, 조회필터 포함)
@@ -40,4 +38,12 @@ public class SupportInfoController {
         return jsonStr;
     }
 
+    //게시물 조회수 1 증가
+    @PostMapping("/updateViewCnt")
+    @ResponseBody
+    public void updateViewCnt(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException {
+        if(header.get("user_id") != null) body.put("mb_cret_id", header.get("user_id"));
+
+        supportService.updateViewCnt(body);
+    }
 }

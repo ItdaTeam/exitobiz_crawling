@@ -125,6 +125,7 @@
         </choose>
     </select>
 
+
     <select id="getSPDetailData" parameterType="HashMap" resultType="HashMap">
         select *,(
             select count(*)
@@ -145,4 +146,11 @@
             left outer join itda_app.my_bookmark mb  on si.si_idx = mb.mb_addidx and mb.mb_cret_id = #{mb_cret_id}
         where si_idx = #{si_idx}
     </select>
+
+
+    <update id="updateViewCnt" parameterType="HashMap">
+        update itda_app.support_info
+        set view_cnt = view_cnt + 1
+        where si_idx = #{si_idx}
+    </update>
 </mapper>
