@@ -36,7 +36,7 @@ SELECT usertoken
           <if test="userlocs != null">
               AND userloc in
               <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
-                  #{loc}
+                  #{loc
               </foreach>
           </if>
       union
@@ -364,37 +364,41 @@ SELECT usertoken
         VALUES(#{user_id}, #{companyName}, #{repName}, #{supportTarget}, #{startPeriod}, #{locCtg}, #{companyType}, #{businessType}, #{supportType}, #{businessCtg}, #{techCtg}, now(), #{user_id}, #{intro})
         ON CONFLICT (user_id) DO UPDATE
         SET
-             company_name = #{companyName}
-            ,rep_name = #{repName}
+        <if test="companyName != null">
+             company_name = #{companyName},
+        </if>
+        <if test="repName != null">
+            rep_name = #{repName},
+        </if>
         <if test="supportTarget != null and supportTarget != '' ">
-            ,support_target = #{supportTarget}
+            support_target = #{supportTarget},
         </if>
         <if test="startPeriod != null and startPeriod != '' ">
-            ,start_period = #{startPeriod}
+            start_period = #{startPeriod},
         </if>
         <if test="locCtg != null and locCtg != '' ">
-            ,loc_ctg = #{locCtg}
+            loc_ctg = #{locCtg},
         </if>
         <if test="companyType != null and companyType != '' ">
-            ,company_type = #{companyType}
+            company_type = #{companyType},
         </if>
         <if test="businessType != null and businessType != '' ">
-            ,business_type = #{businessType}
+            business_type = #{businessType},
         </if>
         <if test="supportType != null and supportType != '' ">
-            ,support_type = #{supportType}
+            support_type = #{supportType},
         </if>
         <if test="businessCtg != null and businessCtg != '' ">
-            ,business_ctg = #{businessCtg}
+            business_ctg = #{businessCtg},
         </if>
         <if test="techCtg != null and techCtg != '' ">
-            ,tech_ctg = #{techCtg}
+            tech_ctg = #{techCtg},
         </if>
         <if test="intro != null and intro != '' ">
-            ,intro = #{intro}
+            intro = #{intro},
         </if>
-            ,updt_dt = now()
-            ,updt_id = #{user_id}
+            updt_dt = now(),
+            updt_id = #{user_id}
 
     </update>
 
@@ -428,7 +432,9 @@ SELECT usertoken
         update itda_app.usertable u
         SET mos= #{mos},
             minfo= #{minfo},
+            <if test="userToken != null">
             usertoken=#{userToken},
+            </if>
             last_time = NOW(),
             appversion = #{appversion}
         WHERE id = #{userid}
