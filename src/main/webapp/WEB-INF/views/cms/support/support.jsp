@@ -1152,7 +1152,7 @@
     // 엑셀그리드 저장
     function saveGrid() {
         // 엑셀 업로드 저장하기
-        var item = text == 'support ' ? excelGrid.rows : corpExcelGrid.rows;
+        var item = text == 'support' ? excelGrid.rows : corpExcelGrid.rows;
         var rows = [];
         var params;
         var grid = text == 'support' ? excelGrid : corpExcelGrid;
