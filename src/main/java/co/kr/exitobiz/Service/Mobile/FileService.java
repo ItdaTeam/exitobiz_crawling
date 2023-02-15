@@ -8,7 +8,7 @@ public interface FileService {
 
     public String uploadFile(MultipartFile file, HashMap<String,String>params) throws Exception;
 
-    public String deleteFile(HashMap<String,String>params) throws Exception;
+    public String deleteFile(HashMap<String, Object> params) throws Exception;
 
     String fileNameGenerator(MultipartFile file);
 }

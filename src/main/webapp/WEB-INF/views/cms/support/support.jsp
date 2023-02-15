@@ -335,8 +335,17 @@
     var text = 'crawling'; // 탭 텍스트
 
     $(document).ready(function () {
+        //조회일 기본값 설정
+        const month = new Date().getMonth();
+        const day = new Date().getDate();
+
+
+        $("#fromDate").val(new Date(new Date().setDate(day - 1)).toISOString().slice(0,10));
+        $('#toDate').val( new Date().toISOString().slice(0,10));
         pageOnLoad();
         getList();
+
+
 
         //  지원사업관리 탭메뉴
         $(".TabM1").click(function(){
@@ -344,7 +353,10 @@
             $(".TabM2, .TabM3").css("background-color","#fff").css("border","1px solid #ddd");
             $("#supportDiv").css("display","block");
             $('.uploadExcel, .addGrid, .delGrid, .editGrid, #supportDiv2').css('display', 'none');
+
+            $("#fromDate").val(new Date(new Date().setDate(day - 1)).toISOString().slice(0,10));
             text = 'crawling';
+
             getList();
         });
 
@@ -354,6 +366,8 @@
             $("#supportDiv2, .addGrid, .delGrid, .editGrid").css("display","none");
             $("#supportDiv").css("display","block");
             $('.uploadExcel').css('display', 'inline');
+
+            $("#fromDate").val(new Date(new Date().setMonth(month - 1)).toISOString().slice(0,10));
             text = 'support';
             getList();
         });
@@ -364,18 +378,13 @@
             $("#supportDiv").css("display","none");
             $("#supportDiv2").css("display","block");
             $('.uploadExcel, .addGrid, .delGrid, .editGrid').css('display', 'inline');
+
+            $("#fromDate").val(new Date(new Date().setMonth(month - 1)).toISOString().slice(0,10));
             text = 'corp';
             getList();
         });
 
     });
-
-    //조회일 기본값 설정
-    const month = new Date().getMonth();
-    const day = new Date().getDate();
-
-    document.getElementById("fromDate").value = new Date(new Date().setMonth(month - 1)).toISOString().slice(0,10);
-    document.getElementById("toDate").value = new Date().toISOString().slice(0,10);
 
     function pageOnLoad() {
         loadGridSupportList('init');
