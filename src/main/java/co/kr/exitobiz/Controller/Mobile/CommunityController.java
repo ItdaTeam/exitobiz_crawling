@@ -157,6 +157,21 @@ public class CommunityController {
         return communityService.getCommunityDetail(communityVo);
     }
 
+
+    //게시글 조회수 증가
+    @PostMapping("/viewCntUp")
+    @ResponseBody
+    public String insertViewCnt(CommunityVo communityVo) throws ParseException{
+        String result = "fail";
+        try{
+            communityService.insertViewCnt(communityVo);
+            result = "scucess";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     // 게시글 추가
     @PostMapping("/")
     @ResponseBody

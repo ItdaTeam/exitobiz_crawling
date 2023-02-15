@@ -24,6 +24,8 @@ public interface CommunityService {
 
     HashMap<String, Object> getCommunityDetail(CommunityVo communityVo);
 
+    void insertViewCnt(CommunityVo communityVo) throws ParseException;
+
     void insertCommunity(CommunityVo communityVo) throws ParseException;
 
     void updateCommunity(CommunityVo communityVo) throws ParseException;

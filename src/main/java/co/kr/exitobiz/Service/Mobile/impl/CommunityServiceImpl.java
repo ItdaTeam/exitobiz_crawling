@@ -62,6 +62,11 @@ public class CommunityServiceImpl implements CommunityService {
     }
 
     @Override
+    public void insertViewCnt(CommunityVo communityVo) throws ParseException {
+        communityMapper.insertViewCnt(communityVo);
+    }
+
+    @Override
     @Transactional
     public void insertCommunity(CommunityVo communityVo) throws ParseException {
         StringBuilder ImgPath = new StringBuilder();

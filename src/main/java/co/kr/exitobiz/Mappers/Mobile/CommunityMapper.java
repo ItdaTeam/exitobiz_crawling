@@ -25,6 +25,8 @@ public interface CommunityMapper {
 
     public HashMap<String, Object> getCommunityDetail(CommunityVo vo); // 커뮤니티 상세 조회
 
+    public void insertViewCnt(CommunityVo vo); // 조회수 증가
+
     public void insertCommunity(CommunityVo vo); // 커뮤니티 추가
 
     public void updateCommunity(CommunityVo vo); // 커뮤니티 수정
