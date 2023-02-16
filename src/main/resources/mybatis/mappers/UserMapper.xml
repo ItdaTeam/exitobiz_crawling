@@ -36,7 +36,7 @@ SELECT usertoken
           <if test="userlocs != null">
               AND userloc in
               <foreach collection="userlocs" item="loc" index="idx" separator="," open="(" close=")">
-                  #{loc
+                  #{loc}
               </foreach>
           </if>
       union
