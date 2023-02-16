@@ -86,7 +86,7 @@
                           select cc.id, cc.user_id, cc.title, cc.content, u.usernickname, u.idprofile, cc.cret_dt, cc.view_count, coalesce(cc2.cnt, 0) as comment_cnt, coalesce(cclh.cl_cnt, 0) as like_cnt from itda_web.community_content cc
                             left outer join itda_app.usertable u on cc.user_id  = u.id
                             left outer join (
-                              select c_content_id, count(*) as cnt from itda_app.community_comment기
+                              select c_content_id, count(*) as cnt from itda_app.community_comment
                               where 1=1
                                 and delete_yn = false
                                 and report_yn = false
@@ -225,12 +225,9 @@
     </select>
 
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
-        with up_view as (
-        update itda_web.community_content set view_count = view_count+1 where id= #{id} returning *
-        )
-        select (select view_count from up_view) view_count,*
+        select *
         from (
-        select cc.id, cc.user_id, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, coalesce(cc2.cnt, 0) as comment_cnt
+            select cc.id, cc.user_id, cc.view_count, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, coalesce(cc2.cnt, 0) as comment_cnt
             , coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id),0) like_cnt
         <if test="userId != null and userId != '' ">
             ,cclh.thumb_up
