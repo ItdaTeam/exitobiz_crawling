@@ -83,4 +83,9 @@ public class MainpageServiceImpl implements MainpageService {
     public void upViewCnt(HashMap<String, Object> params) {
         mainpageMapper.upViewCnt(params);
     }
+
+    @Override
+    public HashMap<String, Object> getSupportableCnt() throws ParseException {
+        return mainpageMapper.getSupportableCnt();
+    }
 }

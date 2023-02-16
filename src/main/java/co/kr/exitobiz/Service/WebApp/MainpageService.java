@@ -34,4 +34,6 @@ public interface MainpageService {
     List<HashMap> getPushBookList(HashMap<String, Object> params) throws ParseException; // 엑시토 추천 리스트
 
     void upViewCnt(HashMap<String, Object> params);
+
+    HashMap<String, Object> getSupportableCnt() throws ParseException; // 지원가능한 사업 갯수 조회
 }

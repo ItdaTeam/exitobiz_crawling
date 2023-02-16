@@ -251,4 +251,13 @@ public class MainpageController {
         return result;
     }
 
+    //지원가능한 갯수 조회
+    @PostMapping("/getSupportableCnt")
+    @ResponseBody
+    public String getSupportableCnt() throws ParseException, JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(mainpageService.getSupportableCnt());
+        return jsonStr;
+    }
+
 }

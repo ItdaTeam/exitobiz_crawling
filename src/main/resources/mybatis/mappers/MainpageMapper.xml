@@ -116,4 +116,9 @@
           and si_idx = #{si_idx}::integer
 
     </update>
+
+    <select id="getSupportableCnt" resultType="HashMap">
+        select count(*) from itda_app.support_info si where si.si_end_dt::date >= current_date and si.si_active_yn = 'Y'
+    </select>
+
 </mapper>

@@ -35,4 +35,6 @@ public interface MainpageMapper {
     public List<HashMap> getPushBookList(HashMap<String, Object> params); // 엑시토 추천 리스트
 
     void upViewCnt(HashMap<String, Object> params);
+
+    public HashMap<String, Object> getSupportableCnt(); // 지원가능 갯수 조회
 }
