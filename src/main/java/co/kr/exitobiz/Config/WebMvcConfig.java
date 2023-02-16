@@ -33,7 +33,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "https://exitobiz.co.kr",
                         "https://www.exitobiz.co.kr",
                         "http://218.38.52.223:8080",
-                        "https://itdabiz.co.kr:8080"
+                        "https://itdabiz.co.kr:8080",
+                        "https://dev.exitobiz.co.kr"
                 ) // 허용할 출처
                 .allowedMethods("*") // 허용할 HTTP method
                 .allowCredentials(true) // 쿠키 인증 요청 허용
