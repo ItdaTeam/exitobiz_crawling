@@ -32,64 +32,11 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="/js/id.js"></script>
 
- <script>
-$("#btn").click(function(){
-    
-    var formData = new FormData($("#fileForm")[0]);
- 
-    $.ajax({
-        type : 'get',
-        url : '/file/uploadFile' + "?filePath=/",
-        data : formData,
-        processData : false,
-        dataType : "json",
-        contentType : false,
-        async    : false,
-        success : function(data) {
-            alert("파일 업로드 성공.");
-        },
-        error : function(error) {
-            alert("파일 업로드에 실패하였습니다.");
-           
-        }
-    });      
- 
-});  
-
-$("#delete").click(function(){
-     
-    param = {
-        filePath : "/test",
-        fileName : "1.png"
-    }
-
-    $.ajax({
-        type : 'post',
-        url : '/file/deleteFile",
-        data : formData,
-        processData : false,
-        dataType : text,
-        contentType : false,
-        async    : false,
-        success : function(data) {
-            alert("파일 삭제 성공.");
-        },
-        error : function(error) {
-            alert("파일 업로드에 실패하였습니다.");
-           
-        }
-    });      
- 
-}); 
-</script>
 </head>
 
 <body>
-<form id="fileForm" action="/test/file/uploadAjax" method="post" enctype="multipart/form-data">
-<input type="file">
-<button type="button" id="btn" onclick="test();">전송</button>
-<button type="button" id="delete" onclick="delete();">삭제</button>
-<form>
+iframe test!!
+<iframe src="https://exitobiz.co.kr/Hyundai/Hyundai_p" style="width: 100%; height: 2068px"></iframe>
 </body>
 
 </html>

@@ -35,6 +35,12 @@ public class ItdaController {
         return "landing";
     }
 
+    @RequestMapping(value = "/test")
+    public String test(){
+        return "test";
+    }
+
+
     //이용약관페이지
     @RequestMapping(value = "/standard")
     public String standard(HttpServletRequest req)
