@@ -1,6 +1,7 @@
 package co.kr.exitobiz.Controller.WebApp;
 
 import co.kr.exitobiz.Service.WebApp.MainpageService;
+import co.kr.exitobiz.Vo.Api.AppleVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.HashMap;
 
@@ -25,6 +27,13 @@ public class MainpageController {
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = mapper.writeValueAsString(mainpageService.getSearchHotKeyWord());
         return jsonStr;
+    }
+
+
+    @RequestMapping(value="/AppleLogin", method=RequestMethod.POST)
+    public String getAppleLogin(@RequestBody String appleData) throws UnsupportedEncodingException {
+
+        return "redirect:https://dev.exitobiz.co.kr/AppleLogin#" + appleData;
     }
 
     // 나의 최근 키워드 리스트
