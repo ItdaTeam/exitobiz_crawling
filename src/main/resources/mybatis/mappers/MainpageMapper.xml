@@ -34,7 +34,7 @@
     </insert>
 
     <select id="getBannerList" resultType="hashMap">
-        select * from itda_web.banner where active_yn = 'Y' order by index asc
+        select * from itda_web.banner where active_yn = 'Y' order by sort asc
     </select>
 
     <select id="getTotalCount" resultType="HashMap">
