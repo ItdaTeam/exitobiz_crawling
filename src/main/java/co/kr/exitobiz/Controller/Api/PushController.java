@@ -179,16 +179,16 @@ public class PushController {
         HashMap<String, Object> bannObj = bannerService.getBanner(bannParams);
 
         if(params.get("keyId").equals("noti")){
-            params.put("url" , "exitobiz.co.kr/notice/noticeView/" + params.get("idx"));
+            params.put("url" , "https://exitobiz.co.kr/notice/noticeView/" + params.get("idx"));
         }else if(params.get("keyId").equals("cus1")){
-            params.put("url" , "exitobiz.co.kr/community/communityView/" + params.get("idx"));
+            params.put("url" , "https://exitobiz.co.kr/community/communityView/" + params.get("idx"));
         }else if(params.get("keyId").equals("bann")){
             if(bannObj.get("banner_ctg").equals("I") || bannObj.get("banner_ctg").equals("O")){
                 params.put("url", (String) bannObj.get("banner_link"));
             }else if(bannObj.get("banner_ctg").equals("N")){
-                params.put("url", "exitobiz.co.kr/notice/noticeList");
+                params.put("url", "https://exitobiz.co.kr/notice/noticeList");
             }else if(bannObj.get("banner_ctg").equals("ND")){
-                params.put("url", "exitobiz.co.kr/notice/noticeList/" + params.get("idx"));
+                params.put("url", "https://exitobiz.co.kr/notice/noticeList/" + params.get("idx"));
             }
         }
 
@@ -198,7 +198,7 @@ public class PushController {
         if(!userTokens.isEmpty()){
             pushMultipleService.savePush(params);
             try{
-                pushMultipleService.sendListPush(params, userTokens);
+                pushMultipleService.sendListPushTest(params, userTokens);
             }catch (Exception e) {
                 e.printStackTrace();
             }finally {
