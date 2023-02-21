@@ -107,7 +107,9 @@
                 </foreach>
             </trim>
         </if>
+        <if test='end_dt != null and end_dt == "true"'>
             and si_end_dt <![CDATA[>=]]> now()::date
+        </if>
         order by
         <choose>
             <when test='ord == "인기순"'>
