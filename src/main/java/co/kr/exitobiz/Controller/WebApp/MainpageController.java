@@ -4,45 +4,23 @@ import co.kr.exitobiz.Service.WebApp.MainpageService;
 import co.kr.exitobiz.Util.HttpClientUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auth.oauth2.JwtClaims;
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSSigner;
-import com.nimbusds.jose.crypto.ECDSASigner;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import com.nimbusds.jose.jwk.ECKey;
-import com.nimbusds.jwt.JWT;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.InvalidKeyException;
 import lombok.RequiredArgsConstructor;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.Key;
 import java.security.PrivateKey;
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.ECPublicKey;
-import java.security.interfaces.RSAPrivateKey;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -60,12 +38,13 @@ public class MainpageController {
     private final MainpageService mainpageService;
 
     private static final String TEAM_ID = "Z5R3BPPHVX";
-    private static final String REDIRECT_URI = "https://dev.exitobiz.co.kr:8443/mainpage/AppleLogin";
-    private static final String CLIENT_ID = "kr.co.exitobiz";
+    private static final String WEB_CLIENT_ID = "kr.co.exitobiz";
+    private static final String APP_CLIENT_ID = "com.ctns.itdaUser";
     private static final String KEY_ID = "5Q9A2LP44F";
 
     private static final String AUTH_URL = "https://appleid.apple.com";
     private static final String KEY_PATH = "static/apple/AuthKey_5Q9A2LP44F.p8";
+
 
 
     // 인기 키워드 리스트
@@ -77,77 +56,16 @@ public class MainpageController {
         return jsonStr;
     }
 
-//    @RequestMapping(value = "/login/getAppleAuthUrl")
-//    public @ResponseBody String getAppleAuthUrl(HttpServletRequest req) throws Exception{
-//        String reqUrl = AUTH_URL + "/auth/authorize?client_id=" + CLIENT_ID +
-//                "&redirect_uri=" + REDIRECT_URI +
-//                "&response_type=code id_token&scope=name email&response_mode=form_post";
-//
-//        return reqUrl;
-//    }
-
-
-//    @RequestMapping(value = "/login/oauth_apple")
-//    public String oauth_apple(HttpServletRequest req, @RequestParam(value="code", required = false) String code, HttpServletResponse res, Model model) throws Exception{
-//        if(code == null) return "/";
-//
-//        String client_id = CLIENT_ID;
-//        return "ss";
-//    }
-
-//    public String createClientSecret(String teamId, String clientId, String keyId, String keyPath, String authUrl) throws Exception{
-//        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(keyId).build();
-////        "kty": "RSA",
-////                "kid": "YuyXoY",
-////                "use": "sig",
-////                "alg": "RS256",
-////                "n": "1JiU4l3YCeT4o0gVmxGTEK1IXR-Ghdg5Bzka12tzmtdCxU00ChH66aV-4HRBjF1t95IsaeHeDFRgmF0lJbTDTqa6_VZo2hc0zTiUAsGLacN6slePvDcR1IMucQGtPP5tGhIbU-HKabsKOFdD4VQ5PCXifjpN9R-1qOR571BxCAl4u1kUUIePAAJcBcqGRFSI_I1j_jbN3gflK_8ZNmgnPrXA0kZXzj1I7ZHgekGbZoxmDrzYm2zmja1MsE5A_JX7itBYnlR41LOtvLRCNtw7K3EFlbfB6hkPL-Swk5XNGbWZdTROmaTNzJhV-lWT0gGm6V1qWAK2qOZoIDa_3Ud0Gw",
-////                "e": "AQAB"
-//
-//        Date now = new Date();
-//        JWTClaimsSet jwtClaim = new JWTClaimsSet.Builder()
-//                .issuer(teamId)
-//                .audience(authUrl)
-//                .subject(clientId)
-//                .expirationTime(new Date(now.getTime() + 3600000))
-//                .issueTime(now)
-//                .build();
-//
-////
-//        SignedJWT jwt = new SignedJWT(header, jwtClaim);
-////
-////
-////        try {
-////            ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey(keyPath));
-////        } catch (InvalidKeyException e) {
-////            e.printStackTrace();
-////        } catch (JOSEException e) {
-////            e.printStackTrace();
-////        }
-//
-//        return jwt.serialize();
-//    }
 
     @PostMapping("/getAppleToken")
     @ResponseBody
     public String getAppleToken(@RequestHeader HashMap<String, Object> header) throws ParseException, IOException {
-        Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
-
-        String makeClientSecret = Jwts.builder()
-                .setHeaderParam("kid", KEY_ID)
-                .setHeaderParam("alg", "ES256")
-                .setIssuer(TEAM_ID)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(expirationDate)
-                .setAudience("https://appleid.apple.com")
-                .setSubject(CLIENT_ID)
-                .signWith(this.getPrivateKey(), SignatureAlgorithm.ES256)
-                .compact();
+        String CLIENT_ID = header.get("os").equals("app") ?  APP_CLIENT_ID :  WEB_CLIENT_ID;
+        header.put("CLIENT_ID",CLIENT_ID);
 
         Map<String, String> tokenRequest = new HashMap<>();
-
         tokenRequest.put("client_id", CLIENT_ID);
-        tokenRequest.put("client_secret", makeClientSecret);
+        tokenRequest.put("client_secret", makeClientSecret(header));
         tokenRequest.put("grant_type", "authorization_code");
         tokenRequest.put("code", (String) header.get("code"));
 
@@ -159,23 +77,13 @@ public class MainpageController {
     @ResponseBody
     public String revokeApple(@RequestHeader HashMap<String, Object> header) throws ParseException, IOException {
         String result = "fail";
-        Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
 
-        String makeClientSecret = Jwts.builder()
-                .setHeaderParam("kid", KEY_ID)
-                .setHeaderParam("alg", "ES256")
-                .setIssuer(TEAM_ID)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(expirationDate)
-                .setAudience("https://appleid.apple.com")
-                .setSubject(CLIENT_ID)
-                .signWith(this.getPrivateKey(), SignatureAlgorithm.ES256)
-                .compact();
+        String CLIENT_ID = header.get("os").equals("app") ?  APP_CLIENT_ID :  WEB_CLIENT_ID;
+        header.put("CLIENT_ID",CLIENT_ID);
 
         Map<String, String> tokenRequest = new HashMap<>();
-
         tokenRequest.put("client_id", CLIENT_ID);
-        tokenRequest.put("client_secret", makeClientSecret);
+        tokenRequest.put("client_secret", makeClientSecret(header));
         tokenRequest.put("token", (String) header.get("access_token"));
 
         try{
@@ -197,13 +105,25 @@ public class MainpageController {
         return converter.getPrivateKey(object);
     }
 
+    public String makeClientSecret(HashMap<String, Object> params) throws IOException {
 
+        Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
+        return  Jwts.builder()
+                .setHeaderParam("kid", KEY_ID)
+                .setHeaderParam("alg", "ES256")
+                .setIssuer(TEAM_ID)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(expirationDate)
+                .setAudience(AUTH_URL)
+                .setSubject((String) params.get("CLIENT_ID"))
+                .signWith(this.getPrivateKey(), SignatureAlgorithm.ES256)
+                .compact();
+    }
 
     @RequestMapping(value="/AppleLogin", method=RequestMethod.POST)
     public void getAppleLogin(@RequestBody String appleData, HttpServletResponse response ) throws IOException {
         response.addHeader("Access-Control-Allow-Origin","*");
         response.sendRedirect("https://dev.exitobiz.co.kr/AppleLogin#" + appleData);
-        //return "redirect:" + appleData;
     }
 
     // 나의 최근 키워드 리스트
