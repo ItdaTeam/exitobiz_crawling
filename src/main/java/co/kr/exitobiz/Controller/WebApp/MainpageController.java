@@ -77,56 +77,56 @@ public class MainpageController {
         return jsonStr;
     }
 
-    @RequestMapping(value = "/login/getAppleAuthUrl")
-    public @ResponseBody String getAppleAuthUrl(HttpServletRequest req) throws Exception{
-        String reqUrl = AUTH_URL + "/auth/authorize?client_id=" + CLIENT_ID +
-                "&redirect_uri=" + REDIRECT_URI +
-                "&response_type=code id_token&scope=name email&response_mode=form_post";
-
-        return reqUrl;
-    }
-
-
-    @RequestMapping(value = "/login/oauth_apple")
-    public String oauth_apple(HttpServletRequest req, @RequestParam(value="code", required = false) String code, HttpServletResponse res, Model model) throws Exception{
-        if(code == null) return "/";
-
-        String client_id = CLIENT_ID;
-        return "ss";
-    }
-
-    public String createClientSecret(String teamId, String clientId, String keyId, String keyPath, String authUrl) throws Exception{
-        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(keyId).build();
-//        "kty": "RSA",
-//                "kid": "YuyXoY",
-//                "use": "sig",
-//                "alg": "RS256",
-//                "n": "1JiU4l3YCeT4o0gVmxGTEK1IXR-Ghdg5Bzka12tzmtdCxU00ChH66aV-4HRBjF1t95IsaeHeDFRgmF0lJbTDTqa6_VZo2hc0zTiUAsGLacN6slePvDcR1IMucQGtPP5tGhIbU-HKabsKOFdD4VQ5PCXifjpN9R-1qOR571BxCAl4u1kUUIePAAJcBcqGRFSI_I1j_jbN3gflK_8ZNmgnPrXA0kZXzj1I7ZHgekGbZoxmDrzYm2zmja1MsE5A_JX7itBYnlR41LOtvLRCNtw7K3EFlbfB6hkPL-Swk5XNGbWZdTROmaTNzJhV-lWT0gGm6V1qWAK2qOZoIDa_3Ud0Gw",
-//                "e": "AQAB"
-
-        Date now = new Date();
-        JWTClaimsSet jwtClaim = new JWTClaimsSet.Builder()
-                .issuer(teamId)
-                .audience(authUrl)
-                .subject(clientId)
-                .expirationTime(new Date(now.getTime() + 3600000))
-                .issueTime(now)
-                .build();
-
+//    @RequestMapping(value = "/login/getAppleAuthUrl")
+//    public @ResponseBody String getAppleAuthUrl(HttpServletRequest req) throws Exception{
+//        String reqUrl = AUTH_URL + "/auth/authorize?client_id=" + CLIENT_ID +
+//                "&redirect_uri=" + REDIRECT_URI +
+//                "&response_type=code id_token&scope=name email&response_mode=form_post";
 //
-        SignedJWT jwt = new SignedJWT(header, jwtClaim);
-//
-//
-//        try {
-//            ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey(keyPath));
-//        } catch (InvalidKeyException e) {
-//            e.printStackTrace();
-//        } catch (JOSEException e) {
-//            e.printStackTrace();
-//        }
+//        return reqUrl;
+//    }
 
-        return jwt.serialize();
-    }
+
+//    @RequestMapping(value = "/login/oauth_apple")
+//    public String oauth_apple(HttpServletRequest req, @RequestParam(value="code", required = false) String code, HttpServletResponse res, Model model) throws Exception{
+//        if(code == null) return "/";
+//
+//        String client_id = CLIENT_ID;
+//        return "ss";
+//    }
+
+//    public String createClientSecret(String teamId, String clientId, String keyId, String keyPath, String authUrl) throws Exception{
+//        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).keyID(keyId).build();
+////        "kty": "RSA",
+////                "kid": "YuyXoY",
+////                "use": "sig",
+////                "alg": "RS256",
+////                "n": "1JiU4l3YCeT4o0gVmxGTEK1IXR-Ghdg5Bzka12tzmtdCxU00ChH66aV-4HRBjF1t95IsaeHeDFRgmF0lJbTDTqa6_VZo2hc0zTiUAsGLacN6slePvDcR1IMucQGtPP5tGhIbU-HKabsKOFdD4VQ5PCXifjpN9R-1qOR571BxCAl4u1kUUIePAAJcBcqGRFSI_I1j_jbN3gflK_8ZNmgnPrXA0kZXzj1I7ZHgekGbZoxmDrzYm2zmja1MsE5A_JX7itBYnlR41LOtvLRCNtw7K3EFlbfB6hkPL-Swk5XNGbWZdTROmaTNzJhV-lWT0gGm6V1qWAK2qOZoIDa_3Ud0Gw",
+////                "e": "AQAB"
+//
+//        Date now = new Date();
+//        JWTClaimsSet jwtClaim = new JWTClaimsSet.Builder()
+//                .issuer(teamId)
+//                .audience(authUrl)
+//                .subject(clientId)
+//                .expirationTime(new Date(now.getTime() + 3600000))
+//                .issueTime(now)
+//                .build();
+//
+////
+//        SignedJWT jwt = new SignedJWT(header, jwtClaim);
+////
+////
+////        try {
+////            ECPrivateKey ecPrivateKey = new ECPrivateKeyImpl(readPrivateKey(keyPath));
+////        } catch (InvalidKeyException e) {
+////            e.printStackTrace();
+////        } catch (JOSEException e) {
+////            e.printStackTrace();
+////        }
+//
+//        return jwt.serialize();
+//    }
 
     @PostMapping("/getAppleToken")
     @ResponseBody
