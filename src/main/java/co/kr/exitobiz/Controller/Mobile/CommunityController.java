@@ -165,7 +165,7 @@ public class CommunityController {
         String result = "fail";
         try{
             communityService.insertViewCnt(communityVo);
-            result = "scucess";
+            result = "success";
         }catch (Exception e){
             e.printStackTrace();
         }
