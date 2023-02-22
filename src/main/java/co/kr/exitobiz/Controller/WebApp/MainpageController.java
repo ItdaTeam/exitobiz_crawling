@@ -133,11 +133,8 @@ public class MainpageController {
     public String getAppleToken(@RequestHeader HashMap<String, Object> header) throws ParseException, IOException {
         Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
 
-        System.out.println("HEAADER >>>> " + header);
-
-        String alg = (String) header.get("alg");
         String makeClientSecret = Jwts.builder()
-                .setHeaderParam("kid", header.get("keyid"))
+                .setHeaderParam("kid", KEY_ID)
                 .setHeaderParam("alg", "ES256")
                 .setIssuer(TEAM_ID)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -152,10 +149,42 @@ public class MainpageController {
         tokenRequest.put("client_id", CLIENT_ID);
         tokenRequest.put("client_secret", makeClientSecret);
         tokenRequest.put("grant_type", "authorization_code");
+        tokenRequest.put("code", (String) header.get("code"));
 
         String response = HttpClientUtils.doPost("https://appleid.apple.com/auth/token", tokenRequest);
-
         return response;
+    }
+
+    @PostMapping("/revokeApple")
+    @ResponseBody
+    public String revokeApple(@RequestHeader HashMap<String, Object> header) throws ParseException, IOException {
+        String result = "fail";
+        Date expirationDate = Date.from(LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault()).toInstant());
+
+        String makeClientSecret = Jwts.builder()
+                .setHeaderParam("kid", KEY_ID)
+                .setHeaderParam("alg", "ES256")
+                .setIssuer(TEAM_ID)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(expirationDate)
+                .setAudience("https://appleid.apple.com")
+                .setSubject(CLIENT_ID)
+                .signWith(this.getPrivateKey(), SignatureAlgorithm.ES256)
+                .compact();
+
+        Map<String, String> tokenRequest = new HashMap<>();
+
+        tokenRequest.put("client_id", CLIENT_ID);
+        tokenRequest.put("client_secret", makeClientSecret);
+        tokenRequest.put("token", (String) header.get("access_token"));
+
+        try{
+            HttpClientUtils.doPost("https://appleid.apple.com/auth/revoke", tokenRequest);
+            result = "success";
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public PrivateKey getPrivateKey() throws IOException{
@@ -165,8 +194,6 @@ public class MainpageController {
         PEMParser pemParser = new PEMParser(pemReader);
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
         PrivateKeyInfo object = (PrivateKeyInfo) pemParser.readObject();
-
-
         return converter.getPrivateKey(object);
     }
 
