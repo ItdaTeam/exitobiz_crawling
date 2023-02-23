@@ -227,8 +227,8 @@
     <select id="getCommunityDetail" parameterType="CommunityVo" resultType="hashMap">
         select *
         from (
-            select cc.id, cc.user_id, cc.view_count, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, coalesce(cc2.cnt, 0) as comment_cnt
-            , coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id),0) like_cnt
+        select cc.id, cc.user_id, cc.view_count, u.idprofile, cc.category, cc.title, cc.content, u.usernickname, cc.cret_dt, coalesce(cc2.cnt, 0) as comment_cnt
+        , coalesce((select sum(thumb_up::integer) from itda_web.community_content_like_history where content_id = cc.id),0) like_cnt
         <if test="userId != null and userId != '' ">
             ,cclh.thumb_up
         </if>
@@ -246,7 +246,7 @@
     </select>
 
     <update id="insertViewCnt" parameterType="CommunityVo">
-        update itda_web.community_content set view_count = view_count+1 where id= #{id}
+        update itda_web.community_content set view_count = view_count+1 where id = #{id}
     </update>
 
     <insert id="insertCommunity" parameterType="CommunityVo">
