@@ -198,7 +198,7 @@ public class PushController {
         if(!userTokens.isEmpty()){
             pushMultipleService.savePush(params);
             try{
-                pushMultipleService.sendListPushTest(params, userTokens);
+                pushMultipleService.sendListPush(params, userTokens);
             }catch (Exception e) {
                 e.printStackTrace();
             }finally {
