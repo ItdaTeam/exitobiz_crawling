@@ -1233,7 +1233,8 @@
                 businessType : grid.collectionView.items[i].사업자형태,
                 companyType : grid.collectionView.items[i].기업형태,
                 startPeriod : grid.collectionView.items[i].창업기간,
-                targetCatCd : grid.collectionView.items[i].분류코드
+                targetCatCd : grid.collectionView.items[i].분류코드,
+                corpCd :grid.collectionView.items[i].고객사코드,
             }
 
             rows.push(params);
