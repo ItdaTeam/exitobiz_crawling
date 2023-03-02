@@ -37,4 +37,10 @@ public interface MainpageMapper {
     void upViewCnt(HashMap<String, Object> params);
 
     public HashMap<String, Object> getSupportableCnt(); // 지원가능 갯수 조회
+
+    void insertEmailDeliver(HashMap<String, Object> params); // 이메일 정기배송 추가
+
+    public HashMap<String, Object> getEmailDeliver(HashMap<String, Object> params); // 이메일 정기배송 조회
+
+    public List<HashMap> getEmailDeliverList(); // 발송할 이메일 리스트 조회
 }

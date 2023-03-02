@@ -88,4 +88,19 @@ public class MainpageServiceImpl implements MainpageService {
     public HashMap<String, Object> getSupportableCnt() throws ParseException {
         return mainpageMapper.getSupportableCnt();
     }
+
+    @Override
+    public void insertEmailDeliver(HashMap<String, Object> params) throws ParseException {
+        mainpageMapper.insertEmailDeliver(params);
+    }
+
+    @Override
+    public HashMap<String, Object> getEmailDeliver(HashMap<String, Object> params) throws ParseException {
+        return mainpageMapper.getEmailDeliver(params);
+    }
+
+    @Override
+    public List<HashMap> getEmilDeliverList() throws ParseException {
+        return mainpageMapper.getEmailDeliverList();
+    }
 }

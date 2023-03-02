@@ -121,4 +121,22 @@
         select count(*) from itda_app.support_info si where si.si_end_dt::date >= current_date and si.si_active_yn = 'Y'
     </select>
 
+    <insert id="insertEmailDeliver" parameterType="HashMap">
+        INSERT INTO itda_web.user_deliver_service ( <if test="idx !=null">idx,</if> user_id, email, cret_dt, cancel_fl)
+        VALUES (<if test="idx != null">#{idx}::integer,</if> #{user_id},#{email}, NOW() , false )
+            on CONFLICT (user_id) DO
+            UPDATE SET
+            email = #{email}
+           , cancel_fl = #{cancel_fl}::boolean
+           , updt_dt = now()
+    </insert>
+
+    <select id="getEmailDeliver" resultType="HashMap" parameterType="HashMap">
+        select idx, user_id, email from itda_web.user_deliver_service where user_id = #{user_id}
+    </select>
+
+    <select id="getEmailDeliverList" resultType="HashMap">
+        select idx, user_id, email from itda_web.user_deliver_service where cancel_fl != true
+    </select>
+
 </mapper>

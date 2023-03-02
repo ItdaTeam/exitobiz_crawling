@@ -1,6 +1,7 @@
 package co.kr.exitobiz.Service.WebApp;
 
 import co.kr.exitobiz.Vo.Mobile.CommunityVo;
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -36,4 +37,10 @@ public interface MainpageService {
     void upViewCnt(HashMap<String, Object> params);
 
     HashMap<String, Object> getSupportableCnt() throws ParseException; // 지원가능한 사업 갯수 조회
+
+    void insertEmailDeliver(HashMap<String, Object> params) throws ParseException; // 이메일 정기배송 추가
+
+    HashMap<String, Object> getEmailDeliver(HashMap<String, Object> params) throws ParseException; // 이메일 정기배송 조회
+
+    List<HashMap> getEmilDeliverList() throws ParseException; // 발송할 이메일 주소 리스트 조회
 }
