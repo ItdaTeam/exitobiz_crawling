@@ -1,6 +1,8 @@
 package co.kr.exitobiz.Controller.WebApp;
 
 import co.kr.exitobiz.Service.WebApp.MainpageService;
+import co.kr.exitobiz.Service.WebApp.SupportInfoService;
+import co.kr.exitobiz.Service.WebApp.UserService;
 import co.kr.exitobiz.Util.HttpClientUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,8 @@ import java.util.Map;
 public class MainpageController {
 
     private final MainpageService mainpageService;
+    private final UserService userService;
+    private final SupportInfoService supportService;
 
     private static final String TEAM_ID = "Z5R3BPPHVX";
     private static final String WEB_CLIENT_ID = "kr.co.exitobiz";
@@ -123,7 +128,7 @@ public class MainpageController {
     @RequestMapping(value="/AppleLogin", method=RequestMethod.POST)
     public void getAppleLogin(@RequestBody String appleData, HttpServletResponse response ) throws IOException {
         response.addHeader("Access-Control-Allow-Origin","*");
-        response.sendRedirect("https://dev.exitobiz.co.kr/AppleLogin#" + appleData);
+        response.sendRedirect("https://exitobiz.co.kr/AppleLogin#" + appleData);
     }
 
     // 나의 최근 키워드 리스트
@@ -353,10 +358,53 @@ public class MainpageController {
     //지원가능한 갯수 조회
     @PostMapping("/getSupportableCnt")
     @ResponseBody
-    public String getSupportableCnt() throws ParseException, JsonProcessingException{
+    public String getSupportableCnt(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
-        String jsonStr = mapper.writeValueAsString(mainpageService.getSupportableCnt());
+        String jsonStr = "";
+
+        if(header.get("userid") != null && header.get("userid") != ""){
+
+            HashMap<String, Object> userCompanyInfo = (HashMap<String, Object>) userService.getCompanyInfo(header);
+            userCompanyInfo.put("end_dt", "true");
+            userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
+            userCompanyInfo.put("target_cat_name", userCompanyInfo.get("support_type"));
+
+            HashMap<String, Object> getMySizeData = new HashMap<>();
+            int getMySize = supportService.getSupportInfoList(userCompanyInfo).size();
+            getMySizeData.put("count", getMySize);
+
+            jsonStr = mapper.writeValueAsString(getMySizeData);
+        }else {
+            jsonStr = mapper.writeValueAsString(mainpageService.getSupportableCnt());
+        }
         return jsonStr;
     }
+
+    //이메일 정기배송 추가
+    @PostMapping("/insertEmailDeliver")
+    @ResponseBody
+    public String insertEmailDeliver(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> params) throws ParseException, JsonProcessingException{
+        String result = "fail";
+
+        params.put("user_id", header.get("user_id"));
+        try{
+            mainpageService.insertEmailDeliver(params);
+            result = "success";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    //이메일 정기배송 조회
+    @PostMapping("/getEmailDeliver")
+    @ResponseBody
+    public String getEmailDeliver(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(mainpageService.getEmailDeliver(header));
+        return jsonStr;
+    }
+
 
 }

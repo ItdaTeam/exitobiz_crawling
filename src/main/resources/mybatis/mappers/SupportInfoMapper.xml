@@ -67,7 +67,7 @@
                 </foreach>
             </trim>
         </if>
-        <if test='target_cat_name != null and target_car_name != "" and target_cat_name.get(0) != "01"'>
+        <if test='target_cat_name != null and target_cat_name != "" and target_cat_name.get(0) != "01"'>
             and target_cat_cd in
             <trim prefix="(" prefixOverrides="," suffix=")">
                 <foreach item="item" index="index" collection = "target_cat_name"  separator=",">
