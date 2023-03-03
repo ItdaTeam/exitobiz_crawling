@@ -365,15 +365,10 @@ public class MainpageController {
         if(header.get("userid") != null && header.get("userid") != ""){
 
             HashMap<String, Object> userCompanyInfo = (HashMap<String, Object>) userService.getCompanyInfo(header);
-            userCompanyInfo.put("end_dt", "true");
             userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
             userCompanyInfo.put("target_cat_name", userCompanyInfo.get("support_type"));
 
-            HashMap<String, Object> getMySizeData = new HashMap<>();
-            int getMySize = supportService.getSupportInfoList(userCompanyInfo).size();
-            getMySizeData.put("count", getMySize);
-
-            jsonStr = mapper.writeValueAsString(getMySizeData);
+            jsonStr = mapper.writeValueAsString(supportService.getSupportInfoCnt(userCompanyInfo));
         }else {
             jsonStr = mapper.writeValueAsString(mainpageService.getSupportableCnt());
         }

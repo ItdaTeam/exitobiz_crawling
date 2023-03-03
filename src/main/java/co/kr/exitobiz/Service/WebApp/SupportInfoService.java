@@ -10,4 +10,6 @@ public interface SupportInfoService {
     HashMap<String, Object> getSPDetailData(HashMap<String, Object> params) throws ParseException; // 지원사업 상세 조회
 
     void updateViewCnt(HashMap<String, Object> params) throws ParseException; // 지원사업 조회수 1증가
+
+    HashMap<String, Object> getSupportInfoCnt(HashMap<String, Object> params) throws ParseException;//맞춤 지원사업 갯수 조회
 }

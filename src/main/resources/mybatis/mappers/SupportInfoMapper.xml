@@ -110,6 +110,9 @@
         <if test='end_dt != null and end_dt == "true"'>
             and si_end_dt <![CDATA[>=]]> now()::date
         </if>
+        <if test='mail_service != null and mail_service == "true"'>
+            and date_trunc('week', current_date-7)::date <![CDATA[<=]]> si_cret_dt::date and si_cret_dt::date <![CDATA[<=]]> (date_trunc('week', current_date-7) + '6 days')::date
+        </if>
         order by
         <choose>
             <when test='ord == "인기순"'>
@@ -121,10 +124,86 @@
             <when test='ord == "마감임박순"'>
                 si_end_dt, si.si_idx
             </when>
+            <when test='mail_service != null and mail_service == "true"'>
+                  totalCnt desc, si.si_idx limit 3
+            </when>
             <otherwise>
                 si.si_cret_dt desc , si.si_idx
             </otherwise>
         </choose>
+    </select>
+
+    <select id="getSupportInfoCnt" parameterType="HashMap" resultType="HashMap">
+        select count(*) from itda_app.support_info si
+        where 1=1
+        and si.si_active_yn = 'Y'
+        and length(si.loc_code) <![CDATA[<]]> 5
+        <if test='business_type != null and business_type != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_type"  separator="or">
+                    business_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='start_period != null and start_period.get(0) != "999"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "start_period"  separator="or">
+                    <choose>
+                        <when test='item.substring(1.2) == "2"'>
+                            #{item} <![CDATA[<=]]> start_period
+                        </when>
+                        <when test='item.substring(1.2) == "0"'>
+                            start_period <![CDATA[<=]]> #{item}
+                        </when>
+                    </choose>
+                    or start_period = '70,72'
+                </foreach>
+            </trim>
+            and start_period != '999'
+        </if>
+        <if test='company_type != null and  company_type != "" and company_type.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "company_type"  separator="or">
+                    company_type  like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='target_cat_name != null and target_cat_name != "" and target_cat_name.get(0) != "01"'>
+            and target_cat_cd in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "target_cat_name"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
+        <if test='business_ctg != null and business_ctg != "" and business_ctg.get(0)  != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "business_ctg"  separator="or">
+                    business_ctg like '%' || #{item} || '%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='tech_ctg != null and tech_ctg != "" and tech_ctg.get(0) != "01"'>
+            and
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "tech_ctg"  separator="or">
+                    tech_ctg like '%' || #{item} ||'%'
+                </foreach>
+            </trim>
+        </if>
+        <if test='loc_code != null and loc_code.get(loc_code.size -1) != "C99" '>
+            and loc_code in
+            <trim prefix="(" prefixOverrides="," suffix=")">
+                <foreach item="item" index="index" collection = "loc_code"  separator=",">
+                    #{item}
+                </foreach>
+            </trim>
+        </if>
+        and si_end_dt <![CDATA[>=]]> now()::date
     </select>
 
 
