@@ -147,7 +147,7 @@ public class PushController {
 
         params.put("id",params.get("userId")); // 쿼리 공통 사용을 위한 변수 id(사용자 아이디) 추가
         if(params.get("keyId").equals("comm") || params.get("keyId").equals("like") || params.get("keyId").equals("reco")){
-            params.put("url" , "https://dev.exitobiz.co.kr/community/communityView/" + params.get("idx"));
+            params.put("url" , "https://exitobiz.co.kr/community/communityView/" + params.get("idx"));
         }
 
         List<Map<String, Object>> userTokens = userService.getUserTokenByKeyId(params); // DB에서 사용자 토큰 가져오기
