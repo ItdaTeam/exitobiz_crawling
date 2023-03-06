@@ -11,7 +11,7 @@ public interface UserService {
     public List<Map<String, Object>> getUserTokenByLocationTest(HashMap<String, Object> params);
     public List<Map<String, Object>> getUserTokenByKeyId(HashMap<String, String> params);
 
-    public List<Map<String, Object>> getUserTokens();
+    public List<Map<String, Object>> getUserTokens(HashMap<String, String> params);
     Map<String, Object> getUserInfo(Map<String, Object> params);
 
     Map<String,Object> getCompanyInfo(Map<String, Object> params);

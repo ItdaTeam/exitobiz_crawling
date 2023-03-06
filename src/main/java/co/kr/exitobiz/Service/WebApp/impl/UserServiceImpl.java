@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Map<String, Object>> getUserTokens() {
-        return userMapper.getUserTokens();
+    public List<Map<String, Object>> getUserTokens(HashMap<String, String> params) {
+        return userMapper.getUserTokens(params);
 
     }
 

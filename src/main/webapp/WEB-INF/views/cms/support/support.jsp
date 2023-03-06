@@ -287,6 +287,14 @@
                         <input type="radio" id="Newpoint4" name="category" value="cus1">
                         <label for="Newpoint4">커뮤니티</label>
                     </li>
+                    <li>
+                        <input type="radio" id="Newpoint5" name="category" value="cus2">
+                        <label for="Newpoint5">설문조사</label>
+                    </li>
+                    <li>
+                        <input style="display:initial;" type="checkbox" id="marketing" name="marketing" value="marketing"> <p style="display:initial;" onclick="checkMarketing();" >마케팅 동의</p>
+<%--                        <label class=":not" for="Newpoint6"></label>--%>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -385,6 +393,13 @@
         });
 
     });
+
+    function checkMarketing(){
+        if($("#marketing").is(":checked"))
+            $("#marketing").prop("checked",false);
+        else
+            $("#marketing").prop("checked",true);
+    }
 
     function pageOnLoad() {
         loadGridSupportList('init');
@@ -503,7 +518,8 @@
                 title : encodeURIComponent(push_form1.title.value),
                 body : encodeURIComponent(push_form1.body.value),
                 idx : push_form1.idx.value,
-                keyId : push_form1.category.value
+                keyId : push_form1.category.value,
+                marketing : $("#marketing").is(":checked")
             }
         });
 

@@ -105,6 +105,9 @@ SELECT usertoken
         <when test="keyId == 'reco' ">
             and coalesce(ups.sp_community_recomment_push,'') != 'N'
         </when>
+        <when test="keyId =='bann' ">
+            and coalesce(ups.sp_community_admin_push, '') != 'N'
+        </when>
 <!--        <when test="keyId == 12 ">-->
 <!--            and coalesce(aps.chat_push ,'') != 'N'-->
 <!--        </when>-->
@@ -219,13 +222,28 @@ SELECT usertoken
         </if>
     </select>
 
-    <select id="getUserTokens" resultType="map">
+    <select id="getUserTokens" parameterType="map" resultType="map">
         SELECT usertoken
         FROM itda_app.usertable u
+        <if test="keyId == 'bann' or keyId == 'cus1' or keyId == 'cus2' ">
+            left outer join itda_app.user_push_setting ups on u.id = ups.user_id
+        </if>
         WHERE 1=1
            AND u.usertoken not in ('', 'null')
           and date_trunc('day',last_time)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
           and usertoken != '-'
+            <if test="marketing.equals('true') ">
+                and ups.marketing_push != 'N'
+            </if>
+          <choose>
+                <when test="keyId == 'bann' or keyId == 'cus1' ">
+                    and ups.sp_community_admin_push != 'N'
+                </when>
+                <when test="keyId == 'cus2' ">
+                    and ups.sp_survey_push != 'N'
+                </when>
+          </choose>
+
         union
         SELECT usertoken
         FROM (
@@ -233,10 +251,25 @@ SELECT usertoken
                      from (
                               -- 오늘 날짜 기준 61일 전부터 update 된 토큰 기준으로만 발송
                               -- 발송 기준은 user_id, mos, minfo 기준 앱버전이 가장 최신인 토큰만 발송
-                              select RANK() over (partition by user_id, mos, minfo order by appversion desc) ord , *
+                              select RANK() over (partition by ud.user_id, mos, minfo order by appversion desc) ord , *
                               from itda_app.user_device ud
+                                <if test="keyId == 'bann' or keyId == 'cus1' or keyId == 'cus2' ">
+                                    left outer join itda_app.user_push_setting ups on ud.user_id = ups.user_id
+                                </if>
                               where 1=1
                                 and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
+                                <if test="marketing.equals('true') ">
+                                    and ups.marketing_push != 'N'
+                                </if>
+                                <choose>
+                                    <when test="keyId == 'bann' or keyId == 'cus1' ">
+                                        and ups.sp_community_admin_push != 'N'
+                                    </when>
+                                    <when test="keyId == 'cus2' ">
+                                        and ups.sp_survey_push != 'N'
+                                    </when>
+
+                                </choose>
                           ) data
                  where 1=1
                    and data.ord = 1
@@ -261,7 +294,7 @@ SELECT usertoken
     <update id="updatePushSetting" parameterType="map">
 
         INSERT INTO itda_app.user_push_setting
-        (user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push)
+        (user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push,sp_community_admin_push, sp_survey_push)
         VALUES(#{userid}, #{spReceivePush}, #{spKeywordPush}, #{spRecommentPush}, #{spCommentlikePush}
         <choose>
         <when test="spBookmarkPush != null">
@@ -271,7 +304,7 @@ SELECT usertoken
            ,'N'
         </otherwise>
         </choose>
-               ,#{spContentCommentPush},#{spCommunityCommentlikePush}, #{spCommunityRecommentPush},#{marketingPush})
+               ,#{spContentCommentPush},#{spCommunityCommentlikePush}, #{spCommunityRecommentPush},#{marketingPush},#{spCommunityAdminPush},#{spSurveyPush})
         ON CONFLICT ( user_id) DO UPDATE
         set
             <choose>
@@ -306,9 +339,15 @@ SELECT usertoken
             <if test="marketingPush != null">
                 , marketing_push =#{marketingPush}
             </if>
+            <if test="spCommunityAdminPush != null">
+                , sp_community_admin_push =#{spCommunityAdminPush}
+            </if>
+            <if test="spSurveyPush != null">
+                , sp_survey_push =#{spSurveyPush}
+            </if>
     </update>
     <select id="getPushSetting" parameterType="map" resultType="map">
-        SELECT user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push
+        SELECT user_id, sp_receive_push, sp_keyword_push, sp_recomment_push, sp_commentlike_push, sp_bookmark_push, sp_content_comment_push, sp_community_commentlike_push, sp_community_recomment_push, marketing_push, sp_community_admin_push, sp_survey_push
         FROM itda_app.user_push_setting
      WHERE 1=1
         AND user_id = #{userid}

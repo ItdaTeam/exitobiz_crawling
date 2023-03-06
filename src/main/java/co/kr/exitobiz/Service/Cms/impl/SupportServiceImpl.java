@@ -96,6 +96,7 @@ public class SupportServiceImpl implements SupportService {
 
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 if(checkFlag){
+                    vo.setTargetCostValue(Long.parseLong(vo.getTargetCostValue().toString().replace(",","")));
                     supportRepository.update(vo);
                 }else {
                     Support support = new Support();
@@ -108,6 +109,7 @@ public class SupportServiceImpl implements SupportService {
                     support.setMobileUrl(vo.getMobileUrl());
                     support.setPcUrl(vo.getPcUrl());
                     support.setSiCretDt(formatter.parse(vo.getSiCretDt()));
+                    support.setTargetCostValue(Long.parseLong(vo.getTargetCostValue().toString().replace(",","")));
                    // support.setSiCretDt(LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiEndDt(LocalDate.parse(vo.getSiEndDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiActiveYn(vo.getSiActiveYn());
