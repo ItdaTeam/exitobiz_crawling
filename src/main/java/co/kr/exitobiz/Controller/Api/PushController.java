@@ -178,11 +178,22 @@ public class PushController {
 
         HashMap<String, Object> bannObj = bannerService.getBanner(bannParams);
 
-        if(params.get("keyId").equals("noti")){
+
+        String keyId = params.get("keyId");
+
+        if(keyId.equals("bann") || keyId.equals("cus1")){
+            params.put("spCommunityAdminPush","true");
+        }else if(keyId.equals("cus2")){
+            params.put("spSurveyPush","true");
+        }
+
+
+
+        if(keyId.equals("noti")){
             params.put("url" , "https://exitobiz.co.kr/notice/noticeView/" + params.get("idx"));
-        }else if(params.get("keyId").equals("cus1")){
+        }else if(keyId.equals("cus1") || keyId.equals("cus2")){
             params.put("url" , "https://exitobiz.co.kr/community/communityView/" + params.get("idx"));
-        }else if(params.get("keyId").equals("bann")){
+        }else if(keyId.equals("bann")){
             if(bannObj.get("banner_ctg").equals("I") || bannObj.get("banner_ctg").equals("O")){
                 params.put("url", (String) bannObj.get("banner_link"));
             }else if(bannObj.get("banner_ctg").equals("N")){
