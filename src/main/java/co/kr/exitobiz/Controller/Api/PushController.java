@@ -192,7 +192,7 @@ public class PushController {
             }
         }
 
-        List<Map<String, Object>> userTokens = userService.getUserTokens();
+        List<Map<String, Object>> userTokens = userService.getUserTokens(params);
 
         String result = "fail";
         if(!userTokens.isEmpty()){
