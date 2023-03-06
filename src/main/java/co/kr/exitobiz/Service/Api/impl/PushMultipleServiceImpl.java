@@ -34,7 +34,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             throws FirebaseMessagingException, IOException {
 
         /* 로컬용 */
-//        FileInputStream refreshToken = new FileInputStream("/Users/seungheejeon/Desktop/workspace/2021_09/itda_real 2/src/main/resources/firebase/itda001-firebase-adminsdk-fv7cy-5cd6f955bf.json");
+        //FileInputStream refreshToken = new FileInputStream("/Users/kkang/Documents/2. CODE/Web_exitobiz/src/main/resources/firebase/itda001-firebase-adminsdk-fv7cy-5cd6f955bf.json");
 
         /* 서버용 */
         FileInputStream refreshToken = new FileInputStream("/var/upload/firebase/itda001-firebase-adminsdk-fv7cy-5cd6f955bf.json");
@@ -50,6 +50,9 @@ public class PushMultipleServiceImpl implements PushMultipleService {
         int tokenCount = 0;
 
         List<String> tokenList = new ArrayList<>();
+
+        if(params.get("keyId").equals("cus2"))
+            params.replace("keyId","cus1");
 
         LocalTime localTime1 = LocalTime.now();
         System.out.println("보내기시작시간:: " + localTime1);
@@ -244,8 +247,8 @@ public class PushMultipleServiceImpl implements PushMultipleService {
     @Async
     public void sendListPushTest(HashMap<String, String> params, List<Map<String, Object>> usertokens) throws FirebaseMessagingException, IOException {
 
-        FileInputStream refreshToken = new FileInputStream("/var/upload/firebase/itda001-firebase-adminsdk-fv7cy-5cd6f955bf.json");
 //        FileInputStream refreshToken = new FileInputStream("/var/upload/firebase/itda001-firebase-adminsdk-fv7cy-5cd6f955bf.json");
+        FileInputStream refreshToken = new FileInputStream("/Users/kkang/Documents/2. CODE/Web_exitobiz/src/main/resources/firebase/itda001-firebase-adminsdk-fv7cy-5cd6f955bf.json");
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(refreshToken))
@@ -255,92 +258,101 @@ public class PushMultipleServiceImpl implements PushMultipleService {
             FirebaseApp.initializeApp(options);
         }
 
-        List<String> failedTokens = new ArrayList<>();
+        //설문조사인 경우, 커뮤니티처럼 push 보내기.
+        if(params.get("keyId").equals("cus2"))
+            params.replace("keyId","cus1");
+
         int tokenCount = 0;
 
         List<String> tokenList = new ArrayList<>();
 
-        String testToken = "e9Kil8xB6EPInvVlPZ4aVp:APA91bFPmOuF_tte9wU6TwRaQFLvx-YfiLb4v0mA7pLZqp1aKdwJMo3QljAo7jU0B2foIYjYjKhl08KAMlouh2k_WlWwY-8rBfFFbShPGu7ypgNut7OrgJocrOTOg3mG0M7pUto-M1q_";
+        String testToken = "dhkyCgGt-UIlqZEfyrkefa:APA91bFk7nRPt6k8sl68tZkFJNCbSJp6zkXVGXGPhevc3yH83sjydyCsxmsiGPywQBusmjuC5DCMzJZev7utXNc8f23fky_C410hsdmz9Nw2_RTRhnCwX2WOXtRvOYt1SknM8nXP0cw6";
 
+        Map<String,Object> token = new HashMap<>();
+        token.put("usertoken",testToken);
+        usertokens.clear();
+        usertokens.add(token);
 
         LocalTime localTime1 = LocalTime.now();
         System.out.println("보내기시작시간:: " + localTime1);
 
-
-        for (int i=0; i < 3300; i++) {
-
-            tokenList.add(testToken);
-            tokenCount++;
-
-            if ((i % 499) == 0 && (i != 0)) {
-
-                System.out.println(i + "번째 리셋 토큰카운트::" + tokenCount);
-                System.out.println(tokenList.size());
-                MulticastMessage message;
+        tokenList.add(testToken);
 
 
-                //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
-                if(params.get("keyId").equals("day")) {
-
-                    message = MulticastMessage.builder()
-                            .setNotification(Notification.builder()
-                                    .setTitle(params.get("title") + i)
-                                    .setBody(params.get("body"))
-                                    .build())
-                            .setApnsConfig(ApnsConfig.builder()
-                                    .setAps(Aps.builder()
-                                            .setBadge(42)
-                                            .setSound("default")
-                                            .build())
-                                    .build())
-                            .putData("keyId", params.get("keyId"))
-                            .putData("idx", params.get("idx"))
-                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                            .addAllTokens(tokenList)
-                            .build();
-                }else{
-
-                    message = MulticastMessage.builder()
-                            .setNotification(Notification.builder()
-                                    .setTitle(params.get("title") + i)
-                                    .setBody(params.get("body"))
-                                    .build())
-                            .setApnsConfig(ApnsConfig.builder()
-                                    .setAps(Aps.builder()
-                                            .setBadge(42)
-                                            .setSound("default")
-                                            .build())
-                                    .build())
-                            .putData("keyId", params.get("keyId"))
-                            .putData("idx", params.get("idx"))
-                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
-                            .addAllTokens(tokenList)
-                            .build();
-
-                }
-
-
-
-                tokenList.clear();
-                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-
-//                if(response.getFailureCount() > 0){
+//        for (int i=0; i < 3300; i++) {
 //
-//                    List<SendResponse> responses = response.getResponses();
+//            tokenList.add(testToken);
+//            tokenCount++;
+//
+//            if ((i % 499) == 0 && (i != 0)) {
+//
+//                System.out.println(i + "번째 리셋 토큰카운트::" + tokenCount);
+//                System.out.println(tokenList.size());
+//                MulticastMessage message;
 //
 //
-//                    for (int j = 0; j < responses.size(); j++) {
-//                        if (!responses.get(j).isSuccessful()) {
-//                            failedTokens.add(tokenList.get(j));
-//                        }
-//                    }
+//                //idx ( keyword => keyword, 마감임박 => 지원사업 PK )
+//                if(params.get("keyId").equals("day")) {
 //
-//                    System.out.println("List of tokens that caused failures: "
-//                            + failedTokens);
+//                    message = MulticastMessage.builder()
+//                            .setNotification(Notification.builder()
+//                                    .setTitle(params.get("title") + i)
+//                                    .setBody(params.get("body"))
+//                                    .build())
+//                            .setApnsConfig(ApnsConfig.builder()
+//                                    .setAps(Aps.builder()
+//                                            .setBadge(42)
+//                                            .setSound("default")
+//                                            .build())
+//                                    .build())
+//                            .putData("keyId", params.get("keyId"))
+//                            .putData("idx", params.get("idx"))
+//                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+//                            .addAllTokens(tokenList)
+//                            .build();
+//                }else{
+//
+//                    message = MulticastMessage.builder()
+//                            .setNotification(Notification.builder()
+//                                    .setTitle(params.get("title") + i)
+//                                    .setBody(params.get("body"))
+//                                    .build())
+//                            .setApnsConfig(ApnsConfig.builder()
+//                                    .setAps(Aps.builder()
+//                                            .setBadge(42)
+//                                            .setSound("default")
+//                                            .build())
+//                                    .build())
+//                            .putData("keyId", params.get("keyId"))
+//                            .putData("idx", params.get("idx"))
+//                            .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
+//                            .addAllTokens(tokenList)
+//                            .build();
+//
 //                }
-
-            }
-        }
+//
+//
+//
+//                tokenList.clear();
+//                BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+//
+////                if(response.getFailureCount() > 0){
+////
+////                    List<SendResponse> responses = response.getResponses();
+////
+////
+////                    for (int j = 0; j < responses.size(); j++) {
+////                        if (!responses.get(j).isSuccessful()) {
+////                            failedTokens.add(tokenList.get(j));
+////                        }
+////                    }
+////
+////                    System.out.println("List of tokens that caused failures: "
+////                            + failedTokens);
+////                }
+//
+//            }
+//        }
 
         if (tokenList.size() > 0) {
             System.out.println("마지막리스트::" + tokenCount);
@@ -381,6 +393,7 @@ public class PushMultipleServiceImpl implements PushMultipleService {
                                 .build())
                         .putData("keyId", params.get("keyId"))
                         .putData("idx", params.get("idx"))
+                        .putData("url", params.get("url"))
                         .putData("click_action", "FLUTTER_NOTIFICATION_CLICK")
                         .addAllTokens(tokenList)
                         .build();
