@@ -68,4 +68,6 @@ public interface CommunityService {
     Map<String, Object> deleteOne(Map<String, Object> params);
 
     void delAttachFile(Map<String, Object> params);
+
+    List<HashMap> selectDeliverComm();// 메일 발송 커뮤니티 게시글 조회
 }

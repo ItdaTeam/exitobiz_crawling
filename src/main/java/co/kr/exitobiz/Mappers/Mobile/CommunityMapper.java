@@ -69,4 +69,6 @@ public interface CommunityMapper {
     Map<String, Object> deleteOne(Map<String, Object> params);
 
     Map<String, Object> delAttachFile(Map<String, Object> params); //첨부파일 삭제
+
+    public List<HashMap> selectDeliverComm(); // 메일발송 커뮤니티 게시글 조회
 }

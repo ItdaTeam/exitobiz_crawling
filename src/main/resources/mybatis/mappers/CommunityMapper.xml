@@ -403,4 +403,12 @@
         delete from itda_web.community_content_file where content_id = #{content_id}
     </delete>
 
+    <select id="selectDeliverComm" resultType="HashMap">
+        select id, title, cret_dt from itda_web.community_content cc
+        where 1=1
+            and date_trunc('week', current_date-7)::date <![CDATA[<=]]> cc.cret_dt::date and cc.cret_dt::date <![CDATA[<=]]> (date_trunc('week', current_date-7) + '6 days')::date
+            and user_id in ('2300105629', '1732584533')
+            and cc.title like '%스타트업%' order by cret_dt
+    </select>
+
 </mapper>

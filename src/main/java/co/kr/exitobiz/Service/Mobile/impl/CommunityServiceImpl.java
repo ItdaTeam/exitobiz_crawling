@@ -251,4 +251,9 @@ public class CommunityServiceImpl implements CommunityService {
         communityMapper.delAttachFile(params);
     }
 
+    @Override
+    public List<HashMap> selectDeliverComm() {
+        return communityMapper.selectDeliverComm();
+    }
+
 }
