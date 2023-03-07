@@ -4,7 +4,7 @@
 <mapper namespace="co.kr.exitobiz.Mappers.WebApp.SupportInfoMapper">
     <select id="getSupportInfoList" parameterType="HashMap" resultType="HashMap">
         select si_idx, target_name,
-            target_cat_cd as  target_cat_name,
+            target_cat_cd as  target_cat_name, target_cat_name as target_cat_nm,
         target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn,
         (si.view_cnt + si.share_cnt + si.save_cnt) as totalCnt, to_char(info.tl_cret_Dt, 'yyyy-mm-dd') tl_cret_dt
         from itda_app.support_info si
