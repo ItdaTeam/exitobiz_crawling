@@ -233,14 +233,14 @@ SELECT usertoken
           and date_trunc('day',last_time)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
           and usertoken != '-'
             <if test="marketing.equals('true') ">
-                and ups.marketing_push != 'N'
+                and coalesce(ups.marketing_push,'Y')!= 'N'
             </if>
           <choose>
                 <when test="keyId == 'bann' or keyId == 'cus1' ">
-                    and ups.sp_community_admin_push != 'N'
+                    and coalesce(ups.sp_community_admin_push, 'Y') != 'N'
                 </when>
                 <when test="keyId == 'cus2' ">
-                    and ups.sp_survey_push != 'N'
+                    and coalesce(ups.sp_survey_push, 'Y') != 'N'
                 </when>
           </choose>
 
@@ -259,14 +259,14 @@ SELECT usertoken
                               where 1=1
                                 and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
                                 <if test="marketing.equals('true') ">
-                                    and ups.marketing_push != 'N'
+                                    and coalesce(ups.marketing_push,'Y')!= 'N'
                                 </if>
                                 <choose>
                                     <when test="keyId == 'bann' or keyId == 'cus1' ">
-                                        and ups.sp_community_admin_push != 'N'
+                                        and coalesce(ups.sp_community_admin_push, 'Y') != 'N'
                                     </when>
                                     <when test="keyId == 'cus2' ">
-                                        and ups.sp_survey_push != 'N'
+                                        and coalesce(ups.sp_survey_push, 'Y') != 'N'
                                     </when>
 
                                 </choose>
