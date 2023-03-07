@@ -121,6 +121,7 @@
         group by to_char(login_time, 'YYYY-MM-dd')
       ) u2 on u2.date = t.dateE
     group by t.dateE, u1.joinCnt, t.clickCnt, u2.totalCnt
+    order by t.dateE
   </select>
 
     <select id="getWauChart" parameterType="HashMap" resultType="DashBoardVo">

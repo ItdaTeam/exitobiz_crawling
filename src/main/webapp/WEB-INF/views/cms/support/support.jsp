@@ -513,6 +513,12 @@
             alert("본문을 입력해주세요.")
             return false;
         }
+
+        if(push_form1.category.value == "noti" && $("#marketing").is(":checked")){
+            alert("공지사항은 마케팅 동의 대상용 알림이 아닙니다.")
+            return false;
+
+        }
         axios.post("/push/sendNotice", null, {
             params : {
                 title : encodeURIComponent(push_form1.title.value),
