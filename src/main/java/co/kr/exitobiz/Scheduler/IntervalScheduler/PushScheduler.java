@@ -163,7 +163,7 @@ public class PushScheduler {
      * 대상 : user_deliver_service 에서 cancel_fl 가 false가 아닌 사용자
      * @return
      */
-    @Scheduled(cron = "0 32 13 * * ?")
+    @Scheduled(cron = "0 14 18 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -198,7 +198,7 @@ public class PushScheduler {
 
                 //사업자 형태, 기업 형태, 창업 기간, 지역
                 List<String> codeArr = Arrays.asList("bizp_type_cd", "biz_type_cd", "prd_cd", "loc_cd");
-                List<String> getUsrInfo = Arrays.asList("business_type", "business_ctg", "start_period", "loc_ctg");
+                List<String> getUsrInfo = Arrays.asList("business_type", "company_type", "start_period", "loc_ctg");
                 List<String> usrCodeArr = new ArrayList<>();
 
                 for(int i=0 ; i<codeArr.size(); i++){
@@ -211,11 +211,8 @@ public class PushScheduler {
                     String[] listStr = userCompanyInfo.get(getUsrInfo.get(i)).toString().split(",");
                     for(int j=0; j<getCommonCodeDtlList.size(); j++){
                         for(String str : listStr){
-                            if(str.equals("01")) output.add("전체");
-                            else{
-                                if(str.equals(getCommonCodeDtlList.get(j).get("code").toString())){
-                                    output.add(getCommonCodeDtlList.get(j).get("code_nm").toString());
-                                }
+                            if(str.equals(getCommonCodeDtlList.get(j).get("code").toString())){
+                                output.add(getCommonCodeDtlList.get(j).get("code_nm").toString());
                             }
                         }
                     }
@@ -243,9 +240,9 @@ public class PushScheduler {
                             SimpleDateFormat sdf = new SimpleDateFormat("MM월dd일");
                             String end_dt = sdf.format(timestamp);
                             supportText +=
-                            "<p><a href=\"\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
+                            "<p><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
                              "<strong style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex; align-items:center; justify-content: center; color:#fff; border-radius:5px; width:92px; height:32px;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
-                             "<b style=\"font-weight:400;\">" + supStr.get("locname") + "/</b>&nbsp;/&nbsp;<b style=\"font-weight:400; max-width:309px; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
+                             "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400; max-width:309px; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
                              "</a></p>";
                         }
                     }else{
@@ -261,7 +258,7 @@ public class PushScheduler {
                     Calendar now = Calendar.getInstance();
                     Calendar cal = Calendar.getInstance();
                     String commListTxt = "";
-                    cal.add(Calendar.DATE, -8);
+                    cal.add(Calendar.DATE, -9);
 
                     int idx = 0;
 
@@ -302,7 +299,7 @@ public class PushScheduler {
                         String mailText2 = "";
                         String mailText3 = "";
 
-                        message.setSubject("[엑시토] " + now.get(Calendar.MONTH)+1 + "월 " + now.get(Calendar.WEEK_OF_YEAR) + "주차 맞춤 지원사업 정기배송");
+                        message.setSubject("[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
 
                         mailText1 +=
                         "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"+
@@ -328,7 +325,7 @@ public class PushScheduler {
                                 "        </tr>                                                                                                                                                                                                                                                                                                                                                        "+
                                 "        <tr>                                                                                                                                                                                                                                                                                                                                                         "+
                                 "            <td style=\"padding: 0; font-size:18px; color:#fff; line-height:18px; text-align: center;\">                                                                                                                                                                                                                                                             "+
-                                "                <p style=\"margin: 0;\">" + now.get(Calendar.YEAR) + "년 " + now.get(Calendar.MONTH)+1 + "월 0"+ now.get(Calendar.WEEK_OF_YEAR) + "주차</p>                                                                                                                                                                                                                                                                                                            "+
+                                "                <p style=\"margin: 0;\">" + now.get(Calendar.YEAR) + "년 " + (now.get(Calendar.MONTH)+1) + "월 0"+ now.get(Calendar.WEEK_OF_MONTH) + "주차</p>                                                                                                                                                                                                                                                                                                            "+
                                 "            </td>                                                                                                                                                                                                                                                                                                                                                    "+
                                 "        </tr>                                                                                                                                                                                                                                                                                                                                                        "+
                                 "        <tr>                                                                                                                                                                                                                                                                                                                                                         "+
@@ -481,7 +478,7 @@ public class PushScheduler {
                                 "                    <tbody>                                                                                                                                                                                                                                                                                                                                          "+
                                 "                    <tr>                                                                                                                                                                                                                                                                                                                                             "+
                                 "                        <td style=\"margin:0; padding:0 0 0 30px; font-size:11px; line-height:20px; color:#797979; text-align:left;\">                                                                                                                                                                                                                               "+
-                                "                            엑시토 정기배송을 원치 않으시면  <a href=\"https://exitobiz.co.kr/deliverService/" + email.get("idx") + "\" target=\"_blank\" style=\"margin:0; padding:0; font-size:11px; line-:20px; color:#151515; font-weight:500; text-align:left;\">[수신거부]</a> 를 눌러주세요.<br>                                                                                                                                                    "+
+                                "                            엑시토 정기배송을 원치 않으시면  <a href=\"https://dev.exitobiz.co.kr/deliver/deliverService/" + email.get("user_id") + "\" target=\"_blank\" style=\"margin:0; padding:0; font-size:11px; line-:20px; color:#151515; font-weight:500; text-align:left;\">[수신거부]</a> 를 눌러주세요.<br>                                                                                                                                                    "+
                                 "                            본 메일은 발신전용 메일이므로 회신을 통한 문의는 처리되지 않습니다.<br>                                                                                                                                                                                                                                                                                               "+
                                 "                        </td>                                                                                                                                                                                                                                                                                                                                        "+
                                 "                    </tr>                                                                                                                                                                                                                                                                                                                                            "+
