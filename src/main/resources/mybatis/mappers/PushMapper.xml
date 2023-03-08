@@ -17,6 +17,8 @@
                 distinct keyword
             from
                 itda_app.user_keyword
+                where 1=1
+                and keyword != ''
     ) keywords
     order by keyword collate "C"
     </select>
@@ -35,29 +37,33 @@
         select uk.user_id, uk.keyword, u.usertoken
           from itda_app.user_keyword uk
                    left outer join itda_app.usertable u on uk.user_id = u.id and date_trunc('day',u.last_time) <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
-          inner join itda_app.user_push_setting ups on u.id = ups.user_id and ups.sp_keyword_push = 'Y'
+          left outer join itda_app.user_push_setting ups on u.id = ups.user_id
         where 1=1
           and uk.keyword = #{keyword}
+          and coalesce(ups.sp_keyword_push, 'Y') = 'Y'
+          and u.usertoken is not null
         union
         select uk.user_id, uk.keyword, ud.usertoken
         from itda_app.user_keyword uk
                  left outer join itda_app.user_device ud on uk.user_id = ud.user_id and date_trunc('day',ud.updt_dt) <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
-                 inner join itda_app.user_push_setting ups on ud.user_id = ups.user_id and ups.sp_keyword_push = 'Y'
+                 left outer join itda_app.user_push_setting ups on ud.user_id = ups.user_id
         where 1=1
           and uk.keyword = #{keyword}
-
+          and coalesce(ups.sp_keyword_push, 'Y') = 'Y'
+          and ud.usertoken is not null
     </select>
 
     <select id="getBookmarkSupportInfo" resultType="PushVo">
-        select distinct mb.mb_addidx, mb.mb_cret_id, si.si_title, u.usertoken, ups.sp_bookmark_push, si.si_end_dt, si.si_end_dt::date - current_date as rest_date
+        select distinct mb.mb_addidx, mb.mb_cret_id, si.si_title, coalesce(ud.usertoken,u.usertoken) usertoken, ups.sp_bookmark_push, si.si_end_dt, si.si_end_dt::date - current_date as rest_date
         from itda_app.my_bookmark mb
                  left outer join itda_app.usertable u on mb.mb_cret_id = u.id
+                 left outer join itda_app.user_device ud on mb.mb_cret_id = ud.user_id
                  left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
                  left outer join itda_app.user_push_setting ups on u.id = ups.user_id
-                                                                       and ups.sp_bookmark_push = 'Y'
-            or ups.sp_bookmark_push is null
+                                                                       and ups.sp_bookmark_push = 'Y'   or ups.sp_bookmark_push is null
         where 1=1
           and mb.mb_save_yn = 'Y'
+            and coalesce(ud.usertoken,u.usertoken) is not null
           and si.si_end_dt::date - current_date = 7 or si.si_end_dt::date - current_date = 3
     </select>
 

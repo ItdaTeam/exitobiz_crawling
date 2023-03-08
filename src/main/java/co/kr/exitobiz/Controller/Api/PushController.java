@@ -187,14 +187,9 @@ public class PushController {
             params.put("spSurveyPush","true");
         }
 
-
-
-
-
-
         if(keyId.equals("noti")){
             params.put("url" , "https://exitobiz.co.kr/notice/noticeView/" + params.get("idx"));
-        }else if(keyId.equals("cus1")){
+        }else if(keyId.equals("cus1") ||keyId.equals("cus2")){
             params.put("url" , "https://exitobiz.co.kr/community/communityView/" + params.get("idx"));
         }else if(keyId.equals("bann")){
             if(bannObj.get("banner_ctg").equals("I") || bannObj.get("banner_ctg").equals("O")){
