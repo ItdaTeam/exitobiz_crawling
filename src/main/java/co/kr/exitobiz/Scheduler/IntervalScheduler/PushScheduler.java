@@ -163,7 +163,7 @@ public class PushScheduler {
      * 대상 : user_deliver_service 에서 cancel_fl 가 false가 아닌 사용자
      * @return
      */
-    @Scheduled(cron = "55 2 16 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -191,7 +191,7 @@ public class PushScheduler {
                 userParams.put("userid", email.get("user_id"));
                 userParams.put("id", email.get("user_id"));
 
-                email.replace("email","mykoreareds@naver.com");
+//                email.replace("email","mykoreareds@naver.com");
 
                 // 사용자 검색 조건 조회
                 HashMap<String, Object> userCompanyInfo = (HashMap<String, Object>) userService.getCompanyInfo(userParams);
@@ -260,7 +260,8 @@ public class PushScheduler {
                     Calendar now = Calendar.getInstance();
                     Calendar cal = Calendar.getInstance();
                     String commListTxt = "";
-                    cal.add(Calendar.DATE, -9);
+                    cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                    cal.add(Calendar.DATE, -8);
 
                     int idx = 0;
 
@@ -479,7 +480,7 @@ public class PushScheduler {
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
                                 "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
                                 "                            <td valign=\"top\" style=\" text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px;box-sizing:border-box;\">                                                                                                                                                               "+
-                                "                                <a target=\"_blank\" href=\"https://actually-fern-aef.notion.site/SHOP-3c58253262644bf4a0b9f719e839f652\"><img src=\"https://api.exitobiz.co.kr/img/bannerEx.png\" style=\"height:174px; width: 100%; object-fit:cover;\" ></a>                                                                                                                                                                                                                                               "+
+                                "                                <a target=\"_blank\" href=\"https://exitobiz.co.kr/Landing/landing\"><img src=\"https://api.exitobiz.co.kr/img/email_banner.png\" style=\"height:174px; width: 100%; object-fit:cover;\" ></a>                                                                                                                                                                                                                                               "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
                                 "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
