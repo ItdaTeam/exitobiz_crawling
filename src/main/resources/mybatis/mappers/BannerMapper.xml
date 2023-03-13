@@ -19,15 +19,18 @@
         select index
         , banner_ctg_nm
         , banner_ctg
+        , banner_type
         , banner_title
         , banner_noti_idx
         , banner_img
         , banner_link
         , active_yn
+        , sort
         , to_char(cret_dt, 'YYYY-MM-DD') as cret_dt
         , to_char(updt_dt, 'YYYY-MM-DD') as updt_dt
         from itda_web.banner
         where 1=1
+        and banner_type = #{banner_type}
         <!--        <if test="inq != null">-->
         <!--            AND-->
         <!--            <choose>-->
@@ -84,6 +87,8 @@
         , cret_dt
         , updt_id
         , updt_dt
+        , banner_type
+        , sort
         )VALUES(
         (select coalesce(max(index)+1,1) from itda_web.banner)::integer
         ,#{bannerCtg}
@@ -117,6 +122,8 @@
         ,NOW()
         ,#{cretId}
         ,NOW()
+        ,#{bannerType}
+        ,#{sort}
         )
     </insert>
 
@@ -125,6 +132,8 @@
         banner_title = #{bannerTitle}
         ,active_yn = #{activeYn}
         ,banner_ctg_nm = #{bannerCtg}
+        ,banner_type = #{bannerType}
+        ,sort=#{sort}
         <choose>
             <when test="bannerCtg == '공지사항이동'">
                 ,banner_ctg = 'N'

@@ -19,4 +19,6 @@ public class BannerVo {
     private String updtId;
     private String updtDt;
     private MultipartFile image;
+    private String bannerType;
+    private String sort;
 }
