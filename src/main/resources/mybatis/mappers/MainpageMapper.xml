@@ -132,7 +132,7 @@
     </insert>
 
     <select id="getEmailDeliver" resultType="HashMap" parameterType="HashMap">
-        select idx, user_id, email from itda_web.user_deliver_service where user_id = #{user_id}
+        select idx, user_id, email, cancel_fl from itda_web.user_deliver_service where user_id = #{user_id}
     </select>
 
     <select id="getEmailDeliverList" resultType="HashMap">
