@@ -103,4 +103,9 @@ public class MainpageServiceImpl implements MainpageService {
     public List<HashMap> getEmilDeliverList() throws ParseException {
         return mainpageMapper.getEmailDeliverList();
     }
+
+    @Override
+    public void insertEmailDeliverHst(HashMap<String, Object> params) throws ParseException {
+        mainpageMapper.insertEmailDeliverHst(params);
+    }
 }

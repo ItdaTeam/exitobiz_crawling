@@ -139,4 +139,8 @@
         select idx, user_id, email from itda_web.user_deliver_service where cancel_fl != true
     </select>
 
+    <insert id="insertEmailDeliverHst" parameterType="hashMap">
+        insert into itda_web.user_deliver_service_hst (user_id, email, title, deliver_dt) values (#{user_id}, #{email}, #{title}, now())
+    </insert>
+
 </mapper>

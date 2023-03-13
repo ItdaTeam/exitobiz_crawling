@@ -163,7 +163,7 @@ public class PushScheduler {
      * 대상 : user_deliver_service 에서 cancel_fl 가 false가 아닌 사용자
      * @return
      */
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 21 16 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -190,8 +190,6 @@ public class PushScheduler {
                 HashMap<String, Object> userParams = new HashMap<>();
                 userParams.put("userid", email.get("user_id"));
                 userParams.put("id", email.get("user_id"));
-
-                email.replace("email","itda.korea@gmail.com");
 
                 // 사용자 검색 조건 조회
                 HashMap<String, Object> userCompanyInfo = (HashMap<String, Object>) userService.getCompanyInfo(userParams);
@@ -242,10 +240,14 @@ public class PushScheduler {
                             SimpleDateFormat sdf = new SimpleDateFormat("MM월dd일");
                             String end_dt = sdf.format(timestamp);
                             supportText +=
-                            "<div style=\"margin-bottom: 10px;\"><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
-                                    "<div style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex;color:#fff; border-radius:5px; width:92px; height:32px;line-height: 32px;\"><strong style=\"margin: 0 auto;font-weight:400;\">" + supStr.get("target_cat_nm") + "</strong></div>&nbsp;&nbsp;"+
-                            "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;max-width:309px; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") +  "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
-                            "</a></div>";
+//                            "<div style=\"margin-bottom: 10px;\"><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
+//                                    "<div style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex;color:#fff; border-radius:5px; width:92px; height:32px;line-height: 32px;\"><strong style=\"margin: 0 auto;font-weight:400;\">" + supStr.get("target_cat_nm") + "</strong></div>&nbsp;&nbsp;"+
+//                            "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;max-width:50%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") +  "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
+//                            "</a></div>";
+                            "<p><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
+                                    "<strong style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex; color:#fff; border-radius:5px; width:92px; height:32px; line-height:32px; align-items:center; justify-content:center;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
+                                    "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400; max-width:65%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
+                                    "</a></p>";
                         }
                     }else{
                         supportText +=  "<p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:14px;\">맞춤 지원사업이 없어요.<a href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">기업정보를 수정해보세요.</a></p>";
@@ -540,6 +542,14 @@ public class PushScheduler {
                                 "</html>" ;
                         message.setContent(mailText1 + mailText2 + mailText3, "text/html;charset=UTF-8");
                         Transport.send(message);
+
+                        //메일발송 이력
+                        HashMap<String, Object> HstParam = new HashMap<>();
+
+                        HstParam.put("user_id", email.get("user_id"));
+                        HstParam.put("email", email.get("email"));
+                        HstParam.put("title", "[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
+                        mainpageService.insertEmailDeliverHst(HstParam);
 
                         System.out.println("=================== 이메일 발송 끝 ====================");
 
