@@ -123,7 +123,7 @@
         ,#{cretId}
         ,NOW()
         ,#{bannerType}
-        ,#{sort}
+        ,#{sort}::integer
         )
     </insert>
 
@@ -133,7 +133,7 @@
         ,active_yn = #{activeYn}
         ,banner_ctg_nm = #{bannerCtg}
         ,banner_type = #{bannerType}
-        ,sort=#{sort}
+        ,sort=#{sort}::integer
         <choose>
             <when test="bannerCtg == '공지사항이동'">
                 ,banner_ctg = 'N'
