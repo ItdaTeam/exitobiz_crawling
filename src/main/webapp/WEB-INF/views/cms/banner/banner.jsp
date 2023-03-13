@@ -355,7 +355,6 @@
             url : '/cms/getBannerList',
             async : false, // 비동기모드 : true, 동기식모드 : false
             success : function(result) {
-                console.log(result);
                 $("#swiperTop .swiper-slide").remove();
                 $("#swiperBottom .swiper-slide").remove();
 
@@ -456,8 +455,6 @@
                 if (panel.cellType == wijmo.grid.CellType.RowHeader) {
                     cell.textContent = (r + 1).toString();
                 }
-
-                console.log(panel , " " , cell, " " , r, " " , c);
             };
         }else {
             bannerView = new wijmo.collections.CollectionView(result, {
@@ -518,8 +515,6 @@
             //     $('#modify_exist_img').hide();
             //     $('#modify_exist_img').empty();
             // }
-
-            console.log("bannerGrid", bannerGrid.collectionView);
 
             updateBannerForm.index.value = bannerGrid.collectionView.currentItem["index"];
             updateBannerForm.modify_banner_active.checked = (bannerGrid.collectionView.currentItem["activeYn"] == 'Y' ? true : false );
@@ -761,6 +756,7 @@
 
         updateBannerForm.activeYn.value = (updateBannerForm.modify_banner_active.checked ? 'Y' : 'N' );
         updateBannerForm.bannerCtg.value = updateBannerForm.modify_banner_ctg.value;
+        updateBannerForm.bannerType.value = updateBannerForm.modify_banner_type.value;
 
         var form = new FormData(updateBannerForm);
 
@@ -828,7 +824,6 @@
             dataType : null,
             data : param,
             success : function(result) {
-                console.log("result  >>>" ,result);
                 console.log("getBannerList success");
                 loadGridBannerList('search', result);
             },
