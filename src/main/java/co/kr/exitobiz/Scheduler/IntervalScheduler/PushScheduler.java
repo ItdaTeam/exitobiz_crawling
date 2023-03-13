@@ -163,7 +163,7 @@ public class PushScheduler {
      * 대상 : user_deliver_service 에서 cancel_fl 가 false가 아닌 사용자
      * @return
      */
-    @Scheduled(cron = "0 21 16 * * ?")
+    @Scheduled(cron = "0 12 18 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -245,8 +245,8 @@ public class PushScheduler {
 //                            "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;max-width:50%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") +  "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
 //                            "</a></div>";
                             "<p><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
-                                    "<strong style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex; color:#fff; border-radius:5px; width:92px; height:32px; line-height:32px; align-items:center; justify-content:center;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
-                                    "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400; max-width:65%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
+                                    "<strong style=\"font-weight:700; font-size:14px; display:flex; color:#30D6C2; border-radius:5px; width:92px; height:32px; line-height:32px;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
+                                    "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400; max-width:55%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
                                     "</a></p>";
                         }
                     }else{
@@ -287,6 +287,18 @@ public class PushScheduler {
                         }
                         commListTxt += "</a></p>";
                     }
+
+
+                    // 발송용 배너 조회
+                HashMap<String, Object> bannerParams = new HashMap<>();
+                    bannerParams.put("banner_type", "mail");
+
+                List<HashMap> bannerList = mainpageService.getBannerList(bannerParams);
+
+                for(HashMap banner : bannerList){
+
+                }
+
 
                 try{
                     Session session = Session.getDefaultInstance(props, new Authenticator() {
