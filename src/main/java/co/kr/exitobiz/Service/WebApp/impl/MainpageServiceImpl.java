@@ -40,8 +40,8 @@ public class MainpageServiceImpl implements MainpageService {
     }
 
     @Override
-    public List<HashMap> getBannerList() throws ParseException {
-        return mainpageMapper.getBannerList();
+    public List<HashMap> getBannerList(HashMap<String, Object> params) throws ParseException {
+        return mainpageMapper.getBannerList(params);
     }
 
     @Override

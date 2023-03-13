@@ -18,7 +18,7 @@ public interface MainpageMapper {
 
     public void insertTimeLine(HashMap<String, Object> params); // 타임라인 추가(공통)
 
-    public List<HashMap> getBannerList(); // 배너 리스트
+    public List<HashMap> getBannerList(HashMap<String, Object> params); // 배너 웹 리스트
 
     public List<HashMap> getTotalCount(); // 누적갯수(누적 지원사업 개수, 이번주 지원사업, 정보 제공기관, 누적 가입 기업) 리스트
 

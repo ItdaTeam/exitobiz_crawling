@@ -33,8 +33,8 @@
         VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}::numeric, #{tl_event}, #{tl_memo} )
     </insert>
 
-    <select id="getBannerList" resultType="hashMap">
-        select * from itda_web.banner where active_yn = 'Y' order by sort asc
+    <select id="getBannerList" resultType="hashMap" parameterType="hashMap">
+        select * from itda_web.banner where active_yn = 'Y' and banner_type = #{banner_type} order by sort asc
     </select>
 
     <select id="getTotalCount" resultType="HashMap">

@@ -239,9 +239,9 @@ public class MainpageController {
     //배너리스트
     @PostMapping("/getBannerList")
     @ResponseBody
-    public String getCommunityList() throws ParseException, JsonProcessingException {
+    public String getCommunityList(@RequestBody HashMap<String, Object> params) throws ParseException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonStr = mapper.writeValueAsString(mainpageService.getBannerList());
+        String jsonStr = mapper.writeValueAsString(mainpageService.getBannerList(params));
         return jsonStr;
     }
 
