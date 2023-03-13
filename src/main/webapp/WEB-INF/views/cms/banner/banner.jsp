@@ -32,6 +32,12 @@
                         <button class="btn stroke" onclick="exportExcel();">엑셀다운로드</button>
                     </div>
                 </div>
+                <div class="tabMenu">
+                    <ul id="tabList">
+                        <li class="TabM1">웹 리스트</li>
+                        <li class="TabM2">메일 리스트</li>
+                    </ul>
+                </div>
                 <div class="main_content">
                     <!-- 보드 영역 main_dashboard-->
                     <div class="main_dashboard">
@@ -67,8 +73,18 @@
                     <form action="#" method="post" id="newBannerForm" onsubmit="return false;">
                         <input type="hidden" name="bannerLoc">
                         <input type="hidden" name="bannerCtg">
+                        <input type="hidden" name="bannerType">
                         <table>
                             <tbody>
+                                <tr>
+                                    <th>구분<i>*</i></th>
+                                    <td>
+                                        <select name="new_banner_type" id="new_banner_type">
+                                            <option value="web" selected="selected">웹</option>
+                                            <option value="mail">메일</option>
+                                        </select>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <th>카테고리<i>*</i></th>
                                     <td>
@@ -78,6 +94,12 @@
                                             <option value="아웃링크">아웃링크</option>
                                             <option value="인앱링크">인앱링크</option>
                                         </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>정렬<i>*</i></th>
+                                    <td>
+                                        <input type="number" id="new_sort" name="sort" style="width:300px;">
                                     </td>
                                 </tr>
                                 <tr>
@@ -131,6 +153,7 @@
                     <form action="#" method="post" id="updateBannerForm" onsubmit="return false;">
                         <input type="hidden" name="bannerLoc">
                         <input type="hidden" name="bannerCtg">
+                        <input type="hidden" name="bannerType">
                         <input type="hidden" name="activeYn">
                         <table>
                             <tbody>
@@ -143,6 +166,16 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th>구분<i>*</i></th>
+                                    <td>
+                                        <select name="modify_banner_type" id="modify_banner_type">
+                                            <option value="web">웹</option>
+                                            <option value="mail">메일</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <th>카테고리<i>*</i></th>
                                     <td>
                                         <select name="modify_banner_ctg" id="modify_banner_ctg">
@@ -151,6 +184,12 @@
                                             <option value="아웃링크">아웃링크</option>
                                             <option value="인앱링크">인앱링크</option>
                                         </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>정렬<i>*</i></th>
+                                    <td>
+                                        <input type="number" id="modify_sort" name="sort" style="width:300px;">
                                     </td>
                                 </tr>
                                 <tr>
@@ -258,12 +297,31 @@
     var bannerColumns;
     var staffId = "<%=session.getAttribute("staffId")%>";
 
+    var text = 'web';
+
     function pageOnLoad() {
         $("#banner").addClass("current");
         loadGridBannerList('init');
         getBannerList();
         // sessionCheck(staffId);
     }
+
+    // 탭메뉴
+    $(".TabM1").click(function(){
+        $(".TabM1").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+        $(".TabM2").css("background-color","#fff").css("border","1px solid #ddd");
+        $("#supportDiv").css("display","block");
+        text = 'web';
+        getBannerList();
+    });
+
+    $(".TabM2").click(function(){
+        $(".TabM2").css("background-color","#37f1aa").css("border","1px solid #37f1aa");
+        $(".TabM1").css("background-color","#fff").css("border","1px solid #ddd");
+        $("#supportDiv").css("display","block");
+        text = 'mail';
+        getBannerList();
+    });
 
     var galleryTop = new Swiper('.gallery-top', {
         // spaceBetween: 10,
@@ -352,6 +410,7 @@
                 { binding: 'index', header: '배너번호', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'bannerTitle', header: '제목', isReadOnly: true, width: 300, align:"center"},
                 { binding: 'bannerCtgNm', header: '카테고리', isReadOnly: true, width: 120, align:"center"},
+                { binding : 'bannerType', header: '구분', visible : false},
                 { binding: 'cretDt', header: '작성날짜', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'updtDt', header: '수정날짜', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'bannerImg', header: '배너이미지', isReadOnly: true, width: 200, align:"center",
@@ -362,6 +421,7 @@
                 { binding: 'bannerNotiIdx', header: '공지/콘텐츠번호', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'bannerLink', header: '링크', isReadOnly: true, width: 200, align:"center"},
                 { binding: 'activeYn', header: '활성화', isReadOnly: true, width: 100, align:"center"},
+                { binding : 'sort', header : '정렬', align: 'center', isReadOnly: true},
                 { binding: 'edit', header: '배너수정', width: 100, align:"center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeButton({
                         text: '<b>수정</b>',
@@ -396,6 +456,8 @@
                 if (panel.cellType == wijmo.grid.CellType.RowHeader) {
                     cell.textContent = (r + 1).toString();
                 }
+
+                console.log(panel , " " , cell, " " , r, " " , c);
             };
         }else {
             bannerView = new wijmo.collections.CollectionView(result, {
@@ -435,6 +497,7 @@
             newBannerForm.bannerNotiIdx.value = "";
             newBannerForm.image.value = "";
             newBannerForm.new_banner_ctg.value = "공지사항이동";
+            newBannerForm.new_banner_type.value = 'web';
             $('#new_banner_noti_tb').hide();
             $('#new_banner_link_tb').hide();
             $('#new_banner_img').empty();
@@ -456,13 +519,16 @@
             //     $('#modify_exist_img').empty();
             // }
 
+            console.log("bannerGrid", bannerGrid.collectionView);
 
             updateBannerForm.index.value = bannerGrid.collectionView.currentItem["index"];
             updateBannerForm.modify_banner_active.checked = (bannerGrid.collectionView.currentItem["activeYn"] == 'Y' ? true : false );
             updateBannerForm.bannerTitle.value = bannerGrid.collectionView.currentItem["bannerTitle"];
             updateBannerForm.modify_banner_ctg.value = bannerGrid.collectionView.currentItem["bannerCtgNm"];
+            updateBannerForm.modify_banner_type.value = bannerGrid.collectionView.currentItem["bannerType"];
             updateBannerForm.bannerLink.value = bannerGrid.collectionView.currentItem["bannerLink"];
             updateBannerForm.bannerNotiIdx.value = bannerGrid.collectionView.currentItem["bannerNotiIdx"];
+            updateBannerForm.sort.value = bannerGrid.collectionView.currentItem["sort"];
             updateBannerForm.image.value = "";
 
             if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '인앱링크' || bannerGrid.collectionView.currentItem["bannerCtgNm"] == '아웃링크'){
@@ -646,6 +712,7 @@
         }
 
         newBannerForm.bannerCtg.value = newBannerForm.new_banner_ctg.value;
+        newBannerForm.bannerType.value = newBannerForm.new_banner_type.value;
 
         var form = new FormData(newBannerForm);
 
@@ -752,6 +819,7 @@
             // , inq 	: $('#inq').val()
             // , searchDtTo : wijmo.Globalize.format(edat.value,'yyyy-MM-dd')
             // , searchDtFr : wijmo.Globalize.format(sdat.value,'yyyy-MM-dd')
+            banner_type : text
         }
 
         $.ajax({
@@ -760,6 +828,7 @@
             dataType : null,
             data : param,
             success : function(result) {
+                console.log("result  >>>" ,result);
                 console.log("getBannerList success");
                 loadGridBannerList('search', result);
             },
