@@ -163,7 +163,7 @@ public class PushScheduler {
      * 대상 : user_deliver_service 에서 cancel_fl 가 false가 아닌 사용자
      * @return
      */
-    @Scheduled(cron = "0 12 18 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -294,10 +294,19 @@ public class PushScheduler {
                     bannerParams.put("banner_type", "mail");
 
                 List<HashMap> bannerList = mainpageService.getBannerList(bannerParams);
+                String bannerTxt = "";
 
-                for(HashMap banner : bannerList){
-
+                if(bannerList.size() > 0){
+                    for(HashMap banner : bannerList){
+                        bannerTxt += "<tr style=\"align-items: center;\">"+
+                                " <td valign=\"top\" style=\"padding-bottom:10px; text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px;box-sizing:border-box;\"> "+
+                                " <a target=\"_blank\" href=\"" + banner.get("banner_link") + "\"><img src=\"" + banner.get("banner_img") + "\" style=\"height:174px; width: 100%; object-fit:cover;\" ></a> "+
+                                " </td> "+
+                                " </tr>";
+                    }
                 }
+
+
 
 
                 try{
@@ -492,12 +501,8 @@ public class PushScheduler {
                                 "                                &nbsp;                                                                                                                                                                                                                                                                                                                               "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
-                                "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
-                                "                            <td valign=\"top\" style=\" text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px;box-sizing:border-box;\">                                                                                                                                                               "+
-                                "                                <a target=\"_blank\" href=\"https://exitobiz.co.kr/Landing/landing\"><img src=\"https://api.exitobiz.co.kr/img/email_banner.png\" style=\"height:174px; width: 100%; object-fit:cover;\" ></a>                                                                                                                                                                                                                                               "+
-                                "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
-                                "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
-                                "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
+                                                            bannerTxt+
+                                "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                    "+
                                 "                            <td valign=\"top\" style=\"padding: 40px;\">                                                                                                                                                                                                                                                                                             "+
                                 "                                <p style=\"line-height: 20px; display: flex; align-items: center; justify-content: center; color:#0000FF;\">                                                                                                                                                                                                                         "+
                                 "                                    <a href=\"https://exitobiz.co.kr\" style=\"color:#0000FF; font-size: 14px;\">지난 정기배송 지원사업 보기</a>                                                                                                                                                                  "+
