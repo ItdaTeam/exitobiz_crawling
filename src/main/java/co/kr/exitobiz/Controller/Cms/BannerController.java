@@ -98,6 +98,12 @@ public class BannerController {
         }
     }
 
+    @PutMapping("/updateGrid")
+    @ResponseBody
+    public void updateBannerGrid(@RequestBody List<BannerVo> vos){
+        bannerService.updateBannerGrid(vos);
+    }
+
     @GetMapping("/getBannerList")
     @ResponseBody
     public List<BannerVo> getBannerList(@RequestParam HashMap<String, Object> params){

@@ -50,6 +50,7 @@
                                 </select>
                                 <button type="button" class="btn stroke" onclick="_getUserGridLayout('bannerLayout', bannerGrid);">칼럼위치저장</button>
                                 <button type="button" class="btn stroke" onclick="_resetUserGridLayout('bannerLayout', bannerGrid, bannerColumns);">칼럼초기화</button>
+                                <button type="button" class="btn stroke" onclick="updateBannerGrid()"> 칼럼저장 </button>
                             </div>
                         </div>
                         <div class="grid_wrap" style="position:relative;">
@@ -425,7 +426,7 @@
                 { binding: 'bannerNotiIdx', header: '공지/콘텐츠번호', isReadOnly: true, width: 100, align:"center"},
                 { binding: 'bannerLink', header: '링크', isReadOnly: true, width: 200, align:"center"},
                 { binding: 'activeYn', header: '활성화', isReadOnly: true, width: 100, align:"center"},
-                { binding : 'sort', header : '정렬', align: 'center', isReadOnly: true},
+                { binding : 'sort', header : '정렬', align: 'center', isReadOnly: false, dataType:"Number" },
                 { binding: 'edit', header: '배너수정', width: 100, align:"center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeButton({
                         text: '<b>수정</b>',
@@ -734,6 +735,41 @@
                 alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
         });
+    }
+
+    function updateBannerGrid(){
+        var editItem = bannerView.itemsEdited;
+        var rows = [];
+
+        var item = bannerView._src.map(v => parseInt(v.sort));
+        const set = new Set(item);
+
+        if (editItem.length ==0) {
+            alert("수정된 행이 없습니다.");
+            return false;
+        }
+
+        if(set.size != item.length){
+            alert("정렬 중복값은 입력할 수 없습니다.");
+            return false;
+        }
+
+        if (!confirm("저장하시겠습니까?")) return false;
+
+        editItem.forEach((obj) => {
+            obj.notice_idx = obj.notice_idx;
+            rows.push(obj);
+        })
+
+        axios.put("/cms/updateGrid", rows).then((res) => {
+            console.log(res);
+            if (res.status == 200) {
+                alert("변경사항을 저장했습니다.");
+                getBannerList();
+            } else {
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        })
     }
 
     function updateBanner(){

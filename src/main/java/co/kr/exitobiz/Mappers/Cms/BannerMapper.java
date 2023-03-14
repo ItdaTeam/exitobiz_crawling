@@ -19,5 +19,7 @@ public interface BannerMapper {
 
     public void updateBanner(BannerVo vo);
 
+    public void updateBannerGrid(BannerVo vo);
+
     public void deleteBanner(HashMap<String, String> params);
 }

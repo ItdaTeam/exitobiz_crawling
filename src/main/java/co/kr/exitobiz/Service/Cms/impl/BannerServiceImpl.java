@@ -50,6 +50,11 @@ public class BannerServiceImpl implements BannerService {
     }
 
     @Override
+    public void updateBannerGrid(List<BannerVo> vos) {
+        vos.forEach(map -> bannerMapper.updateBannerGrid(map));
+    }
+
+    @Override
     public void deleteBanner(HashMap<String, String> params) throws Exception{
         bannerMapper.deleteBanner(params);
     }

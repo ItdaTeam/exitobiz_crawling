@@ -20,5 +20,5 @@ public class BannerVo {
     private String updtDt;
     private MultipartFile image;
     private String bannerType;
-    private String sort;
+    private Integer sort;
 }

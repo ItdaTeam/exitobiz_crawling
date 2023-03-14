@@ -167,6 +167,12 @@
         where index = #{index}::integer
     </update>
 
+    <update id="updateBannerGrid" parameterType="HashMap">
+        update itda_web.banner
+            set sort = #{sort}::integer, updt_dt= now()
+        where index=#{index}::integer
+    </update>
+
     <delete id="deleteBanner" parameterType="HashMap">
         delete from itda_web.banner
         where index = #{index}::integer

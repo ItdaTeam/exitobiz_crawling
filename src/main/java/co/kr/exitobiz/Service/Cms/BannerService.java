@@ -18,5 +18,7 @@ public interface BannerService {
 
     public void updateBanner(BannerVo vo);
 
+    public void updateBannerGrid(List<BannerVo> vos);
+
     public void deleteBanner(HashMap<String, String> params) throws Exception;
 }
