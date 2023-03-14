@@ -135,6 +135,10 @@
         select idx, user_id, email, cancel_fl from itda_web.user_deliver_service where user_id = #{user_id}
     </select>
 
+    <select id="getMyEmailDeliver" resultType="HashMap" parameterType="HashMap">
+        select idx, title, deliver_dt from itda_web.user_deliver_service_hst udsh where udsh.user_id = #{user_id}
+    </select>
+
     <select id="getEmailDeliverList" resultType="HashMap">
         select idx, user_id, email from itda_web.user_deliver_service where cancel_fl != true
     </select>

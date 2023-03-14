@@ -42,6 +42,8 @@ public interface MainpageMapper {
 
     public HashMap<String, Object> getEmailDeliver(HashMap<String, Object> params); // 이메일 정기배송 조회
 
+    public List<HashMap> getMyEmailDeliver(HashMap<String, Object> params); // 이메일 발송 이력 조회
+
     public List<HashMap> getEmailDeliverList(); // 발송할 이메일 리스트 조회
 
     void insertEmailDeliverHst(HashMap<String, Object> params); // 이메일 발송 이력

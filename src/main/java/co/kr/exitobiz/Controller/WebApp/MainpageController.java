@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -399,6 +400,19 @@ public class MainpageController {
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = mapper.writeValueAsString(mainpageService.getEmailDeliver(header));
         return jsonStr;
+    }
+
+    //이메일 발송이력 조회
+    @PostMapping("/getMyEmailDeliver")
+    @ResponseBody
+    public String getMyEmailDeliver(@RequestHeader HashMap<String, Object> header) throws ParseException, JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        mapper.setDateFormat(dateFormat);
+
+        String jsonStr = mapper.writeValueAsString(mainpageService.getMyEmailDeliver(header));
+        return jsonStr;
+
     }
 
 

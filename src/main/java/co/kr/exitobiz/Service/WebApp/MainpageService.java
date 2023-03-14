@@ -44,5 +44,7 @@ public interface MainpageService {
 
     List<HashMap> getEmilDeliverList() throws ParseException; // 발송할 이메일 주소 리스트 조회
 
+    List<HashMap> getMyEmailDeliver(HashMap<String, Object> params) throws ParseException;// 이메일 정기발송 이력 조회
+
     void insertEmailDeliverHst(HashMap<String, Object> params) throws ParseException; // 이메일 발송 이력
 }
