@@ -350,10 +350,15 @@
 
         var item = ctx.item
 
+        var param = {
+            banner_type : text
+        }
+
         $.ajax({
             type : 'GET',
             url : '/cms/getBannerList',
             async : false, // 비동기모드 : true, 동기식모드 : false
+            data : param,
             success : function(result) {
                 $("#swiperTop .swiper-slide").remove();
                 $("#swiperBottom .swiper-slide").remove();
