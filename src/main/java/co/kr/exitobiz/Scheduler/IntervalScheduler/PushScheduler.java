@@ -163,6 +163,7 @@ public class PushScheduler {
      * 대상 : user_deliver_service 에서 cancel_fl 가 false가 아닌 사용자
      * @return
      */
+//    @Scheduled(cron = "0 0 7 * * MON") // 매주 월요일 7시
     @Scheduled(cron = "0 0 10 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
@@ -298,16 +299,15 @@ public class PushScheduler {
 
                 if(bannerList.size() > 0){
                     for(HashMap banner : bannerList){
+                        String bannerLink = banner.get("banner_noti_idx") != null ? "https://dev.exitobiz.co.kr/notice/noticeView/" + banner.get("banner_noti_idx") : (String) banner.get("banner_link");
+
                         bannerTxt += "<tr style=\"align-items: center;\">"+
                                 " <td valign=\"top\" style=\"padding-bottom:10px; text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px;box-sizing:border-box;\"> "+
-                                " <a target=\"_blank\" href=\"" + banner.get("banner_link") + "\"><img src=\"" + banner.get("banner_img") + "\" style=\"height:174px; width: 100%; object-fit:cover;\" ></a> "+
+                                " <a target=\"_blank\" href=\"" + bannerLink + "\"><img src=\"" + banner.get("banner_img") + "\" style=\"height:174px; width: 100%; object-fit:cover;\" ></a> "+
                                 " </td> "+
                                 " </tr>";
                     }
                 }
-
-
-
 
                 try{
                     Session session = Session.getDefaultInstance(props, new Authenticator() {
