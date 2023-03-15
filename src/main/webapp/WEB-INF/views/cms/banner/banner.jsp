@@ -98,12 +98,6 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>정렬<i>*</i></th>
-                                    <td>
-                                        <input type="number" id="new_sort" name="sort" style="width:300px;">
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th>제목<i>*</i></th>
                                     <td>
                                         <input type="text" id="new_banner_title" name="bannerTitle" style="width:300px;">
@@ -185,12 +179,6 @@
                                             <option value="아웃링크">아웃링크</option>
                                             <option value="인앱링크">인앱링크</option>
                                         </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>정렬<i>*</i></th>
-                                    <td>
-                                        <input type="number" id="modify_sort" name="sort" style="width:300px;">
                                     </td>
                                 </tr>
                                 <tr>
@@ -529,7 +517,6 @@
             updateBannerForm.modify_banner_type.value = bannerGrid.collectionView.currentItem["bannerType"];
             updateBannerForm.bannerLink.value = bannerGrid.collectionView.currentItem["bannerLink"];
             updateBannerForm.bannerNotiIdx.value = bannerGrid.collectionView.currentItem["bannerNotiIdx"];
-            updateBannerForm.sort.value = bannerGrid.collectionView.currentItem["sort"];
             updateBannerForm.image.value = "";
 
             if(bannerGrid.collectionView.currentItem["bannerCtgNm"] == '인앱링크' || bannerGrid.collectionView.currentItem["bannerCtgNm"] == '아웃링크'){
@@ -741,7 +728,7 @@
         var editItem = bannerView.itemsEdited;
         var rows = [];
 
-        var item = bannerView._src.map(v => parseInt(v.sort));
+        var item = bannerView._src.filter(v => v.sort != null && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
         const set = new Set(item);
 
         if (editItem.length ==0) {
