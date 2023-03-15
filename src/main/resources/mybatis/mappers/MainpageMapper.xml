@@ -136,7 +136,7 @@
     </select>
 
     <select id="getMyEmailDeliver" resultType="HashMap" parameterType="HashMap">
-        select idx, title, deliver_dt from itda_web.user_deliver_service_hst udsh where udsh.user_id = #{user_id}
+        select idx, title, deliver_dt, deliver_content_idx from itda_web.user_deliver_service_hst udsh where udsh.user_id = #{user_id}
     </select>
 
     <select id="getEmailDeliverList" resultType="HashMap">
