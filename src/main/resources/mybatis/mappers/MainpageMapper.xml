@@ -144,7 +144,19 @@
     </select>
 
     <insert id="insertEmailDeliverHst" parameterType="hashMap">
-        insert into itda_web.user_deliver_service_hst (user_id, email, title, deliver_dt) values (#{user_id}, #{email}, #{title}, now())
+        insert into itda_web.user_deliver_service_hst (user_id, email, title, deliver_dt, deliver_content_idx) values (#{user_id}, #{email}, #{title}, now(), #{deliver_content_idx})
     </insert>
+
+    <insert id="insertEmailContent" parameterType="HashMap">
+        insert into itda_web.user_deliver_content (title, content_1, content_2, content_3, deliver_dt) values(#{title}, #{content_1}, #{content_2}, #{content_3}, now())
+    </insert>
+
+    <select id="getRecentEmailContent" resultType="int">
+        select idx from itda_web.user_deliver_content order by deliver_dt desc limit 1
+    </select>
+
+    <select id="getEmailContent" parameterType="HashMap">
+        select title, content_1, content_2, content_3, title, deliver_dt from itda_web.user_deliver_content where idx=#{idx}
+    </select>
 
 </mapper>
