@@ -62,7 +62,7 @@ public class PushScheduler {
      * 대상 : user_push_setting 에서 sp_keyword_push 가 'Y' 인 사용자
      * 키워드당 1번만 푸쉬 발송 
      */
-//    @Scheduled(cron = "0 0 14 * * ?")
+    @Scheduled(cron = "0 0 14 * * ?")
     public void KeywordPush() throws InterruptedException, Exception {
 
         
@@ -114,7 +114,7 @@ public class PushScheduler {
      * 매일 10:00 에 1회 발송
      * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
      */
-//    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void bookmarkPush() throws InterruptedException, Exception {
 
 
