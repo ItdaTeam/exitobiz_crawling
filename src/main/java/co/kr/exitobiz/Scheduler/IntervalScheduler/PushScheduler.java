@@ -62,7 +62,7 @@ public class PushScheduler {
      * 대상 : user_push_setting 에서 sp_keyword_push 가 'Y' 인 사용자
      * 키워드당 1번만 푸쉬 발송 
      */
-    @Scheduled(cron = "0 0 14 * * ?")
+//    @Scheduled(cron = "0 0 14 * * ?")
     public void KeywordPush() throws InterruptedException, Exception {
 
         
@@ -114,7 +114,7 @@ public class PushScheduler {
      * 매일 10:00 에 1회 발송
      * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
      */
-    @Scheduled(cron = "0 0 10 * * ?")
+//    @Scheduled(cron = "0 0 10 * * ?")
     public void bookmarkPush() throws InterruptedException, Exception {
 
 
@@ -164,7 +164,7 @@ public class PushScheduler {
      * @return
      */
 //    @Scheduled(cron = "0 0 7 * * MON") // 매주 월요일 7시
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 5 12 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -187,6 +187,7 @@ public class PushScheduler {
         List<HashMap> totalCnt = mainpageService.getTotalCount();
 
         if(emilList.size() > 0){
+            int index = 0;
             for(HashMap email : emilList ) {
                 HashMap<String, Object> userParams = new HashMap<>();
                 userParams.put("userid", email.get("user_id"));
@@ -224,6 +225,7 @@ public class PushScheduler {
                 //지원사업 리스트 ( 사업화지원 | 인건비 지원, 시설 공간 | 멘토링 교육, 대출 융자 | 마케팅 홍보, 행사 | RnD, 기타 )
                 userCompanyInfo.put("user_id", email.get("user_id"));
                 userCompanyInfo.put("mail_service", "true");
+                userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
                 List<String> getSupportData = Arrays.asList("02", "04,03", "06,09", "05,08", "07,10");
                 List<String> getSupportList = new ArrayList<>();
 
@@ -245,13 +247,13 @@ public class PushScheduler {
 //                                    "<div style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex;color:#fff; border-radius:5px; width:92px; height:32px;line-height: 32px;\"><strong style=\"margin: 0 auto;font-weight:400;\">" + supStr.get("target_cat_nm") + "</strong></div>&nbsp;&nbsp;"+
 //                            "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;max-width:50%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") +  "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
 //                            "</a></div>";
-                            "<p><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
+                            "<p><a href=\"" + supStr.get("mobile_url") + "\" target=\"_blank\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
                                     "<strong style=\"font-weight:700; font-size:14px; display:flex; color:#30D6C2; border-radius:5px; width:92px; height:32px; line-height:32px;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
                                     "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400; max-width:55%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
                                     "</a></p>";
                         }
                     }else{
-                        supportText +=  "<p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:14px;\">맞춤 지원사업이 없어요.<a href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">기업정보를 수정해보세요.</a></p>";
+                        supportText +=  "<p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:14px;\">맞춤 지원사업이 없어요.<a href=\"https://exitobiz.co.kr\" target=\"_blank\" style=\"color:#0000FF;\">기업정보를 수정해보세요.</a></p>";
                     }
                     getSupportList.add(supportText);
                 }
@@ -280,7 +282,7 @@ public class PushScheduler {
 
                         String CommUrl = commCal.get(Calendar.DATE) == dayLastWeekTo ? "https://exitobiz.co.kr/community/communityView/" + startUpCommList.get(idx).get("id") : "#none";
 
-                        commListTxt += "<p><a href=\"" + CommUrl + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
+                        commListTxt += "<p><a href=\"" + CommUrl + "\" target=\"_blank\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
                                 "<strong style=\"font-weight:400; font-size:14px; display:flex; align-items:center; justify-content: center; color:#4949DB; border-radius:5px; width:92px; height:32px;\">" + dayLastWeekFromTxt + "</strong>&nbsp;&nbsp;";
                         if(commCal.get(Calendar.DATE) == dayLastWeekTo){
                             commListTxt += "<b style=\"font-weight:400; max-width:433px; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + startUpCommList.get(idx).get("title") + "</b>";
@@ -299,7 +301,9 @@ public class PushScheduler {
 
                 if(bannerList.size() > 0){
                     for(HashMap banner : bannerList){
-                        String bannerLink = banner.get("banner_noti_idx") != null ? "https://dev.exitobiz.co.kr/notice/noticeView/" + banner.get("banner_noti_idx") : (String) banner.get("banner_link");
+                        //TODO : 운영서버 배포 시, url 주소 변경
+                        String bannerLink = banner.get("banner_noti_idx") != null ? "https://exitobiz.co.kr/notice/noticeView/" + banner.get("banner_noti_idx") : banner.get("banner_link") != null && !banner.get("banner_link").toString().isEmpty()? (String) banner.get("banner_link") : "https://exitobiz.co.kr/notice/noticeList";
+
 
                         bannerTxt += "<tr style=\"align-items: center;\">"+
                                 " <td valign=\"top\" style=\"padding-bottom:10px; text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px;box-sizing:border-box;\"> "+
@@ -425,7 +429,7 @@ public class PushScheduler {
                                 "                                </p>                                                                                                                                                                                                                                                                                                                                 "+
                                 "                                <p style=\"color: #797979; margin: 0; font-weight:400; margin:0 0 10px;\">창업 기간: <strong style=\"font-weight:400; color:#151515;\">" + usrCodeArr.get(2) + "</strong></p>                                                                                                                                                                                "+
                                 "                                <p style=\"color: #797979; margin: 0; font-weight:400; margin:0;\">지역: <strong style=\"font-weight:400; color:#151515;\">" + usrCodeArr.get(3) + "</strong></p>                                                                                                                                                                                             "+
-                                "                                <p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:12px;\">정기배송되는 지원사업을 수정하시려면 <a href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">기업정보를 수정하세요.</a></p>                                                                                                                                                                        "+
+                                "                                <p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:12px;\">정기배송되는 지원사업을 수정하시려면 <a target=\"_blank\" href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">기업정보를 수정하세요.</a></p>                                                                                                                                                                        "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
                                 "                        <tr>                                                                                                                                                                                                                                                                                                                                         "+
@@ -434,7 +438,7 @@ public class PushScheduler {
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        ";
 
-                         mailText2 +=  "                  <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
+                         mailText2 +=  "<tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
                                 "                            <td valign=\"top\" style=\" text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px; padding:20px; box-sizing:border-box;\">                                                                                                                                                "+
                                 "                                <h4 style=\" font-size:18px; font-weight: 500; margin:0 0 20px;\">사업화 지원</h4>"+
                                                                     getSupportList.get(0)+
@@ -489,8 +493,7 @@ public class PushScheduler {
                                 "                                &nbsp;                                                                                                                                                                                                                                                                                                                               "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>" ;
-                         mailText3 +="                                                                                                                                                                                                                                                                                                                                "+
-                                "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
+                         mailText3 +=   "<tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
                                 "                            <td valign=\"top\" style=\" text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px; padding:20px; box-sizing:border-box;\">                                                                                                                                                "+
                                 "                                <h4 style=\" font-size:18px; font-weight: 500; margin:0 0 20px;\">스타트업 뉴스</h4>                                                                                                                                                                                                                                                       "+
                                                                  commListTxt+
@@ -505,7 +508,7 @@ public class PushScheduler {
                                 "                        <tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                    "+
                                 "                            <td valign=\"top\" style=\"padding: 40px;\">                                                                                                                                                                                                                                                                                             "+
                                 "                                <p style=\"line-height: 20px; display: flex; align-items: center; justify-content: center; color:#0000FF;\">                                                                                                                                                                                                                         "+
-                                "                                    <a href=\"https://exitobiz.co.kr\" style=\"color:#0000FF; font-size: 14px;\">지난 정기배송 지원사업 보기</a>                                                                                                                                                                  "+
+                                "                                    <a target=\"_blank\" href=\"https://exitobiz.co.kr\" style=\"color:#0000FF; font-size: 14px;\">지난 정기배송 지원사업 보기</a>                                                                                                                                                                  "+
                                 "                                </p>                                                                                                                                                                                                                                                                                                                                 "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
@@ -560,13 +563,24 @@ public class PushScheduler {
                         message.setContent(mailText1 + mailText2 + mailText3, "text/html;charset=UTF-8");
                         Transport.send(message);
 
+                        HashMap<String, Object> contentParams = new HashMap<>();
+                        contentParams.put("content_1", mailText1);
+                        contentParams.put("content_2", mailText2);
+                        contentParams.put("content_3", mailText3);
+                        contentParams.put("title", "[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
+                        if(index == 0) mainpageService.insertEmailContent(contentParams);
+
+                        int contentIdx = mainpageService.getRecentEmailContent();
+
                         //메일발송 이력
                         HashMap<String, Object> HstParam = new HashMap<>();
 
                         HstParam.put("user_id", email.get("user_id"));
                         HstParam.put("email", email.get("email"));
                         HstParam.put("title", "[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
+                        HstParam.put("deliver_content_idx", contentIdx);
                         mainpageService.insertEmailDeliverHst(HstParam);
+
 
                         System.out.println("=================== 이메일 발송 끝 ====================");
 
@@ -576,7 +590,9 @@ public class PushScheduler {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                index++;
             }
+
         }
 
     }
