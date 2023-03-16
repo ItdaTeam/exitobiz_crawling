@@ -155,8 +155,8 @@
         select idx from itda_web.user_deliver_content order by deliver_dt desc limit 1
     </select>
 
-    <select id="getEmailContent" parameterType="HashMap">
-        select title, content_1, content_2, content_3, title, deliver_dt from itda_web.user_deliver_content where idx=#{idx}
+    <select id="getEmailContent" parameterType="HashMap" resultType="HashMap">
+        select title, content_1, content_2, content_3, title, deliver_dt from itda_web.user_deliver_content where idx = #{idx}::integer
     </select>
 
 </mapper>

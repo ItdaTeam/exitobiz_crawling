@@ -125,7 +125,7 @@
                 si_end_dt, si.si_idx
             </when>
             <when test='mail_service != null and mail_service == "true"'>
-                  totalCnt desc, si.si_idx limit 3
+                view_cnt desc, si.si_idx limit 3
             </when>
             <otherwise>
                 si.si_cret_dt desc , si.si_idx
