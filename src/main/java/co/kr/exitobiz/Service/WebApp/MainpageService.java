@@ -50,7 +50,4 @@ public interface MainpageService {
 
     void insertEmailContent(HashMap<String, Object> params) throws ParseException; // 이메일 발송 내용 저장
 
-    int getRecentEmailContent() throws  ParseException; // 최근 추가된 이메일 내용 index 번호 조회
-
-    HashMap<String, Object> getEmailContent(HashMap<String, Object> params) throws ParseException; // 이메일 내용 조회
 }

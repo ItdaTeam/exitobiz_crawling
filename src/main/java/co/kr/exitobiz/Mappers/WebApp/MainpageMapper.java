@@ -50,7 +50,4 @@ public interface MainpageMapper {
 
     void insertEmailContent(HashMap<String, Object> params);    //이메일 내용 저장
 
-    public int getRecentEmailContent(); // 최근 추가된 이메일 index 번호 조회
-
-    public HashMap<String, Object> getEmailContent(HashMap<String, Object> params); // 이메일 내용 조회
 }

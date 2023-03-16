@@ -118,14 +118,4 @@ public class MainpageServiceImpl implements MainpageService {
     public void insertEmailContent(HashMap<String, Object> params) throws ParseException {
         mainpageMapper.insertEmailContent(params);
     }
-
-    @Override
-    public int getRecentEmailContent() throws ParseException {
-        return mainpageMapper.getRecentEmailContent();
-    }
-
-    @Override
-    public HashMap<String, Object> getEmailContent(HashMap<String, Object> params) throws ParseException {
-        return mainpageMapper.getEmailContent(params);
-    }
 }

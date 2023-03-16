@@ -413,16 +413,4 @@ public class MainpageController {
         String jsonStr = mapper.writeValueAsString(mainpageService.getMyEmailDeliver(header));
         return jsonStr;
     }
-
-    //이메일 내용 조회
-    @PostMapping("/getEmailContent")
-    @ResponseBody
-    public String getEmailContent(@RequestBody HashMap<String, Object> params) throws ParseException, JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-        mapper.setDateFormat(dateFormat);
-
-        String jsonStr = mapper.writeValueAsString(mainpageService.getEmailContent(params));
-        return jsonStr;
-    }
 }
