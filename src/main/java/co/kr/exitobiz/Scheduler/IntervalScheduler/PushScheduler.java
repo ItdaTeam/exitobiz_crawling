@@ -570,23 +570,15 @@ public class PushScheduler {
                         message.setContent(mailText1 + mailText2 + mailText3, "text/html;charset=UTF-8");
                         Transport.send(message);
 
-                        //메일 내용 저장
-                        HashMap<String, Object> contentParams = new HashMap<>();
-                        contentParams.put("content_1", mailText1);
-                        contentParams.put("content_2", mailText2);
-                        contentParams.put("content_3", mailText3);
-                        contentParams.put("title", "[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
-                        if(index == 0) mainpageService.insertEmailContent(contentParams);
-
-                        int contentIdx = mainpageService.getRecentEmailContent();
-
                         //메일발송 이력
                         HashMap<String, Object> HstParam = new HashMap<>();
 
                         HstParam.put("user_id", email.get("user_id"));
                         HstParam.put("email", email.get("email"));
                         HstParam.put("title", "[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
-                        HstParam.put("deliver_content_idx", contentIdx);
+                        HstParam.put("content_1", mailText1);
+                        HstParam.put("content_2", mailText2);
+                        HstParam.put("content_3", mailText3);
                         mainpageService.insertEmailDeliverHst(HstParam);
 
 
