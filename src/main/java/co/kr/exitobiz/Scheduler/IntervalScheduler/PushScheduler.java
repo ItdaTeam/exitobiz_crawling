@@ -62,7 +62,7 @@ public class PushScheduler {
      * 대상 : user_push_setting 에서 sp_keyword_push 가 'Y' 인 사용자
      * 키워드당 1번만 푸쉬 발송 
      */
-    @Scheduled(cron = "0 0 14 * * ?")
+//    @Scheduled(cron = "0 0 14 * * ?")
     public void KeywordPush() throws InterruptedException, Exception {
 
         
@@ -114,7 +114,7 @@ public class PushScheduler {
      * 매일 10:00 에 1회 발송
      * 대상 : user_push_setting 에서 sp_bookmark_push 가 'Y' 인 사용자
      */
-    @Scheduled(cron = "0 0 10 * * ?")
+//    @Scheduled(cron = "0 0 10 * * ?")
     public void bookmarkPush() throws InterruptedException, Exception {
 
 
@@ -164,7 +164,7 @@ public class PushScheduler {
      * @return
      */
 //    @Scheduled(cron = "0 0 7 * * MON") // 매주 월요일 7시
-    @Scheduled(cron = "0 5 12 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");
@@ -225,7 +225,14 @@ public class PushScheduler {
                 //지원사업 리스트 ( 사업화지원 | 인건비 지원, 시설 공간 | 멘토링 교육, 대출 융자 | 마케팅 홍보, 행사 | RnD, 기타 )
                 userCompanyInfo.put("user_id", email.get("user_id"));
                 userCompanyInfo.put("mail_service", "true");
-                userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
+                userCompanyInfo.remove("tech_ctg");
+
+               // String loc_ctg = (String) userCompanyInfo.get("loc_ctg");
+
+//                if(!loc_ctg.contains("C82"))  userCompanyInfo.put("loc_code", loc_ctg + ", C82");
+//                else
+                    userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
+
                 List<String> getSupportData = Arrays.asList("02", "04,03", "06,09", "05,08", "07,10");
                 List<String> getSupportList = new ArrayList<>();
 
@@ -248,7 +255,7 @@ public class PushScheduler {
 //                            "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;max-width:50%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") +  "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
 //                            "</a></div>";
                             "<p><a href=\"" + supStr.get("mobile_url") + "\" target=\"_blank\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
-                                    "<strong style=\"font-weight:700; font-size:14px; display:flex; color:#30D6C2; border-radius:5px; width:92px; height:32px; line-height:32px;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
+                                    "<strong style=\"font-size:14px; display:flex; color:#30D6C2; border-radius:5px; width:92px;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
                                     "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400; max-width:55%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
                                     "</a></p>";
                         }
@@ -563,6 +570,7 @@ public class PushScheduler {
                         message.setContent(mailText1 + mailText2 + mailText3, "text/html;charset=UTF-8");
                         Transport.send(message);
 
+                        //메일 내용 저장
                         HashMap<String, Object> contentParams = new HashMap<>();
                         contentParams.put("content_1", mailText1);
                         contentParams.put("content_2", mailText2);
