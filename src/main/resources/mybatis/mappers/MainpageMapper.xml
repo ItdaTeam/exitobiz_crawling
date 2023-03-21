@@ -45,6 +45,12 @@
 	        (select count(*) from itda_app.usertable u2 ) as user_cnt
     </select>
 
+    <select id="getLastWeekCnt" resultType="int">
+        select count(*) from itda_app.support_info si
+        where si.si_active_yn='Y' and date_trunc('week', current_date-7)::date  <![CDATA[<=]]>  si_cret_dt::date
+            and si_cret_dt::date  <![CDATA[<=]]> (date_trunc('week', current_date-7) + '6 days')::date
+    </select>
+
     <select id="getKeyword" parameterType="HashMap" resultType="HashMap">
         select array_to_string(array_agg(keyword),',')as keyword from itda_app.user_keyword uk where uk.user_id = #{user_id}
     </select>

@@ -50,6 +50,11 @@ public class MainpageServiceImpl implements MainpageService {
     }
 
     @Override
+    public int getLastWeekCnt() throws ParseException {
+        return mainpageMapper.getLastWeekCnt();
+    }
+
+    @Override
     public HashMap<String, Object> getKeyword(HashMap<String, Object> params) throws ParseException {
         return mainpageMapper.getKeyword(params);
     }

@@ -22,6 +22,8 @@ public interface MainpageService {
 
     List<HashMap> getTotalCount() throws ParseException; // 누적갯수(누적 지원사업 개수, 이번주 지원사업, 정보 제공기관, 누적 가입 기업) 리스트
 
+    int getLastWeekCnt() throws ParseException; // 누적갯수 ( 지난주 월 - 금 )
+
     HashMap<String, Object> getKeyword(HashMap<String, Object> params) throws ParseException; // 키워드 정기배송 리스트 (","로 구분)
 
     void insertKeyword(HashMap<String, Object> params) throws ParseException; // 키워드 추가
