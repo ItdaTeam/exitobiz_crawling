@@ -236,10 +236,10 @@ SELECT usertoken
                 and coalesce(ups.marketing_push,'N')!= 'N'
             </if>
           <choose>
-                <when test="keyId == 'bann' or keyId == 'cus1' ">
+                <when test=" (keyId == 'bann' or keyId == 'cus1') and !marketing.equals('true') ">
                     and coalesce(ups.sp_community_admin_push, 'Y') != 'N'
                 </when>
-                <when test="keyId == 'cus2' ">
+                <when test="keyId == 'cus2' and !marketing.equals('true') ">
                     and coalesce(ups.sp_survey_push, 'Y') != 'N'
                 </when>
           </choose>
@@ -262,10 +262,10 @@ SELECT usertoken
                                     and coalesce(ups.marketing_push,'N')!= 'N'
                                 </if>
                                 <choose>
-                                    <when test="keyId == 'bann' or keyId == 'cus1' ">
+                                    <when test=" (keyId == 'bann' or keyId == 'cus1') and !marketing.equals('true') ">
                                         and coalesce(ups.sp_community_admin_push, 'Y') != 'N'
                                     </when>
-                                    <when test="keyId == 'cus2' ">
+                                    <when test="keyId == 'cus2' and !marketing.equals('true') ">
                                         and coalesce(ups.sp_survey_push, 'Y') != 'N'
                                     </when>
 
