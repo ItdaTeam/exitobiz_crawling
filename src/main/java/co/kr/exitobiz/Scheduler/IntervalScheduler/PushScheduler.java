@@ -225,13 +225,17 @@ public class PushScheduler {
                 //지원사업 리스트 ( 사업화지원 | 인건비 지원, 시설 공간 | 멘토링 교육, 대출 융자 | 마케팅 홍보, 행사 | RnD, 기타 )
                 userCompanyInfo.put("user_id", email.get("user_id"));
                 userCompanyInfo.put("mail_service", "true");
-                userCompanyInfo.remove("tech_ctg");
 
-               // String loc_ctg = (String) userCompanyInfo.get("loc_ctg");
 
-//                if(!loc_ctg.contains("C82"))  userCompanyInfo.put("loc_code", loc_ctg + ", C82");
-//                else
-                    userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
+                // 사용자 필터 적용( 지역무관, 기술무관 포함 )
+                String loc_ctg = (String) userCompanyInfo.get("loc_ctg");
+                if(!loc_ctg.contains("C82"))  userCompanyInfo.put("loc_code", loc_ctg + ", C82");
+                else  userCompanyInfo.put("loc_code", userCompanyInfo.get("loc_ctg"));
+
+                String tech_ctg = (String) userCompanyInfo.get("tech_ctg");
+                if(!tech_ctg.contains("02")) userCompanyInfo.put("tech_ctg", tech_ctg + ", 02");
+                else userCompanyInfo.put("tech_ctg", userCompanyInfo.get("tech_ctg"));
+
 
                 List<String> getSupportData = Arrays.asList("02", "04,03", "06,09", "05,08", "07,10");
                 List<String> getSupportList = new ArrayList<>();
@@ -250,18 +254,15 @@ public class PushScheduler {
                             SimpleDateFormat sdf = new SimpleDateFormat("MM월dd일");
                             String end_dt = sdf.format(timestamp);
                             supportText +=
-//                            "<div style=\"margin-bottom: 10px;\"><a href=\"" + supStr.get("mobile_url") + "\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
-//                                    "<div style=\"font-weight:400; background-color:#30D6C2; font-size:14px; display:flex;color:#fff; border-radius:5px; width:92px; height:32px;line-height: 32px;\"><strong style=\"margin: 0 auto;font-weight:400;\">" + supStr.get("target_cat_nm") + "</strong></div>&nbsp;&nbsp;"+
-//                            "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;max-width:50%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") +  "</b>&nbsp;/&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
-//                            "</a></div>";
                             "<p><a href=\"" + supStr.get("mobile_url") + "\" target=\"_blank\" style=\"text-decoration:none; color:#797979; display:flex; align-items:center;\">"+
                                     "<strong style=\"font-size:14px; display:flex; color:#30D6C2; border-radius:5px; width:92px;\">" + supStr.get("target_cat_nm") + "</strong>&nbsp;&nbsp;"+
                                     "<b style=\"font-weight:400;\">" + supStr.get("locname") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400; max-width:55%; white-space: nowrap;text-overflow: ellipsis;overflow:hidden;word-break: break-all; -webkit-box-orient: vertical;\">" + supStr.get("si_title") + "</b>&nbsp;&nbsp;/&nbsp;&nbsp;<b style=\"font-weight:400;\">~" + end_dt+ "</b>"+
                                     "</a></p>";
                         }
                     }else{
-                        supportText +=  "<p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:14px;\">맞춤 지원사업이 없어요.<a href=\"https://exitobiz.co.kr\" target=\"_blank\" style=\"color:#0000FF;\">기업정보를 수정해보세요.</a></p>";
+                        supportText +=  "<p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:14px;\">맞춤 지원사업이 없어요.<a href=\"https://exitobiz.co.kr\" target=\"_blank\" style=\"color:#0000FF;\">엑시토 메인화면 > 맞춤 필터를 수정해 보세요.</a></p>";
                     }
+
                     getSupportList.add(supportText);
                 }
 
@@ -300,7 +301,7 @@ public class PushScheduler {
 
 
                     // 발송용 배너 조회
-                HashMap<String, Object> bannerParams = new HashMap<>();
+                    HashMap<String, Object> bannerParams = new HashMap<>();
                     bannerParams.put("banner_type", "mail");
 
                 List<HashMap> bannerList = mainpageService.getBannerList(bannerParams);
@@ -308,7 +309,7 @@ public class PushScheduler {
 
                 if(bannerList.size() > 0){
                     for(HashMap banner : bannerList){
-                        //TODO : 운영서버 배포 시, url 주소 변경
+                        //TODO : 운영서버 배포 시, url 주소 변경∂
                         String bannerLink = banner.get("banner_noti_idx") != null ? "https://exitobiz.co.kr/notice/noticeView/" + banner.get("banner_noti_idx") : banner.get("banner_link") != null && !banner.get("banner_link").toString().isEmpty()? (String) banner.get("banner_link") : "https://exitobiz.co.kr/notice/noticeList";
 
 
@@ -337,6 +338,7 @@ public class PushScheduler {
                         String mailText3 = "";
 
                         message.setSubject("[엑시토] " + (now.get(Calendar.MONTH)+1) + "월 " + now.get(Calendar.WEEK_OF_MONTH) + "주차 맞춤 지원사업 정기배송");
+
 
                         mailText1 +=
                         "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"+
@@ -436,14 +438,20 @@ public class PushScheduler {
                                 "                                </p>                                                                                                                                                                                                                                                                                                                                 "+
                                 "                                <p style=\"color: #797979; margin: 0; font-weight:400; margin:0 0 10px;\">창업 기간: <strong style=\"font-weight:400; color:#151515;\">" + usrCodeArr.get(2) + "</strong></p>                                                                                                                                                                                "+
                                 "                                <p style=\"color: #797979; margin: 0; font-weight:400; margin:0;\">지역: <strong style=\"font-weight:400; color:#151515;\">" + usrCodeArr.get(3) + "</strong></p>                                                                                                                                                                                             "+
-                                "                                <p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:12px;\">정기배송되는 지원사업을 수정하시려면 <a target=\"_blank\" href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">기업정보를 수정하세요.</a></p>                                                                                                                                                                        "+
+                                "                                <p style=\"color: #797979; margin:20px 0 0; font-weight:400; font-size:12px;\">더 정확한 지원사업을 배송 받으시려면 <a target=\"_blank\" href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">엑시토 메인화면 > 맞춤 필터를 수정하세요.</a></p>                                                                                                                                                                        "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
                                 "                        </tr>                                                                                                                                                                                                                                                                                                                                        "+
                                 "                        <tr>                                                                                                                                                                                                                                                                                                                                         "+
                                 "                            <td style=\"font-size: 0; line-height: 0;\" height=\"20\">                                                                                                                                                                                                                                                                               "+
                                 "                                &nbsp;                                                                                                                                                                                                                                                                                                                               "+
                                 "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
-                                "                        </tr>                                                                                                                                                                                                                                                                                                                                        ";
+                                "                        </tr>  "+
+                                "                        <tr>                                                                                                                                                                                                                                                                                                                                         "+
+                                "                            <td width=\"100%\" valign=\"top\" style=\" text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px; padding:20px; box-sizing:border-box;\">                                                                                                                                                                                                                                                                           "+
+                                "                                 <h4 style=\" font-size:18px; font-weight: 500; margin:0 0 20px;\">" + (cal.get(Calendar.MONTH)+1) + "월 0" +  cal.get(Calendar.WEEK_OF_MONTH) + "주차에 업데이트된 지원사업 " + mainpageService.getLastWeekCnt() + "개에서 맞춤 선별되었습니다.</h4> " +
+                                "                                 <p style=\"margin:20px 0 0; font-weight:400; font-size:14px;\"><a target=\"_blank\" href=\"https://exitobiz.co.kr\" style=\"color:#0000FF;\">더 많은 지원사업은 엑시토 웹에서 확인하세요.</a></p>                                                                                                                                                                                                                                                                                                  "+
+                                "                            </td>                                                                                                                                                                                                                                                                                                                                    "+
+                                "                        </tr>  ";
 
                          mailText2 +=  "<tr style=\"align-items: center;\">                                                                                                                                                                                                                                                                                                          "+
                                 "                            <td valign=\"top\" style=\" text-align: left; vertical-align: middle; height:auto; margin: 0 auto; border: 1px solid #E4E4E4; border-radius: 5px; padding:20px; box-sizing:border-box;\">                                                                                                                                                "+
