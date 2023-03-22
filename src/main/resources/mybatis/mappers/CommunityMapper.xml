@@ -44,6 +44,9 @@
                     <when test="select_cat == '설문조사'">
                         and category = '설문조사'
                     </when>
+                    <when test="select_cat == 'KNOWHOW'">
+                        and category = 'KNOWHOW'
+                    </when>
                     <otherwise>
                         and 1=1
                     </otherwise>
