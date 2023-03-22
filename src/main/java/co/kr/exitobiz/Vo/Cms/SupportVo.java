@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter@Setter
 public class SupportVo {
     private Long siIdx;
     private String locCode;
@@ -22,7 +22,7 @@ public class SupportVo {
     private Integer viewCnt;
     private Integer shareCnt;
     private Integer saveCnt;
-
+    private String updtDt;
     private String targetCatCd;
     private String businessCtg;
     private String techCtg;
@@ -100,6 +100,7 @@ public class SupportVo {
                 ", allViewCnt=" + allViewCnt +
                 ", ViewCntLoc='" + ViewCntLoc + '\'' +
                 ", SupportCntLoc='" + SupportCntLoc + '\'' +
+                ", updtDt='" + updtDt + '\'' +
                 '}';
     }
 }

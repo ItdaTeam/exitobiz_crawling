@@ -139,6 +139,8 @@ public class SupportRepository {
     //업데이트
     public void update(SupportVo vo) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = new Date();
+
         jpaQueryFactory
                 .update(support)
                 .set(support.targetName, vo.getTargetName())
@@ -157,6 +159,7 @@ public class SupportRepository {
                 .set(support.businessType, vo.getBusinessType())
                 .set(support.companyType, vo.getCompanyType())
                 .set(support.startPeriod, vo.getStartPeriod())
+                .set(support.updtDt, formatter.parse(vo.getUpdtDt()))
                 //.set(support.siCretDt, LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay())
                 .where(support.siIdx.eq(vo.getSiIdx()))
                 .execute();

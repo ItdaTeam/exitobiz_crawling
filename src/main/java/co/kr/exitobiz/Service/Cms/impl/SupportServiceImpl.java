@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,6 +98,7 @@ public class SupportServiceImpl implements SupportService {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 if(checkFlag){
                     vo.setTargetCostValue(Long.parseLong(vo.getTargetCostValue().toString().replace(",","")));
+                    vo.setUpdtDt(formatter.format(new Date()));
                     supportRepository.update(vo);
                 }else {
                     Support support = new Support();
@@ -112,6 +114,8 @@ public class SupportServiceImpl implements SupportService {
                     support.setTargetCostValue(Long.parseLong(vo.getTargetCostValue().toString().replace(",","")));
                    // support.setSiCretDt(LocalDate.parse(vo.getSiCretDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiEndDt(LocalDate.parse(vo.getSiEndDt(), DateTimeFormatter.ISO_DATE).atStartOfDay());
+
+//                    support.setUpdtDt(LocalDate.parse(DateTimeFormatter.ofPattern("yyyy-mm-dd").new Date(), DateTimeFormatter.ISO_DATE).atStartOfDay());
                     support.setSiActiveYn(vo.getSiActiveYn());
                     support.setViewCnt(0);
                     support.setShareCnt(0);
