@@ -87,6 +87,12 @@ public class Support {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private Date toDt;
 
+    @Column(name = "updt_dt")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private Date updtDt;
+
+
+
 
     public Support(String targetName, String targetCatName, String locCode, String siTitle, String mobileUrl, String pcUrl){
         this.targetName = targetName;
