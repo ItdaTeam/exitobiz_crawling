@@ -1,6 +1,7 @@
 package co.kr.exitobiz.Scheduler.IntervalScheduler;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -185,6 +186,13 @@ public class PushScheduler {
         List<HashMap> emilList = mainpageService.getEmilDeliverList();
 
         List<HashMap> totalCnt = mainpageService.getTotalCount();
+
+        //천단위 콤마
+        DecimalFormat df = new DecimalFormat("###,###");
+        totalCnt.get(0).put("total_cnt", df.format(totalCnt.get(0).get("total_cnt")));
+        totalCnt.get(0).put("week_cnt", df.format(totalCnt.get(0).get("week_cnt")));
+        totalCnt.get(0).put("target_cnt", df.format(totalCnt.get(0).get("target_cnt")));
+
 
         if(emilList.size() > 0){
             int index = 0;
@@ -400,7 +408,7 @@ public class PushScheduler {
                                 "            </td>                                                                                                                                                                                                                                                                                                                                                    "+
                                 "        </tr>                                                                                                                                                                                                                                                                                                                                                        "+
                                 "        <tr>                                                                                                                                                                                                                                                                                                                                                         "+
-                                "            <td style=\"font-size:30px; color:#fff; line-height:18px; text-align: center;\">                                                                                                                                                                                                                                                    "+
+                                "            <td style=\"font-size:30px; color:#fff; text-align: center;\">                                                                                                                                                                                                                                                    "+
                                 "                <p><strong style=\"font-size: 35px;\">정기 배송</strong>으로 만나는 <strong style=\"font-size: 35px;\">지원사업</strong></p>                                                                                                                                                                                                                                      "+
                                 "            </td>                                                                                                                                                                                                                                                                                                                                                    "+
                                 "        </tr>                                                                                                                                                                                                                                                                                                                                                        "+
