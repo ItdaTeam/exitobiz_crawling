@@ -153,9 +153,4 @@
         insert into itda_web.user_deliver_service_hst (user_id, email, title, deliver_dt, content_1, content_2, content_3) values (#{user_id}, #{email}, #{title}, now(), #{content_1}, #{content_2}, #{content_3})
     </insert>
 
-    <insert id="insertEmailContent" parameterType="HashMap">
-        insert into itda_web.user_deliver_content (title, content_1, content_2, content_3, deliver_dt) values(#{title}, #{content_1}, #{content_2}, #{content_3}, now())
-    </insert>
-
-
 </mapper>

@@ -50,6 +50,4 @@ public interface MainpageService {
 
     void insertEmailDeliverHst(HashMap<String, Object> params) throws ParseException; // 이메일 발송 이력
 
-    void insertEmailContent(HashMap<String, Object> params) throws ParseException; // 이메일 발송 내용 저장
-
 }

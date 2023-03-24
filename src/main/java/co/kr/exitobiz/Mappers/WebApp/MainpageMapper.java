@@ -50,6 +50,5 @@ public interface MainpageMapper {
 
     void insertEmailDeliverHst(HashMap<String, Object> params); // 이메일 발송 이력
 
-    void insertEmailContent(HashMap<String, Object> params);    //이메일 내용 저장
 
 }
