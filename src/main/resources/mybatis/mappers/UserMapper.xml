@@ -363,6 +363,7 @@ SELECT usertoken
               , username = '-'
               , usertitle = '-'
               , userhp = '-'
+              , mos = '-'
               , companyname = '-'
               , companytype = '-'
               , companyloc = '-'
@@ -469,8 +470,7 @@ SELECT usertoken
 
     <update id="updateMobileInfo" parameterType="map">
         update itda_app.usertable u
-        SET mos= #{mos},
-            minfo= #{minfo},
+        SET minfo= #{minfo},
             <if test="userToken != null">
             usertoken=#{userToken},
             </if>
@@ -486,6 +486,7 @@ SELECT usertoken
           and minfo  = #{minfo}
           and usertoken  = #{usertoken}
     </delete>
+
     <delete id="delUserTokenById" parameterType="map">
         delete from itda_app.user_device
         where 1=1

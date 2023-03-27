@@ -39,7 +39,7 @@ select ch.*
 
     <insert id="login" parameterType="Map">
         INSERT INTO itda_app.usertable
-        (id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userhp, check_flag, admin_flag, cret_time, last_time)
+        (id, idprofile, userbirthday, useragerange, usergender, usernickname, useremail, username, userhp, check_flag, admin_flag, cret_time, last_time, mos)
         VALUES(#{userid},
                <choose>
                     <when test="idprofile != null and idprofile != '' ">
@@ -49,10 +49,11 @@ select ch.*
                         'https://exitobiz.co.kr/img/profile/default3.png',
                     </otherwise>
                </choose>
-               #{userbirthday}, #{useragerange}, #{usergender}, #{usernickname},#{useremail}, #{username}, #{userhp}, 'Y', 'N', now(), now())
+               #{userbirthday}, #{useragerange}, #{usergender}, #{usernickname},#{useremail}, #{username}, #{userhp}, 'Y', 'N', now(), now(), #{mos})
         ON CONFLICT (id) DO UPDATE
         SET
             last_time = now(),
+            <if test="isFirst = 'true'">mos = #{mos},</if>
             useremail = #{useremail}
     </insert>
 
