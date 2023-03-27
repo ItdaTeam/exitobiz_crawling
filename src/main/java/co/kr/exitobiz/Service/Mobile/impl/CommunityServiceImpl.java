@@ -79,7 +79,7 @@ public class CommunityServiceImpl implements CommunityService {
                 params.put("fileName", fileName);
 
                 //컨텐츠 내 이미지 저장
-                ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
+                ImgPath.append("https://dev.exitobiz.co.kr:8443/img/community/").append(fileName);
                 try{
                     fileService.uploadFile(communityVo.getUpFile(), params);
 
@@ -87,7 +87,7 @@ public class CommunityServiceImpl implements CommunityService {
                     e.printStackTrace();
                 }
             }else if(communityVo.getAttachFile() != null){ //다중첨부파일 저장
-                    final String url = "https://api.exitobiz.co.kr/file/community/";  // 임시
+                    final String url = "https://dev.exitobiz.co.kr:8443/file/community/";  // 임시
                     HashMap<String, String> fileParams = new HashMap<>();
                     ArrayList<String> fileArray = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class CommunityServiceImpl implements CommunityService {
                 params.put("filePath", "/img/community/");
                 params.put("fileName", fileName);
 
-                ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
+                ImgPath.append("https://dev.exitobiz.co.kr:8443/img/community/").append(fileName);
                 try{
 
                     fileService.uploadFile(communityVo.getUpFile(), params);

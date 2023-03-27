@@ -165,7 +165,7 @@ public class PushScheduler {
      * @return
      */
 //    @Scheduled(cron = "0 0 7 * * MON") // 매주 월요일 7시
-    @Scheduled(cron = "0 0 10 * * ?")
+//    @Scheduled(cron = "0 50 14 * * ?")
     public void emailDeliverPush() throws InterruptedException, Exception {
         String host = "smtp.office365.com";
         String user = env.getProperty("outlook.id");

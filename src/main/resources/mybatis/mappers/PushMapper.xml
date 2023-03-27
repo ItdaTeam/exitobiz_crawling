@@ -60,11 +60,12 @@
                  left outer join itda_app.user_device ud on mb.mb_cret_id = ud.user_id
                  left outer join itda_app.support_info si on mb.mb_addidx = si.si_idx
                  left outer join itda_app.user_push_setting ups on u.id = ups.user_id
-                                                                       and ups.sp_bookmark_push = 'Y'   or ups.sp_bookmark_push is null
+                       and ups.sp_bookmark_push = 'Y'   or ups.sp_bookmark_push is null
         where 1=1
           and mb.mb_save_yn = 'Y'
-            and coalesce(ud.usertoken,u.usertoken) is not null
+        and coalesce(ud.usertoken,u.usertoken) is not null
           and si.si_end_dt::date - current_date = 7 or si.si_end_dt::date - current_date = 3
+            and (ud.usertoken is not null or u.usertoken is not null)
     </select>
 
 </mapper>

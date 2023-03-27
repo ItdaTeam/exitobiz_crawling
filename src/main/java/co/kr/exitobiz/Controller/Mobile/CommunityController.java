@@ -354,7 +354,7 @@ public class CommunityController {
             params.put("filePath", "/img/community/");
             params.put("fileName", fileName);
 
-            ImgPath.append("https://api.exitobiz.co.kr/img/community/").append(fileName);
+            ImgPath.append("https://dev.exitobiz.co.kr:8443/img/community/").append(fileName);
 
             try {
                 fileService.uploadFile(file, params);
@@ -417,7 +417,7 @@ public class CommunityController {
     public String getFile(@RequestBody HashMap<String, Object> body) throws Exception{
         List<HashMap> List = communityService.getFile(body);
         for(int i=0; i<List.size(); i++){
-            List.get(i).replace("file_url" , "https://api.exitobiz.co.kr/img/community/attachFile/" + List.get(i).get("file_url"));
+            List.get(i).replace("file_url" , "https://dev.exitobiz.co.kr:8443/img/community/attachFile/" + List.get(i).get("file_url"));
         }
         ObjectMapper mapper = new ObjectMapper();
         String jsonStr = mapper.writeValueAsString(List);

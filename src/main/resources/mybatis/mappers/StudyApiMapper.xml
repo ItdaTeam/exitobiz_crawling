@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Api.StudyApiMapper">
+
+  <insert id="insertUserData" parameterType="HashMap">
+    insert into itda_app.usertable (
+         id,
+         usernickname,
+         useremail,
+         mos,
+         minfo,
+         cret_time,
+         last_time,
+         appversion,
+         lat,
+         lng
+    ) values (
+        #{id},
+        #{usernickname},
+        #{useremail},
+        #{mos},
+        #{minfo},
+        now(),
+        now(),
+        #{appversion},
+        #{lat},
+        #{lng}
+    ) ON CONFLICT(id) DO UPDATE
+    set mos = #{mos},
+    minfo = #{minfo},
+    appversion = #{appversion},
+    last_time = now()
+  </insert>
+
+  <update id="updateUserData" parameterType="HashMap">
+    update itda_app.usertable
+    set
+      mos = #{mos},
+      minfo = #{minfo},
+      last_time = now(),
+      appversion = #{appversion},
+      lat = #{lat},
+      lng = #{lng}
+    where id = #{id}
+  </update>
+
+  <delete id="deleteUserData" parameterType="HashMap">
+    delete
+    from itda_app.usertable as u
+    where 1=1
+    and u.id = #{user_id}
+  </delete>
+
+  <select id="selectUserData" parameterType="HashMap" resultType="HashMap">
+      select *
+      from itda_app.usertable u
+      where 1=1
+      and u.id = #{user_id}
+  </select>
+</mapper>

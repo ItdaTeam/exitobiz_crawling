@@ -422,11 +422,11 @@ public class CrawlingScheduler {
     //    테스트용
 //    @Scheduled(cron = "35 19 15 * * *")
     public void CrawlingGroup10() throws InterruptedException, IOException {
-        kitaCrawling.craw();
+        seoulBizinfoCrawling.craw();
     }
 
 
-    @Scheduled(cron = "0 0 0 * * ?")
+//    @Scheduled(cron = "0 0 0 * * ?")
     public void CrawlingGroup1() throws InterruptedException {
         /* 케이스타트업 */
         kStartUpCrawling.craw();
@@ -454,7 +454,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹1 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 5 0 * * ?")
+//    @Scheduled(cron = "0 5 0 * * ?")
     public void CrawlingGroup2() throws InterruptedException {
 
         /* 서울대학교 창업지원단 */
@@ -484,7 +484,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹2 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 10 0 * * ?")
+//    @Scheduled(cron = "0 10 0 * * ?")
     public void CrawlingGroup3() throws InterruptedException, IOException {
 
         /* 한국여성벤처협회 */
@@ -511,7 +511,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹3 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 15 0 * * ?")
+//    @Scheduled(cron = "0 15 0 * * ?")
     public void CrawlingGroup4() throws InterruptedException {
 
         /* 북부여성발전센터 */
@@ -534,7 +534,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹4 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 20 0 * * ?")
+//    @Scheduled(cron = "0 20 0 * * ?")
     public void CrawlingGroup5() throws InterruptedException {
         CeciCrawVo seoul = new CeciCrawVo("서울창조경제혁신센터","https://ccei.creativekorea.or.kr/seoul",1,"C02");
         CeciCrawVo gyeongnam = new CeciCrawVo("경남창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongnam",1,"C055");
@@ -607,7 +607,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹5 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 25 0 * * ?")
+//    @Scheduled(cron = "0 25 0 * * ?")
     public void CrawlingGroup6() throws InterruptedException {
 
         /* 한국출판문화산업진흥원 */
@@ -626,7 +626,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹6 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 30 0 * * ?")
+//    @Scheduled(cron = "0 30 0 * * ?")
     public void CrawlingGroup8() throws InterruptedException {
 
 
@@ -684,7 +684,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹8 크롤링완료---------");
     }
 
-    @Scheduled(cron = "0 35 0 * * ?")
+//    @Scheduled(cron = "0 35 0 * * ?")
     public void CrawlingGroup9() throws InterruptedException {
         /* 창원산업진흥원 */
         changwonCwipCrawling.craw();
@@ -710,7 +710,7 @@ public class CrawlingScheduler {
         System.out.println("--------그룹9 크롤링완료---------");
     }
 
-    @Scheduled(cron ="0 40 0 * * ?")
+//    @Scheduled(cron ="0 40 0 * * ?")
     public void CrawlingHyunDai() throws InterruptedException{
 
         /** 한국환경공단*/
@@ -780,7 +780,7 @@ public class CrawlingScheduler {
         hrdkoreaCrawling.craw();
     }
 
-    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 0 1 * * ?")
     public void CleanUpData() throws InterruptedException {
         crawlingMapper.removeLNew();
         crawlingMapper.removeRNew();

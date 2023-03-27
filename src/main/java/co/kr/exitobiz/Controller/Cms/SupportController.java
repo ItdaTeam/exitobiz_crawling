@@ -5,15 +5,18 @@ import co.kr.exitobiz.Service.Cms.SupportService;
 import co.kr.exitobiz.Vo.Cms.AgencyVo;
 import co.kr.exitobiz.Vo.Cms.SearchVo;
 import co.kr.exitobiz.Vo.Cms.SupportVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/cms")
@@ -21,6 +24,18 @@ import java.util.List;
 public class SupportController {
 
     private final SupportService supportService;
+
+
+    @GetMapping("/cblms")
+    public String getFlutterWeb() throws ParseException, JsonProcessingException {
+
+        return "/cms/flutter/index";
+    }
+
+    @GetMapping("/routerTestPage")
+    public String routerTestPage(@RequestParam Map<String,Object> params) throws ParseException, JsonProcessingException {
+        return "/cms/flutter/index";
+    }
 
     @GetMapping("/support")
     public String disSupport(Model model){

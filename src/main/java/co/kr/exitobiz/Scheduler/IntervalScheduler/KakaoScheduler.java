@@ -31,11 +31,11 @@ public class KakaoScheduler{
     Environment env;
 
     /**
-     * 카카오톡 알림 발송 배치
+     * 카카오톡 알림 발송 배치  미사용.
      * 매일 09:00 에 1회 발송
      * 대상 : content_history 에서 기간종료 + 1일 
      */
-    @Scheduled(cron = "0 0 9 * * ?")
+//    @Scheduled(cron = "0 0 9 * * ?")
     public void KeywordPush() throws InterruptedException, Exception {
         
         DefaultMessageService messageService =  NurigoApp.INSTANCE.initialize(env.getProperty("sola.apiKey"), env.getProperty("sola.apiSecretKey"), "https://api.solapi.com");

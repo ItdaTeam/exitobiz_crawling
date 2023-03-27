@@ -130,7 +130,7 @@ public class ContentController {
             params.put("filePath", "/img/editor/");
             params.put("fileName", fileName);
 
-            ImgPath.append("https://api.exitobiz.co.kr/img/editor/").append(fileName);
+            ImgPath.append("https://dev.exitobiz.co.kr:8443/img/editor/").append(fileName);
             try {
                 fileService.uploadFile(file, params);
                 link.setLink(ImgPath.toString());
