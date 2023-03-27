@@ -53,7 +53,7 @@ select ch.*
         ON CONFLICT (id) DO UPDATE
         SET
             last_time = now(),
-            <if test="isFirst = 'true'">mos = #{mos},</if>
+            <if test="isFirst == 'true'">mos = #{mos},</if>
             useremail = #{useremail}
     </insert>
 
