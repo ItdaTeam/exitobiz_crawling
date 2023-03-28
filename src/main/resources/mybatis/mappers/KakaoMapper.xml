@@ -54,7 +54,7 @@ select ch.*
         SET
             last_time = now(),
             <if test="isfirst == 'true'">mos = #{mos},</if>
-            useremail = #{useremail}
+            <if test="useremail != null and useremail != ''">useremail = #{useremail}</if>
     </insert>
 
 
