@@ -52,9 +52,9 @@ select ch.*
                #{userbirthday}, #{useragerange}, #{usergender}, #{usernickname},#{useremail}, #{username}, #{userhp}, 'Y', 'N', now(), now(), #{mos})
         ON CONFLICT (id) DO UPDATE
         SET
-            last_time = now(),
-            <if test="isfirst == 'true'">mos = #{mos},</if>
-            <if test="useremail != null and useremail != ''">useremail = #{useremail}</if>
+            last_time = now()
+            <if test="isfirst == 'true'">,mos = #{mos}</if>
+            <if test="useremail != null and useremail != ''">,useremail = #{useremail}</if>
     </insert>
 
 
