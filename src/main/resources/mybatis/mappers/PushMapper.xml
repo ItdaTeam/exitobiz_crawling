@@ -51,6 +51,7 @@
           and uk.keyword = #{keyword}
           and coalesce(ups.sp_keyword_push, 'Y') = 'Y'
           and ud.usertoken is not null
+          and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
     </select>
 
     <select id="getBookmarkSupportInfo" resultType="PushVo">
@@ -62,10 +63,11 @@
                  left outer join itda_app.user_push_setting ups on u.id = ups.user_id
                        and ups.sp_bookmark_push = 'Y'   or ups.sp_bookmark_push is null
         where 1=1
-          and mb.mb_save_yn = 'Y'
+        and mb.mb_save_yn = 'Y'
         and coalesce(ud.usertoken,u.usertoken) is not null
-          and si.si_end_dt::date - current_date = 7 or si.si_end_dt::date - current_date = 3
-            and (ud.usertoken is not null or u.usertoken is not null)
+        and si.si_end_dt::date - current_date = 7 or si.si_end_dt::date - current_date = 3
+        and (ud.usertoken is not null or u.usertoken is not null)
+        and date_trunc('day',ud.updt_dt)  <![CDATA[>=]]> date_trunc('day', current_timestamp  + '-61 days')
     </select>
 
 </mapper>
