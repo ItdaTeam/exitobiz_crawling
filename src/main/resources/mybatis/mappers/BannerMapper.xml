@@ -31,6 +31,9 @@
         from itda_web.banner
         where 1=1
         and banner_type = #{banner_type}
+        <if test="item != null">
+            and index = #{item}::numeric
+        </if>
         <!--        <if test="inq != null">-->
         <!--            AND-->
         <!--            <choose>-->

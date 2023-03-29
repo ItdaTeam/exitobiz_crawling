@@ -340,7 +340,8 @@
         var item = ctx.item
 
         var param = {
-            banner_type : text
+            banner_type : text,
+            item : ctx.item.index
         }
 
         $.ajax({
