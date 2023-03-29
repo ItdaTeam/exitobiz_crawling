@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -82,6 +83,8 @@ public class BannerController {
                 System.out.println("size : " + size);
                 System.out.println("saveFileName : " + saveFileName);
 
+
+
                 File file = new File(uploadPath, saveFileName);
                 if(!file.exists()) // 해당 경로가 없을 경우
                     file.mkdirs();  // 폴더 생성
@@ -91,6 +94,8 @@ public class BannerController {
             }else {
                 vo.setBannerImg(null);
             }
+            HttpSession session = req.getSession();
+            vo.setUpdtId((String) session.getAttribute("staffId"));
             bannerService.updateBanner(vo);
         }catch(Exception e)
         {
