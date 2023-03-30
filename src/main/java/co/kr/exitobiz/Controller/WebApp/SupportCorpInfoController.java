@@ -86,4 +86,23 @@ public class SupportCorpInfoController {
         String jsonStr = mapper.writeValueAsString(supportCorpService.getSearchHotKeyWord());
         return jsonStr;
     }
+
+    // 필터 적용
+    @PostMapping("/updateCorpCompanyInfo")
+    @ResponseBody
+    public String updateCorpCompanyInfo(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException{
+        String result = "fail";
+
+        if(header.get("user_id") != null && header.get("user_id") != ""){
+            body.put("user_id", header.get("user_id"));
+
+            try{
+                supportCorpService.updateCorpCompanyInfo(body);
+                result = "success";
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
 }

@@ -121,4 +121,44 @@
           and tl.tl_cret_dt > (NOW() +'-10 days')::DATE
         group by tl.tl_event having count(*) > 1 order by cnt desc, tl.tl_event collate "C" limit 5
     </select>
+
+    <update id="updateCorpCompanyInfo" parameterType="map">
+        INSERT INTO itda_web.user_support
+        (corp_cd, user_id, company_name, rep_name, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg, cret_dt, cret_id,intro)
+        VALUES(#{corp_cd}, #{user_id}, #{companyName}, #{repName}, #{supportTarget}, #{startPeriod}, #{locCtg}, #{companyType}, #{businessType}, #{supportType}, #{businessCtg}, #{techCtg}, now(), #{user_id})
+        ON CONFLICT (corp_cd, user_id) DO UPDATE
+        SET
+        <if test="companyName != null">
+            company_name = #{companyName},
+        </if>
+        <if test="repName != null">
+            rep_name = #{repName},
+        </if>
+        <if test="supportTarget != null and supportTarget != '' ">
+            support_target = #{supportTarget},
+        </if>
+        <if test="startPeriod != null and startPeriod != '' ">
+            start_period = #{startPeriod},
+        </if>
+        <if test="locCtg != null and locCtg != '' ">
+            loc_ctg = #{locCtg},
+        </if>
+        <if test="companyType != null and companyType != '' ">
+            company_type = #{companyType},
+        </if>
+        <if test="businessType != null and businessType != '' ">
+            business_type = #{businessType},
+        </if>
+        <if test="supportType != null and supportType != '' ">
+            support_type = #{supportType},
+        </if>
+        <if test="businessCtg != null and businessCtg != '' ">
+            business_ctg = #{businessCtg},
+        </if>
+        <if test="techCtg != null and techCtg != '' ">
+            tech_ctg = #{techCtg},
+        </if>
+        updt_dt = now(),
+        updt_id = #{user_id}
+    </update>
 </mapper>

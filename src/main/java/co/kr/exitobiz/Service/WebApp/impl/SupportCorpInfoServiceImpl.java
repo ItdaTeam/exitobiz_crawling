@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -64,6 +65,15 @@ public class SupportCorpInfoServiceImpl implements SupportCorpInfoService {
     @Override
     public List<HashMap> getSearchHotKeyWord() throws ParseException {
         return supportCorpInfoMapper.getSearchHotKeyWord();
+    }
+
+    @Override
+    public void updateCorpCompanyInfo(Map<String, Object> params) {
+        try{
+            supportCorpInfoMapper.updateCorpCompanyInfo(params);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }
