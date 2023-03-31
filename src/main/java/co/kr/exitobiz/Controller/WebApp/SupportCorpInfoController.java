@@ -105,4 +105,17 @@ public class SupportCorpInfoController {
         }
         return result;
     }
+
+    //필터 조회
+    @PostMapping("/getCorpCompanyInfo")
+    @ResponseBody
+    public String getCorpCompanyInfo(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body) throws ParseException, JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = null;
+        if(header.get("user_id") != null && header.get("user_id") != ""){
+            body.put("user_id", header.get("user_id"));
+            jsonStr = mapper.writeValueAsString(supportCorpService.getCorpCompanyInfo(body));
+        }
+        return jsonStr;
+    }
 }

@@ -76,4 +76,9 @@ public class SupportCorpInfoServiceImpl implements SupportCorpInfoService {
         }
     }
 
+    @Override
+    public HashMap<String, Object> getCorpCompanyInfo(HashMap<String, Object> params) throws ParseException {
+        return supportCorpInfoMapper.getCorpCompanyInfo(params);
+    }
+
 }

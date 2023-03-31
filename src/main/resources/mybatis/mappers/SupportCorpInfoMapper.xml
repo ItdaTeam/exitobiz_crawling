@@ -161,4 +161,8 @@
         updt_dt = now(),
         updt_id = #{user_id}
     </update>
+
+    <select id="getCorpCompanyInfo" parameterType="map" resultType="map">
+        select user_id, corp_cd, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg from itda_web.corp_user_support where user_id = #{user_id} and corp_cd = #{corp_cd}
+    </select>
 </mapper>

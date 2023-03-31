@@ -17,4 +17,6 @@ public interface SupportCorpInfoService {
     List<HashMap> getSearchHotKeyWord() throws ParseException; // 인기 키워드 리스트
 
     void updateCorpCompanyInfo(Map<String, Object> params); // 필터 적용
+
+    HashMap<String, Object> getCorpCompanyInfo(HashMap<String, Object> params) throws ParseException; // 필터 조회
 }
