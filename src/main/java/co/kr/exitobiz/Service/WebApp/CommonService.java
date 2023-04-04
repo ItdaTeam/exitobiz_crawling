@@ -7,4 +7,6 @@ public interface CommonService {
     List<Map<String, Object>> getCommonCodeDtlList(Map<String, Object> params);
 
     List<Map<String, Object>> getCommonCodeCtgList(Map<String, Object> params);
+
+    Map<String, Object> getCommonCode(Map<String, Object> params);
 }

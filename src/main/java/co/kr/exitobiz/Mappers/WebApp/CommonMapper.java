@@ -12,4 +12,5 @@ public interface CommonMapper {
 
     List<Map<String, Object>> getCommonCodeCtgList(Map<String, Object> params);    //공통코드분류 조회
     List<Map<String, Object>> getCommonCodeDtlList(Map<String, Object> params);    //공통코드상세 조회
+    Map<String, Object> getCommonCode(Map<String, Object> params); // 코드 조회
 }

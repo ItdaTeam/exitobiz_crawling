@@ -21,4 +21,9 @@ public class CommonServiceImpl implements CommonService {
     public List<Map<String, Object>> getCommonCodeCtgList(Map<String, Object> params) {
         return commonMapper.getCommonCodeCtgList(params);
     }
+
+    @Override
+    public Map<String, Object> getCommonCode(Map<String, Object> params) {
+        return commonMapper.getCommonCode(params);
+    }
 }

@@ -20,6 +20,11 @@ order by dtl.sort
   </select>
 
 
+  <select id="getCommonCode" parameterType="map" resultType="map">
+    select code from itda_web.common_code_dtl ccd where ccd.code_nm = #{codeNm}
+  </select>
+
+
 
 
 </mapper>

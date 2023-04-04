@@ -1,7 +1,6 @@
 package co.kr.exitobiz.Controller.WebApp;
 
 import co.kr.exitobiz.Service.WebApp.CommonService;
-import co.kr.exitobiz.Service.WebApp.impl.CommonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +31,10 @@ public class CommonController {
         return commonService.getCommonCodeDtlList(params);
     }
 
+    @PostMapping("/getCommonCode")
+    @ResponseBody
+    public Map<String, Object> getCommonCode(@RequestParam Map<String, Object> params){
+        return commonService.getCommonCode(params);
+    }
 
 }
