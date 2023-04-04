@@ -125,7 +125,7 @@
     <update id="updateCorpCompanyInfo" parameterType="map">
         INSERT INTO itda_web.corp_user_support
         (corp_cd, user_id, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg, cret_dt, cret_id)
-        VALUES(#{corp_cd}, #{user_id}, #{supportTarget}, #{startPeriod}, #{locCtg}, #{companyType}, #{businessType}, #{supportType}, #{businessCtg}, #{techCtg}, now(), #{user_id})
+        VALUES(#{corp_cd}, #{user_id}, '01', '10', 'C82', '02', '01', '01', '01', '01', now(), #{user_id})
         ON CONFLICT (corp_cd, user_id) DO UPDATE
         SET
         <if test="companyName != null">
