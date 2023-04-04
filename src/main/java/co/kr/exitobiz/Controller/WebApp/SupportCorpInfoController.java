@@ -35,9 +35,9 @@ public class SupportCorpInfoController {
     // 누적갯수(누적 사업공고, 이번주 지원사업, 정보 제공기관) 리스트
     @PostMapping("/getTotalCount")
     @ResponseBody
-    public String getTotalCount() throws ParseException, JsonProcessingException {
+    public String getTotalCount(@RequestBody HashMap<String, Object> params) throws ParseException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonStr = mapper.writeValueAsString(supportCorpService.getTotalCount());
+        String jsonStr = mapper.writeValueAsString(supportCorpService.getTotalCount(params));
         return jsonStr;
     }
 
@@ -81,9 +81,9 @@ public class SupportCorpInfoController {
     // 인기 키워드 리스트
     @PostMapping("/getSearchHotKeyWord")
     @ResponseBody
-    public String getSearchHotKeyWord() throws ParseException, JsonProcessingException {
+    public String getSearchHotKeyWord(@RequestBody HashMap<String, Object> params) throws ParseException, JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String jsonStr = mapper.writeValueAsString(supportCorpService.getSearchHotKeyWord());
+        String jsonStr = mapper.writeValueAsString(supportCorpService.getSearchHotKeyWord(params));
         return jsonStr;
     }
 

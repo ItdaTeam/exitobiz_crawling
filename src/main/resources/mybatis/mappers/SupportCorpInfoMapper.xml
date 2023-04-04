@@ -94,11 +94,11 @@
     </select>
 
 
-    <select id="getTotalCount" resultType="HashMap">
+    <select id="getTotalCount" resultType="HashMap" parameterType="HashMap">
         select
-            ( select count(*)from itda_app.support_info_corp si where si.si_active_yn  = 'Y') as total_cnt ,
-            ( select count(*) from itda_app.support_info_corp si where si.si_active_yn  = 'Y' and si.si_cret_dt > (NOW() +'-7 days')::DATE ) as week_cnt,
-	        ( select count(target_name) from (select si.target_name from itda_app.support_info_corp si where si.si_active_yn  = 'Y' group by si.target_name ) A ) as target_cnt;
+            ( select count(*)from itda_app.support_info_corp si where si.si_active_yn  = 'Y' and corp_cd = #{corp_cd}) as total_cnt ,
+            ( select count(*) from itda_app.support_info_corp si where si.si_active_yn  = 'Y' and si.si_cret_dt > (NOW() +'-7 days')::DATE  and corp_cd = #{corp_cd}) as week_cnt,
+	        ( select count(target_name) from (select si.target_name from itda_app.support_info_corp si where si.si_active_yn  = 'Y'  and corp_cd = #{corp_cd} group by si.target_name ) A ) as target_cnt
     </select>
 
     <update id="upViewCnt" parameterType="HashMap">
@@ -114,9 +114,10 @@
         VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}::numeric, #{tl_event}, #{tl_memo} )
     </insert>
 
-    <select id="getSearchHotKeyWord" resultType="HashMap">
+    <select id="getSearchHotKeyWord" resultType="HashMap" parameterType="HashMap">
         select count(*) as cnt, tl.tl_event from itda_app.time_line_corp tl
         where 1=1
+          and tl.tl_cret_id = #{corp_cd}
           and tl.tl_button_name like '%검색%'
           and tl.tl_cret_dt > (NOW() +'-10 days')::DATE
         group by tl.tl_event having count(*) > 1 order by cnt desc, tl.tl_event collate "C" limit 5
@@ -163,6 +164,9 @@
     </update>
 
     <select id="getCorpCompanyInfo" parameterType="map" resultType="map">
-        select user_id, corp_cd, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg from itda_web.corp_user_support where user_id = #{user_id} and corp_cd = #{corp_cd}
+        select user_id, corp_cd, support_target, start_period, loc_ctg, company_type, business_type, support_type, business_ctg, tech_ctg
+            from itda_web.corp_user_support
+        where 1=1
+          and user_id = #{user_id} and corp_cd = #{corp_cd}
     </select>
 </mapper>

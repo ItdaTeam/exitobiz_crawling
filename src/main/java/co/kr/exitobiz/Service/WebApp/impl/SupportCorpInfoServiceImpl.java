@@ -40,8 +40,8 @@ public class SupportCorpInfoServiceImpl implements SupportCorpInfoService {
     }
 
     @Override
-    public List<HashMap> getTotalCount() {
-        return supportCorpInfoMapper.getTotalCount();
+    public List<HashMap> getTotalCount(HashMap<String, Object> params) {
+        return supportCorpInfoMapper.getTotalCount(params);
     }
 
     @Override
@@ -63,8 +63,8 @@ public class SupportCorpInfoServiceImpl implements SupportCorpInfoService {
     }
 
     @Override
-    public List<HashMap> getSearchHotKeyWord() throws ParseException {
-        return supportCorpInfoMapper.getSearchHotKeyWord();
+    public List<HashMap> getSearchHotKeyWord(HashMap<String, Object> params) throws ParseException {
+        return supportCorpInfoMapper.getSearchHotKeyWord(params);
     }
 
     @Override
