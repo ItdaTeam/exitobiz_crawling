@@ -7,6 +7,7 @@
     <%@ include file="../include/header.jsp" %>
     <script src="../ckeditor5/build/ckeditor.js"></script>
     <link rel="stylesheet" type="text/css" href="../ckeditor5/sample/styles.css">
+    <link rel="stylesheet" href="../../../../css/content.css">
 </head>
 <body>
 <div class="main_wrap">
@@ -25,23 +26,45 @@
             <h2 class="main_title"><span class="material-icons-round"> done_outline</span> 콘텐츠관리</h2>
             <div class="main_summary">
                 <dl>
-                    <dt>외부콘텐츠</dt>
-                    <dd>${outCnt}개</dd>
+                    <dt>HD현대일렉트릭</dt>
+                    <dd>개</dd>
                 </dl>
                 <dl>
-                    <dt>자체콘텐츠</dt>
-                    <dd>${inCnt}개</dd>
+                    <dt>KT비즈메카</dt>
+                    <dd>개</dd>
+                </dl>
+                <dl>
+                    <dt>정보성 콘텐츠</dt>
+                    <dd>개</dd>
+                </dl>
+                <dl>
+                    <dt>교육 콘텐츠</dt>
+                    <dd>개</dd>
+                </dl>
+                <dl>
+                    <dt>유료 상품</dt>
+                    <dd>개</dd>
                 </dl>
                 <!-- 클릭시 팝업창 띄움 -->
-                <a href="javascript:void(0);" onclick="showPop('contentManagement')"><i></i>콘텐츠 추가</a>
+                <dl>
+                    <a href="javascript:void(0);" onclick="showPop('contentManagement')">콘텐츠 추가</a>
+                </dl>
             </div>
             <div class="main_utility">
-                <label for="fromDate">조회일</label>
-                <input type="date" id="fromDate" name="from">
-                -
-                <input type="date" id="toDate" name="to">
-                <div class="btn_wrap">
-                    <button class="btn stroke" onclick="exportExcel();">엑셀다운로드</button>
+                <div>
+                    <label for="fromDate">조회일</label>
+                    <input type="date" id="fromDate" name="from">
+                    -
+                    <input type="date" id="toDate" name="to">
+                </div>
+                <div>
+                    <ul>
+                        <li class="btn_wrap"><a class="btn stroke1"   href="#" onclick="editGrid()">그리드 저장</a></li>
+                        <li class="btn_wrap">
+                            <button class="btn stroke1" onclick="exportExcel();">엑셀다운로드</button>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
             <div class="main_content">
@@ -90,12 +113,12 @@
     <div class="popup" id="contentManagement">
         <div class="popup_container">
             <div class="popup_head">
-                <p class="popup_title">콘텐츠추가</p>
+                <p class="popup_title">콘텐츠 추가</p>
                 <button type="button" class="popup_close">x</button>
             </div>
             <div class="popup_inner">
                 <dfn>필수항목 <i>*</i></dfn>
-                <form action="" id="contentForm" name="contentForm" onsubmit="return false;">
+                <form action="#" method="post" id="contentForm" name="contentForm" onsubmit="return false;">
                     <input type="hidden" id="id" name="id">
                     <input type="hidden" id="active" name="active">
                     <table>
@@ -108,14 +131,23 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>콘텐츠종류<i>*</i></th>
+                            <th>노출 대상<i>*</i></th>
                             <td>
-                                <input type="radio" id="content_out" name="type" data-value="외부콘텐츠"
-                                       checked="checked" onchange="contentChange(this);">
-                                <label for="content_out">외부콘텐츠</label>
-                                <input type="radio" id="content_in" name="type" data-value="자체제작"
-                                       onchange="contentChange(this);">
-                                <label for="content_in">자체제작</label>
+                                <select name="exposureTarget" id="exposureTarget">
+                                    <option value="all" selected="selected">전체</option>
+                                    <option value="hyundai">HD현대일렉트릭</option>
+                                    <option value="ktbizmeka">KT비즈메카</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>콘텐츠 유형<i>*</i></th>
+                            <td>
+                                <select name="contentType" id="contentType">
+                                    <option value="information" selected="selected">정보성 콘텐츠</option>
+                                    <option value="education">교육 콘텐츠</option>
+                                    <option value="charged">유료 상품</option>
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -134,51 +166,27 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>원가<i>*</i></th>
+                            <th>금액<i>*</i></th>
                             <td>
                                 <input type="number" name="cost">&nbsp;원
                             </td>
                         </tr>
-                        <tr>
-                            <th>할인금액<i>*</i></th>
-                            <td>
-                                <input type="number" name="discount_cost">&nbsp;원
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>할인율<i>*</i></th>
-                            <td>
-                                <input type="number" name="discount_rate">&nbsp;%
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>판매기간<i>*</i></th>
-                            <td>
-                                <input type="date" name="sales_from_dt">~<input type="date" name="sales_to_dt">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>모집인원<i>*</i></th>
-                            <td>
-                                <input type="number" name="person">&nbsp;명
-                            </td>
-                        </tr>
+<%--                        <tr>--%>
+<%--                            <th>할인금액<i>*</i></th>--%>
+<%--                            <td>--%>
+<%--                                <input type="number" name="discount_cost">&nbsp;원--%>
+<%--                            </td>--%>
+<%--                        </tr>--%>
                         <tr id="new_content_url_tb">
                             <th>URL<i>*</i></th>
                             <td>
                                 <input type="text" name="url">
                             </td>
                         </tr>
-                        <tr id="new_content_cont_tb">
-                            <th>내용<i>*</i></th>
-                            <td>
-                                <textarea name="editor" id="editor"></textarea>
-                            </td>
-                        </tr>
                         <tr>
-                            <th>비고</th>
+                            <th>순서</th>
                             <td>
-                                <input type="text" name="remark">
+                                <input type="number" name="remark">
                             </td>
                         </tr>
                         </tbody>
@@ -230,7 +238,8 @@
 
             contentColumns = [
                 {binding: 'id', header: '콘텐츠번호', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'type', header: '콘텐츠종류', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'exposure', header: '노출 대상', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'type', header: '콘텐츠 유형', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'title', header: '제목', isReadOnly: true, width: 400, align: "center"},
                 {binding: 'thumbnail', header: '썸네일', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeImage({
@@ -242,14 +251,8 @@
                     })
                 },
                 {binding: 'url', header: 'URL', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'cost', header: '원가', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'discountCost', header: '할인금액', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'discountRate', header: '할인율', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'person', header: '모집인원', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'salesFromDt', header: '판매시작일', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'salesToDt', header: '판매종료일', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'content', header: '내용', isReadOnly: true, width: 150, align: "center", visible : false},
-                {binding: 'remark', header: '비고', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'cost', header: '금액', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'remark', header: '순서', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'cretDt', header: '작성날짜', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'updtDt', header: '수정날짜', isReadOnly: true, width: 150, align: "center"},
                 {
@@ -328,6 +331,30 @@
         return false;
     }
 
+    const editGrid = async () => {
+        const editItem = agencyView.itemsEdited;
+
+
+        if (editItem.length < 1) {
+            alert("수정된 내역이 없습니다.");
+            return false;
+        }
+
+        if (!confirm(editItem.length + "건의 상태를 변경하시겠습니까?")) return false;
+
+        /* observer배열에서 기본배열로 옮겨담는다 */
+        let rows = editItem.map(obj => obj);
+
+        await axios.put("/cms/support/agency/api", rows).then((res) => {
+            if (res.status == 200) {
+                alert("저장했습니다.");
+                showGrid(document.search_form)
+            } else {
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        })
+    }
+
     //팝업 오픈
     function showPop(pop, ctx = null) {
         const _target = document.getElementById(pop);
@@ -339,6 +366,7 @@
 
         _target.classList.add('is_on');
 
+
         /* 모달안에 값 있을 경우 */
         if (ctx != null) {
             switch (pop) {
@@ -349,23 +377,7 @@
                     _target.querySelector("input[name='url']").value = ctx.item.url;
                     _target.querySelector("input[name='remark']").value = ctx.item.remark;
                     _target.querySelector("input[name='cost']").value = ctx.item.cost;
-                    _target.querySelector("input[name='discount_cost']").value = ctx.item.discountCost;
-                    _target.querySelector("input[name='discount_rate']").value = ctx.item.discountRate;
-                    _target.querySelector("input[name='person']").value = ctx.item.person;
-                    _target.querySelector("input[name='sales_from_dt']").value = ctx.item.salesFromDt
-                    _target.querySelector("input[name='sales_to_dt']").value = ctx.item.salesToDt
                     _target.querySelector("input[name='active_yn']").checked = ctx.item.activeYn == 'Y' ? true : false;
-                    if (ctx.item.type == '외부콘텐츠') {
-                        $("input:radio[name='type']:radio[data-value='외부콘텐츠']").prop('checked', true);
-                        $('#new_content_url_tb').show();
-                        $('#new_content_cont_tb').hide();
-                        editor1.setData("");
-                    } else if (ctx.item.type == '자체제작') {
-                        $("input:radio[name='type']:radio[data-value='자체제작']").prop('checked', true);
-                        $('#new_content_url_tb').hide();
-                        $('#new_content_cont_tb').show();
-                        editor1.setData(ctx.item.content);
-                    }
                     if (ctx.item.thumbnail != null && ctx.item.thumbnail != '') {
                         $(".opt_img").css("display", "block")
                         $(".opt_img").attr("src", ctx.item.thumbnail)
@@ -419,7 +431,6 @@
         const checkedScore = document.querySelector("input[name='type']:checked")
 
         const formData = new FormData();
-
         formData.append("id", f.id.value);
         formData.append("type", checkedScore.getAttribute("data-value"));
         formData.append("title", f.title.value);
@@ -427,12 +438,7 @@
         formData.append("activeYn", f.active.value);
         formData.append("remark", f.remark.value);
         formData.append("cost", f.cost.value);
-        formData.append("discountCost", f.discount_cost.value);
-        formData.append("discountRate", f.discount_rate.value);
-        formData.append("salesFromDt", f.sales_from_dt.value);
-        formData.append("salesToDt", f.sales_to_dt.value);
-        formData.append("person", f.person.value);
-        formData.append("content", editor1.getData());
+        // formData.append("content", editor1.getData());
         if (f.upFile.files[0] != null) {
             formData.append("upFile", f.upFile.files[0])
         }
@@ -571,68 +577,4 @@
         $('#fromDate').val(fromday);
         $('#toDate').val(today);
     }
-
-    $(document).ready(function () {
-        pageOnLoad();
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                toolbar: {
-                    items: [
-                        'heading',
-                        '|',
-                        'bold',
-                        'italic',
-                        'link',
-                        'bulletedList',
-                        'numberedList',
-                        '|',
-                        'outdent',
-                        'indent',
-                        '|',
-                        'imageUpload',
-                        'blockQuote',
-                        'insertTable',
-                        'mediaEmbed',
-                        'undo',
-                        'redo',
-                        'htmlEmbed',
-                        'horizontalLine',
-                        'fontSize',
-                        'fontColor',
-                        'fontBackgroundColor',
-                        'alignment',
-                    ],
-                    shouldNotGroupWhenFull: true
-                },
-                language: 'ko',
-                image: {
-                    toolbar: [
-                        'imageTextAlternative',
-                        'imageStyle:inline',
-                        'imageStyle:block',
-                        'imageStyle:side'
-                    ]
-                },
-                table: {
-                    contentToolbar: [
-                        'tableColumn',
-                        'tableRow',
-                        'mergeTableCells'
-                    ]
-                },
-                licenseKey: '',
-            })
-            .then(editor => {
-                editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                    return new UploadAdapter(loader);
-                };
-                editor1 = editor;
-            })
-            .catch(error => {
-                console.error('Oops, something went wrong!');
-                console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
-                console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
-                console.error(error);
-            });
-    });
 </script>
