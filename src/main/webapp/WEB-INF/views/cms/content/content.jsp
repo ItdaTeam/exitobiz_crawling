@@ -577,4 +577,67 @@
         $('#fromDate').val(fromday);
         $('#toDate').val(today);
     }
+    $(document).ready(function () {
+        pageOnLoad();
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'link',
+                        'bulletedList',
+                        'numberedList',
+                        '|',
+                        'outdent',
+                        'indent',
+                        '|',
+                        'imageUpload',
+                        'blockQuote',
+                        'insertTable',
+                        'mediaEmbed',
+                        'undo',
+                        'redo',
+                        'htmlEmbed',
+                        'horizontalLine',
+                        'fontSize',
+                        'fontColor',
+                        'fontBackgroundColor',
+                        'alignment',
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                language: 'ko',
+                image: {
+                    toolbar: [
+                        'imageTextAlternative',
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side'
+                    ]
+                },
+                table: {
+                    contentToolbar: [
+                        'tableColumn',
+                        'tableRow',
+                        'mergeTableCells'
+                    ]
+                },
+                licenseKey: '',
+            })
+            .then(editor => {
+                editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                    return new UploadAdapter(loader);
+                };
+                editor1 = editor;
+            })
+            .catch(error => {
+                console.error('Oops, something went wrong!');
+                console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+                console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
+                console.error(error);
+            });
+    });
 </script>
