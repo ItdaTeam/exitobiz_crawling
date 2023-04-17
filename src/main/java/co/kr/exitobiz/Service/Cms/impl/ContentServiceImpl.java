@@ -3,6 +3,7 @@ package co.kr.exitobiz.Service.Cms.impl;
 import co.kr.exitobiz.Entity.Content;
 import co.kr.exitobiz.Entity.Notice;
 import co.kr.exitobiz.Entity.Popup;
+import co.kr.exitobiz.Mappers.Cms.ContentMapper;
 import co.kr.exitobiz.Mappers.Cms.ContentRepository;
 import co.kr.exitobiz.Service.Cms.ContentService;
 import co.kr.exitobiz.Service.Mobile.FileService;
@@ -12,6 +13,7 @@ import co.kr.exitobiz.Vo.Cms.NoticeVo;
 import co.kr.exitobiz.Vo.Cms.PopupVo;
 import co.kr.exitobiz.Vo.Cms.SearchVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,9 @@ public class ContentServiceImpl implements ContentService {
     private final ContentRepository contentRepository;
 
     private final FileService fileService;
+
+    @Autowired
+    ContentMapper contentMapper;
 
     @Override
     @Transactional
@@ -303,5 +308,22 @@ public class ContentServiceImpl implements ContentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void saveContent(HashMap<String, Object> param) {
+        contentMapper.saveContent(param);
+    }
+
+    @Override
+    public List<HashMap> getContentList(HashMap<String, Object> params) {
+        if(params.get("keyword") != null)
+            params.replace("keyword", Util.makeForeach((String)params.get("keyword"), ","));
+        return contentMapper.getContentList(params);
+    }
+
+    @Override
+    public void updateContent(HashMap<String, Object> params) {
+        contentMapper.updateContent(params);
     }
 }

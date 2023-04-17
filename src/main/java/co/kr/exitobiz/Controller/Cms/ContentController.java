@@ -11,11 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,18 +50,19 @@ public class ContentController {
         return "/cms/content/notice";
     }
 
-    @GetMapping("/content")
-    public String disContent(Model model)
-    {
-        ContentVo contentVo = contentService.getContentInfo();
+//    @GetMapping("/content")
+//    public String disContent(Model model)
+//    {
+//        ContentVo contentVo = contentService.getContentInfo();
+//
+//        model.addAttribute("inCnt", contentVo.getInCnt());
+//        model.addAttribute("outCnt", contentVo.getOutCnt());
+//
+//        return "/cms/content/content";
+//    }
 
-        model.addAttribute("inCnt", contentVo.getInCnt());
-        model.addAttribute("outCnt", contentVo.getOutCnt());
-
-        return "/cms/content/content";
-    }
-
-    @PostMapping("/content")
+    @PostMapping(
+            "/content")
     @ResponseBody
     public void createContent(ContentVo contentVo) {
         contentService.createContent(contentVo);
@@ -142,6 +146,64 @@ public class ContentController {
             }
         }
         return null;
+    }
+
+    @PostMapping("/saveContent")
+    @ResponseBody
+    public String saveContent(MultipartHttpServletRequest params){
+
+        HashMap<String, Object > param = new HashMap<>();
+        String result = "fail";
+
+//        param.put("targetname", params.getParameter(""));
+        if(params.getParameter("contentId")!= null){
+            param.put("contentId", params.getParameter("contentId"));
+        }
+        param.put("corpCd", params.getParameter("corpCd"));
+        param.put("contentType", params.getParameter("contentType"));
+        param.put("activeYn", params.getParameter("activeYn"));
+        param.put("title", params.getParameter("title"));
+        param.put("url", params.getParameter("url"));
+        param.put("cost", params.getParameter("cost"));
+        param.put("sort", params.getParameter("sort"));
+        param.put("cretId",params.getSession().getAttribute("staffId"));
+
+        MultipartFile file = params.getFile("imgFile");
+        if(file != null ){
+            String fileName = fileService.fileNameGenerator(file);
+            HashMap<String, String> fileParam = new HashMap<>();
+            fileParam.put("filePath", "/img/content/");
+            fileParam.put("fileName", fileName);
+            param.put("img", "https://dev.exitobiz.co.kr:8443/img/content/" + fileName);
+            try{
+                fileService.uploadFile(file, fileParam);
+                result = "success";
+                 contentService.saveContent(param);
+            }catch (Exception e) {
+              e.printStackTrace();
+              result = "fail";
+            }
+        }else{
+            contentService.saveContent(param);
+            result = "success";
+        }
+        return result;
+    }
+
+    @PostMapping("/getContentList")
+    @ResponseBody
+    public List<HashMap> getContentList(@RequestBody HashMap<String, Object> params){
+        return contentService.getContentList(params);
+    }
+
+
+    @PostMapping("/updateContent")
+    @ResponseBody
+    public String updateContent(@RequestBody HashMap<String, Object> params, HttpServletRequest req){
+        if(req.getSession().getAttribute("staffId") != null)
+            params.put("updtId", req.getSession().getAttribute("staffId"));
+        contentService.updateContent(params);
+        return "success";
     }
 
 }

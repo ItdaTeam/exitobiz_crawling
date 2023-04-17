@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.kr.exitobiz.Mappers.Cms.ContentMapper">
+
+
+  <select id="getContentList" parameterType="map" resultType="map">
+    SELECT content_id, corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id, updt_dt, updt_id
+    FROM itda_app.contents
+    where 1=1
+    <if test="keyword != null">
+      <choose>
+        <when test="category == 'all'">
+          AND
+          <foreach collection="keyword" item="item"
+                   index="index" open="(" close=")" separator="or">
+            title LIKE '%' || #{item} || '%'
+          </foreach>
+        </when>
+        <when test="category == 'title' ">
+            <foreach collection="keyword" item="item"
+                     index="index" open="(" close=")" separator="or">
+                title LIKE '%' || #{item} || '%'
+            </foreach>
+        </when>
+      </choose>
+    </if>
+  </select>
+
+  <select id="getContent" parameterType="map" resultType="map">
+        select content_id, corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id, updt_dt, updt_id
+        from itda_app.contents
+        where 1=1
+        and content_id = #{contentId}
+  </select>
+
+  <insert id="saveContent" parameterType="map">
+    INSERT INTO itda_app.contents
+    (corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id)
+    VALUES(#{corpCd}, #{title}, #{url}, #{sort}::int4, #{cost}::int4, #{img}, #{activeYn}, #{contentType}, now(), #{cretId})
+    ON CONFLICT(content_id)
+        DO UPDATE
+        set corp_cd = #{corpCd},
+            sort = #{sort}::int4,
+            img = #{img},
+            content_type = #{contentType},
+            url = #{url},
+            title = #{title},
+            cost = #{cost}::int4,
+            active_yn = #{activeYn},
+            updt_id = #{updtId},
+            updt_dt = now()
+  </insert>
+
+  <update id="updateContent" parameterType="map">
+    UPDATE itda_app.contents
+    SET
+          sort=#{sort},
+          active_yn=#{activeYn},
+          updt_dt=now(),
+          updt_id=#{updtId}
+    where 1=1
+     and content_id=#{contentId}
+  </update>
+
+
+
+</mapper>

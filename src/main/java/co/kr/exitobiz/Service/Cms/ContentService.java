@@ -48,4 +48,10 @@ public interface ContentService {
     void editPopup(PopupVo popupVo) throws ParseException;
 
     void createContent(ContentVo contentVo);
+
+    void saveContent(HashMap<String, Object> param);
+
+    List<HashMap> getContentList(HashMap<String, Object> params);
+
+    void updateContent(HashMap<String, Object> params);
 }

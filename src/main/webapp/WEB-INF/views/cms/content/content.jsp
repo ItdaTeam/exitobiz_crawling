@@ -135,8 +135,8 @@
                             <td>
                                 <select name="exposureTarget" id="exposureTarget">
                                     <option value="all" selected="selected">전체</option>
-                                    <option value="hyundai">HD현대일렉트릭</option>
-                                    <option value="ktbizmeka">KT비즈메카</option>
+                                    <option value="01">HD현대일렉트릭</option>
+                                    <option value="02">KT비즈메카</option>
                                 </select>
                             </td>
                         </tr>
@@ -172,7 +172,7 @@
                             </td>
                         </tr>
 <%--                        <tr>--%>
-<%--                            <th>할인금액<i>*</i></th>--%>
+<%--                       \     <th>할인금액<i>*</i></th>--%>
 <%--                            <td>--%>
 <%--                                <input type="number" name="discount_cost">&nbsp;원--%>
 <%--                            </td>--%>
