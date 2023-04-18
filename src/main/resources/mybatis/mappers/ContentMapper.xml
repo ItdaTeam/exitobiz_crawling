@@ -35,7 +35,7 @@
         and content_id = #{contentId}
   </select>
 
-    <select id="getTopInfo" parameterType="map">
+    <select id="getTopInfo" parameterType="map" resultType="map">
         select 'company' as type, corp_cd as code,(select description from itda_web.common_code_dtl where 1=1 and ctg_cd = 'corp_cd' and code = c.corp_cd) as name, count(*) as cnt
         from itda_app.contents c
         where 1=1
