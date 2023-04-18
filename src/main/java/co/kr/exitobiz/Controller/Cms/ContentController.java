@@ -50,16 +50,16 @@ public class ContentController {
         return "/cms/content/notice";
     }
 
-//    @GetMapping("/content")
-//    public String disContent(Model model)
-//    {
-//        ContentVo contentVo = contentService.getContentInfo();
-//
-//        model.addAttribute("inCnt", contentVo.getInCnt());
-//        model.addAttribute("outCnt", contentVo.getOutCnt());
-//
-//        return "/cms/content/content";
-//    }
+    @GetMapping("/content")
+    public String disContent(Model model)
+    {
+        ContentVo contentVo = contentService.getContentInfo();
+
+        model.addAttribute("inCnt", contentVo.getInCnt());
+        model.addAttribute("outCnt", contentVo.getOutCnt());
+
+        return "/cms/content/content";
+    }
 
     @PostMapping(
             "/content")
@@ -204,6 +204,13 @@ public class ContentController {
             params.put("updtId", req.getSession().getAttribute("staffId"));
         contentService.updateContent(params);
         return "success";
+    }
+
+
+    @PostMapping("/getTopInfo")
+    @ResponseBody
+    public List<HashMap> getTopInfo(@RequestBody HashMap<String, Object> params){
+        return contentService.getTopInfo(params);
     }
 
 }
