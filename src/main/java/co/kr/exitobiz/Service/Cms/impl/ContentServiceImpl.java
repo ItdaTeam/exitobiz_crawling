@@ -326,4 +326,9 @@ public class ContentServiceImpl implements ContentService {
     public void updateContent(HashMap<String, Object> params) {
         contentMapper.updateContent(params);
     }
+
+    @Override
+    public List<HashMap> getTopInfo(HashMap<String, Object> params) {
+        return contentMapper.getTopInfo(params);
+    }
 }
