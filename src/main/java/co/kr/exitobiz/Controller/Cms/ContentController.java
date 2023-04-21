@@ -167,6 +167,7 @@ public class ContentController {
         param.put("cost", params.getParameter("cost"));
         param.put("sort", params.getParameter("sort"));
         param.put("cretId",params.getSession().getAttribute("staffId"));
+        param.put("contentType",params.getParameter("contentType"));
 
         MultipartFile file = params.getFile("imgFile");
         if(file != null ){
