@@ -1,6 +1,6 @@
 .main_utility{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -30,4 +30,13 @@
     font-weight: 600;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
+}
+
+#searchForm{
+    display: flex;
+}
+
+.categoryDiv{
+    margin-left: 10px;
+    margin-right: 10px;
 }
