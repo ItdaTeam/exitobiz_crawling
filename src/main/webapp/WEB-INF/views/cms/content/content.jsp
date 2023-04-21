@@ -77,7 +77,7 @@
                         <label for="category">검색조건:</label>
                         <select name="category" id="category">
                             <option value="all" selected>전체</option>
-                            <option value="title">제목</option>
+                            <option value="title" id="title">제목</option>
                         </select>
                         <input type="text" id="keyword" name="keyword" placeholder=".로 다중검색">
                         <button type="submit" class="main_filter_btn"><i>조회</i></button>
@@ -118,7 +118,7 @@
             </div>
             <div class="popup_inner">
                 <dfn>필수항목 <i>*</i></dfn>
-                <form action="#" method="post" id="contentForm" name="contentForm" onsubmit="return false;">
+                <form action="#" method="post" id="contentForm" enctype="multipart/form-data" onsubmit="return false;">
                     <input type="hidden" id="id" name="id">
                     <input type="hidden" id="active" name="active">
                     <table>
@@ -126,30 +126,30 @@
                         <tr>
                             <th>활성화<i>*</i></th>
                             <td>
-                                <input type="checkbox" id="active_yn" name="active_yn" checked>
-                                <label for="active_yn">체크 시, 활성화</label>
+                                <input type="checkbox" id="activeYn" name="activeYn" checked>
+                                <label for="activeYn">체크 시, 활성화</label>
                             </td>
                         </tr>
                         <tr>
                             <th>노출 대상<i>*</i></th>
                             <td>
-                                <select name="exposureTarget" id="exposureTarget">
-                                    <option value="all" selected="selected">전체</option>
+                                <select name="corpCd" id="corpCd">
+                                    <option value="00" selected="selected">전체</option>
                                     <option value="01">HD현대일렉트릭</option>
                                     <option value="02">KT비즈메카</option>
                                 </select>
                             </td>
                         </tr>
-                        <tr>
-                            <th>콘텐츠 유형<i>*</i></th>
-                            <td>
-                                <select name="contentType" id="contentType">
-                                    <option value="information" selected="selected">정보성 콘텐츠</option>
-                                    <option value="education">교육 콘텐츠</option>
-                                    <option value="charged">유료 상품</option>
-                                </select>
-                            </td>
-                        </tr>
+<%--                        <tr>--%>
+<%--                            <th>콘텐츠 유형<i>*</i></th>--%>
+<%--                            <td>--%>
+<%--                                <select name="contentType" id="contentType">--%>
+<%--                                    <option value="01" selected="selected">정보성 콘텐츠</option>--%>
+<%--                                    <option value="02">교육 콘텐츠</option>--%>
+<%--                                    <option value="03">유료 상품</option>--%>
+<%--                                </select>--%>
+<%--                            </td>--%>
+<%--                        </tr>--%>
                         <tr>
                             <th>제목<i>*</i></th>
                             <td>
@@ -157,9 +157,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>썸네일</th>
+                            <th>썸네일<i>*</i></th>
                             <td>
-                                <input type="file" name="upFile" accept="image/jpeg,image/png,image/gif"
+                                <input type="file" name="imgFile" accept="image/jpeg,image/png,image/gif"
                                        style="position: relative;">
                                 <img class="opt_img"
                                      style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
@@ -171,12 +171,6 @@
                                 <input type="number" name="cost">&nbsp;원
                             </td>
                         </tr>
-<%--                        <tr>--%>
-<%--                       \     <th>할인금액<i>*</i></th>--%>
-<%--                            <td>--%>
-<%--                                <input type="number" name="discount_cost">&nbsp;원--%>
-<%--                            </td>--%>
-<%--                        </tr>--%>
                         <tr id="new_content_url_tb">
                             <th>URL<i>*</i></th>
                             <td>
@@ -184,9 +178,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>순서</th>
+                            <th>순서<i>*</i></th>
                             <td>
-                                <input type="number" name="remark">
+                                <input type="number" name="sort">
                             </td>
                         </tr>
                         </tbody>
@@ -302,9 +296,6 @@
 
     const getData = async (form) => {
 
-        form.from.value = document.getElementById("fromDate").value;
-        form.to.value = document.getElementById("toDate").value;
-
         try {
             return await axios.get("/cms/content/api", {
                 params: {
@@ -330,6 +321,30 @@
             })
         return false;
     }
+
+
+    //컨텐츠 리스트 불러오기
+   function getContentList(){
+        var param = {
+            category : $('#title').val(),
+        }
+
+        $.ajax({
+            type : 'POST',
+            url : '/cms/getContentList',
+            dataType : "json",
+            data : param,
+            success : function(result) {
+                console.log("getContentList success");
+                loadGridBannerList('search', result);
+            },
+            error: function(request, status, error) {
+                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
+            }
+        })
+   }
+
 
     const editGrid = async () => {
         const editItem = agencyView.itemsEdited;
@@ -366,40 +381,14 @@
 
         _target.classList.add('is_on');
 
-
-        /* 모달안에 값 있을 경우 */
-        if (ctx != null) {
-            switch (pop) {
-                case "contentManagement":
-                    _target.querySelector(".popup_title").textContent = "콘텐츠수정"
-                    _target.querySelector("input[name='title']").value = ctx.item.title;
-                    _target.querySelector("input[name='id']").value = ctx.item.id;
-                    _target.querySelector("input[name='url']").value = ctx.item.url;
-                    _target.querySelector("input[name='remark']").value = ctx.item.remark;
-                    _target.querySelector("input[name='cost']").value = ctx.item.cost;
-                    _target.querySelector("input[name='active_yn']").checked = ctx.item.activeYn == 'Y' ? true : false;
-                    if (ctx.item.thumbnail != null && ctx.item.thumbnail != '') {
-                        $(".opt_img").css("display", "block")
-                        $(".opt_img").attr("src", ctx.item.thumbnail)
-                        $(".opt_img").attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
-                    }
-                    $('.confirm').css("display", "none");
-                    $('.fill').css("display", "block");
-                    $('#delete').css("display", "block");
-                    break;
-                default:
-                    break;
-            }
-        } else {
             switch (pop) {
                 case "contentManagement":
                     _target.querySelector(".popup_title").textContent = "콘텐츠추가";
                     _target.querySelector("input[name='active_yn']").checked = true;
-                    editor1.setData("");
                     $(".opt_img").css("display", "none");
                     $(".opt_img").attr("src", '');
-                  //  $('input[name="sales_to_dt"]').attr("min", _getFormatDate(new Date()));
-                  //  $('input[name="sales_from_dt"]').attr("min", _getFormatDate(new Date()));
+                    //  $('input[name="sales_to_dt"]').attr("min", _getFormatDate(new Date()));
+                    //  $('input[name="sales_from_dt"]').attr("min", _getFormatDate(new Date()));
                     $('#new_content_cont_tb').css("display", "none");
                     $('.confirm').css("display", "block");
                     $('.fill').css("display", "none");
@@ -415,42 +404,187 @@
                 default:
                     break;
             }
+
+        /* 모달안에 값 있을 경우 */
+        if (ctx != null) {
+            switch (pop) {
+                case "contentManagement":
+                    _target.querySelector(".popup_title").textContent = "콘텐츠수정"
+                    _target.querySelector("input[name='title']").value = ctx.item.title;
+                    _target.querySelector("input[name='id']").value = ctx.item.id;
+                    _target.querySelector("input[name='url']").value = ctx.item.url;
+                    _target.querySelector("input[name='sort']").value = ctx.item.sort;
+                    _target.querySelector("input[name='cost']").value = ctx.item.cost;
+                    _target.querySelector("input[name='activeYn']").checked = ctx.item.activeYn == 'Y' ? true : false;
+                    if (ctx.item.thumbnail != null && ctx.item.thumbnail != '') {
+                        $(".opt_img").css("display", "block")
+                        $(".opt_img").attr("src", ctx.item.thumbnail)
+                        $(".opt_img").attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
+                    }
+                    $('.confirm').css("display", "none");
+                    $('.fill').css("display", "block");
+                    $('#delete').css("display", "block");
+                    break;
+                default:
+                    break;
+            }
         }
     }
+    /*팝업 추가, 수정 끝*/
 
+    // function join() {
+    //
+    //     $.ajax({
+    //         url: '/auth/one?userId=' + sessionStorage.getItem("userId"),
+    //         type: 'POST',
+    //         dataType: "json",
+    //         success: function (data) {
+    //             console.log("join>>> ", data);
+    //             data.map((v, i) => {
+    //                 document.getElementById("userId").value = v.user_id;
+    //                 document.getElementById("password").value = v.password;
+    //                 document.getElementById("name").value = v.name;
+    //
+    //                 document.getElementById("url").value = v.url;
+    //                 if (v.url != null) document.getElementById("url").style.width = "100%";
+    //                 if (v.url != null) document.getElementById("rg_btn").style.display = "none";
+    //
+    //                 //ckeditor 데이터 넣는거에요
+    //                 if (v.content != null) _editor.setData(v.content);
+    //
+    //                 var str = v.sns_url;
+    //                 let html = "";
+    //
+    //                 if (str != null) {
+    //                     var words = str.split(',');
+    //                     console.log(words);
+    //
+    //                     console.log(html);
+    //
+    //                     words.map((v, i) => {
+    //                         html += '<div class="showTxtBox">' +
+    //                             ' <p class="showTxt" style="margin-bottom: 0">' + v + '</p>' +
+    //                             ' <button class="cls_btn" onclick="delete1(this)">x</button>' +
+    //                             ' </div>';
+    //                     })
+    //                     console.log(html);
+    //                     $("#sns_btn").parent().after(html);
+    //                 }
+    //
+    //                 if (v.cover_img != null) document.getElementById("inner_img").src = "/auth/download?img=upload/img/" + v.cover_img;
+    //                 if (v.cover_img != null) document.getElementById("inner_img").style.display = "inline-block";
+    //                 if (v.cover_img != null) document.getElementById("inner_img").style.opacity = "1";
+    //                 if (v.cover_img != null) document.querySelector(".file-edit-icon").style.opacity = "1";
+    //                 if (v.cover_img != null) document.getElementById("image_preview").style.display = "block";
+    //                 if (v.cover_img != null) document.getElementById("img").style.display = "none";
+    //
+    //                 document.getElementById("accountName").value = v.account_name;
+    //                 if (v.bank != null) document.getElementById("bank").value = v.bank;
+    //                 document.getElementById("accountNm").value = v.account_nm;
+    //
+    //                 if (v.qr_img != null) document.getElementById("qr_img").src = "/auth/download?img=upload/img/" + v.qr_img;
+    //
+    //                 if (v.qr_img != null) document.getElementById("qr_img").style.display = "inline-block";
+    //                 if (v.qr_img != null) document.getElementById("qr_img").style.opacity = "1";
+    //                 if (v.qr_img != null) document.getElementById("image_preview2").style.display = "block";
+    //                 if (v.qr_img != null) document.querySelector(".file-edit-icon2").style.opacity = "1";
+    //                 if (v.qr_img != null) document.getElementById("file3").style.display = "none";
+    //
+    //                 if (v.profile_img != null) document.getElementById("inner_img3").src = "/auth/download?img=upload/img/" + v.profile_img;
+    //                 if (v.profile_img != null) document.getElementById("inner_img3").style.opacity = "1";
+    //
+    //                 if (v.url != null) {
+    //                     document.getElementsByTagName("h1")[0].innerHTML = "나의 페이지 수정";
+    //                     document.getElementById("submit").innerHTML = "저장";
+    //                     document.getElementById("url_ms").innerHTML = "등록된 url 주소는 변경할 수 없습니다.";
+    //                     document.getElementById("url").disabled = true;
+    //                     urlChk = true;
+    //                 }
+    //             })
+    //         },
+    //         error: function () {
+    //             if (request.status == 500 || request.status == 404) location.href = "/page/error";
+    //         }
+    //     })
+    //
+    // }
+
+
+    //팝업 추가
     async function contentConfirm(type) {
 
+        console.log("여긴가" + type);
+
         const f = document.getElementById("contentForm");
+        const formData = new FormData(f);
+
+        //validation
+        if (f.corpCd.value == "") {
+            alert("노출대상을 선택해주세요");
+            return false;
+        }
+
+        // if (f.contentType.value == "") {
+        //     alert("콘텐츠 유형을 선택해주세요");
+        //     return false;
+        // }
 
         if (f.title.value == "") {
             alert("제목을 입력해주세요");
             return false;
         }
 
-        f.active.value = f.active_yn.checked ? 'Y' : 'N'
-        const checkedScore = document.querySelector("input[name='type']:checked")
-
-        const formData = new FormData();
-        formData.append("id", f.id.value);
-        formData.append("type", checkedScore.getAttribute("data-value"));
-        formData.append("title", f.title.value);
-        formData.append("url", f.url.value);
-        formData.append("activeYn", f.active.value);
-        formData.append("remark", f.remark.value);
-        formData.append("cost", f.cost.value);
-        // formData.append("content", editor1.getData());
-        if (f.upFile.files[0] != null) {
-            formData.append("upFile", f.upFile.files[0])
+        if (f.imgFile.value == "") {
+            alert("썸네일을 첨부해주세요");
+            return false;
         }
+
+        if (f.cost.value == "") {
+            alert("금액을 입력해주세요");
+            return false;
+        }
+
+        if (f.url.value == "") {
+            alert("url을 입력해주세요");
+            return false;
+        }
+
+        if (f.sort.value == "") {
+            alert("순서를 입력해주세요");
+            return false;
+        }
+
+        f.active.value = f.activeYn.checked ? 'Y' : 'N'
+
+        // formData.append("id", f.id.value);
+        // formData.append("contentType", f.contentType.value);
+        // formData.append("exposureTarget", f.exposureTarget.value);
+        // formData.append("title", f.title.value);
+        // formData.append("url", f.url.value);
+        // formData.append("activeYn", f.active.value);
+        // formData.append("remark", f.remark.value);
+        // formData.append("cost", f.cost.value);
+        // formData.append("upFile", f.upFile.files[0]);
+
+        for (let key of formData.keys()) {
+            console.log(key);
+        }
+
+// FormData의 value 확인
+        for (let value of formData.values()) {
+            console.log(value);
+        }
+
+
 
         switch (type) {
             case "add" :
                 if (!confirm("콘텐츠를 추가하시겠습니까?")) return false;
-                await axios.post("/cms/content", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log(res);
                         if (res.status == 200) {
-                            alert("콘텐츠추가을 완료했습니다.");
+                            alert("팝업추가를 완료했습니다.");
                             $('.popup').removeClass('is_on');
                             showGrid(document.searchForm);
                         } else {
@@ -458,36 +592,38 @@
                         }
                     })
                 break;
-            case "modify" :
-                if (!confirm("공지를 수정하시겠습니까?")) return false;
-                await axios.put("/cms/content", formData, {headers: {'Content-Type': 'multipart/form-data'}})
-                    .then((res) => {
-                        console.log(res);
-                        if (res.status == 200) {
-                            alert("공지수정을 완료했습니다.");
-                            $('.popup').removeClass('is_on');
-                            showGrid(document.searchForm);
-                        } else {
-                            alert("오류가 발생했습니다. 다시 시도해 주세요.");
-                        }
-                    })
-                break;
-            case "delete" :
-                if (!confirm("공지를 삭제하시겠습니까?")) return false;
-                await axios.delete("/cms/notice", {data: formData}, {headers: {'Content-Type': 'multipart/form-data'}})
-                    .then((res) => {
-                        console.log(res);
-                        if (res.status == 200) {
-                            alert("공지삭제를 완료했습니다.");
-                            $('.popup').removeClass('is_on');
-                            showGrid(document.searchForm);
-                        } else {
-                            alert("오류가 발생했습니다. 다시 시도해 주세요.");
-                        }
-                    })
-                break;
+            // case "modify" :
+            //     if (!confirm("공지를 수정하시겠습니까?")) return false;
+            //     await axios.put("/cms/content", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+            //         .then((res) => {
+            //             console.log(res);
+            //             if (res.status == 200) {
+            //                 alert("공지수정을 완료했습니다.");
+            //                 $('.popup').removeClass('is_on');
+            //                 showGrid(document.searchForm);
+            //             } else {
+            //                 alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            //             }
+            //         })
+            //     break;
+            // case "delete" :
+            //     if (!confirm("공지를 삭제하시겠습니까?")) return false;
+            //     await axios.delete("/cms/notice", {data: formData}, {headers: {'Content-Type': 'multipart/form-data'}})
+            //         .then((res) => {
+            //             console.log(res);
+            //             if (res.status == 200) {
+            //                 alert("공지삭제를 완료했습니다.");
+            //                 $('.popup').removeClass('is_on');
+            //                 showGrid(document.searchForm);
+            //             } else {
+            //                 alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            //             }
+            //         })
+            //     break;
         }
     }
+
+
 
     //엑셀다운로드
     function exportExcel() {
@@ -535,17 +671,17 @@
         });
     })
 
-    function contentChange(e) {
-        if (e.getAttribute("data-value") == '외부콘텐츠') {
-            $('#new_content_url_tb').show();
-            $('#new_content_cont_tb').hide();
-            editor1.setData("");
-        } else if (e.getAttribute("data-value") == '자체제작') {
-            $('#new_content_url_tb').hide();
-            $('#new_content_cont_tb').show();
-            document.contentForm.url.value = "";
-        }
-    }
+    // function contentChange(e) {
+    //     if (e.getAttribute("data-value") == '외부콘텐츠') {
+    //         $('#new_content_url_tb').show();
+    //         $('#new_content_cont_tb').hide();
+    //         editor1.setData("");
+    //     } else if (e.getAttribute("{headers") == '자체제작') {
+    //         $('#new_content_url_tb').hide();
+    //         $('#new_content_cont_tb').show();
+    //         document.contentForm.url.value = "";
+    //     }
+    // }
 
     //날짜포맷 yyyy-MM-dd 변환
     //input : date 포맷
@@ -578,66 +714,68 @@
         $('#toDate').val(today);
     }
     $(document).ready(function () {
+        console.log("test");
         pageOnLoad();
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                toolbar: {
-                    items: [
-                        'heading',
-                        '|',
-                        'bold',
-                        'italic',
-                        'link',
-                        'bulletedList',
-                        'numberedList',
-                        '|',
-                        'outdent',
-                        'indent',
-                        '|',
-                        'imageUpload',
-                        'blockQuote',
-                        'insertTable',
-                        'mediaEmbed',
-                        'undo',
-                        'redo',
-                        'htmlEmbed',
-                        'horizontalLine',
-                        'fontSize',
-                        'fontColor',
-                        'fontBackgroundColor',
-                        'alignment',
-                    ],
-                    shouldNotGroupWhenFull: true
-                },
-                language: 'ko',
-                image: {
-                    toolbar: [
-                        'imageTextAlternative',
-                        'imageStyle:inline',
-                        'imageStyle:block',
-                        'imageStyle:side'
-                    ]
-                },
-                table: {
-                    contentToolbar: [
-                        'tableColumn',
-                        'tableRow',
-                        'mergeTableCells'
-                    ]
-                },
-                licenseKey: '',
-            })
-            .then(editor => {
-                editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                    return new UploadAdapter(loader);
-                };
-                editor1 = editor;
-            })
-            .catch(error => {
-                console.error('Oops, something went wrong!');
-                console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
-                console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
-                console.error(error);
-            });
+
+        // ClassicEditor
+        //     .create(document.querySelector('#editor'), {
+        //         toolbar: {
+        //             items: [
+        //                 'heading',
+        //                 '|',
+        //                 'bold',
+        //                 'italic',
+        //                 'link',
+        //                 'bulletedList',
+        //                 'numberedList',
+        //                 '|',
+        //                 'outdent',
+        //                 'indent',
+        //                 '|',
+        //                 'imageUpload',
+        //                 'blockQuote',
+        //                 'insertTable',
+        //                 'mediaEmbed',
+        //                 'undo',
+        //                 'redo',
+        //                 'htmlEmbed',
+        //                 'horizontalLine',
+        //                 'fontSize',
+        //                 'fontColor',
+        //                 'fontBackgroundColor',
+        //                 'alignment',
+        //             ],
+        //             shouldNotGroupWhenFull: true
+        //         },
+        //         language: 'ko',
+        //         image: {
+        //             toolbar: [
+        //                 'imageTextAlternative',
+        //                 'imageStyle:inline',
+        //                 'imageStyle:block',
+        //                 'imageStyle:side'
+        //             ]
+        //         },
+        //         table: {
+        //             contentToolbar: [
+        //                 'tableColumn',
+        //                 'tableRow',
+        //                 'mergeTableCells'
+        //             ]
+        //         },
+        //         licenseKey: '',
+        //     })
+        //     .then(editor => {
+        //         editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+        //             return new UploadAdapter(loader);
+        //         };
+        //         editor1 = editor;
+        //     })
+        //     .catch(error => {
+        //         console.error('Oops, something went wrong!');
+        //         console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+        //         console.warn('Build id: eed83e2ex4oz-pejoxvy7ffif');
+        //         console.error(error);
+        //     });
     });
 </script>

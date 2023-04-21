@@ -242,7 +242,6 @@
     }
 
     const getData = async (form) => {
-
         try{
             return await axios.get("/cms/popup/api",{
                 params : {
