@@ -224,6 +224,8 @@
                 groupDescriptions: ['type']
             })
 
+            console.log("contentView1>>>>>>",contentView);
+
             contentGridPager = new wijmo.input.CollectionViewNavigator('#contentGridPager', {
                 byPage: true,
                 headerFormat: '{currentPage:n0} / {pageCount:n0}',
@@ -234,8 +236,8 @@
 
             contentColumns = [
                 {binding: 'content_id', header: '콘텐츠번호', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'corp_cd', header: '노출 대상', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'content_type', header: '콘텐츠 유형', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'corp_nm', header: '노출 대상', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'content_type_nm', header: '콘텐츠 유형', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'title', header: '제목', isReadOnly: true, width: 400, align: "center"},
                 {binding: 'img', header: '썸네일', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeImage({
@@ -362,6 +364,8 @@
                     user_id: '2379586568',
                 }
             },);
+            console.log("response.data>>>>>>>>",response.data);
+            console.log("contentView2>>>>>>",contentView);
             return response.data;
         } catch (error) {
             console.log(error.response.data);
@@ -424,9 +428,9 @@
                     $(".opt_img").css("display", "none");
                     $(".opt_img").attr("src", '');
                     $('#new_content_cont_tb').css("display", "none");
-                    $('.confirm').css("display", "block");
-                    $('.fill').css("display", "none");
-                    $('#delete').css("display", "none");
+                    $('.confirm').css("display","block");
+                    $('.fill').css("display","none");
+                    $('#delete').css("display","none");
                     break;
                 case "thumnailPopUp" :
                     const imgPath = contentGrid.collectionView.currentItem["thumbnail"];
@@ -447,15 +451,37 @@
                     _target.querySelector(".popup_title").textContent = "콘텐츠수정";
 
                     // Set input values
-                    const { title, id, url, sort, cost, corpCd, contentType, activeYn, imgFile } = ctx.item;
-                    _target.querySelector("input[name='activeYn']").checked = activeYn == 'Y';
-                    _target.querySelector("select[name='corpCd']").value = corpCd;
-                    _target.querySelector("select[name='contentType']").value = contentType;
-                    _target.querySelector("input[name='title']").value = title;
-                    _target.querySelector("input[name='id']").value = id;
-                    _target.querySelector("input[name='url']").value = url;
-                    _target.querySelector("input[name='sort']").value = sort;
-                    _target.querySelector("input[name='cost']").value = cost;
+                    console.log("ctx.item>>>",ctx.item);
+                    let res = {...ctx.item}
+                    // const { title, id, url, sort, cost, corpCd, contentType, activeYn, imgFile } = ctx.item;
+                    // const res = {...,
+                    //     activeYn : ctx.item.active_yn,
+                    //     corpCd : (ctx.item.corp_nm ==='HD현대일렉트릭')?"01":(ctx.item.corp_nm === "KT비즈메카")?"02":"00" ,
+                    //     contentType : ctx.item.content_type_nm,
+                    //     title : ctx.item.title,
+                    //     id : ctx.item.id,
+                    //     url : ctx.item.url,
+                    //     sort : ctx.item.sort,
+                    //     cost : ctx.item.cost,
+                    //     imgFile : ctx.item.imgFile
+                    // }
+                    console.log("res>>>",res);
+
+                    _target.querySelector("input[name='activeYn']").checked = (res.active_yn == 'Y');
+                    _target.querySelector("select[name='corpCd']").value = res.corp_cd;
+                    _target.querySelector("select[name='contentType']").value = res.content_type;
+                    _target.querySelector("input[name='title']").value = res.title;
+                    _target.querySelector("input[name='id']").value = res.id;
+                    _target.querySelector("input[name='url']").value = res.url;
+                    _target.querySelector("input[name='sort']").value = res.sort;
+                    _target.querySelector("input[name='cost']").value = res.cost;
+                    _target.querySelector("input[name='imgFile']").value = res.img;
+
+
+                    // Show/hide elements
+                    $('.confirm').css("display","none");
+                    $('.fill').css("display","block");
+                    $('#delete').css("display","block");
 
                     // Set image
                     if (imgFile) {
@@ -465,10 +491,7 @@
                         $optImg.attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
                     }
 
-                    // Show/hide elements
-                    $('.confirm').css("display", "none");
-                    $('.fill').css("display", "block");
-                    $('#delete').css("display", "block");
+
                     break;
 
                 default:
@@ -552,7 +575,7 @@
 
             case "modify" :
                 if (!confirm("콘텐츠를 수정하시겠습니까?")) return false;
-                formData.append("content_id", f.id.value);
+                formData.append("content_정id", f.id.value);
                 formData.append("title", f.title.value);
                 formData.append("active_yn", f.activeYn.value);
                 formData.append("content_type", f.contentType.value);
