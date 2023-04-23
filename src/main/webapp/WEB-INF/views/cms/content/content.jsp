@@ -27,7 +27,7 @@
             <div class="main_summary">
                 <dl>
                     <dt>HD현대일렉트릭</dt>
-                    <dd>개</dd>
+                    <dd id="hyundai">개</dd>
                 </dl>
                 <dl>
                     <dt>KT비즈메카</dt>
@@ -65,9 +65,9 @@
                 <!-- 필터 영역 main_filter-->
                 <div class="main_filter">
                     <form action="#" name="searchForm" id="searchForm" onsubmit="return showGrid(this);">
-                        <input type="hidden" name="from">
-                        <input type="hidden" name="to">
-                        <input type="hidden" name="limit">
+<%--                        <input type="hidden" name="from">--%>
+<%--                        <input type="hidden" name="to">--%>
+<%--                        <input type="hidden" name="limit">--%>
                         <div class="date">
                             <label for="fromDate">조회일</label>
                             <input type="date" id="fromDate" name="from">
@@ -89,7 +89,7 @@
                 <div class="main_dashboard">
                     <div class="sub_cont">
                         <div class="btn_wrap">
-                            <select id="viewNum" name="viewNum">
+                            <select id="viewNum" name="viewNum" onchange="showGrid(document.getElementById('searchForm'))">
                                 <option value="100" selected="selected">100개씩</option>
                                 <option value="50">50개씩</option>
                                 <option value="30">30개씩</option>
@@ -345,7 +345,7 @@
     //수정필요
     const getData = async (form) => {
         try {
-
+            console.log(form);
             // 오늘 날짜 기준으로 1달 전 날짜 계산
             const today = new Date();
             const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
@@ -365,6 +365,9 @@
                 }
             },);
             console.log("response.data>>>>>>>>",response.data);
+            document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01");
+            // console.log(">+>+>++>++",getCountFromType(response.data,"02"))
+            // console.log("sumdata>>>>>>>>>>>>!!",sumdata1)
             console.log("contentView2>>>>>>",contentView);
             return response.data;
         } catch (error) {
@@ -372,6 +375,17 @@
             throw error;
         }
     };
+
+    function getCountFromType(data,type){
+        const sum = data.filter((v)=>(v.corp_cd === type));
+        return sum.length;
+    };
+
+    function getCountFromContent(data,contentType){
+        const sum = data.filter((v)=>(v.content_type === contentType));
+        return sum.length;
+    };
+
 
 
     const showGrid = (form) => {
@@ -612,6 +626,35 @@
 
     }
 
+
+
+    async function contentTop() {
+        const response2 = await axios.post("/cms/getTopInfo", {});
+        console.log("RES2+++++++++++",response2)
+    }
+
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/cms/getTopInfo',
+        //     dataType: null,
+        //     success: function (result) {
+        //         // document.getElementById('activeYCnt').innerText = result.filter(v => v.siActiveYn == 'Y').length + "개";
+        //         // document.getElementById('activeNCnt').innerText = result.filter(v => v.siActiveYn == 'N').length + "개";
+        //         // document.getElementById('viewCnt').innerText = result.map(v => v.viewCnt).reduce((acc, cur) => acc + cur, 0) + "개";
+        //     console.log("result>>>>>>>>>",result);
+        //     },
+        //     error: function (request, status, error) {
+        //         alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        //
+        //     }
+        // });
+
+
+
+
+
+
+
     //엑셀다운로드
     function exportExcel() {
 
@@ -690,7 +733,10 @@
 
     $(document).ready(function () {
         console.log("test");
+        showGrid(document.getElementById('searchForm'))
         pageOnLoad();
+        contentTop();
+
     });
 
 </script>
