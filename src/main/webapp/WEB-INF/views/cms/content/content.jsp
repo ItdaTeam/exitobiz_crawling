@@ -528,7 +528,7 @@
 
             case "delete" :
                 if (!confirm("콘텐츠를 삭제하시겠습니까?")) return false;
-                await axios.delete("/cms/saveContent", {data: formData}, {headers: {'Content-Type': 'multipart/form-data'}})
+                await axios.post("/cms/deleteContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log(res);
                         if (res.status == 200) {
