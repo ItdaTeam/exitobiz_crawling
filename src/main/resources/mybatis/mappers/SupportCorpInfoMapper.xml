@@ -169,4 +169,14 @@
         where 1=1
           and user_id = #{user_id} and corp_cd = #{corp_cd}
     </select>
+
+    <select id="getContentInfo" parameterType="map" resultType="map">
+        select title,url,cost,img
+            from itda_app.contents
+        where 1=1
+            and corp_cd in (#{corp_cd}, '00')
+            and active_yn = 'Y'
+            order by sort, title
+
+    </select>
 </mapper>

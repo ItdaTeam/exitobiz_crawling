@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -117,5 +119,14 @@ public class SupportCorpInfoController {
             jsonStr = mapper.writeValueAsString(supportCorpService.getCorpCompanyInfo(body));
         }
         return jsonStr;
+    }
+
+    //상단 컨텐츠 조회
+
+    @PostMapping("/getContentInfo")
+    @ResponseBody
+    public List<Map<String,Object>> getContentInfo(@RequestBody HashMap<String,Object> params){
+
+        return supportCorpService.getContentInfo(params);
     }
 }

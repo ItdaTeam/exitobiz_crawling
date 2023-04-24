@@ -81,4 +81,9 @@ public class SupportCorpInfoServiceImpl implements SupportCorpInfoService {
         return supportCorpInfoMapper.getCorpCompanyInfo(params);
     }
 
+    @Override
+    public List<Map<String, Object>> getContentInfo(HashMap<String, Object> params) {
+        return supportCorpInfoMapper.getContentInfo(params);
+    }
+
 }

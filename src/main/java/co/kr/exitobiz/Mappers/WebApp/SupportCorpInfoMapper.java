@@ -22,4 +22,6 @@ public interface SupportCorpInfoMapper {
     void updateCorpCompanyInfo(Map<String, Object> params); // 사용자 필터 적용
 
     HashMap<String, Object> getCorpCompanyInfo(HashMap<String, Object> params); // 사용자 필터 조회
+
+    List<Map<String, Object>> getContentInfo(HashMap<String, Object> params);
 }
