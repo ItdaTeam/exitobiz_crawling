@@ -5,7 +5,7 @@
 
 
   <select id="getContentList" parameterType="map" resultType="map">
-    SELECT content_id, corp_cd, ccn.description as corp_nm, title, url, c.sort, "cost", img, active_yn, content_type, dtl.code_nm as content_type_nm, c.cret_dt, c.cret_id, c.updt_dt, c.updt_id
+    SELECT content_id, corp_cd,  coalesce(ccn.description, '전체') as corp_nm, title, url, c.sort, "cost", img, active_yn, content_type, dtl.code_nm as content_type_nm, c.cret_dt, c.cret_id, c.updt_dt, c.updt_id
       FROM itda_app.contents c
       left outer join itda_web.common_code_dtl dtl on c.content_type = dtl.code and dtl.ctg_cd = 'content_type'
       left outer join itda_web.common_code_dtl ccn on c.corp_cd = ccn.code and ccn.ctg_Cd='corp_cd'
@@ -55,7 +55,14 @@
   <insert id="saveContent" parameterType="map">
     INSERT INTO itda_app.contents
     (content_id, corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id)
-    VALUES(#{contentId},#{corpCd}, #{title}, #{url}, #{sort}::int4, #{cost}::int4, #{img}, #{activeYn}, #{contentType}, now(), #{cretId})
+    <choose>
+        <when test="contentId != ''">
+        VALUES(#{contentId}::numeric,#{corpCd}, #{title}, #{url}, #{sort}::int4, #{cost}::int4, #{img}, #{activeYn}, #{contentType}, now(), #{cretId})
+        </when>
+        <otherwise>
+            VALUES(nextval('itda_app.contents_indexid_seq'),#{corpCd}, #{title}, #{url}, #{sort}::int4, #{cost}::int4, #{img}, #{activeYn}, #{contentType}, now(), #{cretId})
+        </otherwise>
+    </choose>
     ON CONFLICT(content_id)
         DO UPDATE
         set corp_cd = #{corpCd},
