@@ -95,10 +95,10 @@
                                 <option value="30">30개씩</option>
                             </select>
                             <button type="button" class="btn stroke"
-                                    onclick="_getUserGridLayout('noticeLayout', noticeGrid);">칼럼위치저장
+                                    onclick="_getUserGridLayout('contentLayout', contentGrid);">칼럼위치저장
                             </button>
                             <button type="button" class="btn stroke"
-                                    onclick="_resetUserGridLayout('noticeLayout', noticeGrid, noticeColumns);">칼럼초기화
+                                    onclick="_resetUserGridLayout('contentLayout', contentGrid, contentColumns);">칼럼초기화
                             </button>
                         </div>
                     </div>
