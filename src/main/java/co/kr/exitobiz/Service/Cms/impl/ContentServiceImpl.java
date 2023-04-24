@@ -91,14 +91,14 @@ public class ContentServiceImpl implements ContentService {
         return contentRepository.getNotice(searchVo);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Content> getContent(SearchVo searchVo) throws ParseException {
-        if(searchVo.getInq() != null)
-            searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
-
-        return contentRepository.getContent(searchVo);
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public List<Content> getContent(SearchVo searchVo) throws ParseException {
+//        if(searchVo.getInq() != null)
+//            searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
+//
+//        return contentRepository.getContent(searchVo);
+//    }
 
     @Override
     @Transactional(readOnly = true)
@@ -330,5 +330,15 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public List<HashMap> getTopInfo(HashMap<String, Object> params) {
         return contentMapper.getTopInfo(params);
+    }
+
+    @Override
+    public HashMap<String, Object> getContent(HashMap<String, Object> params) {
+        return contentMapper.getContent(params);
+    }
+
+    @Override
+    public void deleteContent(HashMap<String, Object> params) {
+        contentMapper.deleteContent(params);
     }
 }

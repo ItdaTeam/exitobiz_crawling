@@ -17,7 +17,7 @@ public interface ContentService {
 
     List<Notice> getNotice(SearchVo searchVo) throws ParseException;
 
-    List<Content> getContent(SearchVo searchVo) throws ParseException;
+//    List<Content> getContent(SearchVo searchVo) throws ParseException;
 
     ContentVo getContentInfo();
 
@@ -56,4 +56,8 @@ public interface ContentService {
     void updateContent(HashMap<String, Object> params);
 
     List<HashMap> getTopInfo(HashMap<String, Object> params);
+
+    HashMap<String, Object> getContent(HashMap<String, Object> params);
+
+    void deleteContent(HashMap<String, Object> params);
 }

@@ -79,7 +79,7 @@
         order by
         <choose>
             <when test='ord == "인기순"'>
-                totalCnt desc, si.si_idx
+                view_cnt desc, si.si_idx
             </when>
             <when test='ord == "금액높은순"'>
                 target_cost_value desc, si.si_idx

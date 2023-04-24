@@ -81,6 +81,13 @@
      and content_id=#{contentId}
   </update>
 
+    <delete id="deleteContent" parameterType="map">
+        delete from itda_app.contents
+        where 1=1
+            and content_id = #{contentId}
+
+    </delete>
+
 
 
 </mapper>

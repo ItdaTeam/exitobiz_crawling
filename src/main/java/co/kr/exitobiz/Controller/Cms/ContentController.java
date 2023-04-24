@@ -74,11 +74,11 @@ public class ContentController {
         contentService.editContent(contentVo);
     }
 
-    @GetMapping("/content/api")
-    @ResponseBody
-    public List<Content> getContent(SearchVo searchVo) throws ParseException {
-        return contentService.getContent(searchVo);
-    }
+//    @GetMapping("/content/api")
+//    @ResponseBody
+//    public List<Content> getContent(SearchVo searchVo) throws ParseException {
+//        return contentService.getContent(searchVo);
+//    }
 
     @PostMapping("/notice")
     @ResponseBody
@@ -212,6 +212,35 @@ public class ContentController {
     @ResponseBody
     public List<HashMap> getTopInfo(@RequestBody HashMap<String, Object> params){
         return contentService.getTopInfo(params);
+    }
+
+    @PostMapping("/deleteContent")
+    @ResponseBody
+    public String deleteContent(@RequestBody HashMap<String,Object> params){
+
+        String result = "fail";
+
+        HashMap<String,Object> content = contentService.getContent(params);
+
+        if(content.get("img") != null && content.get("img") != "" ){
+            //개발
+            String fileName = content.get("img").toString().replace("https://dev.exitobiz.co.kr:8443/img/content/", "");
+            HashMap<String, Object> fileParam = new HashMap<>();
+            fileParam.put("filePath", "/img/content/");
+            fileParam.put("fileName", fileName);
+            try{
+                fileService.deleteFile(fileParam);
+            } catch (Exception e) {
+               e.printStackTrace();
+            }
+        }
+
+        contentService.deleteContent(params);
+        result = "success";
+
+
+
+        return result;
     }
 
 }

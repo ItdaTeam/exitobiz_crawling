@@ -15,4 +15,8 @@ public interface ContentMapper {
     void updateContent(HashMap<String, Object> params);
 
     List<HashMap> getTopInfo(HashMap<String, Object> params);
+
+    HashMap<String, Object> getContent(HashMap<String, Object> params);
+
+    void deleteContent(HashMap<String, Object> params);
 }
