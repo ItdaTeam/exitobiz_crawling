@@ -267,7 +267,16 @@
                 autoGenerateColumns: false,
                 alternatingRowStep: 0,
                 columns: contentColumns,
-                itemsSource: contentView
+                itemsSource: contentView,
+                loadedRows: function(s, e) {
+                    s.autoSizeColumns();
+                },
+                cellEditEnded: function(s, e) {
+                    s.autoSizeColumn(e.col);
+                },
+                rowEditEnded: function(s, e) {
+                    s.autoSizeColumns();
+                }
             });
 
             contentGrid.itemFormatter = function (panel, r, c, cell) {
@@ -282,7 +291,7 @@
         } else {
             contentView = new wijmo.collections.CollectionView(result, {
                 pageSize: Number($('#viewNum').val()),
-                groupDescriptions: ['type']
+                trackChanges: true,
             });
             contentGridPager.cv = contentView;
             contentGrid.itemsSource = contentView;
