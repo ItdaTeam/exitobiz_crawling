@@ -162,9 +162,9 @@
                         <tr>
                             <th>썸네일<i>*</i></th>
                             <td name="img">
-                                <img class="opt_img"
+                                <img class="opt_img" id="opt_img"
                                      style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
-                                <input type="file" name="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
+                                <input type="file" name="imgFile" id="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
                             </td>
                         </tr>
                         <tr>
@@ -253,14 +253,7 @@
                 {binding: 'sort', header: '순서', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'cret_dt', header: '작성날짜', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'updt_dt', header: '수정날짜', isReadOnly: true, width: 150, align: "center"},
-                {
-                    binding: 'active_yn',
-                    header: '활성화',
-                    width: 150,
-                    align: "center",
-                    dataMap: onoffYnMap,
-                    isReadOnly : true
-                },
+                {binding: 'active_yn', header: '활성화', width: 150, align: "center", dataMap: onoffYnMap},
                 {
                     binding: 'edit', header: '정보수정', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeButton({
@@ -382,7 +375,7 @@
                     let res = {...ctx.item}
                     console.log("res>>>",res);
 
-                    _target.querySelector("input[name='activeYn']").checked = res.active_yn == 'Y' ? true : false;
+                    _target.querySelector("input[name='activeYn']").checked = ctx.item.active_yn == 'Y' ? true : false;
                     _target.querySelector("select[name='corpCd']").value = res.corp_cd;
                     _target.querySelector("select[name='contentType']").value = res.content_type;
                     _target.querySelector("input[name='title']").value = res.title;
@@ -461,7 +454,7 @@
             return false;
         }
 
-        if (f.imgFile.value == "") {
+        if ( f.imgFile.value == "") {
             alert("썸네일을 첨부해주세요");
             return false;
         }
@@ -481,8 +474,9 @@
             return false;
         }
 
-        f.active.value = f.activeYn.checked ? 'Y' : 'N'
-        formData.append('activeYn', f.active.value);
+        // f.active.value = f.activeYn.checked ? 'Y' : 'N'
+        formData.delete('activeYn');
+        formData.append('activeYn', f.activeYn.checked ? 'Y' : 'N');
 
 
         for (let key of formData.keys()) {
@@ -498,6 +492,7 @@
         switch (type) {
             case "add" :
                 if (!confirm("콘텐츠를 추가하시겠습니까?")) return false;
+
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log(res);
