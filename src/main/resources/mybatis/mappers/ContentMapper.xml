@@ -5,16 +5,16 @@
 
 
   <select id="getContentList" parameterType="map" resultType="map">
-    SELECT content_id, corp_cd,  coalesce(ccn.description, '전체') as corp_nm, title, url, c.sort, "cost", img, active_yn, content_type, dtl.code_nm as content_type_nm, c.cret_dt, c.cret_id, c.updt_dt, c.updt_id
+    SELECT content_id, corp_cd,  coalesce(ccn.description, '전체') as corp_nm, title, url, c.sort, "cost", img, active_yn, content_type, dtl.code_nm as content_type_nm, to_char(c.cret_dt, 'YYYY-MM-DD HH24:MI:SS') cret_dt, c.cret_id, to_char(c.updt_dt, 'YYYY-MM-DD HH24:MI:SS') updt_dt, c.updt_id
       FROM itda_app.contents c
       left outer join itda_web.common_code_dtl dtl on c.content_type = dtl.code and dtl.ctg_cd = 'content_type'
       left outer join itda_web.common_code_dtl ccn on c.corp_cd = ccn.code and ccn.ctg_Cd='corp_cd'
    WHERE 1=1
         and to_char(c.cret_dt, 'yyyy-mm-dd')::date between #{fromDate}::date and #{toDate}::date
     <if test="keyword != null">
+      AND
       <choose>
         <when test="category == 'all'">
-          AND
           <foreach collection="keyword" item="item"
                    index="index" open="(" close=")" separator="or">
             c.title LIKE '%' || #{item} || '%'
