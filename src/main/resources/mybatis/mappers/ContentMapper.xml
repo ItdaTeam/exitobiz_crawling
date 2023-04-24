@@ -54,8 +54,8 @@
 
   <insert id="saveContent" parameterType="map">
     INSERT INTO itda_app.contents
-    (#{contentId}, corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id)
-    VALUES(nextval('itda_app.contents_indexid_seq'),#{corpCd}, #{title}, #{url}, #{sort}::int4, #{cost}::int4, #{img}, #{activeYn}, #{contentType}, now(), #{cretId})
+    (content_id, corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id)
+    VALUES(#{contentId},#{corpCd}, #{title}, #{url}, #{sort}::int4, #{cost}::int4, #{img}, #{activeYn}, #{contentType}, now(), #{cretId})
     ON CONFLICT(content_id)
         DO UPDATE
         set corp_cd = #{corpCd},
