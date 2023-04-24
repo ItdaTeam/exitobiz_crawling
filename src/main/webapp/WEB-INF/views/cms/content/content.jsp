@@ -31,19 +31,19 @@
                 </dl>
                 <dl>
                     <dt>KT비즈메카</dt>
-                    <dd>개</dd>
+                    <dd id="ktbizmeka">개</dd>
                 </dl>
                 <dl>
                     <dt>정보성 콘텐츠</dt>
-                    <dd>개</dd>
+                    <dd id="content_info">개</dd>
                 </dl>
                 <dl>
                     <dt>교육 콘텐츠</dt>
-                    <dd>개</dd>
+                    <dd id="content_edu">개</dd>
                 </dl>
                 <dl>
                     <dt>유료 상품</dt>
-                    <dd>개</dd>
+                    <dd id="paid_product">개</dd>
                 </dl>
                 <!-- 클릭시 팝업창 띄움 -->
                 <dl>
@@ -121,15 +121,16 @@
             <div class="popup_inner">
                 <dfn>필수항목 <i>*</i></dfn>
                 <form action="#" method="post" id="form" enctype="multipart/form-data" onsubmit="return false;">
-                    <input type="hidden" id="id" name="id">
-                    <input type="hidden" id="active" name="active">
+                    <input type="hidden" id="contentId" name="contentId">
+
                     <table>
                         <tbody>
                         <tr>
                             <th>활성화<i>*</i></th>
                             <td>
-                                <input type="checkbox" id="activeYn" name="activeYn" checked>
-                                <label for="activeYn">체크 시, 활성화</label>
+                                <input type="hidden" id="active" name="active">
+                                <input type="checkbox" id="activeYnCheck" name="activeYn" checked>
+                                <label for="activeYnCheck">체크 시, 활성화</label>
                             </td>
                         </tr>
                         <tr>
@@ -160,11 +161,10 @@
                         </tr>
                         <tr>
                             <th>썸네일<i>*</i></th>
-                            <td>
-                                <input type="file" name="imgFile" accept="image/jpeg,image/png,image/gif"
-                                       style="position: relative;">
+                            <td name="img">
                                 <img class="opt_img"
                                      style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
+                                <input type="file" name="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
                             </td>
                         </tr>
                         <tr>
@@ -241,7 +241,7 @@
                 {binding: 'title', header: '제목', isReadOnly: true, width: 400, align: "center"},
                 {binding: 'img', header: '썸네일', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeImage({
-                        click:() => showPop("thumnailPopUp"),
+                        click:() =>showPop("thumnailPopUp"),
                         attributes :{
                             onerror:
                                 "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';"
@@ -264,7 +264,7 @@
                 {
                     binding: 'edit', header: '정보수정', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeButton({
-                        text: '조회',
+                        text: '수정',
                         click: (e, ctx) => showPop('contentManagement', ctx),
                     })
                 },
@@ -299,50 +299,6 @@
     }
 
 
-    // const getContent = async (form) => {
-    //
-    //     try {
-    //         const res = await axios.post('/cms/getContentList', {
-    //             params: {
-    //                 keyword : form.keyword.value,
-    //                 category : form.title.value,
-    //                 from : form.from.value,
-    //                 to : form.to.value
-    //             }
-    //         });
-    //         return res.data;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    // function getContent(){
-    //     let keyword = document.getElementById("keyword").value;
-    //     let title = document.getElementById("title").value;
-    //
-    //     var param = {
-    //         keyword: keyword,
-    //         category: title,
-    //     }
-    //
-    //     $.ajax({
-    //         type : 'POST',
-    //         url : '/cms/getContentList',
-    //         dataType : null,
-    //         data : param,
-    //         success : function(result) {
-    //             console.log("getContentList success");
-    //             loadGridContentList('search', result);
-    //         },
-    //         error: function(request, status, error) {
-    //             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-    //
-    //         }
-    //     });
-    // }
-    //
-
-    //수정필요
     const getData = async (form) => {
         try {
             console.log(form);
@@ -365,9 +321,12 @@
                 }
             },);
             console.log("response.data>>>>>>>>",response.data);
-            document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01");
-            // console.log(">+>+>++>++",getCountFromType(response.data,"02"))
-            // console.log("sumdata>>>>>>>>>>>>!!",sumdata1)
+            document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01") + "개";
+            document.getElementById("ktbizmeka").innerHTML = getCountFromType(response.data,"02") + "개";
+            document.getElementById("content_info").innerHTML = getCountFromContent(response.data,"01") + "개";
+            document.getElementById("content_edu").innerHTML = getCountFromContent(response.data,"02") + "개";
+            document.getElementById("paid_product").innerHTML = getCountFromContent(response.data,"03") + "개";
+
             console.log("contentView2>>>>>>",contentView);
             return response.data;
         } catch (error) {
@@ -400,29 +359,6 @@
         return false;
     };
 
-    //
-    // const editGrid = async () => {
-    //     const editItem = agencyView.itemsEdited;
-    //
-    //     if (editItem.length < 1) {
-    //         alert("수정된 내역이 없습니다.");
-    //         return false;
-    //     }
-    //
-    //     if (!confirm(editItem.length + "건의 상태를 변경하시겠습니까?")) return false;
-    //
-    //     /* observer배열에서 기본배열로 옮겨담는다 */
-    //     let rows = editItem.map(obj => obj);
-    //
-    //     await axios.post("/cms/updateContent", rows).then((res) => {
-    //         if (res.status == 200) {
-    //             alert("저장했습니다.");
-    //             showGrid(document.search_form)
-    //         } else {
-    //             alert("오류가 발생했습니다. 다시 시도해 주세요.");
-    //         }
-    //     })
-    // }
 
     //팝업 오픈
     function showPop(pop, ctx = null) {
@@ -435,6 +371,47 @@
 
         _target.classList.add('is_on');
 
+        /* 모달안에 값 있을 경우 */
+        if (ctx != null) {
+            switch (pop) {
+                case "contentManagement":
+                    // Set popup title
+                    _target.querySelector(".popup_title").textContent = "콘텐츠수정";
+                    // Set input values
+                    console.log("ctx.item>>>",ctx.item);
+                    let res = {...ctx.item}
+                    console.log("res>>>",res);
+
+                    _target.querySelector("input[name='activeYn']").checked = res.active_yn == 'Y' ? true : false;
+                    _target.querySelector("select[name='corpCd']").value = res.corp_cd;
+                    _target.querySelector("select[name='contentType']").value = res.content_type;
+                    _target.querySelector("input[name='title']").value = res.title;
+                    _target.querySelector("input[name='contentId']").value = res.content_id;
+                    _target.querySelector("input[name='url']").value = res.url;
+                    _target.querySelector("input[name='sort']").value = res.sort;
+                    _target.querySelector("input[name='cost']").value = res.cost;
+                    if (res.img != null && res.img != '') {
+                        $(".opt_img").css("display", "block")
+                        $(".opt_img").attr("src", res.img)
+                    }
+                    // Show/hide elements
+                    $('.confirm').css("display","none");
+                    $('.fill').css("display","block");
+                    $('#delete').css("display","block");
+
+                    // // Set image
+                    // if (imgFile) {
+                    //     const $optImg = $(".opt_img");
+                    //     $optImg.css("display", "block");
+                    //     $optImg.attr("src", imgFile);
+                    //     $optImg.attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
+                    // }
+                    break;
+
+                default:
+                    break;
+            }
+        }else {
             switch (pop) {
                 case "contentManagement":
                     _target.querySelector(".popup_title").textContent = "콘텐츠추가";
@@ -446,68 +423,13 @@
                     $('.fill').css("display","none");
                     $('#delete').css("display","none");
                     break;
-                case "thumnailPopUp" :
-                    const imgPath = contentGrid.collectionView.currentItem["thumbnail"];
-                    let img = '<img class="content_img" src="'+imgPath+'"art="이미지" onerror="this.oneerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
-                    $('#thumnail')
-                        .empty()
-                        .append(img)
-                    break;
-                default:
-                    break;
-            }
-
-        /* 모달안에 값 있을 경우 */
-        if (ctx != null) {
-            switch (pop) {
-                case "contentManagement":
-                    // Set popup title
-                    _target.querySelector(".popup_title").textContent = "콘텐츠수정";
-
-                    // Set input values
-                    console.log("ctx.item>>>",ctx.item);
-                    let res = {...ctx.item}
-                    // const { title, id, url, sort, cost, corpCd, contentType, activeYn, imgFile } = ctx.item;
-                    // const res = {...,
-                    //     activeYn : ctx.item.active_yn,
-                    //     corpCd : (ctx.item.corp_nm ==='HD현대일렉트릭')?"01":(ctx.item.corp_nm === "KT비즈메카")?"02":"00" ,
-                    //     contentType : ctx.item.content_type_nm,
-                    //     title : ctx.item.title,
-                    //     id : ctx.item.id,
-                    //     url : ctx.item.url,
-                    //     sort : ctx.item.sort,
-                    //     cost : ctx.item.cost,
-                    //     imgFile : ctx.item.imgFile
-                    // }
-                    console.log("res>>>",res);
-
-                    _target.querySelector("input[name='activeYn']").checked = (res.active_yn == 'Y');
-                    _target.querySelector("select[name='corpCd']").value = res.corp_cd;
-                    _target.querySelector("select[name='contentType']").value = res.content_type;
-                    _target.querySelector("input[name='title']").value = res.title;
-                    _target.querySelector("input[name='id']").value = res.id;
-                    _target.querySelector("input[name='url']").value = res.url;
-                    _target.querySelector("input[name='sort']").value = res.sort;
-                    _target.querySelector("input[name='cost']").value = res.cost;
-                    _target.querySelector("input[name='imgFile']").value = res.img;
-
-
-                    // Show/hide elements
-                    $('.confirm').css("display","none");
-                    $('.fill').css("display","block");
-                    $('#delete').css("display","block");
-
-                    // Set image
-                    if (imgFile) {
-                        const $optImg = $(".opt_img");
-                        $optImg.css("display", "block");
-                        $optImg.attr("src", imgFile);
-                        $optImg.attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
-                    }
-
-
-                    break;
-
+                // case "thumnailPopUp" :
+                //     const imgPath = contentGrid.collectionView.currentItem["img"];
+                //     let img = '<img class="content_img" src="'+imgPath+'" art="이미지" onerror="this.oneerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
+                //     $('#thumnail')
+                //         .empty()
+                //         .append(img)
+                //     break;
                 default:
                     break;
             }
@@ -521,7 +443,7 @@
         console.log("여긴가" + type);
 
         const f = document.getElementById("form");
-        const formData = new FormData();
+        const formData = new FormData(f);
 
         //validation
         if (f.corpCd.value == "") {
@@ -560,6 +482,8 @@
         }
 
         f.active.value = f.activeYn.checked ? 'Y' : 'N'
+        formData.append('activeYn', f.active.value);
+
 
         for (let key of formData.keys()) {
             console.log(key);
@@ -589,15 +513,9 @@
 
             case "modify" :
                 if (!confirm("콘텐츠를 수정하시겠습니까?")) return false;
-                formData.append("content_정id", f.id.value);
-                formData.append("title", f.title.value);
-                formData.append("active_yn", f.activeYn.value);
-                formData.append("content_type", f.contentType.value);
-                formData.append("corp_cd", f.corpCd.value);
-                formData.append("img", f.imgFile.value);
-                await axios.post("/cms/updateContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
-                        console.log(res);
+                        console.log("수정>>>>>>",res);
                         if (res.status == 200) {
                             alert("콘텐츠 수정을 완료했습니다.");
                             $('.popup').removeClass('is_on');
@@ -610,11 +528,11 @@
 
             case "delete" :
                 if (!confirm("콘텐츠를 삭제하시겠습니까?")) return false;
-                await axios.delete("/cms/updateContent", {data: formData}, {headers: {'Content-Type': 'multipart/form-data'}})
+                await axios.delete("/cms/saveContent", {data: formData}, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log(res);
                         if (res.status == 200) {
-                            alert("콘텐츠를 완료했습니다.");
+                            alert("콘텐츠 삭제를 완료했습니다.");
                             $('.popup').removeClass('is_on');
                             showGrid(document.searchForm);
                         } else {
@@ -627,31 +545,11 @@
     }
 
 
-
-    async function contentTop() {
-        const response2 = await axios.post("/cms/getTopInfo", {});
-        console.log("RES2+++++++++++",response2)
-    }
-
-        // $.ajax({
-        //     type: 'POST',
-        //     url: '/cms/getTopInfo',
-        //     dataType: null,
-        //     success: function (result) {
-        //         // document.getElementById('activeYCnt').innerText = result.filter(v => v.siActiveYn == 'Y').length + "개";
-        //         // document.getElementById('activeNCnt').innerText = result.filter(v => v.siActiveYn == 'N').length + "개";
-        //         // document.getElementById('viewCnt').innerText = result.map(v => v.viewCnt).reduce((acc, cur) => acc + cur, 0) + "개";
-        //     console.log("result>>>>>>>>>",result);
-        //     },
-        //     error: function (request, status, error) {
-        //         alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        //
-        //     }
-        // });
-
-
-
-
+    //
+    // async function contentTop() {
+    //     const response2 = await axios.post("/cms/getTopInfo", {});
+    //     console.log("RES2+++++++++++",response2)
+    // }
 
 
 
@@ -679,7 +577,7 @@
     }
 
     $(function () {
-        $('input[name="upFile"]').change(function () {
+        $('input[name="imgFile"]').change(function () {
             if (this.files && this.files[0]) {
                 var reader = new FileReader;
                 reader.onload = function (e) {
@@ -733,9 +631,8 @@
 
     $(document).ready(function () {
         console.log("test");
-        showGrid(document.getElementById('searchForm'))
+        showGrid(document.getElementById('searchForm'));
         pageOnLoad();
-        contentTop();
 
     });
 
