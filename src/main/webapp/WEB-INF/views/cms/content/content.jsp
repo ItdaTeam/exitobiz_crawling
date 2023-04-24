@@ -161,10 +161,8 @@
                         </tr>
                         <tr>
                             <th>썸네일<i>*</i></th>
-                            <td name="img">
-                                <img class="opt_img" id="opt_img"
-                                     style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
-                                <input type="file" name="imgFile" id="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
+                            <td>
+                                <input type="file" id="imgFile" name="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
                             </td>
                         </tr>
                         <tr>
@@ -198,7 +196,12 @@
             </div>
         </div>
     </div>
+    <div class="popup" id="image">
+        <div id="img" onmousedown="closePop();">
+        </div>
+    </div>
     <!-- 팝업추가 팝업 영역 끝-->
+
 </div>
 </body>
 </html>
@@ -380,9 +383,9 @@
                     // Set popup title
                     _target.querySelector(".popup_title").textContent = "콘텐츠수정";
                     // Set input values
-                    console.log("ctx.item>>>",ctx.item);
+                    console.log("ctx.item>>>", ctx.item);
                     let res = {...ctx.item}
-                    console.log("res>>>",res);
+                    console.log("res>>>", res);
 
                     _target.querySelector("input[name='activeYn']").checked = ctx.item.active_yn == 'Y' ? true : false;
                     _target.querySelector("select[name='corpCd']").value = res.corp_cd;
@@ -392,46 +395,37 @@
                     _target.querySelector("input[name='url']").value = res.url;
                     _target.querySelector("input[name='sort']").value = res.sort;
                     _target.querySelector("input[name='cost']").value = res.cost;
-                    if (res.img != null && res.img != '') {
-                        $(".opt_img").css("display", "block")
-                        $(".opt_img").attr("src", res.img)
-                    }
-                    // Show/hide elements
-                    $('.confirm').css("display","none");
-                    $('.fill').css("display","block");
-                    $('#delete').css("display","block");
-
-                    // // Set image
-                    // if (imgFile) {
-                    //     const $optImg = $(".opt_img");
-                    //     $optImg.css("display", "block");
-                    //     $optImg.attr("src", imgFile);
-                    //     $optImg.attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
+                    _target.querySelector("input[name='imgFile']").value = res.img;
+                    // if (res.img != null && res.img != '') {
+                    //     $("#imgFile").css("display", "block")
+                    //     $("#imgFile").attr("src", res.img)
                     // }
-                    break;
+                    // Show/hide elements
+                    $('.confirm').css("display", "none");
+                    $('.fill').css("display", "block");
+                    $('#delete').css("display", "block");
 
+                    break;
                 default:
                     break;
             }
-        }else {
+        } else {
             switch (pop) {
                 case "contentManagement":
                     _target.querySelector(".popup_title").textContent = "콘텐츠추가";
                     _target.querySelector("input[name='activeYn']").checked = true;
-                    $(".opt_img").css("display", "none");
-                    $(".opt_img").attr("src", '');
                     $('#new_content_cont_tb').css("display", "none");
-                    $('.confirm').css("display","block");
-                    $('.fill').css("display","none");
-                    $('#delete').css("display","none");
+                    $('.confirm').css("display", "block");
+                    $('.fill').css("display", "none");
+                    $('#delete').css("display", "none");
                     break;
-                // case "thumnailPopUp" :
-                //     const imgPath = contentGrid.collectionView.currentItem["img"];
-                //     let img = '<img class="content_img" src="'+imgPath+'" art="이미지" onerror="this.oneerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
-                //     $('#thumnail')
-                //         .empty()
-                //         .append(img)
-                //     break;
+
+                case "thumnailPopUp" :
+                    var imgPath = contentGrid.collectionView.currentItem["img"];
+                    var img = '<img class="banner_img" src="' + imgPath + '"alt="이미지">';
+                    $('#img')
+                    .append(img)
+                    break;
                 default:
                     break;
             }
@@ -517,6 +511,7 @@
 
             case "modify" :
                 if (!confirm("콘텐츠를 수정하시겠습니까?")) return false;
+                $('#imgFile').empty();
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log("수정>>>>>>",res);
