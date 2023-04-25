@@ -115,7 +115,7 @@
     <div class="popup" id="contentManagement">
         <div class="popup_container">
             <div class="popup_head">
-                <p class="popup_title">콘텐츠 추가</p>
+                <p class="popup_title" name="popup_title">콘텐츠 추가</p>
                 <button type="button" class="popup_close">x</button>
             </div>
             <div class="popup_inner">
@@ -163,6 +163,8 @@
                             <th>썸네일<i>*</i></th>
                             <td>
                                 <input type="file" id="imgFile" name="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
+                                <img id="preview" style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
+
                             </td>
                         </tr>
                         <tr>
@@ -303,6 +305,42 @@
         refreshPaging(contentGrid.collectionView.totalItemCount, 1, contentGrid, 'contentGrid');  // 페이징 초기 셋팅
     }
 
+    // function previewImage(event) {
+    //     const preview = document.getElementById("preview");
+    //     const file = event.target.files[0];
+    //     const reader = new FileReader();
+    //
+    //
+    //
+    //     reader.onloadend = function() {
+    //         preview.src = reader.result;
+    //     }
+    //
+    //
+    //
+    //     if (file) {
+    //         reader.readAsDataURL(file);
+    //     } else {
+    //         preview.src = "";
+    //     }
+    // }
+
+    $('input[name="imgFile"]').change(function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader;
+            reader.onload = function (e) {
+                $("#preview").css("display", "block")
+                $("#preview").attr("src", e.target.result)
+            } // onload_function
+            $('td[name="img"]').css("height", "auto")
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            $("#preview").css("display", "none")
+            $("#preview").attr("src", '')
+        }
+    });
+
+
 
     const getData = async (form) => {
         try {
@@ -320,11 +358,8 @@
                 category: form.category.value,
                 fromDate,
                 toDate
-            }, {
-                headers: {
-                    user_id: '2379586568',
-                }
-            },);
+            },
+            );
             console.log("response.data>>>>>>>>",response.data);
             document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01") + "개";
             document.getElementById("ktbizmeka").innerHTML = getCountFromType(response.data,"02") + "개";
@@ -395,11 +430,11 @@
                     _target.querySelector("input[name='url']").value = res.url;
                     _target.querySelector("input[name='sort']").value = res.sort;
                     _target.querySelector("input[name='cost']").value = res.cost;
-                    _target.querySelector("input[name='imgFile']").value = res.img;
-                    // if (res.img != null && res.img != '') {
-                    //     $("#imgFile").css("display", "block")
-                    //     $("#imgFile").attr("src", res.img)
-                    // }
+                    // _target.querySelector("input[name='imgFile']").value = res.img;
+                    if (res.img != null && res.img != '') {
+                        $("#imgFile").css("display", "block")
+                        $("#imgFile").attr("src", res.img)
+                    }
                     // Show/hide elements
                     $('.confirm').css("display", "none");
                     $('.fill').css("display", "block");
@@ -457,7 +492,7 @@
             return false;
         }
 
-        if ( f.imgFile.value == "") {
+        if ( document.getElementById("preview").src == "") {
             alert("썸네일을 첨부해주세요");
             return false;
         }
@@ -495,7 +530,6 @@
         switch (type) {
             case "add" :
                 if (!confirm("콘텐츠를 추가하시겠습니까?")) return false;
-
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log(res);
@@ -540,6 +574,13 @@
                     })
                 break;
         }
+
+        // if(f.popup_title.value == "콘텐츠추가"){
+        //     $('#preview').empty();
+        // }
+        // else if(f.popup_title.value == "콘텐츠수정"){
+        //
+        // }
 
     }
 
