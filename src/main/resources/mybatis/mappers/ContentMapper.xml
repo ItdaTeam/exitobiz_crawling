@@ -35,7 +35,7 @@
         select content_id, corp_cd, title, url, sort, "cost", img, active_yn, content_type, cret_dt, cret_id, updt_dt, updt_id
         from itda_app.contents
         where 1=1
-        and content_id = #{contentId}
+        and content_id = #{contentId}::numeric
   </select>
 
     <select id="getTopInfo" parameterType="map" resultType="map">
@@ -94,7 +94,7 @@
     <delete id="deleteContent" parameterType="map">
         delete from itda_app.contents
         where 1=1
-            and content_id = #{contentId}
+            and content_id = #{contentId}::numeric
 
     </delete>
 
