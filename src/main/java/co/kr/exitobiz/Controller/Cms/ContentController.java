@@ -170,7 +170,7 @@ public class ContentController {
         param.put("contentType",params.getParameter("contentType"));
 
         MultipartFile file = params.getFile("imgFile");
-        if(file != null ){
+        if(file != null && file.getOriginalFilename().toString().length() > 0 ){
             String fileName = fileService.fileNameGenerator(file);
             HashMap<String, String> fileParam = new HashMap<>();
             fileParam.put("filePath", "/img/content/");

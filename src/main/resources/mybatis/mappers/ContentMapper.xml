@@ -28,6 +28,7 @@
         </when>
       </choose>
     </if>
+    order by c.content_id desc
   </select>
 
   <select id="getContent" parameterType="map" resultType="map">
@@ -67,7 +68,9 @@
         DO UPDATE
         set corp_cd = #{corpCd},
             sort = #{sort}::int4,
-            img = #{img},
+            <if test="img != null">
+                img = #{img},
+            </if>
             content_type = #{contentType},
             url = #{url},
             title = #{title},
