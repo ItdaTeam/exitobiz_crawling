@@ -64,8 +64,12 @@ public class SupportServiceImpl implements SupportService {
 
     @Override
     public List<Support> searchSupport(SearchVo searchVo) throws ParseException {
-        if(searchVo.getInq() != null)
-            searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
+        if(searchVo.getInq() != null) {
+            if(searchVo.getCon().equals("index"))
+                searchVo.setListInq(Util.makeForeach(searchVo.getInq(), " "));
+            else
+                searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
+        }
 
         return supportRepository.searchSupport(searchVo);
     }

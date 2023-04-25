@@ -29,6 +29,7 @@ import java.util.List;
 import static co.kr.exitobiz.Entity.QLoccode.loccode1;
 import static co.kr.exitobiz.Entity.QPopup.popup;
 import static co.kr.exitobiz.Entity.QSupport.support;
+import static co.kr.exitobiz.Entity.QSupportCorp.supportCorp;
 
 
 @Repository
@@ -188,6 +189,13 @@ public class SupportRepository {
                                         .stream()
                                         .map(this::isFilteredTitle)
                                         .toArray(BooleanExpression[]::new)) : null;
+            }else if(searchVo.getCon().equals("index")){
+                return searchVo.getListInq() != null ?
+                        Expressions.anyOf(
+                                searchVo.getListInq()
+                                        .stream()
+                                        .map((String index) -> isFilteredIndex(Long.parseLong(index.replace(",",""))))
+                                        .toArray(BooleanExpression[]::new)) : null;
             }
         }
         return null;
@@ -206,7 +214,8 @@ public class SupportRepository {
 
     private BooleanExpression isFilteredAll(String all){
         return support.targetName.contains(all)
-                .or(support.siTitle.contains(all));
+                .or(support.siTitle.contains(all))
+                .or(support.siIdx.eq(Long.parseLong(all)));
     }
 
     private BooleanExpression isFilteredTarget(String target){
@@ -215,6 +224,10 @@ public class SupportRepository {
 
     private BooleanExpression isFilteredTitle(String title){
         return support.siTitle.contains(title);
+    }
+
+    private BooleanExpression isFilteredIndex(Long index){
+        return support.siIdx.eq(index);
     }
 
     private OrderSpecifier<?> orderType(String viewType){

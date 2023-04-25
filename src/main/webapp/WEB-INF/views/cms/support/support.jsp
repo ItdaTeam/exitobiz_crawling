@@ -86,6 +86,7 @@
                         <label for="con">검색조건</label>
                         <select name="con" id="con">
                             <option value="all" selected="selected">전체</option>
+                            <option value="index">인덱스</option>
                             <option value="target">기관</option>
                             <option value="title">제목</option>
                         </select>

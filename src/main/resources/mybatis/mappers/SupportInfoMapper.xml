@@ -111,7 +111,7 @@
             and si_end_dt <![CDATA[>=]]> now()::date
         </if>
         <if test='mail_service != null and mail_service == "true"'>
-            and date_trunc('week', current_date-7)::date <![CDATA[<=]]> si_cret_dt::date and si_cret_dt::date <![CDATA[<=]]> (date_trunc('week', current_date-7) + '6 days')::date
+            and date_trunc('week', current_date-7)::date <![CDATA[<=]]> updt_dt::date and updt_dt::date <![CDATA[<=]]> (date_trunc('week', current_date-7) + '6 days')::date
         </if>
         order by
         <choose>

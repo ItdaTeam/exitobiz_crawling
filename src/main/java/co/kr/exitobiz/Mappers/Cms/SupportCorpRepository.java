@@ -161,6 +161,13 @@ public class SupportCorpRepository {
                                         .stream()
                                         .map(this::isFilteredTitle)
                                         .toArray(BooleanExpression[]::new)) : null;
+            }else if(searchVo.getCon().equals("index")){
+                return searchVo.getListInq() != null ?
+                        Expressions.anyOf(
+                                searchVo.getListInq()
+                                        .stream()
+                                        .map((String index) -> isFilteredIndex(Long.parseLong(index.replaceAll(",",""))))
+                                        .toArray(BooleanExpression[]::new)) : null;
             }
         }
         return null;
@@ -179,7 +186,8 @@ public class SupportCorpRepository {
 
     private BooleanExpression isFilteredAll(String all){
         return supportCorp.targetName.contains(all)
-                .or(supportCorp.siTitle.contains(all));
+                .or(supportCorp.siTitle.contains(all))
+                .or(supportCorp.siIdx.eq(Long.parseLong(all)));
     }
 
     private BooleanExpression isFilteredTarget(String target){
@@ -188,6 +196,10 @@ public class SupportCorpRepository {
 
     private BooleanExpression isFilteredTitle(String title){
         return supportCorp.siTitle.contains(title);
+    }
+
+    private BooleanExpression isFilteredIndex(Long index){
+        return supportCorp.siIdx.eq(index);
     }
 
     private OrderSpecifier<?> orderType(String viewType){

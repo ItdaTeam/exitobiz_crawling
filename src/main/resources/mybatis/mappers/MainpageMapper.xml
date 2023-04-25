@@ -40,7 +40,7 @@
     <select id="getTotalCount" resultType="HashMap">
         select
             ( select count(*)from itda_app.support_info si where si.si_active_yn  = 'Y') as total_cnt ,
-            ( select count(*) from itda_app.support_info si where si.si_active_yn  = 'Y' and si.si_cret_dt > (NOW() +'-7 days')::DATE ) as week_cnt,
+            ( select count(*) from itda_app.support_info si where si.si_active_yn  = 'Y' and si.updt_dt > (NOW() +'-7 days')::DATE ) as week_cnt,
 	        ( select count(target_name) from (select si.target_name from itda_app.support_info si where si.si_active_yn  = 'Y' group by si.target_name ) A ) as target_cnt,
 	        (select count(*) from itda_app.usertable u2 ) as user_cnt
     </select>
