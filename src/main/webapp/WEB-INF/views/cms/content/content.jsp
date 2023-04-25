@@ -431,9 +431,10 @@
                     _target.querySelector("input[name='sort']").value = res.sort;
                     _target.querySelector("input[name='cost']").value = res.cost;
                     // _target.querySelector("input[name='imgFile']").value = res.img;
-                    if (res.img != null && res.img != '') {
-                        $("#imgFile").css("display", "block")
-                        $("#imgFile").attr("src", res.img)
+                    if (ctx.item.img != null && ctx.item.img != '') {
+                        $("#preview").css("display", "block")
+                        $("#preview").attr("src", ctx.item.img)
+                        $("#preview").attr("onerror", "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';");
                     }
                     // Show/hide elements
                     $('.confirm').css("display", "none");
@@ -453,13 +454,16 @@
                     $('.confirm').css("display", "block");
                     $('.fill').css("display", "none");
                     $('#delete').css("display", "none");
+                    $("#preview").css("display", "none");
+                    $("#preview").attr("src", '');
                     break;
 
                 case "thumnailPopUp" :
-                    var imgPath = contentGrid.collectionView.currentItem["img"];
-                    var img = '<img class="banner_img" src="' + imgPath + '"alt="이미지">';
-                    $('#img')
-                    .append(img)
+                    const imgPath = contentGrid.collectionView.currentItem["preview"];
+                    let img = '<img class="content_img" src="'+imgPath+'"art="이미지" onerror="this.oneerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
+                    $('#preview')
+                        .empty()
+                        .append(img)
                     break;
                 default:
                     break;
@@ -529,6 +533,7 @@
 
         switch (type) {
             case "add" :
+                // $('#preview').empty();
                 if (!confirm("콘텐츠를 추가하시겠습니까?")) return false;
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
@@ -545,7 +550,6 @@
 
             case "modify" :
                 if (!confirm("콘텐츠를 수정하시겠습니까?")) return false;
-                $('#imgFile').empty();
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
                         console.log("수정>>>>>>",res);
@@ -575,12 +579,7 @@
                 break;
         }
 
-        // if(f.popup_title.value == "콘텐츠추가"){
-        //     $('#preview').empty();
-        // }
-        // else if(f.popup_title.value == "콘텐츠수정"){
-        //
-        // }
+
 
     }
 
