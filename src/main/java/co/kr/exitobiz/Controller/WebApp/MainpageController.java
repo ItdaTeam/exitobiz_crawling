@@ -129,7 +129,7 @@ public class MainpageController {
     @RequestMapping(value="/AppleLogin", method=RequestMethod.POST)
     public void getAppleLogin(@RequestBody String appleData, HttpServletResponse response ) throws IOException {
         response.addHeader("Access-Control-Allow-Origin","*");
-        response.sendRedirect("https://exitobiz.co.kr/AppleLogin#" + appleData);
+        response.sendRedirect("https://dev.exitobiz.co.kr/AppleLogin#" + appleData);
     }
 
     // 나의 최근 키워드 리스트
