@@ -214,8 +214,8 @@ public class SupportRepository {
 
     private BooleanExpression isFilteredAll(String all){
         return support.targetName.contains(all)
-                .or(support.siTitle.contains(all))
-                .or(support.siIdx.eq(Long.parseLong(all)));
+                .or(support.siTitle.contains(all));
+//                .or(support.siIdx.eq(Long.parseLong(all)));
     }
 
     private BooleanExpression isFilteredTarget(String target){

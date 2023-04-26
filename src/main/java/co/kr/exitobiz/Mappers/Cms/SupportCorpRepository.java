@@ -186,8 +186,8 @@ public class SupportCorpRepository {
 
     private BooleanExpression isFilteredAll(String all){
         return supportCorp.targetName.contains(all)
-                .or(supportCorp.siTitle.contains(all))
-                .or(supportCorp.siIdx.eq(Long.parseLong(all)));
+                .or(supportCorp.siTitle.contains(all));
+//                .or(supportCorp.siIdx.eq(Long.parseLong(all)));
     }
 
     private BooleanExpression isFilteredTarget(String target){
