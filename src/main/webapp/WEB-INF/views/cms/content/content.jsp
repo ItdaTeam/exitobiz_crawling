@@ -13,12 +13,12 @@
 <div class="main_wrap">
     <%@ include file="../include/nav.jsp" %>
     <div class="main_container">
-      <div class="popup" id="thumnailPopUp">
+      <div class="popup" id="thumbnailPopUp">
           <div class="popup_container">
               <div class="popup_head">
                   <button type="button" class="popup_close">x</button>
               </div>
-              <div class="popup_inner" id="thumnail">
+              <div class="popup_inner" id="thumbnail">
               </div>
           </div>
       </div>
@@ -162,10 +162,9 @@
                         </tr>
                         <tr>
                             <th>썸네일<i>*</i></th>
-                            <td>
+                            <td name="img">
                                 <input type="file" id="imgFile" name="imgFile" accept="image/jpeg,image/png,image/gif" style="position: relative;">
                                 <img id="preview" style="width:200px; height:auto; position: relative; display: none; margin-bottom: 5px;">
-
                             </td>
                         </tr>
                         <tr>
@@ -249,7 +248,7 @@
                 {binding: 'title', header: '제목', isReadOnly: true, width: 400, align: "center"},
                 {binding: 'img', header: '썸네일', isReadOnly: true, width: 150, align: "center",
                     cellTemplate: wijmo.grid.cellmaker.CellMaker.makeImage({
-                        click:() =>showPop("thumnailPopUp"),
+                        click:() =>showPop("thumbnailPopUp"),
                         attributes :{
                             onerror:
                                 "this.onerror=null; this.src='https://exitobiz.co.kr/img/app.png';"
@@ -328,22 +327,6 @@
     //     }
     // }
 
-    $('input[name="imgFile"]').change(function () {
-        if (this.files && this.files[0]) {
-            var reader = new FileReader;
-            reader.onload = function (e) {
-                $("#preview").css("display", "block")
-                $("#preview").attr("src", e.target.result)
-            } // onload_function
-            $('td[name="img"]').css("height", "auto")
-            reader.readAsDataURL(this.files[0]);
-        } else {
-            $("#preview").css("display", "none")
-            $("#preview").attr("src", '')
-        }
-    });
-
-
 
     const getData = async (form) => {
         try {
@@ -389,7 +372,6 @@
         const sum = data.filter((v)=>(v.content_type === contentType));
         return sum.length;
     };
-
 
 
     const showGrid = (form) => {
@@ -463,12 +445,11 @@
                     $("#preview").attr("src", '');
                     break;
 
-                case "thumnailPopUp" :
-                    const imgPath = contentGrid.collectionView.currentItem["preview"];
-                    let img = '<img class="content_img" src="'+imgPath+'"art="이미지" onerror="this.oneerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
-                    $('#preview')
-                        .empty()
-                        .append(img)
+                case "thumbnailPopUp":
+                    const imgPath = contentGrid.collectionView.currentItem["img"];
+                    console.log("imgPath>>", imgPath);
+                    let img = '<img id="preview" src="' + imgPath + '" alt="이미지" onerror="this.onerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
+                    $('#thumbnail').empty().append(img);
                     break;
                 default:
                     break;
@@ -621,21 +602,20 @@
             return false;
         }
 
-        // if(f.corpCd.value == '01' && set.size != item.length){
+        console.log("item.length>>",item.length);
+        console.log("set.size>>",set.size);
+
+        // if(set.size != item.length){
         //     alert("정렬 중복값은 입력할 수 없습니다.");
         //     return false;
         // }
-        //
-        // if(f.corpCd.value == '02' && set.size != item.length){
-        //     alert("정렬 중복값은 입력할 수 없습니다.");
-        //     return false;
-        // }
+
 
         if (!confirm("저장하시겠습니까?")) return false;
 
         editItem.forEach((obj) => {
             let newobj = {};
-            newobj.contentId = obj.content_id;
+            // newobj.contentId = obj.content_id;
             newobj.activeYn = obj.active_yn;
             newobj.sort = obj.sort;
             rows.push(newobj);
