@@ -346,8 +346,11 @@
                 toDate
             }
             );
-            HSortArr = response.data.filter(v => v.corp_nm == 'HD현대일렉트릭').map(v => v.sort);
-            ktSortArr = response.data.filter(v => v.corp_nm =='KT비즈메카').map(v => v.sort);
+            HSortArr = response.data.filter(v => v.corp_cd == '01').map(v => v.sort);
+            ktSortArr = response.data.filter(v => v.corp_cd =='02').map(v => v.sort);
+
+            console.log("h > ", HSortArr);
+            console.log("kt >> ", ktSortArr);
             console.log("response.data>>>>>>>>",response.data);
             document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01") + "개";
             document.getElementById("ktbizmeka").innerHTML = getCountFromType(response.data,"02") + "개";
@@ -530,8 +533,8 @@
             console.log(value);
         }
 
-
         switch (type) {
+
             case "add" :
                 // $('#preview').empty();
                 if (!confirm("콘텐츠를 추가하시겠습니까?")) return false;
@@ -542,6 +545,7 @@
                             alert("팝업추가를 완료했습니다.");
                             $('.popup').removeClass('is_on');
                             showGrid(document.searchForm);
+
                         } else {
                             alert("오류가 발생했습니다. 다시 시도해 주세요.");
                         }
@@ -591,24 +595,20 @@
         var rows = [];
         const f = document.getElementById("form");
 
-        var item = contentView._src.filter(v => v.sort != null && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
-        const set = new Set(item);
-
-
-        console.log("sert >> ", set);
-
         if (editItem.length ==0) {
             alert("수정된 행이 없습니다.");
             return false;
         }
 
-        console.log("item.length>>",item.length);
-        console.log("set.size>>",set.size);
-
-        // if(set.size != item.length){
-        //     alert("정렬 중복값은 입력할 수 없습니다.");
-        //     return false;
-        // }
+        for(let v of editItem){
+            if(v.corp_cd == '01' && HSortArr.includes(v.sort)){
+                alert("정렬 중복값은 입력할 수 없습니다.");
+                return false;
+            }else if(v.corp_cd == '02' && ktSortArr.includes(v.sort)){
+                alert("정렬 중복값은 입력할 수 없습니다.");
+                return false;
+            }
+        }
 
 
         if (!confirm("저장하시겠습니까?")) return false;
