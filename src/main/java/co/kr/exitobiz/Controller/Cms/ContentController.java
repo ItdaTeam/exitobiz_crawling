@@ -200,9 +200,12 @@ public class ContentController {
 
     @PostMapping("/updateContent")
     @ResponseBody
-    public String updateContent(@RequestBody HashMap<String, Object> params, HttpServletRequest req){
-        if(req.getSession().getAttribute("staffId") != null)
-            params.put("updtId", req.getSession().getAttribute("staffId"));
+    public String updateContent(@RequestBody List<HashMap<String, Object>> params, HttpServletRequest req){
+        if(req.getSession().getAttribute("staffId") != null){
+            for(HashMap param : params){
+                param.put("updtId", req.getSession().getAttribute("staffId"));
+            }
+        }
         contentService.updateContent(params);
         return "success";
     }

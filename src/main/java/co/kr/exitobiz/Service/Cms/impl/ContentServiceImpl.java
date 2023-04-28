@@ -323,8 +323,8 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public void updateContent(HashMap<String, Object> params) {
-        contentMapper.updateContent(params);
+    public void updateContent(List<HashMap<String, Object>> params) {
+        params.forEach(map -> contentMapper.updateContent(map));
     }
 
     @Override

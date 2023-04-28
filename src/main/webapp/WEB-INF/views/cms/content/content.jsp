@@ -53,7 +53,7 @@
             <div class="main_utility">
                 <div>
                     <ul>
-                        <li class="btn_wrap"><a class="btn stroke1"   href="#" onclick="editGrid()">그리드 저장</a></li>
+                        <li class="btn_wrap"><button type="button" class="btn stroke" onclick="updateContentGrid()"> 칼럼저장 </button></li>
                         <li class="btn_wrap">
                             <button class="btn stroke1" onclick="exportExcel();">엑셀다운로드</button>
                         </li>
@@ -100,6 +100,7 @@
                             <button type="button" class="btn stroke"
                                     onclick="_resetUserGridLayout('contentLayout', contentGrid, contentColumns);">칼럼초기화
                             </button>
+
                         </div>
                     </div>
                     <div class="grid_wrap" style="position:relative;">
@@ -214,6 +215,8 @@
     var contentColumns;
     var contentGridPager;
     let editor1;
+    var HSortArr;
+    var ktSortArr;
 
     function pageOnLoad() {
         calDate();
@@ -255,7 +258,7 @@
                 },
                 {binding: 'url', header: 'URL', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'cost', header: '금액', isReadOnly: true, width: 150, align: "center"},
-                {binding: 'sort', header: '순서', isReadOnly: true, width: 150, align: "center"},
+                {binding: 'sort', header: '순서', width: 150, align: "center"},
                 {binding: 'cret_dt', header: '작성날짜', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'updt_dt', header: '수정날짜', isReadOnly: true, width: 150, align: "center"},
                 {binding: 'active_yn', header: '활성화', width: 150, align: "center", dataMap: onoffYnMap},
@@ -358,8 +361,10 @@
                 category: form.category.value,
                 fromDate,
                 toDate
-            },
+            }
             );
+            HSortArr = response.data.filter(v => v.corp_nm == 'HD현대일렉트릭').map(v => v.sort);
+            ktSortArr = response.data.filter(v => v.corp_nm =='KT비즈메카').map(v => v.sort);
             console.log("response.data>>>>>>>>",response.data);
             document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01") + "개";
             document.getElementById("ktbizmeka").innerHTML = getCountFromType(response.data,"02") + "개";
@@ -516,6 +521,20 @@
             return false;
         }
 
+        console.log("h >> ", HSortArr);
+        console.log("kt >> ", ktSortArr);
+
+
+        if(f.corpCd.value == '01' && HSortArr.includes(parseInt(f.sort.value))){
+            alert("중복된 순서는 입력할 수 없습니다.");
+            return false;
+        }
+
+        if(f.corpCd.value == '02' && ktSortArr.includes(parseInt(f.sort.value))){
+            alert("중복된 순서는 입력할 수 없습니다.");
+            return false;
+        }
+
         // f.active.value = f.activeYn.checked ? 'Y' : 'N'
         formData.delete('activeYn');
         formData.append('activeYn', f.activeYn.checked ? 'Y' : 'N');
@@ -586,12 +605,55 @@
 
     }
 
+    function updateContentGrid(){
+        var editItem = contentView.itemsEdited;
+        var rows = [];
+        const f = document.getElementById("form");
 
-    //
-    // async function contentTop() {
-    //     const response2 = await axios.post("/cms/getTopInfo", {});
-    //     console.log("RES2+++++++++++",response2)
-    // }
+        var item = contentView._src.filter(v => v.sort != null && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
+        const set = new Set(item);
+
+
+        console.log("sert >> ", set);
+
+        if (editItem.length ==0) {
+            alert("수정된 행이 없습니다.");
+            return false;
+        }
+
+        // if(f.corpCd.value == '01' && set.size != item.length){
+        //     alert("정렬 중복값은 입력할 수 없습니다.");
+        //     return false;
+        // }
+        //
+        // if(f.corpCd.value == '02' && set.size != item.length){
+        //     alert("정렬 중복값은 입력할 수 없습니다.");
+        //     return false;
+        // }
+
+        if (!confirm("저장하시겠습니까?")) return false;
+
+        editItem.forEach((obj) => {
+            let newobj = {};
+            newobj.contentId = obj.content_id;
+            newobj.activeYn = obj.active_yn;
+            newobj.sort = obj.sort;
+            rows.push(newobj);
+        })
+
+        console.log("rows >> ", rows);
+
+        axios.post("/cms/updateContent", rows).then((res) => {
+            console.log(res);
+
+            if (res.status == 200) {
+                alert("변경사항을 저장했습니다.");
+                getData();
+            } else {
+                alert("오류가 발생했습니다. 다시 시도해 주세요.");
+            }
+        })
+    }
 
 
 
