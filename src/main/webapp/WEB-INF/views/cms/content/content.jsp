@@ -231,7 +231,6 @@
                 groupDescriptions: ['type']
             })
 
-            console.log("contentView1>>>>>>",contentView);
 
             contentGridPager = new wijmo.input.CollectionViewNavigator('#contentGridPager', {
                 byPage: true,
@@ -330,7 +329,6 @@
 
     const getData = async (form) => {
         try {
-            console.log(form);
             // 오늘 날짜 기준으로 1달 전 날짜 계산
             const today = new Date();
             const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
@@ -350,14 +348,12 @@
             HSortArr = response.data.filter(v => v.corp_cd != '02').map(v => v.sort);
             ktSortArr = response.data.filter(v => v.corp_cd !='01').map(v => v.sort);
 
-            console.log("response.data>>>>>>>>",response.data);
             document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01") + "개";
             document.getElementById("ktbizmeka").innerHTML = getCountFromType(response.data,"02") + "개";
             document.getElementById("content_info").innerHTML = getCountFromContent(response.data,"01") + "개";
             document.getElementById("content_edu").innerHTML = getCountFromContent(response.data,"02") + "개";
             document.getElementById("paid_product").innerHTML = getCountFromContent(response.data,"03") + "개";
 
-            console.log("contentView2>>>>>>",contentView);
             return response.data;
         } catch (error) {
             console.log(error.response.data);
@@ -379,7 +375,6 @@
     const showGrid = (form) => {
         getData(form)
             .then(data => {
-                console.log(data);
                 loadGridContentList('search', data);
             })
             .catch(error => {
@@ -407,9 +402,7 @@
                     // Set popup title
                     _target.querySelector(".popup_title").textContent = "콘텐츠수정";
                     // Set input values
-                    console.log("ctx.item>>>", ctx.item);
                     let res = {...ctx.item}
-                    console.log("res>>>", res);
 
                     _target.querySelector("input[name='activeYn']").checked = ctx.item.active_yn == 'Y' ? true : false;
                     _target.querySelector("select[name='corpCd']").value = res.corp_cd;
@@ -449,7 +442,6 @@
 
                 case "thumbnailPopUp":
                     const imgPath = contentGrid.collectionView.currentItem["img"];
-                    console.log("imgPath>>", imgPath);
                     let img = '<img id="preview" src="' + imgPath + '" alt="이미지" onerror="this.onerror=null; this.src=`https://exitobiz.co.kr/img/app.png`">';
                     $('#thumbnail').empty().append(img);
                     break;
@@ -463,7 +455,6 @@
     //팝업 추가
     async function contentConfirm(type) {
 
-        console.log("여긴가" + type);
 
         const f = document.getElementById("form");
         const formData = new FormData(f);
@@ -505,34 +496,48 @@
         }
 
         let data = await getData(document.searchForm);
-        let ktSort = data.filter(v => v.content_id == f.contentId.value && f.corpCd.value == '02').map(v => v.sort);
-        let hSort = data.filter(v => v.content_id == f.contentId.value && f.corpCd.value == '01').map(v => v.sort);
+        let ktSort = data.filter(v => v.content_id != f.contentId.value && f.corpCd.value == '02' && v.sort == f.sort.value).map(v => v.sort);
+        let hSort = data.filter(v => v.content_id != f.contentId.value && f.corpCd.value == '01' && v.sort == f.sort.value).map(v => v.sort);
+        let AllSort = data.filter(v => v.content_id != f.contentId.value && f.corpCd.value == '00' && v.sort == f.sort.value).map(v => v.sort);
 
-        console.log("kdt >> ", ktSort , " ", hSort);
 
-        if(hSort[0] != f.sort.value && f.corpCd.value != '02' && HSortArr.includes(parseInt(f.sort.value))){
-            alert("중복된 순서는 입력할 수 없습니다.");
-            return false;
+        switch(f.corpCd.value){
+            case '00' :
+                if(AllSort[0] != undefined){
+                    alert("중복된 순서는 입력할 수 없습니다.");
+                    return false;
+                }
+                break;
+            case '01' :
+                if(hSort[0] != undefined){
+                    alert("중복된 순서는 입력할 수 없습니다.");
+                    return false;
+                }
+                break;
+            case '02' :
+                if(ktSort[0] != undefined){
+                    alert("중복된 순서는 입력할 수 없습니다.");
+                    return false;
+                }
+            break;
         }
 
-        if(ktSort[0] != f.sort.value &&f.corpCd.value != '01' && ktSortArr.includes(parseInt(f.sort.value))){
-            alert("중복된 순서는 입력할 수 없습니다.");
-            return false;
-        }
+
+        //
+        // if(ktSort[0] != f.sort.value &&f.corpCd.value != '01' && ktSortArr.includes(parseInt(f.sort.value))){
+        //     alert("중복된 순서는 입력할 수 없습니다.");
+        //     return false;
+        // }
+        //
+        // if(AlltSort[0] != f.sort.value &&f.corpCd.value != '00' && ktSortArr.includes(parseInt(f.sort.value))){
+        //     alert("중복된 순서는 입력할 수 없습니다.");
+        //     return false;
+        // }
 
         // f.active.value = f.activeYn.checked ? 'Y' : 'N'
         formData.delete('activeYn');
         formData.append('activeYn', f.activeYn.checked ? 'Y' : 'N');
 
-
-        for (let key of formData.keys()) {
-            console.log(key);
-        }
-
-        // FormData의 value 확인
-        for (let value of formData.values()) {
-            console.log(value);
-        }
 
         switch (type) {
 
@@ -541,7 +546,6 @@
                 if (!confirm("콘텐츠를 추가하시겠습니까?")) return false;
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
-                        console.log(res);
                         if (res.status == 200) {
                             alert("팝업추가를 완료했습니다.");
                             $('.popup').removeClass('is_on');
@@ -557,7 +561,6 @@
                 if (!confirm("콘텐츠를 수정하시겠습니까?")) return false;
                 await axios.post("/cms/saveContent", formData, {headers: {'Content-Type': 'multipart/form-data'}})
                     .then((res) => {
-                        console.log("수정>>>>>>",res);
                         if (res.status == 200) {
                             alert("콘텐츠 수정을 완료했습니다.");
                             $('.popup').removeClass('is_on');
@@ -571,10 +574,8 @@
             case "delete" :
                 if (!confirm("콘텐츠를 삭제하시겠습니까?")) return false;
                 var param = {contentId : f.contentId.value }
-                console.log('param >>> ', param);
                 await axios.post("/cms/deleteContent", param, {headers: {'Content-Type': 'application/json'}})
                     .then((res) => {
-                        console.log(res);
                         if (res.status == 200) {
                             alert("콘텐츠 삭제를 완료했습니다.");
                             $('.popup').removeClass('is_on');
@@ -593,13 +594,12 @@
     function updateContentGrid(){
         var editItem = contentView.itemsEdited;
         var rows = [];
-        var HSortArr = contentView._src.filter(v => v.sort != null && v.corp_cd != '02' && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
-        var ktSortArr = contentView._src.filter(v => v.sort != null && v.corp_cd != '01' && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
+        var HSortArr = contentView._src.filter(v => v.sort != null && v.corp_cd == '01' && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
+        var ktSortArr = contentView._src.filter(v => v.sort != null && v.corp_cd == '02' && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
+        let AllSortArr = contentView._src.filter(v => v.sort != null &&  v.corp_cd == '00' && v.sort != 'null' && v.sort != "").map(v => v.sort);
         const setHSortArr = new Set(HSortArr);
         const setKtSortArr = new Set(ktSortArr);
-
-        console.log("HSortArr1111>>>>",HSortArr);
-        console.log("ktSortArr1111>>>>",ktSortArr);
+        const setAllSortArr = new Set(AllSortArr);
 
         if (editItem.length ==0) {
             alert("수정된 행이 없습니다.");
@@ -617,19 +617,12 @@
         // }
 ;
 
-        for(let v of editItem){
-            if(v.corp_cd != '02' && setHSortArr.size != HSortArr.length){
-                alert("정렬 중복값은 입력할 수 없습니다.");
-                return false;
-            }else if( v.corp_cd != '01' && setKtSortArr.size != ktSortArr.length){
+        // for(let v of editItem){
+            if( setHSortArr.size != HSortArr.length || setKtSortArr.size != ktSortArr.length || setAllSortArr.size != AllSortArr.length){
                 alert("정렬 중복값은 입력할 수 없습니다.");
                 return false;
             }
-        }
-
-        console.log("setHSortArr>>>",setHSortArr);
-        console.log("setKtSortArr>>>",setKtSortArr);
-
+        // }
 
         if (!confirm("저장하시겠습니까?")) return false;
 
@@ -641,10 +634,8 @@
             rows.push(newobj);
         })
 
-        console.log("rows >> ", rows);
 
        axios.post("/cms/updateContent", rows).then((res) => {
-            console.log(res);
             if (res.status == 200) {
                 alert("변경사항을 저장했습니다.");
                 getData(document.searchForm);
@@ -734,7 +725,6 @@
     }
 
     $(document).ready(function () {
-        console.log("test");
         showGrid(document.getElementById('searchForm'));
         pageOnLoad();
 
