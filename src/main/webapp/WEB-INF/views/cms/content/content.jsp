@@ -346,11 +346,10 @@
                 toDate
             }
             );
-            HSortArr = response.data.filter(v => v.corp_cd == '01').map(v => v.sort);
-            ktSortArr = response.data.filter(v => v.corp_cd =='02').map(v => v.sort);
 
-            console.log("h > ", HSortArr);
-            console.log("kt >> ", ktSortArr);
+            HSortArr = response.data.filter(v => v.corp_cd != '02').map(v => v.sort);
+            ktSortArr = response.data.filter(v => v.corp_cd !='01').map(v => v.sort);
+
             console.log("response.data>>>>>>>>",response.data);
             document.getElementById("hyundai").innerHTML = getCountFromType(response.data,"01") + "개";
             document.getElementById("ktbizmeka").innerHTML = getCountFromType(response.data,"02") + "개";
@@ -505,16 +504,18 @@
             return false;
         }
 
-        console.log("h >> ", HSortArr);
-        console.log("kt >> ", ktSortArr);
+        let data = await getData(document.searchForm);
+        let ktSort = data.filter(v => v.content_id == f.contentId.value && f.corpCd.value == '02').map(v => v.sort);
+        let hSort = data.filter(v => v.content_id == f.contentId.value && f.corpCd.value == '01').map(v => v.sort);
 
+        console.log("kdt >> ", ktSort , " ", hSort);
 
-        if(f.corpCd.value == '01' && HSortArr.includes(parseInt(f.sort.value))){
+        if(hSort[0] != f.sort.value && f.corpCd.value != '02' && HSortArr.includes(parseInt(f.sort.value))){
             alert("중복된 순서는 입력할 수 없습니다.");
             return false;
         }
 
-        if(f.corpCd.value == '02' && ktSortArr.includes(parseInt(f.sort.value))){
+        if(ktSort[0] != f.sort.value &&f.corpCd.value != '01' && ktSortArr.includes(parseInt(f.sort.value))){
             alert("중복된 순서는 입력할 수 없습니다.");
             return false;
         }
@@ -570,7 +571,6 @@
             case "delete" :
                 if (!confirm("콘텐츠를 삭제하시겠습니까?")) return false;
                 var param = {contentId : f.contentId.value }
-
                 console.log('param >>> ', param);
                 await axios.post("/cms/deleteContent", param, {headers: {'Content-Type': 'application/json'}})
                     .then((res) => {
@@ -593,29 +593,49 @@
     function updateContentGrid(){
         var editItem = contentView.itemsEdited;
         var rows = [];
-        const f = document.getElementById("form");
+        var HSortArr = contentView._src.filter(v => v.sort != null && v.corp_cd != '02' && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
+        var ktSortArr = contentView._src.filter(v => v.sort != null && v.corp_cd != '01' && v.sort != 'null' && v.sort != "").map(v => parseInt(v.sort));
+        const setHSortArr = new Set(HSortArr);
+        const setKtSortArr = new Set(ktSortArr);
+
+        console.log("HSortArr1111>>>>",HSortArr);
+        console.log("ktSortArr1111>>>>",ktSortArr);
 
         if (editItem.length ==0) {
             alert("수정된 행이 없습니다.");
             return false;
         }
 
+        // for(let v of editItem){
+        //     if(v.corp_cd == '01' && HSortArr.includes(v.sort)){
+        //         alert("정렬 중복값은 입력할 수 없습니다.");
+        //         return false;
+        //     }else if(v.corp_cd == '02' && ktSortArr.includes(v.sort)){
+        //         alert("정렬 중복값은 입력할 수 없습니다.");
+        //         return false;
+        //     }
+        // }
+;
+
         for(let v of editItem){
-            if(v.corp_cd == '01' && HSortArr.includes(v.sort)){
+            if(v.corp_cd != '02' && setHSortArr.size != HSortArr.length){
                 alert("정렬 중복값은 입력할 수 없습니다.");
                 return false;
-            }else if(v.corp_cd == '02' && ktSortArr.includes(v.sort)){
+            }else if( v.corp_cd != '01' && setKtSortArr.size != ktSortArr.length){
                 alert("정렬 중복값은 입력할 수 없습니다.");
                 return false;
             }
         }
+
+        console.log("setHSortArr>>>",setHSortArr);
+        console.log("setKtSortArr>>>",setKtSortArr);
 
 
         if (!confirm("저장하시겠습니까?")) return false;
 
         editItem.forEach((obj) => {
             let newobj = {};
-            // newobj.contentId = obj.content_id;
+            newobj.contentId = obj.content_id;
             newobj.activeYn = obj.active_yn;
             newobj.sort = obj.sort;
             rows.push(newobj);
@@ -623,18 +643,41 @@
 
         console.log("rows >> ", rows);
 
-        axios.post("/cms/updateContent", rows).then((res) => {
+       axios.post("/cms/updateContent", rows).then((res) => {
             console.log(res);
-
             if (res.status == 200) {
                 alert("변경사항을 저장했습니다.");
-                getData();
+                getData(document.searchForm);
             } else {
                 alert("오류가 발생했습니다. 다시 시도해 주세요.");
             }
         })
     }
 
+    $(function(){
+
+        $('input[name="imgFile"]').change(function () {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader;
+                reader.onload = function (e) {
+                    $("#preview").css("display", "block")
+                    $("#preview").attr("src", e.target.result)
+                } // onload_function
+                $('td[name="img"]').css("height", "auto")
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                $("#preview").css("display", "none")
+                $("#preview").attr("src", '')
+            }
+        });
+
+        $(document).on("click", ".popup_close", function () {
+            $('.popup').removeClass('is_on');
+            $("#preview").css("display", "none");
+            $("#preview").attr("src", '');
+        });
+
+    })
 
 
     //엑셀다운로드
@@ -659,29 +702,6 @@
             }, null
         );
     }
-
-    $(function () {
-        $('input[name="imgFile"]').change(function () {
-            if (this.files && this.files[0]) {
-                var reader = new FileReader;
-                reader.onload = function (e) {
-                    $(".opt_img").css("display", "block")
-                    $(".opt_img").attr("src", e.target.result)
-                } // onload_function
-                $('td[name="img"]').css("height", "auto")
-                reader.readAsDataURL(this.files[0]);
-            } else {
-                $(".opt_img").css("display", "none")
-                $(".opt_img").attr("src", '')
-            }
-        });
-
-        $(document).on("click", ".popup_close", function () {
-            $('.popup').removeClass('is_on');
-            $(".opt_img").css("display", "none");
-            $(".opt_img").attr("src", '');
-        });
-    });
 
     //날짜포맷 yyyy-MM-dd 변환
     //input : date 포맷
