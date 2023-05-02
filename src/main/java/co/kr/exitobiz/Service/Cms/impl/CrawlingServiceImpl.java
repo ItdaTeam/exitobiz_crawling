@@ -28,8 +28,12 @@ public class CrawlingServiceImpl implements CrawlingService {
 
     @Override
     public List<Crawling> searchCrawling(SearchVo searchVo) throws ParseException {
-        if(searchVo.getInq() != null)
-            searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
+        if(searchVo.getInq() != null){
+            if(searchVo.getCon().equals("index"))
+                searchVo.setListInq(Util.makeForeach(searchVo.getInq(), " "));
+            else
+                searchVo.setListInq(Util.makeForeach(searchVo.getInq(), ","));
+        }
 
         return crawlingRepository.searchCrawling(searchVo);
     }

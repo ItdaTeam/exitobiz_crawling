@@ -84,6 +84,14 @@ public class CrawlingRepository {
                                         .stream()
                                         .map(this::isFilteredTitle)
                                         .toArray(BooleanExpression[]::new)) : null;
+            }else if(searchVo.getCon().equals("index")){
+                BooleanExpression booleanExpression = searchVo.getListInq() != null ?
+                        Expressions.anyOf(
+                                searchVo.getListInq()
+                                        .stream()
+                                        .map((String index) -> isFilteredIndex(Long.parseLong(index.replaceAll(",",""))))
+                                        .toArray(BooleanExpression[]::new)) : null;
+                return booleanExpression;
             }
         }
         return null;
@@ -103,6 +111,10 @@ public class CrawlingRepository {
     private BooleanExpression isFilteredAll(String all){
         return crawling.targetName.contains(all)
                 .or(crawling.siTitle.contains(all));
+    }
+
+    private BooleanExpression isFilteredIndex(Long index){
+        return crawling.siIdx.eq(index);
     }
 
     private BooleanExpression isFilteredTarget(String target){

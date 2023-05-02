@@ -28,7 +28,7 @@
         </when>
       </choose>
     </if>
-    order by c.content_id desc
+    order by c.corp_cd , c.sort
   </select>
 
   <select id="getContent" parameterType="map" resultType="map">
