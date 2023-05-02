@@ -496,9 +496,9 @@
         }
 
         let data = await getData(document.searchForm);
-        let ktSort = data.filter(v => v.content_id != f.contentId.value && f.corpCd.value == '02' && v.sort == f.sort.value).map(v => v.sort);
-        let hSort = data.filter(v => v.content_id != f.contentId.value && f.corpCd.value == '01' && v.sort == f.sort.value).map(v => v.sort);
-        let AllSort = data.filter(v => v.content_id != f.contentId.value && f.corpCd.value == '00' && v.sort == f.sort.value).map(v => v.sort);
+        let ktSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '02' && v.sort == f.sort.value).map(v => v.sort);
+        let hSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '01' && v.sort == f.sort.value).map(v => v.sort);
+        let AllSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '00' && v.sort == f.sort.value).map(v => v.sort);
 
 
         switch(f.corpCd.value){
