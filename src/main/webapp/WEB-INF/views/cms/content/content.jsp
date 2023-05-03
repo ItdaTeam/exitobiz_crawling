@@ -496,26 +496,26 @@
         }
 
         let data = await getData(document.searchForm);
-        let ktSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '02' && v.sort == f.sort.value).map(v => v.sort);
-        let hSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '01' && v.sort == f.sort.value).map(v => v.sort);
+        let ktSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '02' && v.sort == f.sort.value ).map(v => v.sort);
+        let hSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '01' && v.sort == f.sort.value ).map(v => v.sort);
         let AllSort = data.filter(v => v.content_id != f.contentId.value && v.corp_cd == '00' && v.sort == f.sort.value).map(v => v.sort);
 
 
         switch(f.corpCd.value){
             case '00' :
-                if(AllSort[0] != undefined){
+                if(AllSort.length>0){
                     alert("중복된 순서는 입력할 수 없습니다.");
                     return false;
                 }
                 break;
             case '01' :
-                if(hSort[0] != undefined){
+                if(hSort.length >0 ){
                     alert("중복된 순서는 입력할 수 없습니다.");
                     return false;
                 }
                 break;
             case '02' :
-                if(ktSort[0] != undefined){
+                if(ktSort.length >0){
                     alert("중복된 순서는 입력할 수 없습니다.");
                     return false;
                 }
