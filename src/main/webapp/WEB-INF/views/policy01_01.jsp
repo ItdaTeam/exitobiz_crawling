@@ -53,7 +53,7 @@
 
 <body>
     <div class="policy_wrap">
-        <div class="inner" style="margin:130px 20px;">
+        <div class="inner" style="margin:0px 20px;">
             <div class="policy_cont">
                 <%=request.getAttribute("termService")%>
             </div>
