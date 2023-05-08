@@ -74,6 +74,9 @@ public class ItdaController {
          return "policy05";
      }
 
+     //기업용(policy01_01)이용약관페이지
+
+
 
 
     //엉따 모바일 개인정보처리약관페이지
