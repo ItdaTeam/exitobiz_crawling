@@ -75,6 +75,11 @@ public class ItdaController {
      }
 
      //기업용(policy01_01)이용약관페이지
+    @RequestMapping(value = "/corpStandard")
+    public String corpPolicy(HttpServletRequest req) {
+        req.setAttribute("termService", termsService.getTermService());
+        return "policy01_01";
+    }
 
 
 
