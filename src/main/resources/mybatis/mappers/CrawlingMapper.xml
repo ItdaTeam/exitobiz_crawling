@@ -4,7 +4,7 @@
 <mapper namespace="co.kr.exitobiz.Mappers.Api.CrawlingMapper">
 
     <select id="isUrl" parameterType="map" resultType="boolean">
-        select exists(select 1 from itda_app.support_info where 1=1
+        select exists(select 1 from itda_app.crawling_data where 1=1
           <if test="title != null ">
           and si_title = #{title}
           </if>
@@ -15,14 +15,16 @@
     </select>
 
     <insert id="create" parameterType="SupportVo">
-        insert into itda_app.support_info
+        insert into itda_app.crawling_data
         (
             si_idx, target_name, target_cat_name, loc_code, si_title, mobile_url, pc_url, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt
         )
         values
         <foreach collection="list" item="vo" index="index" separator=",">
             (
-             (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info), #{vo.targetName}, #{vo.targetCatName}, #{vo.locCode}, #{vo.siTitle}, #{vo.mobileUrl},
+             (select case when (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.crawling_data) - (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info) >= 0 then (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.crawling_data)
+                            else (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info)
+                    end) , #{vo.targetName}, #{vo.targetCatName}, #{vo.locCode}, #{vo.siTitle}, #{vo.mobileUrl},
                 #{vo.pcUrl}, NOW(), 'N', 0, 0, 0
             )
         </foreach>
@@ -43,17 +45,17 @@
     </insert>
 
     <update id="removeLNew">
-        update itda_app.support_info set si_title = replace(si_title, si_title, ltrim(si_title, 'New'))
+        update itda_app.crawling_data set si_title = replace(si_title, si_title, ltrim(si_title, 'New'))
         where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd') and si_title like 'New%'
     </update>
 
     <update id="removeRNew">
-        update itda_app.support_info set si_title = replace(si_title, si_title, rtrim(si_title, 'NEW'))
+        update itda_app.crawling_data set si_title = replace(si_title, si_title, rtrim(si_title, 'NEW'))
         where to_char(si_cret_dt, 'YYYY-MM-dd') = to_char(NOW(), 'YYYY-MM-dd') and si_title like '%NEW'
     </update>
 
     <update id="removeBlank">
-        update itda_app.support_info set <![CDATA[ si_title = ltrim(regexp_replace(si_title, '\<[^)]+\>' ,'')) ]]>
+        update itda_app.crawling_data set <![CDATA[ si_title = ltrim(regexp_replace(si_title, '\<[^)]+\>' ,'')) ]]>
         where target_name != '서울청년정책'
 
     </update>

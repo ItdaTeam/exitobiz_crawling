@@ -44,7 +44,7 @@ public class SeoulBizinfoCrawling implements Crawling {
     @Override
     public void craw() throws InterruptedException {
 
-        String driverPath = environment.getProperty("chrome.driver.path");
+        String driverPath = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe";
         File driverFile = new File(String.valueOf(driverPath));
 
         if (!driverFile.exists() && driverFile.isFile()) {
@@ -110,7 +110,7 @@ public class SeoulBizinfoCrawling implements Crawling {
 
 
                             HashMap<String, String> params = new HashMap<>();
-//                            params.put("bodyurl", bodyurl);
+                            params.put("bodyurl", bodyurl);
                             params.put("title",title);
                             boolean isUrl = crawlingMapper.isUrl(params);
                             if (!isUrl) {

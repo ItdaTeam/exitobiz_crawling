@@ -96,7 +96,8 @@ public class KStartUpCrawling implements Crawling {
                     WebElement pageXpath = driver.findElement(By.xpath("//*[@id='bizPbancList']/div/a["+ i +"]"));
 
                     //페이지이동
-                    jse.executeScript("arguments[0].click()", pageXpath);
+//                    jse.executeScript("arguments[0].click()", pageXpath);
+                    jse.executeScript("fn_egov_link_page("+i+");");
 
                     Thread.sleep(1000);
 
@@ -120,7 +121,7 @@ public class KStartUpCrawling implements Crawling {
                         vo.setPcUrl("-");
 
                         HashMap<String, String> params = new HashMap<>();
-//                    params.put("bodyurl", bodyUrl);
+                        params.put("bodyurl", bodyUrl);
                         params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {

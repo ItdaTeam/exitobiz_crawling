@@ -34,8 +34,8 @@ public class JejuCceiCrawling implements Crawling {
      * http://jccei.kr/
      *  */
 
-    private String url = "http://jccei.kr/about/news/news.htm?page=";
-    private int page = 1;
+    private String url = "https://ccei.creativekorea.or.kr/jeju/service/program_list.do?&page=";
+    private int page = 2;
 
     @Override
     public void setPage(int page) {
@@ -52,8 +52,9 @@ public class JejuCceiCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+//        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
+        options.addArguments("--remote-allow-origins=*");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
         options.addArguments("lang=ko_KR");
 
@@ -62,17 +63,17 @@ public class JejuCceiCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("제주창조경제혁신센터");
-        supportVo.setUrl("http://jccei.kr/");
+        supportVo.setUrl("https://ccei.creativekorea.or.kr/jeju/");
         supportVo.setLocCode("C064");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
         try {
             service = new ChromeDriverService.Builder()
-                .usingDriverExecutable(driverFile)
-                //.usingPort(5000)
-                .usingAnyFreePort()
-                .build();
+                    .usingDriverExecutable(driverFile)
+                    //.usingPort(5000)
+                    .usingAnyFreePort()
+                    .build();
 
             service.start();
             driver = new ChromeDriver(service,options);
@@ -84,14 +85,20 @@ public class JejuCceiCrawling implements Crawling {
                 driver.get(url+i);
                 Thread.sleep(1000);
 
-                for(int j=1; j<21; j++) {
+                List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"list_body\"]/li"));
+
+                int k = list.size();
+
+                for(int j=1; j<k; j++) {
                     try {
 
-                        WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"sub-content\"]/div/div[3]/table/tbody/tr["+ j +"]/td[2]/a"));
+                        WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"list_body\"]/li["+j+"]/a"));
+
+
                         SupportVo vo = new SupportVo();
                         String title = urlXpath.getAttribute("title");
-                        String url = urlXpath.getAttribute("href");
-                        String bodyurl = "http://jccei.kr/about/news/news.htm" + url.substring(url.lastIndexOf("?"),url.length());
+                        String url = urlXpath.getAttribute("onClick");
+                        String bodyurl = "https://ccei.creativekorea.or.kr/jeju/service/program_view.do?sMenuType=00040001&no=" + url.substring(url.lastIndexOf("(")+1,url.indexOf(","));
 
                         vo.setTargetName("제주창조경제혁신센터");
                         vo.setTargetCatName("-");
@@ -113,12 +120,12 @@ public class JejuCceiCrawling implements Crawling {
                         supportVo.setErrorYn("Y");
                         e.printStackTrace();
                     }
-            }
+                }
 
                 Thread.sleep(500);
             }
 
-                /* 빈 리스트가 아니면 크레이트 */
+            /* 빈 리스트가 아니면 크레이트 */
             if (!supportVos.isEmpty()) {
                 try{
                     crawlingMapper.create(supportVos);

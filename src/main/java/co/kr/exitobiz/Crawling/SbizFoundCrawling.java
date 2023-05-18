@@ -71,7 +71,7 @@ public class SbizFoundCrawling {
 
                     for (int i = 0; i < itemObj.size(); i++) {
                         String year = (String) ((JSONObject)itemObj.get(i)).get("year").toString();
-                        if(year.equals("22년")){
+                        if(year.equals("23년")){
                             String title = (String) ((JSONObject)itemObj.get(i)).get("title").toString().substring(1);
                             String bodyurl = (String) ((JSONObject)itemObj.get(i)).get("url").toString();
                             SupportVo vo = new SupportVo();

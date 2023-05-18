@@ -35,7 +35,7 @@ public class KoreaTpCrawling implements Crawling {
      *  */
 
     private String url = "http://www.technopark.kr/index.php?mid=businessboard&page=";
-    private int page = 1;
+    private int page = 3;
 
     @Override
     public void setPage(int page) {

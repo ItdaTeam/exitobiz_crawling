@@ -17,6 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.time.*;
 
 @Component
 public class SbizCrawling {
@@ -65,13 +66,15 @@ public class SbizCrawling {
                 JSONParser jsonParse = new JSONParser();
                 JSONObject jsonObj = (JSONObject) jsonParse.parse(response.toString()); //Json형태로 파싱해서 JsonObject에 넣음
                 JSONArray jsonArray = (JSONArray) jsonObj.get("item");
+                LocalDate now = LocalDate.now();
+                String nYear = String.valueOf(now.getYear()).substring(2);
                 for (int j = 0; j < jsonArray.size(); j++) {
 
                     JSONArray itemObj =(JSONArray) ((JSONObject) ((JSONArray) jsonObj.get("item")).get(j)).get("items");
 
                     for (int i = 0; i < itemObj.size(); i++) {
                         String year = (String) ((JSONObject)itemObj.get(i)).get("year").toString();
-                        if(year.equals("22년")){
+                        if(year.equals(nYear+"년")){
                             String title = (String) ((JSONObject)itemObj.get(i)).get("title").toString().substring(1);
                             String bodyurl = (String) ((JSONObject)itemObj.get(i)).get("url").toString();
                             SupportVo vo = new SupportVo();
