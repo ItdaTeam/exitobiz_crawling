@@ -35,7 +35,7 @@ public class NipaCrawling implements Crawling {
      * https://nipa.kr
      *  */
 
-    private String url = "https://www.nipa.kr/main/selectBbsNttList.do?key=122&bbsNo=2&pageUnit=10&searchCnd=all&pageIndex=";
+    private String url = "https://www.nipa.kr/home/2-2?curPage=";
     private int page = 3; // 게시물이 많지 않아 3 페이지만 크롤링
 
     @Override
@@ -62,10 +62,11 @@ public class NipaCrawling implements Crawling {
 
 
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
 //        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
-//        options.addArguments("window-size=1920x1080");
-//        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
-//        options.addArguments("lang=ko_KR");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
         ChromeDriverService service = null;
         WebDriver driver = null;
@@ -89,11 +90,11 @@ public class NipaCrawling implements Crawling {
 
             for (int i = page; i > 0; i--) {
                 driver.get(url+i);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"contents\"]/div/table/tbody/tr"));
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"container\"]/div[1]/div[3]/div[3]/table/tbody/tr"));
                 Thread.sleep(1000);
                 for (int j = 1; j <= list.size(); j++) {
                     try {
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/table/tbody/tr["+j+"]/td[2]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/div[1]/div[3]/div[3]/table/tbody/tr["+j+"]/td[3]/div/div[1]/a"));
 
                             Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
                             Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
@@ -109,13 +110,13 @@ public class NipaCrawling implements Crawling {
                                 title = title.substring(0,title.length()-2);
                             }
                             String url = titleXpath.getAttribute("href");
-                            String bodyUrl = url.replace("&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex="+i,"");
+//                            String bodyUrl = url.replace("&searchCtgry=&searchCnd=all&searchKrwd=&pageIndex="+i,"");
 
                             vo.setTargetName("정보통신산업진흥원");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C82");
                             vo.setSiTitle(title);
-                            vo.setMobileUrl(bodyUrl);
+                            vo.setMobileUrl(url);
                             vo.setPcUrl("-");
 
                             HashMap<String, String> params = new HashMap<>();
@@ -124,7 +125,6 @@ public class NipaCrawling implements Crawling {
                             boolean isUrl = crawlingMapper.isUrl(params);
                             if (!isUrl) {
                                 supportVos.add(vo);
-                                System.out.println("toString :" + vo.toString());
                         }
                     } catch (Exception e) {
                         supportVo.setErrorYn("Y");

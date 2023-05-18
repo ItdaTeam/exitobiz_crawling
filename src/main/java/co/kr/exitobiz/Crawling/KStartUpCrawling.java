@@ -56,6 +56,7 @@ public class KStartUpCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -87,6 +88,7 @@ public class KStartUpCrawling implements Crawling {
 
             List<SupportVo> supportVos = new ArrayList<>();
             try {
+                //중앙부처 , 지자체, 공공기관
                 for (int i=1; i<5 ; i++) {
 
                     driver.get(url);
@@ -130,11 +132,59 @@ public class KStartUpCrawling implements Crawling {
                     Thread.sleep(500);
                 }
 
+
+                //민간, 지자체
+                WebElement btnXpath = driver.findElement(By.xpath("//*[@id=\"pbancClss_PBC020\"]/a"));
+
+                jse.executeScript("arguments[0].click()",btnXpath);
+
+                for (int i=1; i<5 ; i++) {
+
+//                    driver.get(url);
+
+                    WebElement pageXpath = driver.findElement(By.xpath("//*[@id='bizPbancList']/div/a["+ i +"]"));
+                    jse.executeScript("arguments[0].click()", pageXpath);
+
+                    Thread.sleep(1000);
+
+                    for(int j=1; j<16; j++) {
+
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id='bizPbancList']/ul/li["+ j +"]/div/div[1]/div[2]/a/div/p"));
+                        WebElement urlXpath = driver.findElement(By.xpath("//*[@id='bizPbancList']/ul/li["+ j +"]/div/div[1]/div[2]/a"));
+
+                        String title = titleXpath.getText();
+                        String url = urlXpath.getAttribute("href");
+                        String index = url.replace("javascript:go_view","").replace("(","").replace(")","").replace(";","");
+
+                        String bodyUrl = "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?schM=view&pbancSn=" + index;
+
+                        SupportVo vo = new SupportVo();
+                        vo.setTargetName("K-Startup");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C82");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyUrl);
+                        vo.setPcUrl("-");
+
+                        HashMap<String, String> params = new HashMap<>();
+//                    params.put("bodyurl", bodyUrl);
+                        params.put("title",title);
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
+
+                    }
+
+                    Thread.sleep(500);
+                }
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 supportVo.setErrorYn("Y");
                 e.printStackTrace();
             }
+
 
             /* 빈 리스트가 아니면 크레이트 */
             if (!supportVos.isEmpty()) {

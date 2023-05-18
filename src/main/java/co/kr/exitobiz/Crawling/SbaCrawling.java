@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -36,6 +37,7 @@ public class SbaCrawling implements Crawling {
      *  */
 
     private String url = "https://www.sba.seoul.kr/Pages/ContentsMenu/Company_Support.aspx?C=6FA70790-6677-EC11-80E8-9418827691E2";
+
     private int page = 1;
 
     @Override
@@ -53,7 +55,8 @@ public class SbaCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("--remote-allow-origins=*");
+//        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
         options.addArguments("lang=ko_KR");
@@ -89,6 +92,13 @@ public class SbaCrawling implements Crawling {
                 driver.get(url);
 
                 Thread.sleep(1000);
+
+//                WebElement orderXpath = driver.findElement(By.id("ContentPlaceHolder1_MainContents_P_ORDER"));
+                Select order = new Select(driver.findElement(By.id("ContentPlaceHolder1_MainContents_P_ORDER")));
+                order.selectByValue("REG");
+                WebElement btnXPath = driver.findElement(By.xpath("//*[@id=\"btn_search\"]"));
+                btnXPath.click();
+
                 WebElement pageXpath = driver.findElement(By.xpath("//*[@id='pagination']/ol/li["+ i +"]"));
 
                 //페이지이동
