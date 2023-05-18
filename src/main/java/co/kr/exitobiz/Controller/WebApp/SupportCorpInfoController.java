@@ -25,6 +25,7 @@ public class SupportCorpInfoController {
     @ResponseBody
     public String getSupportInfoList(@RequestHeader HashMap<String, Object> header, @RequestBody HashMap<String, Object> body, @RequestParam HashMap<String,String> data1) throws ParseException, JsonProcessingException {
         if(header.get("corp_cd") != null) body.put("corp_cd", header.get("corp_cd"));
+        if(header.get("user_id") != null) body.put("user_id", header.get("user_id"));
 
         ObjectMapper mapper = new ObjectMapper();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

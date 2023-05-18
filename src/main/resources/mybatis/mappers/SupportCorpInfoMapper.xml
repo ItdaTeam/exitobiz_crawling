@@ -5,9 +5,17 @@
     <select id="getSupportCorpInfoList" parameterType="HashMap" resultType="HashMap">
         select si_idx, target_name,
         target_cat_cd as  target_cat_name,
-        target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt
+        target_cost_value, loccode, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt, mb_save_yn
         from itda_app.support_info_corp si
         left join (select code as loccode, code_nm as locname from itda_web.common_code_dtl where ctg_cd = 'loc_cd') as l on l.loccode = si.loc_code
+        left outer join (
+        select row_number() over (partition by mb_addidx order by mb_cret_dt desc ) as sort ,*
+        from itda_app.corp_bookmark
+        where 1=1
+        <if test='user_id != null and corp_cd != null'>
+            and mb_cret_id = #{user_id} and corp_cd = #{corp_cd}
+        </if>
+        ) mb on mb.mb_addidx = si.si_idx and mb.sort = 1
         where 1=1
         and si.si_active_yn = 'Y'
         and si.corp_cd = #{corp_cd}
