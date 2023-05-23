@@ -199,11 +199,11 @@
 
     <insert id="insertUserLog" parameterType="hashMap">
         INSERT INTO itda_web.corp_user_stats
-        (user_id, business_type, start_period, company_type, business_ctg, tech_ctg,  si_idx, view_dt, stats_idx)
-        select user_id, business_type, start_period, company_type,business_ctg,tech_ctg, #{si_idx}::int, now(), nextval('itda_web.stats_idx_seq')
-        from itda_web.corp_user_support
+        (user_id, business_type, start_period, company_type, business_ctg, tech_ctg,  si_idx, view_dt, stats_idx, loc_code)
+        select #{user_id}, business_type, start_period, company_type,business_ctg,tech_ctg, si_idx, now(), nextval('itda_web.stats_idx_seq'), loc_code
+        from itda_app.support_info_corp
         where 1=1
-          and user_id = #{user_id}
+          and si_idx = #{si_idx}
           and corp_cd = (select code from itda_web.common_code_dtl where 1=1 and code_nm = #{corp_nm} and ctg_cd = 'corp_cd')
     </insert>
 </mapper>
