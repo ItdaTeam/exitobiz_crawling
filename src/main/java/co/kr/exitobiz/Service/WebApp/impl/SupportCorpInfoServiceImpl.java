@@ -86,4 +86,14 @@ public class SupportCorpInfoServiceImpl implements SupportCorpInfoService {
         return supportCorpInfoMapper.getContentInfo(params);
     }
 
+    @Override
+    public List<HashMap> getMyRecentKeyword(HashMap<String, Object> params) throws ParseException {
+        return supportCorpInfoMapper.getMyRecentKeyword(params);
+    }
+
+    @Override
+    public void insertUserLog(HashMap<String, Object> params) {
+        supportCorpInfoMapper.insertUserLog(params);
+    }
+
 }

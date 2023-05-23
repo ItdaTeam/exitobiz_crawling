@@ -118,8 +118,8 @@
 
     <insert id="insertTimeLine" parameterType="HashMap">
         INSERT INTO itda_app.time_line_corp (
-            tl_cret_dt, tl_cret_id, tl_page_type, tl_page_depth, tl_page_name, tl_button_name, tl_type_cd, tl_event, tl_memo)
-        VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}::numeric, #{tl_event}, #{tl_memo} )
+            tl_cret_dt, tl_cret_id, tl_page_type, tl_page_depth, tl_page_name, tl_button_name, tl_type_cd, tl_event, tl_memo, corp_cd)
+        VALUES ( NOW(), #{tl_cret_id}, #{tl_page_type}, #{tl_page_depth}, #{tl_page_name}, #{tl_button_name}, #{tl_type_cd}::numeric, #{tl_event}, #{tl_memo}, #{corp_cd} )
     </insert>
 
     <select id="getSearchHotKeyWord" resultType="HashMap" parameterType="HashMap">
@@ -184,7 +184,26 @@
         where 1=1
             and corp_cd in (#{corp_cd}, '00')
             and active_yn = 'Y'
-            order by sort, title
+            order by corp_cd desc, sort, title
 
     </select>
+
+    <select id="getMyRecentKeyword" parameterType="map" resultType="map">
+        select tl_cd, tl_event, tl_cret_dt
+        FROM  (
+                  SELECT DISTINCT ON (tl.tl_event) * FROM itda_app.time_line_corp tl
+                  where tl_cret_id =#{tl_cret_id} and corp_cd = #{corp_cd} and tl_button_name ='검색버튼' and tl_memo != '검색어삭제' order by tl.tl_event, tl.tl_cret_dt desc
+              ) sub
+        ORDER  BY  tl_cd desc
+    </select>
+
+    <insert id="insertUserLog" parameterType="hashMap">
+        INSERT INTO itda_web.corp_user_stats
+        (user_id, business_type, start_period, company_type, business_ctg, tech_ctg,  si_idx, view_dt, stats_idx)
+        select user_id, business_type, start_period, company_type,business_ctg,tech_ctg, #{si_idx}::int, now(), nextval('itda_web.stats_idx_seq')
+        from itda_web.corp_user_support
+        where 1=1
+          and user_id = #{user_id}
+          and corp_cd = (select code from itda_web.common_code_dtl where 1=1 and code_nm = #{corp_nm} and ctg_cd = 'corp_cd')
+    </insert>
 </mapper>

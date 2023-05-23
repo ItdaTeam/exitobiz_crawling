@@ -21,4 +21,8 @@ public interface SupportCorpInfoService {
     HashMap<String, Object> getCorpCompanyInfo(HashMap<String, Object> params) throws ParseException; // 필터 조회
 
     List<Map<String, Object>> getContentInfo(HashMap<String, Object> params);
+
+    public List<HashMap> getMyRecentKeyword(HashMap<String, Object> params) throws ParseException;
+
+    void insertUserLog(HashMap<String, Object> params);
 }

@@ -24,4 +24,8 @@ public interface SupportCorpInfoMapper {
     HashMap<String, Object> getCorpCompanyInfo(HashMap<String, Object> params); // 사용자 필터 조회
 
     List<Map<String, Object>> getContentInfo(HashMap<String, Object> params);
+
+    List<HashMap> getMyRecentKeyword(HashMap<String, Object> params);
+
+    void insertUserLog(HashMap<String, Object> params);
 }

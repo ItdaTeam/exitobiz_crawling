@@ -130,4 +130,28 @@ public class SupportCorpInfoController {
 
         return supportCorpService.getContentInfo(params);
     }
+
+    // 최근 검색
+    @PostMapping("/getMyRecentKeyword")
+    @ResponseBody
+    public String getMyRecentKeyword(@RequestHeader HashMap<String, Object> header , @RequestBody Map<String,Object> param) throws ParseException, JsonProcessingException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("tl_cret_id", header.get("user_id"));
+        params.put("corp_cd", param.get("corp_cd"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = mapper.writeValueAsString(supportCorpService.getMyRecentKeyword(params));
+        return jsonStr;
+    }
+
+    @PostMapping("/insertUserLog")
+    @ResponseBody
+    public void insertUserLog(@RequestHeader HashMap<String, Object> header , @RequestBody Map<String,Object> param) throws ParseException, JsonProcessingException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("user_id", header.get("user_id"));
+        params.put("corp_nm", param.get("corp_nm"));
+        params.put("si_idx",param.get("si_idx"));
+        ObjectMapper mapper = new ObjectMapper();
+        supportCorpService.insertUserLog(params);
+    }
 }
