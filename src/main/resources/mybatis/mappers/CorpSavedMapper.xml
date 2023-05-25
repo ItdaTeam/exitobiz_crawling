@@ -4,10 +4,11 @@
 <mapper namespace="co.kr.exitobiz.Mappers.WebApp.CorpSavedMapper">
 
     <select id="getMySavedBook" resultType="HashMap" parameterType="HashMap">
-        select  mb.*, si_idx, target_name, target_cost_value, loc_code, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt,  from_dt, to_dt, business_type, start_period, company_type, business_ctg, tech_ctg, target_cat_cd as target_cat_name
+        select  mb.*, si_idx, target_name, target_cost_value, loc_code, l.locname, si_title, mobile_url, pc_url, si_end_dt, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt,  from_dt, to_dt, business_type, start_period, company_type, business_ctg, tech_ctg, target_cat_cd as target_cat_name
 , tl.tl_cret_dt
         from itda_app.corp_bookmark mb
         left outer join itda_app.support_info_corp si on mb.mb_addidx = si.si_idx and length(si.loc_code) <![CDATA[<]]> 5
+        left join (select code as loccode, code_nm as locname from itda_web.common_code_dtl where ctg_cd = 'loc_cd') as l on l.loccode = si.loc_code
         left outer join (
                 select
                 row_number() over (partition by tl_type_cd order by tl_cret_dt, tl_page_depth desc ) as sort
