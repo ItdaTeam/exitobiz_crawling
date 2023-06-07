@@ -7,6 +7,12 @@
         insert into itda_app.edu_regist_corp
             (corp_cd, user_id, title, corp_nm, sector, email, cret_dt)
         values (#{corp_cd}, #{user_id}, #{title}, #{corp_nm}, #{sector},#{email},now())
+        on conflict(corp_cd, user_id, title)
+        do update set
+            corp_nm = #{corp_nm},
+            sector = #{sector},
+            email = #{email},
+            updt_dt = now()
     </insert>
 
     <select id="chkRegist" parameterType="HashMap" resultType="HashMap">

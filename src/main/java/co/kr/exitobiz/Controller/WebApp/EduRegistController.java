@@ -26,8 +26,8 @@ public class EduRegistController {
 
         try{
             //등록확인
-            String chk = String.valueOf(eduRegistService.chkRegist(params).get("chk"));
-            if(chk.equals("1")) return "done";
+//            String chk = String.valueOf(eduRegistService.chkRegist(params).get("chk"));
+//            if(chk.equals("1")) return "done";
 
             eduRegistService.saveEduRegist(params);
             result = "success";
