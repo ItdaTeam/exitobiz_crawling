@@ -5,13 +5,14 @@
 
     <insert id="saveEduRegist" parameterType="HashMap">
         insert into itda_app.edu_regist_corp
-            (corp_cd, user_id, title, corp_nm, sector, email, cret_dt)
-        values (#{corp_cd}, #{user_id}, #{title}, #{corp_nm}, #{sector},#{email},now())
+            (corp_cd, user_id, title, corp_nm, sector, email, tel, cret_dt)
+        values (#{corp_cd}, #{user_id}, #{title}, #{corp_nm}, #{sector},#{email}, #{tel}, now())
         on conflict(corp_cd, user_id, title)
         do update set
             corp_nm = #{corp_nm},
             sector = #{sector},
             email = #{email},
+            tel = #{tel},
             updt_dt = now()
     </insert>
 
