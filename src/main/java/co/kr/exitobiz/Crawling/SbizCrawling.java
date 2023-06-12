@@ -75,7 +75,7 @@ public class SbizCrawling {
                     for (int i = 0; i < itemObj.size(); i++) {
                         String year = (String) ((JSONObject)itemObj.get(i)).get("year").toString();
                         if(year.equals(nYear+"년")){
-                            String title = (String) ((JSONObject)itemObj.get(i)).get("title").toString().substring(1);
+                            String title = (String) ((JSONObject)itemObj.get(i)).get("title").toString();
                             String bodyurl = (String) ((JSONObject)itemObj.get(i)).get("url").toString();
                             SupportVo vo = new SupportVo();
                             vo.setTargetName("소상공인마당 창업지원");

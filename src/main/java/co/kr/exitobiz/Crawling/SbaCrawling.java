@@ -55,8 +55,7 @@ public class SbaCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-//        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
         options.addArguments("lang=ko_KR");
