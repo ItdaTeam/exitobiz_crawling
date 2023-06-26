@@ -53,7 +53,7 @@ public class KoneticCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국환경산업기술원");
-        supportVo.setUrl("https://nipa.kr");
+        supportVo.setUrl("https://www.konetic.or.kr");
         supportVo.setLocCode("C82");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
