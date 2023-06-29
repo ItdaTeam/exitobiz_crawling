@@ -30,10 +30,10 @@ public class KoneticCrawling implements Crawling {
 
     /*
      * 한국환경산업기술원
-     * https://www.konetic.or.kr
+     * https://www.keiti.re.kr
      *  */
 
-    private String url = "https://www.konetic.or.kr/user/J/JB/JB001_L01.do?pgNo=";
+    private String url = "https://www.keiti.re.kr/site/keiti/ex/board/List.do?cbIdx=277&pageIndex=";
     private int page = 3; // 3 페이지만 크롤링
 
     @Override
@@ -53,7 +53,7 @@ public class KoneticCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국환경산업기술원");
-        supportVo.setUrl("https://www.konetic.or.kr");
+        supportVo.setUrl("https://www.keiti.re.kr");
         supportVo.setLocCode("C82");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
@@ -87,30 +87,32 @@ public class KoneticCrawling implements Crawling {
 
             for (int i = page; i > 0; i--) {
                 driver.get(url+i);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"skip-content\"]/div[2]/div[2]/div[3]/div/ul/li"));
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"BbsContentFVo\"]/div[2]/ul/li"));
+
                 Thread.sleep(1000);
                 for (int j = 1; j <= list.size(); j++) {
                     try {
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"skip-content\"]/div[2]/div[2]/div[3]/div/ul/li["+j+"]/div/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"BbsContentFVo\"]/div[2]/ul/li["+j+"]/div/a/span[3]"));
+                            WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"BbsContentFVo\"]/div[2]/ul/li[1]/div/a"));
 
-                            Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
-                            Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
-                            ArrayList<String> typePatternArray = new ArrayList<String>();
-
-                            while (typeMatcher.find()) {
-                                typePatternArray.add(typeMatcher.group());
-                            }
+//                            Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
+//                            Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
+//                            ArrayList<String> typePatternArray = new ArrayList<String>();
+//
+//                            while (typeMatcher.find()) {
+//                                typePatternArray.add(typeMatcher.group());
+//                            }
 
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
-                            String url = titleXpath.getAttribute("onclick");
-                            String bodyUrl = "https://www.konetic.or.kr/user/J/JB/JB001_R01.do?cntnsSn=" +url.replace("fnDetail('","").replace("')","");
+                            String url = urlXpath.getAttribute("href");
+//                            String bodyUrl = "https://www.konetic.or.kr/user/J/JB/JB001_R01.do?cntnsSn=" +url.replace("fnDetail('","").replace("')","");
 
                             vo.setTargetName("한국환경산업기술원");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C82");
                             vo.setSiTitle(title);
-                            vo.setMobileUrl(bodyUrl);
+                            vo.setMobileUrl(url);
                             vo.setPcUrl("-");
 
                             HashMap<String, String> params = new HashMap<>();
@@ -127,6 +129,7 @@ public class KoneticCrawling implements Crawling {
                 }
 
                 Thread.sleep(500);
+
             }
 
             /* 빈 리스트가 아니면 크레이트 */
