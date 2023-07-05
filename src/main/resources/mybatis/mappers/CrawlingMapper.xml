@@ -17,7 +17,8 @@
     <insert id="create" parameterType="SupportVo">
         insert into itda_app.crawling_data
         (
-            si_idx, target_name, target_cat_name, loc_code, si_title, mobile_url, pc_url, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt
+            si_idx, target_name, target_cat_name, loc_code, si_title, mobile_url, pc_url, si_cret_dt, si_active_yn, view_cnt, share_cnt, save_cnt,
+         target_cat_cd, si_end_dt, company_type, business_type, start_period, hashtags
         )
         values
         <foreach collection="list" item="vo" index="index" separator=",">
@@ -25,7 +26,8 @@
              (select case when (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.crawling_data) - (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info) >= 0 then (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.crawling_data)
                             else (select coalesce(max(si_idx), 0)+#{index}::integer+1 from itda_app.support_info)
                     end) , #{vo.targetName}, #{vo.targetCatName}, #{vo.locCode}, #{vo.siTitle}, #{vo.mobileUrl},
-                #{vo.pcUrl}, NOW(), 'N', 0, 0, 0
+                #{vo.pcUrl}, NOW(), 'N', 0, 0, 0,
+             #{vo.targetCatCd}, #{vo.siEndDt}, #{vo.companyType}, #{vo.startPeriod}, #{vo.hashtags}
             )
         </foreach>
     </insert>

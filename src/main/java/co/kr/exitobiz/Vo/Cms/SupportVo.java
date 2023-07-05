@@ -29,6 +29,7 @@ public class SupportVo {
     private String businessType;
     private String companyType;
     private String startPeriod;
+    private String hashtags;
 
 
     //마스터
@@ -101,6 +102,7 @@ public class SupportVo {
                 ", ViewCntLoc='" + ViewCntLoc + '\'' +
                 ", SupportCntLoc='" + SupportCntLoc + '\'' +
                 ", updtDt='" + updtDt + '\'' +
+                ", hashtags='" + hashtags + '\'' +
                 '}';
     }
 }
