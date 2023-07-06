@@ -241,8 +241,8 @@ public class SeoulBizinfoCrawling implements Crawling {
                             String businessType = null ;
                             String apiTrgetNm = (String) obj.get("trgetNm");
                             String apiHashtags = (String) obj.get("hashtags");
-                            if(apiHashtags.contains("예비창업자") || apiTrgetNm.contains("예비창업자")) businessType = "02,03";
-                            else if(!apiHashtags.contains("예비창업자") && !apiTrgetNm.contains("예비창업자")) businessType = "03";
+                            if(apiHashtags.contains("예비창업") || apiTrgetNm.contains("예비창업")) businessType = "02,03";
+                            else if(!apiHashtags.contains("예비창업") && !apiTrgetNm.contains("예비창업")) businessType = "03";
 
                             //기업형태
                             String companyType = null;
