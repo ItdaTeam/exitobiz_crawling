@@ -31,6 +31,8 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class SeoulBizinfoCrawling implements Crawling {
@@ -246,7 +248,19 @@ public class SeoulBizinfoCrawling implements Crawling {
 
                             //기업형태
                             String companyType = null;
-                            if(apiTrgetNm.contains("중소") || apiHashtags.contains("중소")){
+
+                            Stream<String> stream = Stream.of(apiHashtags.split(","));
+                            List<String> str = stream.collect(Collectors.toList());
+
+                            str.replaceAll(v -> v.equals("마을기업") ? "마을" : v );
+                            str.replaceAll(v -> v.equals("장애인기업") ? "장애인" : v);
+
+                            if(str.contains("마을") || str.contains("장애인") || str.contains("청년로컬크리에이터") || str.contains("1인기업") || str.contains("크리에이터") || str.contains("1인 미디어") || str.contains("사회적협동조합")){
+                                if(companyType == null) companyType = "07";
+                                else companyType += ",07";
+                            }
+
+                            if(apiTrgetNm.contains("중소") || apiHashtags.contains("중소") || apiTrgetNm.contains("스타트업") || apiHashtags.contains("스타트업") || apiTrgetNm.contains("창업") || apiHashtags.contains("창업") || str.stream().filter(v -> v.substring(v.length()-2).equals("기업")).count() > 0){
                                 if(companyType == null) companyType = "02";
                                 else companyType += ",02";
                             }
