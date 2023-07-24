@@ -33,7 +33,8 @@ public class SeoulSsuCrawling implements Crawling {
      * https://startup.ssu.ac.kr/
      *  */
 
-    private String url = "https://startup.ssu.ac.kr/bbs/board.php?bo_table=startup_info&page=";
+    private String url = "https://startup.ssu.ac.kr/board/notice?boardEnName=notice&pageNum=";
+
     private int page = 1;
 
     @Override
@@ -52,6 +53,7 @@ public class SeoulSsuCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -82,13 +84,14 @@ public class SeoulSsuCrawling implements Crawling {
 
                 driver.get(url + i);
                 Thread.sleep(1000);
-                for(int j=1; j<11; j++) {
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"wrap\"]/div[2]/section/div/div[3]/table/tbody/tr"));
+                for(int j=1; j<= list.size(); j++) {
                         try {
 
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div[2]/ul/li[" + j +"]/div/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"wrap\"]/div[2]/section/div/div[3]/table/tbody/tr["+j+"]/td[2]/a"));
 
                             String title = titleXpath.getText();
-                            String bodyurl = titleXpath.getAttribute("href");
+                            String bodyurl = titleXpath.getAttribute("href").substring(0,titleXpath.getAttribute("href").indexOf("?"));
 
                             SupportVo vo = new SupportVo();
 

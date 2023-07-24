@@ -4,6 +4,7 @@ import co.kr.exitobiz.Mappers.Api.CrawlingMapper;
 import co.kr.exitobiz.Util.Util;
 import co.kr.exitobiz.Vo.Cms.SupportVo;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -35,7 +36,7 @@ public class KortaCrawling implements Crawling {
      * https://www.kotra.or.kr
      *  */
 
-    private String url = "https://www.kotra.or.kr/subList/20000020753?pageIndex=";
+    private String url = "https://www.kotra.or.kr/subList/20000020753";
     private int page = 10; // 10 페이지만 크롤링
 
     @Override
@@ -62,7 +63,8 @@ public class KortaCrawling implements Crawling {
 
 
         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+//        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
         options.addArguments("lang=ko_KR");
@@ -87,28 +89,25 @@ public class KortaCrawling implements Crawling {
 
 
 
-            for (int i = page; i > 0; i--) {
-                driver.get(url+i);
-                Thread.sleep(1000);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"itemArea\"]/div[1]/ul/li"));
-                 for (int j = 1; j <= list.size(); j++) {
-                    try {
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"itemArea\"]/div[1]/ul/li["+j+"]/div[2]/div[1]/a"));
-                        WebElement subXpath = driver.findElement(By.xpath("//*[@id=\"itemArea\"]/div[1]/ul/li["+j+"]/div[2]/div[1]/a/span"));
-                        Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
-                        Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
-                        ArrayList<String> typePatternArray = new ArrayList<String>();
+//            for (int i = page; i > 0; i--) {
+                driver.get(url);
+            Thread.sleep(1000);
 
-                        while (typeMatcher.find()) {
-                            typePatternArray.add(typeMatcher.group());
-                        }
+            JavascriptExecutor jse = (JavascriptExecutor) driver;
+
+                //상시 신청 가능
+            List<WebElement> awaysList = driver.findElements(By.xpath("//*[@id=\"itemRcritYArea\"]/ul/li"));
+            for(int i=1; i<9; i++){
+                jse.executeScript("fnPage1("+i+");");
+                 for (int j = 1; j <= awaysList.size(); j++) {
+                     Thread.sleep(300);
+                    try {
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"itemRcritYArea\"]/ul/li["+j+"]/div/ul/li/a"));
 
                         SupportVo vo = new SupportVo();
-                        String title = titleXpath.getText().replaceFirst(subXpath.getText(),"");
-                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?bizNo=" +  titleXpath.getAttribute("href").replace("javascript:fn_selectBizMntInfoDetail('","").replace("','bizAply');","");
-                        if(title.endsWith("N")){
-                            title = title.substring(0, title.length() - 1);
-                        }
+                        String title = titleXpath.getText();
+                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?dtlBizId=" +  titleXpath.getAttribute("href").replace("javascript:fn_selectBizMntInfoDetail('","").replace("','N');","").replace("','Y');","");
+
                         vo.setTargetName("KOTRA24");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C82");
@@ -122,22 +121,57 @@ public class KortaCrawling implements Crawling {
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
                             supportVos.add(vo);
-                            System.out.println("toString :" + vo.toString());
                         }
                     } catch (Exception e) {
                         supportVo.setErrorYn("Y");
                     }
                 }
 
-                Thread.sleep(500);
+            }
+
+                Thread.sleep(100);
+
+
+            // 신청기한 있는 지원 사업
+            List<WebElement> endList = driver.findElements(By.xpath("//*[@id=\"itemTermArea\"]/ul/li"));
+            for(int i=1; i<=10; i++){
+                jse.executeScript("fnPage2("+i+");");
+                for (int j = 1; j <= endList.size(); j++) {
+                        Thread.sleep(500);
+                    try {
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"itemTermArea\"]/ul/li["+j+"]/div[2]/ul/li[1]/a"));
+
+                        SupportVo vo = new SupportVo();
+                        String title = titleXpath.getText();
+                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?dtlBizId=" +  titleXpath.getAttribute("href").replace("javascript:fn_selectBizMntInfoDetail('","").replace("','N');","").replace("','Y');","");
+
+                        vo.setTargetName("KOTRA24");
+                        vo.setTargetCatName("-");
+                        vo.setLocCode("C82");
+                        vo.setSiTitle(title);
+                        vo.setMobileUrl(bodyUrl);
+                        vo.setPcUrl("-");
+
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("title", title);
+
+                        boolean isUrl = crawlingMapper.isUrl(params);
+                        if (!isUrl) {
+                            supportVos.add(vo);
+                        }
+                    } catch (Exception e) {
+                        supportVo.setErrorYn("Y");
+                    }
+                }
+
             }
 
             /* 빈 리스트가 아니면 크레이트 */
             if (!supportVos.isEmpty()) {
-                List<SupportVo> list = supportVos.stream().filter(Util.distinctByKey(o ->o.getSiTitle())).collect(Collectors.toList()); //페이지별 공지 때문에 url 기준 중복 제거.
+//                List<SupportVo> list = supportVos.stream().filter(Util.distinctByKey(o ->o.getSiTitle())).collect(Collectors.toList()); //페이지별 공지 때문에 url 기준 중복 제거.
 
                 try {
-                    crawlingMapper.create(list);
+                    crawlingMapper.create(supportVos);
                     crawlingMapper.createMaster(supportVo);
                 } catch (Exception e) {
                     supportVo.setErrorYn("Y");
