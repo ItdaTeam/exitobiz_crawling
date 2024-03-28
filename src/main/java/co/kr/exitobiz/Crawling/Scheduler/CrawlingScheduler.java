@@ -409,20 +409,360 @@ public class CrawlingScheduler {
     /** 강릉과학산업진흥원*/
     @Autowired
     GsipaACrawling gsipaACrawling;
+
     /** 한국산업인력공단 */
     @Autowired
     HrdkoreaCrawling hrdkoreaCrawling;
 
+    /** 한국EMS협회 */
+    @Autowired
+    BemsCrawling bemsCrawling;
 
-    /** 현대전용 끝 */
+    /*ESCO협회*/
+    @Autowired
+    EscoCrawling escoCrawling;
 
+    /* 한국에너지중소혁신기업협회 */
+    @Autowired
+    KemiaCrawling kemiaCrawling;
 
+    /*화성민간여구개발협의회 */
+    @Autowired
+    RndBizCrawling rndBizCrawling;
+
+    /**한국에너지공단*/
+    @Autowired
+    EnergyCrawling energyCrawling;
+
+    /**
+     * 현대전용 끝
+     */
 
 
 //        테스트용
-//    @Scheduled(cron = "0 45 15 * * *")
-    public void CrawlingGroup10() throws InterruptedException, IOException {
-        seoulBizinfoCrawling.craw();
+//    @Scheduled(cron = "0 17 10 * * *")
+    public void CrawlingGroup10() throws InterruptedException, IOException {   /* 케이스타트업 */
+
+
+        /* 화성민간여구개발협의회 */
+//        rndBizCrawling.craw();
+        /* 한국에너지중소혁신기업협회 */
+//        kemiaCrawling.craw();
+//        /* ESCO협회*/
+//        escoCrawling.craw();
+
+        /* 한국EMS협회*/
+//        bemsCrawling.craw();
+        /* 에너지공단 */
+//          energyCrawling.craw();
+//        /* 케이스타트업 */
+//        kStartUpCrawling.craw();
+//
+//        /* 서울기업지원센터 */
+//        sbscCrawling.craw();
+//
+//        /* 서울청년정책 */
+//        youthSeoulCrawling.craw();
+//
+//        /* 서울사회적기업협의회 */
+//        seoulseCrawling.craw();
+//
+//        /* 서울산업진흥원 */
+//        sbaCrawling.craw();
+//
+//        /* 서울시 청년활동지원센터 */
+//        seoulBiUosCrawling.craw();
+//
+//        /* 서울R&D지원센터 */
+//        seoulRnbdCrawling.craw();
+//
+//        /* 전북경제통상진흥원 */
+//        jeonbukJbbaCrawling.craw();
+//
+//        /* 서울대학교 창업지원단 */
+//        seoulSnuCrawling.craw();
+//
+//        /* 관악 사회적경제 */
+//        seoulGaseCrawling.craw();
+//
+//        /* 건국대학교 창업지원단 */
+//        seoulKonkukCrawling.craw();
+//
+//        /* 서울창업카페상봉점 */
+////        seoulSangbongCrawling.craw();
+//
+//        /* 서울창업디딤터 */
+////        seoulDidimentoCrawling.craw();
+//
+//        /* 한양대학교창업지원단 */
+//        seoulHanyangCrawling.craw();
+//
+//        /* 카이스트창업원 */
+//        seoulKaistCrawling.craw();
+//
+//        /* 연세대학교 창업지원관 */
+//        seoulYonseiCrawling.craw();
+//
+//        /* 한국여성벤처협회 */
+//        seoulKovwaCrawling.craw();
+//
+//        /* 숭실대학교 창업지원단 */
+//        seoulSsuCrawling.craw();
+//
+//        /* 기업마당 */
+//        seoulBizinfoCrawling.craw();
+//
+//        /* 지역문화진흥원 */
+//        seoulRcdaCrawling.craw();
+//
+//        /* 소상공인마당 창업지원 */
+//        sbizCrawling.getCrawlingData();
+//
+//        /* 소상공인마당 정책자금 */
+//        sbizFoundCrawling.getCrawlingData();
+//
+//        /* 고려대학교 크림창업지원단 */
+//        seoulPiportalCrawling.craw();
+//
+//        /* 북부여성발전센터 */
+//        seoulBukbuCrawling.craw();
+//
+//        /* 한국문화예술교육진흥원 */
+//        seoulArteCrawling.craw();
+//
+//        /* 서울시청년활동지원센터 */
+//        seoulSehubCrawling.craw();
+//
+//        /* 한국사회적기업진흥원 */
+//        seoulSocialEnterPrise.craw();
+//
+//        /* 서울 소셜벤처허브 */
+//        seoulSvhcCrawling.craw();
+//
+//        /* 여성기업종합정보포털 */
+//        wbizCrawling.craw();
+//
+//        CeciCrawVo seoul = new CeciCrawVo("서울창조경제혁신센터","https://ccei.creativekorea.or.kr/seoul",1,"C02");
+//        CeciCrawVo gyeongnam = new CeciCrawVo("경남창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongnam",1,"C055");
+//        CeciCrawVo busan = new CeciCrawVo("부산창조경제혁신센터","https://ccei.creativekorea.or.kr/busan",1,"C051");
+//        CeciCrawVo gyeonggi = new CeciCrawVo("경기창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeonggi",1,"C031");
+//        CeciCrawVo incheon = new CeciCrawVo("인천창조경제혁신센터","https://ccei.creativekorea.or.kr/incheon",1,"C032");
+//        CeciCrawVo jeonbuk = new CeciCrawVo("전북창조경제혁신센터","https://ccei.creativekorea.or.kr/jeonbuk",1,"C063");
+//        CeciCrawVo jeonnam = new CeciCrawVo("전남창조경제혁신센터","https://ccei.creativekorea.or.kr/jeonnam",1,"C061");
+//        CeciCrawVo sejong = new CeciCrawVo("세종창조경제혁신센터","https://ccei.creativekorea.or.kr/sejong",1,"C044");
+//        CeciCrawVo ulsan = new CeciCrawVo("울산창조경제혁신센터","https://ccei.creativekorea.or.kr/ulsan",1,"C052");
+//        CeciCrawVo gyeongbuk = new CeciCrawVo("경북창조경제혁신센터","https://ccei.creativekorea.or.kr/gyeongbuk",1,"C054");
+//        CeciCrawVo gwangju = new CeciCrawVo("광주창조경제혁신센터","https://ccei.creativekorea.or.kr/gwangju",1,"C062");
+//        CeciCrawVo chungbuk = new CeciCrawVo("충북창조경제혁신센터","https://ccei.creativekorea.or.kr/chungbuk",1,"C043");
+//        CeciCrawVo daegu = new CeciCrawVo("대구창조경제혁신센터","https://ccei.creativekorea.or.kr/daegu",1,"C053");
+//        CeciCrawVo gangwon = new CeciCrawVo("강원창조경제혁신센터","https://ccei.creativekorea.or.kr/gangwon",1,"C033");
+//        CeciCrawVo chungnam = new CeciCrawVo("충남창조경제혁신센터","https://ccei.creativekorea.or.kr/chungnam",1,"C041");
+//        CeciCrawVo daejeon = new CeciCrawVo("대전창조경제혁신센터","https://ccei.creativekorea.or.kr/daejeon",1,"C042");
+//        CeciCrawVo jeju = new CeciCrawVo("제주창조경제혁신센터","https://ccei.creativekorea.or.kr/jeju",1,"C042");
+//
+//        /* 서울창조경제혁신센터 */
+//        ceciCrawling.craw(seoul);
+//
+//        /* 경남창조경제혁신센터 */
+//        ceciCrawling.craw(gyeongnam);
+//
+//        /* 부산창조경제혁신센터 */
+//        ceciCrawling.craw(busan);
+//
+//        /* 경기창조경제혁신센터 */
+//        ceciCrawling.craw(gyeonggi);
+//
+//        /* 인천창조경제혁신센터 */
+//        ceciCrawling.craw(incheon);
+//
+//        /* 전북창조경제혁신센터 */
+//        ceciCrawling.craw(jeonbuk);
+//
+//        /* 전남창조경제혁신센터 */
+//        ceciCrawling.craw(jeonnam);
+//
+//        /* 세종창조경제혁신센터 */
+//        ceciCrawling.craw(sejong);
+//
+//        /* 울산창조경제혁신센터 */
+//        ceciCrawling.craw(ulsan);
+//
+//        /* 경북창조경제혁신센터 */
+//        ceciCrawling.craw(gyeongbuk);
+//
+//        /* 광주창조경제혁신센터 */
+//        ceciCrawling.craw(gwangju);
+//
+//        /* 충북창조경제혁신센터 */
+//        ceciCrawling.craw(chungbuk);
+//
+//        /* 강원창조경제혁신센터 */
+//        ceciCrawling.craw(gangwon);
+//
+//        /* 대구창조경제혁신센터 */
+//        ceciCrawling.craw(daegu);
+//
+//        /* 충남창조경제혁신센터 */
+//        ceciCrawling.craw(chungnam);
+//
+//        /* 대전창조경제혁신센터 */
+//        ceciCrawling.craw(daejeon);
+//
+//        /* 제주창조경제혁신센터 */
+//        ceciCrawling.craw(jeju);
+//
+//        /* 한국출판문화산업진흥원 */
+//        kpipaCrawling.craw();
+//
+//        /* 경기도경제과학진흥원 */
+//        gyeonggiEgbizCrawling.craw();
+//
+//        /* 경기콘텐츠진흥원 */
+//        gyeonggiGconCrawling.craw();
+//
+//        /* 한국관광공사 */
+//        visitKoreaCrawling.craw();
+//
+//        /* 광주정보문화산업진흥원 */
+//        gwangjuGiconCrawling.craw();
+//
+//        /* 대전정보문화산업진흥원 */
+//        daejeonDiciaCrawling.craw();
+//
+//
+//        /* 강원디자인진흥원 */
+//        gangwonGidpCrawling.craw();
+//
+//        /* 충남정보문화산업진흥원 */
+//        chungnamCtiaCrawling.craw();
+//
+//        /* 전주정보문화산업진흥원 */
+//        junjuJicaCrawling.craw();
+//
+//        /* 전남정보문화산업진흥원 */
+//        jeonnamJciaCrawling.craw();
+//
+//        /* 경남문화예술진흥원 */
+//        gyeongnamGcafCrawling.craw();
+//
+//
+//        /* 경남사회적경제통합지원센터 */
+//        gyeongnamGseicCrawling.craw();
+//
+//        /* 부산창업포탈 */
+//        busanStartupCrawling.craw();
+//
+//        /* 부산디자인진흥원 */
+//        busanDcbCrawling.craw();
+//
+//        /* 부산정보산업진흥원 */
+//        busanItCrawling.craw();
+//
+//        /* 김해의생명산업진흥원 */
+//        gyeongnamGbiaCrawling.craw();
+//
+//        /* 창원시사회적경제지원센터 */
+//        gyeongnamCwsecCrawling.craw();
+//
+//        /* 경남모두의경제 */
+//        gyeongnamModuCrawling.craw();
+//
+//        /* 경남해외마케팅사업지원시스템 */
+//        gyeongnamGoCrawling.craw();
+//
+//        /* 광주디자인진흥원 */
+//        gwangjuGdcCrawling.craw();
+//
+//        /* 창원산업진흥원 */
+//        changwonCwipCrawling.craw();
+//
+//        /* 한국무역협회 */
+//        kitaCrawling.craw();
+//
+//        /* 한국테크노파크 */
+//        koreaTpCrawling.craw();
+//
+//        /** KOTRA*/
+//        kortaCrawling.craw();
+//
+//        /**소상공인마당Web */
+//        sbizWebCrawling.craw();
+//
+//        /** 기술보호울타리 */
+//        ultariCrawling.craw();
+//
+//        /** 중소기업해외전시포탈 */
+//        smesCrawling.craw();
+//
+//        /** 한국환경공단*/
+//        kecoCrawling.craw();
+//
+//
+//        /** 경기환경에너지진흥원 */
+//        ggenergyCrawling.craw();
+//
+//        /** 충남에너지센터   */
+//        cnEnergyCrawling.craw();
+//
+//        /** 당진에너지센터 */
+//        djEnercyCrawling.craw();
+//
+//        /*  한국화학융합시험연구원 */
+//        koreaTrCrawling.craw();
+//        /** 녹색에너지연구원 */
+//        greenEICrawling.craw();
+//
+//        /** (사)한국신,재생에너지협회 */
+//        knreaCrawling.craw();
+//
+//        /** 안산환경재단 */
+//        ansanCrawling.craw();
+//
+//        /** 스마트제조혁신추진단 */
+//        smartFactoryCrawling.craw();
+//
+//        /** 중소기업중앙회 - 스마트공장 */
+//        kbizFactoryCrawling.craw();
+//
+//        /** 한국생산기술연구원*/
+//        kitechCrawling.craw();
+//
+//        /** 환경부 */
+//        ministryCrawling.craw();
+//
+//        /** 에너지기술평가원*/
+//        ketepCrawling.craw();
+//
+//        /** 정보통신산업진흥원*/
+//        nipaCrawling.craw();//e
+//
+//        /** 한국에너지공단 */
+//        knrecCrawling.craw();
+//
+//        /** 한국환경산업기술원 */
+//        koneticCrawling.craw();
+//
+//        /** 캠틱종합기술원 */
+//        camticCrawling.craw();
+//
+//        /** 경북구미강소특구*/
+//        kumohCrawling.craw();
+//
+//        /** 연구개발특구진흥재단 */
+//        innopolisCrawling.craw();
+//
+//        /** 한국산업단지공단*/
+//        kicoxCrawling.craw();
+//
+//        /** 강릉과학산업진흥원*/
+//        gsipaACrawling.craw();
+//
+//        /** 한국산업인력공단 */
+//        hrdkoreaCrawling.craw();
+//
+//        crawlingMapper.removeLNew();
+//        crawlingMapper.removeRNew();
+
     }
 
 
@@ -625,6 +965,8 @@ public class CrawlingScheduler {
         visitKoreaCrawling.craw();
 
 
+
+
         System.out.println("--------그룹6 크롤링완료---------");
     }
 
@@ -715,35 +1057,8 @@ public class CrawlingScheduler {
     @Scheduled(cron ="0 40 0 * * ?")
     public void CrawlingHyunDai() throws InterruptedException{
 
-        /** 한국환경공단*/
-        kecoCrawling.craw();
-
-
-        /** 경기환경에너지진흥원 */
-        ggenergyCrawling.craw();
-
-        /** 충남에너지센터   */
-        cnEnergyCrawling.craw();
-
-        /** 당진에너지센터 */
-        djEnercyCrawling.craw();
-
-        /*  한국화학융합시험연구원 */
-        koreaTrCrawling.craw();
-        /** 녹색에너지연구원 */
-        greenEICrawling.craw();
-
-        /** (사)한국신,재생에너지협회 */
-        knreaCrawling.craw();
-
-        /** 안산환경재단 */
-        ansanCrawling.craw();
-
-        /** 스마트제조혁신추진단 */
-        smartFactoryCrawling.craw();
-
-        /** 중소기업중앙회 - 스마트공장 */
-        kbizFactoryCrawling.craw();
+        /** 한국에너지공단 */
+        knrecCrawling.craw();
 
         /** 한국생산기술연구원*/
         kitechCrawling.craw();
@@ -754,20 +1069,8 @@ public class CrawlingScheduler {
         /** 에너지기술평가원*/
         ketepCrawling.craw();
 
-        /** 정보통신산업진흥원*/
-        nipaCrawling.craw();//e
-
-        /** 한국에너지공단 */
-        knrecCrawling.craw();
-
         /** 한국환경산업기술원 */
         koneticCrawling.craw();
-
-        /** 캠틱종합기술원 */
-        camticCrawling.craw();
-
-        /** 경북구미강소특구*/
-        kumohCrawling.craw();
 
         /** 연구개발특구진흥재단 */
         innopolisCrawling.craw();
@@ -775,11 +1078,20 @@ public class CrawlingScheduler {
         /** 한국산업단지공단*/
         kicoxCrawling.craw();
 
-        /** 강릉과학산업진흥원*/
-        gsipaACrawling.craw();
+        /* 한국EMS협회*/
+        bemsCrawling.craw();
 
-        /** 한국산업인력공단 */
-        hrdkoreaCrawling.craw();
+        /* ESCO협회*/
+        escoCrawling.craw();
+
+        /* 한국에너지중소혁신기업협회 */
+        kemiaCrawling.craw();
+
+        /* 에너지공단 */
+          energyCrawling.craw();
+
+        /* 화성민간여구개발협의회 */
+        rndBizCrawling.craw();
     }
 
     @Scheduled(cron = "0 0 1 * * ?")
