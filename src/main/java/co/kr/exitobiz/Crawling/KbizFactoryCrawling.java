@@ -60,6 +60,7 @@ public class KbizFactoryCrawling implements Crawling {
 
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -87,11 +88,11 @@ public class KbizFactoryCrawling implements Crawling {
 
             for (int i = page; i > 0; i--) {
                 driver.get(url + i);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"contents\"]/div/div[4]/table/tbody/tr"));
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"contents\"]/div/div[2]/table/tbody/tr"));
                 Thread.sleep(1000);
                 for (int j = 1; j <= list.size(); j++) {
                     try {
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/div[4]/table/tbody/tr["+j+"]/td[2]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/div[2]/table/tbody/tr["+j+"]/td[2]/span"));
 
                             Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
                             Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
@@ -104,7 +105,7 @@ public class KbizFactoryCrawling implements Crawling {
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
                             String url = titleXpath.getAttribute("onclick");
-                            String bodyUrl = "https://www.kbiz.or.kr/ko/contents/bbs/view.do?seq="+url.replace("goView(","").replace(", 'Y')","") + "&topFixYn=Y&mnSeq=334";
+                            String bodyUrl = "https://www.kbiz.or.kr/ko/contents/bbs/view.do?seq="+url.split(",")[0].replace("goView(","") + "&topFixYn=N&pgSz=10&mnSeq=334";
                             vo.setTargetName("중소기업중앙회 - 스마트공장");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C82");
@@ -129,8 +130,8 @@ public class KbizFactoryCrawling implements Crawling {
             /* 빈 리스트가 아니면 크레이트 */
             if (!supportVos.isEmpty()) {
                 try {
-//                    crawlingMapper.create(supportVos);
-//                    crawlingMapper.createMaster(supportVo);
+                    crawlingMapper.create(supportVos);
+                    crawlingMapper.createMaster(supportVo);
                 } catch (Exception e) {
                     supportVo.setErrorYn("Y");
                     crawlingMapper.createMaster(supportVo);

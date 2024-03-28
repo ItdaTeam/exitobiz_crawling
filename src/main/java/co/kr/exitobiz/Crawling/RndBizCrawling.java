@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class CamticCrawling implements Crawling {
+public class RndBizCrawling implements Crawling {
 
     @Autowired
     CrawlingMapper crawlingMapper;
@@ -29,12 +29,11 @@ public class CamticCrawling implements Crawling {
     Environment environment;
 
     /*
-     * 캠틱종합기술원
-     * http://www.camtic.or.kr
+     * 화성민간여구개발협의회
+     * https://data.rndbiz.or.kr/
      *  */
-
-    private String url = "http://www.camtic.or.kr/camtic/news/commonBoard.do?categoryKey=business";
-    private int page = 1; // 1 페이지만 크롤링
+    private String url = "https://data.rndbiz.or.kr/bbs/board.php?bo_table=Task&page=";
+    private int page = 3;
 
     @Override
     public void setPage(int page) {
@@ -52,8 +51,8 @@ public class CamticCrawling implements Crawling {
         }
 
         SupportVo supportVo = new SupportVo();
-        supportVo.setTitle("캠틱종합기술원");
-        supportVo.setUrl("http://www.camtic.or.kr");
+        supportVo.setTitle("화성민간여구개발협의회");
+        supportVo.setUrl("https://data.rndbiz.or.kr/");
         supportVo.setLocCode("C82");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
@@ -61,7 +60,7 @@ public class CamticCrawling implements Crawling {
 
         ChromeOptions options = new ChromeOptions();
 //        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("--headless", "--disable-gpu","-no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
         options.addArguments("lang=ko_KR");
@@ -74,55 +73,41 @@ public class CamticCrawling implements Crawling {
                     //.usingPort(5000)
                     .usingAnyFreePort()
                     .build();
-
             service.start();
             try{
                 driver = new ChromeDriver(service, options);
             }catch(Exception e){
-
             }
-
             List<SupportVo> supportVos = new ArrayList<>();
-
-
-
             for (int i = page; i > 0; i--) {
-                driver.get(url);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"tableBody\"]/tr"));
+                driver.get(url + i);
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"fboardlist\"]/div[2]/table/tbody/tr"));
                 Thread.sleep(1000);
                 for (int j = 1; j <= list.size(); j++) {
                     try {
-                            String status = driver.findElement(By.xpath("//*[@id=\"tableBody\"]/tr["+j+"]/td[4]")).getText();
-                            if(status.equals("진행 중")){
-                                WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"tableBody\"]/tr["+j+"]/td[2]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div[2]/table/tbody/tr["+j+"]/td[3]/div/a"));
+                            Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
+                            Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
+                            ArrayList<String> typePatternArray = new ArrayList<String>();
+                            while (typeMatcher.find()) {
+                                typePatternArray.add(typeMatcher.group());
+                            }
+                            SupportVo vo = new SupportVo();
+                            String title = titleXpath.getText();
+                            String[] subUrlList = titleXpath.getAttribute("href").split("&");
+                            String url = subUrlList[0]+"&"+subUrlList[1];
+                            vo.setTargetName("화성민간여구개발협의회");
+                            vo.setTargetCatName("-");
+                            vo.setLocCode("C82");
+                            vo.setSiTitle(title);
+                            vo.setMobileUrl(url);
+                            vo.setPcUrl("-");
 
-                                Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
-                                Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
-                                ArrayList<String> typePatternArray = new ArrayList<String>();
-
-                                while (typeMatcher.find()) {
-                                    typePatternArray.add(typeMatcher.group());
-                                }
-
-                                SupportVo vo = new SupportVo();
-                                String title = titleXpath.getText();
-                                String bodyUrl = "http://www.camtic.or.kr/camtic/news/view.do?boardArticleId="+titleXpath.getAttribute("onClick").replace("fn_detailBoard(","").replace(")","")+"&category=business";
-
-                                vo.setTargetName("캠틱종합기술원");
-                                vo.setTargetCatName("-");
-                                vo.setLocCode("C82");
-                                vo.setSiTitle(title);
-                                vo.setMobileUrl(bodyUrl);
-                                vo.setPcUrl("-");
-
-                                HashMap<String, String> params = new HashMap<>();
-                                params.put("title", title);
-
-                                boolean isUrl = crawlingMapper.isUrl(params);
-                                if (!isUrl) {
-                                    supportVos.add(vo);
-                                    System.out.println("toString :" + vo.toString());
-                                }
+                            HashMap<String, String> params = new HashMap<>();
+                            params.put("title", title);
+                            boolean isUrl = crawlingMapper.isUrl(params);
+                            if (!isUrl) {
+                                supportVos.add(vo);
                             }
                     } catch (Exception e) {
                         supportVo.setErrorYn("Y");

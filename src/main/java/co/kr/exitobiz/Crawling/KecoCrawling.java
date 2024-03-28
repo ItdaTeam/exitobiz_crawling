@@ -33,7 +33,7 @@ public class KecoCrawling implements Crawling {
      * https://www.keco.or.kr/
      *  */
 
-    private String url = "https://www.keco.or.kr/kr/open/communityid/1/list.do?p=";
+    private String url = "https://www.keco.or.kr/web/lay1/bbs/S1T10C108/A/18/list.do?rows=10&cpage=";
     private int page = 5;
 
     @Override
@@ -60,6 +60,7 @@ public class KecoCrawling implements Crawling {
 
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","-no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -86,15 +87,15 @@ public class KecoCrawling implements Crawling {
 
             for (int i = page; i > 0; i--) {
                 driver.get(url + i);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"tbBoard\"]/tbody/tr"));
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"sub\"]/div[2]/div[1]/table/tbody/tr"));
                 Thread.sleep(1000);
                 for (int j = 1; j <= list.size(); j++) {
                     try {
                         // 진행중인 것만 가져오기.
-                        WebElement no = driver.findElement(By.xpath("//*[@id=\"tbBoard\"]/tbody/tr["+j+"]/td[1]"));
+                        WebElement no = driver.findElement(By.xpath("//*[@id=\"sub\"]/div[2]/div[1]/table/tbody/tr["+j+"]/td[1]"));
 
-                        if(!no.getText().equals("공지")){
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"tbBoard\"]/tbody/tr["+j+"]/td[2]/a"));
+                        if(!no.getText().equals("")){
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"sub\"]/div[2]/div[1]/table/tbody/tr["+j+"]/td[2]/a"));
 
 
 
@@ -109,7 +110,8 @@ public class KecoCrawling implements Crawling {
                             SupportVo vo = new SupportVo();
 
                             String title = titleXpath.getText();
-                            String url = "https://www.keco.or.kr/kr/open/communityid/1/view.do?idx=" + titleXpath.getAttribute("href").replace("javascript:getView(","").replace(");","");
+                            String subUrl = titleXpath.getAttribute("onclick").replace("location.href='./","").replace("'","");
+                            String url = "https://www.keco.or.kr/web/lay1/bbs/S1T10C108/A/18/" + subUrl.substring(0,subUrl.indexOf("&"));
                             vo.setTargetName("한국환경공단");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C02");

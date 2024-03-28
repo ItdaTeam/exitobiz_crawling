@@ -3,6 +3,7 @@ package co.kr.exitobiz.Crawling;
 import co.kr.exitobiz.Mappers.Api.CrawlingMapper;
 import co.kr.exitobiz.Vo.Cms.SupportVo;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,7 +34,7 @@ public class KoneticCrawling implements Crawling {
      * https://www.keiti.re.kr
      *  */
 
-    private String url = "https://www.keiti.re.kr/site/keiti/ex/board/List.do?cbIdx=277&pageIndex=";
+    private String url = "https://www.konetic.or.kr/user/J/JB/JB001_L01.do";
     private int page = 3; // 3 페이지만 크롤링
 
     @Override
@@ -53,13 +54,14 @@ public class KoneticCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국환경산업기술원");
-        supportVo.setUrl("https://www.keiti.re.kr");
+        supportVo.setUrl("https://www.konetic.or.kr/");
         supportVo.setLocCode("C82");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -86,14 +88,15 @@ public class KoneticCrawling implements Crawling {
 
 
             for (int i = page; i > 0; i--) {
-                driver.get(url+i);
-                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"BbsContentFVo\"]/div[2]/ul/li"));
+                driver.get(url);
 
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("fnGoPage('"+i+"')");
+                List<WebElement> list = driver.findElements(By.xpath("//*[@id=\"skip-content\"]/div[2]/div/div[3]/div/ul/li"));
                 Thread.sleep(1000);
                 for (int j = 1; j <= list.size(); j++) {
                     try {
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"BbsContentFVo\"]/div[2]/ul/li["+j+"]/div/a/span[3]"));
-                            WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"BbsContentFVo\"]/div[2]/ul/li[1]/div/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"skip-content\"]/div[2]/div/div[3]/div/ul/li["+j+"]/div/a"));
 
 //                            Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
 //                            Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
@@ -105,7 +108,8 @@ public class KoneticCrawling implements Crawling {
 
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
-                            String url = urlXpath.getAttribute("href");
+                            String onClickStr = titleXpath.getAttribute("onclick");
+                            String url = "https://www.konetic.or.kr/user/J/JB/JB001_R01.do?q=foot&cntnsId=JB000001&cntnsSn=" + onClickStr.substring(10, onClickStr.indexOf("'",10));
 //                            String bodyUrl = "https://www.konetic.or.kr/user/J/JB/JB001_R01.do?cntnsSn=" +url.replace("fnDetail('","").replace("')","");
 
                             vo.setTargetName("한국환경산업기술원");
