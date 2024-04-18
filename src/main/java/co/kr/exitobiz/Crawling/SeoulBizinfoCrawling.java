@@ -125,7 +125,7 @@ public class SeoulBizinfoCrawling implements Crawling {
                 JSONObject obj = (JSONObject) jArray.get(i);
 
 //                driver.get(url + i);
-                Thread.sleep(1000);
+//                Thread.sleep(1000);
 //                for(int j=1; j<16; j++) {
 //                    WebElement dateXpath = driver.findElement(By.xpath("//*[@id=\"articleSearchForm\"]/div[3]/div[3]/table/tbody/tr["+ j +"]/td[6]"));
 //                    String date = dateXpath.getText();
@@ -256,12 +256,12 @@ public class SeoulBizinfoCrawling implements Crawling {
                             str.replaceAll(v -> v.equals("장애인기업") ? "장애인" : v);
 
                             if(str.contains("마을") || str.contains("장애인") || str.contains("청년로컬크리에이터") || str.contains("1인기업") || str.contains("크리에이터") || str.contains("1인 미디어") || str.contains("사회적협동조합")){
-                                if(companyType == null) companyType = "07";
+                                if(companyType == null) companyType = "07"; //기타
                                 else companyType += ",07";
                             }
 
                             if(apiTrgetNm.contains("중소") || apiHashtags.contains("중소") || apiTrgetNm.contains("스타트업") || apiHashtags.contains("스타트업") || apiTrgetNm.contains("창업") || apiHashtags.contains("창업") || str.stream().filter(v -> v.substring(v.length()-2).equals("기업")).count() > 0){
-                                if(companyType == null) companyType = "02";
+                                if(companyType == null) companyType = "02"; //중소
                                 else companyType += ",02";
                             }
                             if(apiTrgetNm.contains("소상공인") || apiTrgetNm.contains("소공인") || apiHashtags.contains("소상공인") || apiHashtags.contains("소공인")){
@@ -292,12 +292,13 @@ public class SeoulBizinfoCrawling implements Crawling {
                             vo.setSiTitle((String) obj.get("pblancNm"));
                             vo.setMobileUrl("https://www.bizinfo.go.kr" + obj.get("pblancUrl"));
 
-
-                            String strDate = obj.get("reqstBeginEndDe").toString().split(" ~ ")[1];
-                            SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-                            SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            Date formatDate = dtFormat.parse(strDate);
-                            vo.setSiEndDt(newDtFormat.format(formatDate));
+                            if(obj.get("reqstBeginEndDe").toString().split(" ~ ").length > 1){
+                                String strDate = obj.get("reqstBeginEndDe").toString().split(" ~ ")[1];
+                                SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+                                SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                Date formatDate = dtFormat.parse(strDate);
+                                vo.setSiEndDt(newDtFormat.format(formatDate));
+                            }
 
                             vo.setHashtags((String) obj.get("hashtags"));
                             vo.setBusinessType(businessType);
@@ -317,7 +318,7 @@ public class SeoulBizinfoCrawling implements Crawling {
     //                }
 //                }
 
-                Thread.sleep(500);
+//                Thread.sleep(500);
             }
 
             /* 빈 리스트가 아니면 크레이트 */
