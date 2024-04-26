@@ -3,6 +3,7 @@ package co.kr.exitobiz.Crawling;
 import co.kr.exitobiz.Mappers.Api.CrawlingMapper;
 import co.kr.exitobiz.Vo.Cms.SupportVo;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -35,8 +36,8 @@ public class SeoulPiportalCrawling implements Crawling {
      * https://piportal.korea.ac.kr/
      *  */
 
-    private String url = "https://piportal.korea.ac.kr/front/board/list.do?sep_cd=NOTICE&current_page_no=";
-    private int page = 1;
+    private String url = "https://kustartup.korea.ac.kr/program/program.do";
+    private int page = 2;
 
     @Override
     public void setPage(int page) {
@@ -64,7 +65,7 @@ public class SeoulPiportalCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("고려대학교크림슨창업지원단");
-        supportVo.setUrl("https://piportal.korea.ac.kr/");
+        supportVo.setUrl("https://kustartup.korea.ac.kr/");
         supportVo.setLocCode("C02");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
@@ -82,18 +83,18 @@ public class SeoulPiportalCrawling implements Crawling {
 
             for (int i=page; i>0; i--) {
 
-                driver.get(url + i);
+                driver.get(url);
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("goPage("+i+")");
                 Thread.sleep(1000);
-                List <WebElement> col = driver.findElements(By.xpath("/html/body/div[3]/div/div/div[2]/div[2]/table/tbody/tr"));
+                List <WebElement> col = driver.findElements(By.xpath("/html/body/div[3]/form/div/div/div[2]/div[2]/div"));
 
                 int k = col.size();
 
                 for(int j=1; j<k; j++) {
                         try {
 
-                            WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[3]/div/div/div[2]/div[2]/table/tbody/tr["+ j +"]/td[2]/a/span/span"));
-                            WebElement urlXpath = driver.findElement(By.xpath("/html/body/div[3]/div/div/div[2]/div[2]/table/tbody/tr["+ j +"]/td[2]/a"));
-
+                            WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[3]/form/div/div/div[2]/div[2]/div["+j+"]/div[2]/div[2]"));
                             Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
                             Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
                             ArrayList<String> typePatternArray = new ArrayList<String>();
@@ -105,8 +106,8 @@ public class SeoulPiportalCrawling implements Crawling {
                             SupportVo vo = new SupportVo();
 
                             String title = titleXpath.getText();
-                            String url = urlXpath.getAttribute("href");
-                            String bodyurl = "https://piportal.korea.ac.kr/front/board/view.do;" + url.substring(url.lastIndexOf("?"),url.length());
+                            String url = titleXpath.getAttribute("onclick");
+                            String bodyurl = "https://kustartup.korea.ac.kr/program/programView.do" + url.substring(url.lastIndexOf("?"),url.length()-1);
 
                             vo.setTargetName("고려대학교크림슨창업지원단");
                             vo.setTargetCatName("-");

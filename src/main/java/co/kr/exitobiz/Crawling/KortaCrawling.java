@@ -106,7 +106,8 @@ public class KortaCrawling implements Crawling {
 
                         SupportVo vo = new SupportVo();
                         String title = titleXpath.getText();
-                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?dtlBizId=" +  titleXpath.getAttribute("href").replace("javascript:fn_selectBizMntInfoDetail('","").replace("','N');","").replace("','Y');","");
+                        String href = titleXpath.getAttribute("href");
+                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?" +  href.substring(href.indexOf("&"), href.length()-3);
 
                         vo.setTargetName("KOTRA24");
                         vo.setTargetCatName("-");
@@ -143,7 +144,8 @@ public class KortaCrawling implements Crawling {
 
                         SupportVo vo = new SupportVo();
                         String title = titleXpath.getText();
-                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?dtlBizId=" +  titleXpath.getAttribute("href").replace("javascript:fn_selectBizMntInfoDetail('","").replace("','N');","").replace("','Y');","");
+                        String href = titleXpath.getAttribute("href");
+                        String bodyUrl = "https://www.kotra.or.kr/subList/20000020753/subhome/bizAply/selectBizMntInfoDetail.do?" +  href.substring(href.indexOf("&"), href.length()-3);
 
                         vo.setTargetName("KOTRA24");
                         vo.setTargetCatName("-");
