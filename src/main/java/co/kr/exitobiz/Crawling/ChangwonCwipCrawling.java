@@ -51,6 +51,7 @@ public class ChangwonCwipCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -83,7 +84,7 @@ public class ChangwonCwipCrawling implements Crawling {
                 Thread.sleep(1000);
                 for(int j=1; j<16; j++) {
                         try {
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr[" + j + "]/td[2]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr[" + j + "]/td[2]/div/a"));
                             SupportVo vo = new SupportVo();
                             String bodyurl = titleXpath.getAttribute("href");
                             String title = titleXpath.getText();
