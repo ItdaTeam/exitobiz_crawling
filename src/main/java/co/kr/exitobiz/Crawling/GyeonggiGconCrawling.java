@@ -34,8 +34,8 @@ public class GyeonggiGconCrawling implements Crawling {
      * https://www.gcon.or.kr
      *  */
 
-    private String url = "https://www.gcon.or.kr/busiNotice?rowCnt=10&menuId=MENU02369&schType=0&schText=&boardStyle=&categoryId=&continent=&country=&upDown=0&pageNum=";
-    private int page = 1;
+    private String url = "https://www.gcon.or.kr/gcon/business/gconNotice/list.do?menuNo=200061&pageIndex=";
+    private int page = 2;
 
     @Override
     public void setPage(int page) {
@@ -52,6 +52,7 @@ public class GyeonggiGconCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -87,14 +88,15 @@ public class GyeonggiGconCrawling implements Crawling {
                 for(int j=1; j<11; j++) {
                         try {
 
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/div[1]/div[2]/table/tbody/tr["+ j +"]/td[2]/a[2]"));
-                            WebElement typeXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div/div[1]/div[2]/table/tbody/tr["+ j +"]/td[2]/a[1]/span"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"content\"]/div[2]/table/tbody/tr["+j+"]/td[3]"));
+                            WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"content\"]/div[2]/table/tbody/tr["+j+"]/td[3]/a[1]"));
+                            WebElement typeXpath = driver.findElement(By.xpath("//*[@id=\"content\"]/div[2]/table/tbody/tr["+j+"]/td[2]/strong"));
 
                             if(typeXpath.getText().equals("접수중")){
 
                                 SupportVo vo = new SupportVo();
-                                String title = titleXpath.getAttribute("title");
-                                String bodyurl = titleXpath.getAttribute("href");
+                                String title = titleXpath.getText();
+                                String bodyurl = urlXpath.getAttribute("href").substring(0,urlXpath.getAttribute("href").lastIndexOf("&"));
 
                                 vo.setTargetName("경기콘텐츠진흥원");
                                 vo.setTargetCatName("-");
