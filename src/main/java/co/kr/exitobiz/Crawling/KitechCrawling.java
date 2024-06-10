@@ -53,13 +53,14 @@ public class KitechCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("한국생산기술연구원");
-        supportVo.setUrl("https://www..kitech.re.kr");
+        supportVo.setUrl("https://www.kitech.re.kr");
         supportVo.setLocCode("C82");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
 
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");

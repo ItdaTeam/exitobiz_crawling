@@ -32,8 +32,8 @@ public class SbscCrawling implements Crawling {
     *
     *  */
 
-    private String url = "https://sbsc.seoul.go.kr/fe/support/seoul/NR_list.do?bbsCd=1&bbsSeq=&searchVals=&bbsGrpCds_all=on&orgCd=&currentPage=";
-    private int page = 1;
+    private String url = "https://sbsc.sba.kr/front/companyInfo/business.do?lcategory=&pageIndex=";
+    private int page = 5;
 
     @Override
     public void setPage(int page) {
@@ -50,6 +50,7 @@ public class SbscCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -57,7 +58,7 @@ public class SbscCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("서울기업지원센터");
-        supportVo.setUrl("https://sbsc.seoul.go.kr/");
+        supportVo.setUrl("https://sbsc.sba.kr/");
         supportVo.setLocCode("C02");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");
@@ -81,27 +82,20 @@ public class SbscCrawling implements Crawling {
                 for (int i=page; i>0; i--) {
                     driver.get(url + i);
 
-                    for(int j=1; j<11; j++) {
-                        WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/div/div[2]/table/tbody/tr["+j+"]/td[2]/a"));
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/div/div[2]/table/tbody/tr["+j+"]/td[2]"));
-                        WebElement targetTypeXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/div/div[2]/table/tbody/tr["+j+"]/td[3]"));
-                        WebElement endTimeXpath = driver.findElement(By.xpath("//*[@id=\"container\"]/div/div[2]/table/tbody/tr["+j+"]/td[4]"));
+                    for(int j=2; j<=11; j++) {
 
-                        String title = titleXpath.getAttribute("title");
-                        String targettype = targetTypeXpath.getText();
-                        String endtime = endTimeXpath.getText();
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"listForm\"]/div/div[2]/table/tbody/tr["+j+"]/td[5]/a"));
 
-                        String url = urlXpath.getAttribute("onclick");
-                        String intStr = url.replaceAll("[^0-9]", "");
 
-                        String bodyurl = "https://sbsc.seoul.go.kr/fe/support/seoul/NR_view.do?bbsCd=1&bbsSeq=" + intStr;
+                        String title = titleXpath.getText();
+                        String url = titleXpath.getAttribute("href");
 
                         SupportVo vo =new SupportVo();
                         vo.setTargetName("서울기업지원센터");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C02");
                         vo.setSiTitle(title);
-                        vo.setMobileUrl(bodyurl);
+                        vo.setMobileUrl(url);
                         vo.setPcUrl("-");
 
                         HashMap<String, String> params = new HashMap<>();

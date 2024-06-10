@@ -53,7 +53,7 @@ public class KbizFactoryCrawling implements Crawling {
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("중소기업중앙회 - 스마트공장");
-        supportVo.setUrl("https://www..kbiz.or.kr");
+        supportVo.setUrl("https://www.kbiz.or.kr");
         supportVo.setLocCode("C82");
         supportVo.setActiveYn("Y");
         supportVo.setErrorYn("N");

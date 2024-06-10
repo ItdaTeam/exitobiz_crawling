@@ -51,6 +51,7 @@ public class KitaCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -84,22 +85,20 @@ public class KitaCrawling implements Crawling {
 
                 for(int j=1; j<21; j++) {
                     try {
-                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div[3]/div[2]/ul/li["+ j +"]/a"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"boardNoticeForm\"]/div/div[2]/div/ul/li["+j+"]/div[2]/a"));
                         SupportVo vo = new SupportVo();
-                        String url = titleXpath.getAttribute("href").replaceAll("javascript:fn_detail\\(1,", "").replaceAll("\\)" , "").replaceAll(" " ,"");
-
-                        String bodyurl = "https://www.kita.net/asocGuidance/notice/noticeDetail.do?pageIndex=" + i + "&nIndex=" + url;
+                        String onclick = titleXpath.getAttribute("onclick");
+                        String url = "https://www.kita.net/board/notice/noticeDetail.do?postIndex=" + titleXpath.getAttribute("onclick").substring(onclick.indexOf("'")+1, onclick.lastIndexOf("'"));
                         String title = titleXpath.getText();
 
                         vo.setTargetName("한국무역협회");
                         vo.setTargetCatName("-");
                         vo.setLocCode("C82");
                         vo.setSiTitle(title);
-                        vo.setMobileUrl(bodyurl);
+                        vo.setMobileUrl(url);
                         vo.setPcUrl("-");
 
                         HashMap<String, String> params = new HashMap<>();
-//                            params.put("bodyurl", bodyurl);
                         params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
