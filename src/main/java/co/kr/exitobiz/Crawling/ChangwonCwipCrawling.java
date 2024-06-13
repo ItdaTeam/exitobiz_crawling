@@ -82,7 +82,7 @@ public class ChangwonCwipCrawling implements Crawling {
             for (int i=page; i>0; i--) {
                 driver.get(url+i);
                 Thread.sleep(1000);
-                for(int j=1; j<16; j++) {
+                for(int j=1; j<13; j++) {
                         try {
                             WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/div/table/tbody/tr[" + j + "]/td[2]/div/a"));
                             SupportVo vo = new SupportVo();

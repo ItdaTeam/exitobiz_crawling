@@ -83,7 +83,7 @@ public class KitaCrawling implements Crawling {
                 driver.get(url + i);
                 Thread.sleep(1000);
 
-                for(int j=1; j<21; j++) {
+                for(int j=1; j<11; j++) {
                     try {
                         WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"boardNoticeForm\"]/div/div[2]/div/ul/li["+j+"]/div[2]/a"));
                         SupportVo vo = new SupportVo();
