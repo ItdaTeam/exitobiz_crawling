@@ -34,7 +34,7 @@ public class KpipaCrawling implements Crawling {
      * https://www.kpipa.or.kr/
      *  */
 
-    private String url = "https://www.kpipa.or.kr/info/newsList.do?board_id=1&article_id=&pageInfo.page=";
+    private String url = "https://www.kpipa.or.kr/p/g1_2?page=";
     private int page = 1;
 
     @Override
@@ -52,6 +52,7 @@ public class KpipaCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -78,20 +79,18 @@ public class KpipaCrawling implements Crawling {
             driver = new ChromeDriver(service,options);
 
             List<SupportVo> supportVos = new ArrayList<>();
-
             for (int i=page; i>0; i--) {
 
                 driver.get(url + i);
                 Thread.sleep(1000);
-                for(int j=1; j<11; j++) {
+                for(int j=2 ;j<17; j++) {
                     try {
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"contents\"]/div[3]/table/tbody/tr["+ j +"]/td[3]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"fboardlist\"]/ul/li["+j+"]/div[2]/a"));
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
-                            String url = titleXpath.getAttribute("onclick").replaceAll("goView","").replaceAll("\\(","").replaceAll("\\)","").replaceAll(" ","");
-                            String urlTemp[] = url.split(",");
-                            String baseurl = "https://www.kpipa.or.kr/info/newsView.do?board_id=1&article_id=";
-                            String bodyurl = baseurl + urlTemp[0] + "&list_no=" + urlTemp[1];
+                            String url = titleXpath.getAttribute("href");
+
+                            String bodyurl =url.substring(0,url.lastIndexOf("?"));
 
                             vo.setTargetName("한국출판문화산업진흥원");
                             vo.setTargetCatName("-");

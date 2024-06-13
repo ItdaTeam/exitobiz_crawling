@@ -34,9 +34,8 @@ public class BusanStartupCrawling implements Crawling {
      * http://busanstartup.kr/
      *  */
 
-    private String url = "http://busanstartup.kr/web/bsnBusiness/list.do?mId=39&page=";
+    private String url = "https://busanstartup.kr/biz_sup?deadline=N&mcode=biz02&deadline=N#";
     private int page = 1;
-
     @Override
     public void setPage(int page) {
         this.page = page;
@@ -52,6 +51,7 @@ public class BusanStartupCrawling implements Crawling {
             throw new RuntimeException("Not found");
         }
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -83,18 +83,17 @@ public class BusanStartupCrawling implements Crawling {
                 driver.get(url+i);
                 Thread.sleep(1000);
 
-                List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"cms_board_article\"]/div[4]/ul/li"));
+                List <WebElement> list = driver.findElements(By.xpath("//*[@id=\"biz_list\"]/li"));
 
                 // 공고가 가변적이기 때문에 리스트 사이즈 구해서 for문 돌리기
                 int k = list.size();
                 for(int j=1; j<=k; j++) {
                         try {
 
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"cms_board_article\"]/div[4]/ul/li["+ j +"]/span[3]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"biz_list\"]/li["+j+"]/a"));
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
-                            String param = titleXpath.getAttribute("href").substring(titleXpath.getAttribute("href").lastIndexOf("="),titleXpath.getAttribute("href").length());
-                            String bodyurl = "http://busanstartup.kr/web/bsnBusiness/view.do?mId=39&busiCode" + param;
+                            String bodyurl = titleXpath.getAttribute("href");
 
                             vo.setTargetName("부산창업포탈");
                             vo.setTargetCatName("-");

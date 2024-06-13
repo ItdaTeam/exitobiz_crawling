@@ -55,6 +55,7 @@ public class SeoulPiportalCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -87,14 +88,14 @@ public class SeoulPiportalCrawling implements Crawling {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 js.executeScript("goPage("+i+")");
                 Thread.sleep(1000);
-                List <WebElement> col = driver.findElements(By.xpath("/html/body/div[3]/form/div/div/div[2]/div[2]/div"));
+                List <WebElement> col = driver.findElements(By.xpath("//*[@id=\"frm\"]/div/div/div[2]/div[2]/div"));
 
                 int k = col.size();
 
                 for(int j=1; j<k; j++) {
                         try {
 
-                            WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[3]/form/div/div/div[2]/div[2]/div["+j+"]/div[2]/div[2]"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"frm\"]/div/div/div[2]/div[2]/div["+j+"]/div[2]/div[2]"));
                             Pattern typePattern = Pattern.compile("\\[(.*?)\\]"); // 대괄호안에 문자 뽑기
                             Matcher typeMatcher = typePattern.matcher(titleXpath.getText());
                             ArrayList<String> typePatternArray = new ArrayList<String>();

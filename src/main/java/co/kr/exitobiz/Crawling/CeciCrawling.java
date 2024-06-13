@@ -37,6 +37,7 @@ public class CeciCrawling {
         }
 
         ChromeOptions options = new ChromeOptions();
+        //options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -65,19 +66,18 @@ public class CeciCrawling {
                 for(int j=1; j<9; j++) {
                     try {
 
-                        WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[3]/section/div[2]/div[4]/table/tbody/tr["+ j +"]/td[3]/a"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"list_body\"]/tr["+j+"]/td[3]/a"));
 
                         StringBuilder stringBuilder = new StringBuilder();
 
                         String title = titleXpath.getText();
                         String targetUrl = titleXpath.getAttribute("onclick").replaceAll("fnDetailPage","").replaceAll("\\(","").replaceAll("\\)","").replaceAll("\"","");
                         String[] urlTemp = targetUrl.split(",");
-                        stringBuilder.append(dto.getBaseUrl()).append("/custom/notice_view.do?no=").append(urlTemp[0]);
-
+                        String bodyUrl = dto.getBaseUrl() + "/custom/notice_view.do?no="+urlTemp[0]+"&div_code=&rnum="+urlTemp[1] +"&pn=1&kind=my&sPtime=now&sMenuType=00040001&pagePerContents=6";
                         SupportVo vo = new SupportVo(dto.getTargetName(), "-", dto.getLocCode(), title, stringBuilder.toString(), "-");
                         vo.setTargetName(dto.getTargetName());
                         HashMap<String, String> params = new HashMap<>();
-//                        params.put("bodyurl", stringBuilder.toString());
+                        params.put("bodyurl", bodyUrl);
                         params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
