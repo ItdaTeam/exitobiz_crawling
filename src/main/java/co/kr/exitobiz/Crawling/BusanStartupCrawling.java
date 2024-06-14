@@ -90,7 +90,8 @@ public class BusanStartupCrawling implements Crawling {
                 for(int j=1; j<=k; j++) {
                         try {
 
-                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"biz_list\"]/li["+j+"]/a"));
+                            WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"biz_list\"]/li["+j+"]/a/span[2]/span[1]/span"));
+
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
                             String bodyurl = titleXpath.getAttribute("href");
