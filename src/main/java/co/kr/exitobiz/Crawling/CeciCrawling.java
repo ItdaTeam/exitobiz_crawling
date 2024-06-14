@@ -76,6 +76,7 @@ public class CeciCrawling {
                         String bodyUrl = dto.getBaseUrl() + "/custom/notice_view.do?no="+urlTemp[0]+"&div_code=&rnum="+urlTemp[1] +"&pn=1&kind=my&sPtime=now&sMenuType=00040001&pagePerContents=6";
                         SupportVo vo = new SupportVo(dto.getTargetName(), "-", dto.getLocCode(), title, stringBuilder.toString(), "-");
                         vo.setTargetName(dto.getTargetName());
+                        vo.setMobileUrl(bodyUrl);
                         HashMap<String, String> params = new HashMap<>();
                         params.put("bodyurl", bodyUrl);
                         params.put("title",title);

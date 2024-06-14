@@ -54,6 +54,7 @@ public class SeoulSnuCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--headless", "--disable-gpu","--no-sandbox");
         options.addArguments("window-size=1920x1080");
         options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
@@ -99,12 +100,10 @@ public class SeoulSnuCrawling implements Crawling {
                         vo.setTargetCatName("-");
                         vo.setLocCode("C02");
                         vo.setSiTitle(title);
-                        vo.setMobileUrl(url);
+                        vo.setMobileUrl(url.substring(0,url.indexOf("?")+1).concat(url.substring(url.indexOf("&"))));
                         vo.setPcUrl("-");
 
-
                         HashMap<String, String> params = new HashMap<>();
-//                        params.put("bodyurl", url);
                         params.put("title",title);
                         boolean isUrl = crawlingMapper.isUrl(params);
                         if (!isUrl) {
