@@ -91,20 +91,21 @@ public class BusanStartupCrawling implements Crawling {
                         try {
 
                             WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"biz_list\"]/li["+j+"]/a/span[2]/span[1]/span"));
-
+                            WebElement urlXpath = driver.findElement(By.xpath("//*[@id=\"biz_list\"]/li["+j+"]/a"));
                             SupportVo vo = new SupportVo();
                             String title = titleXpath.getText();
-                            String bodyurl = titleXpath.getAttribute("href");
+                            String url  = urlXpath.getAttribute("href");
+                            String bodyUrl = url.substring(0,url.indexOf("?"));
 
                             vo.setTargetName("부산창업포탈");
                             vo.setTargetCatName("-");
                             vo.setLocCode("C051");
                             vo.setSiTitle(title);
-                            vo.setMobileUrl(bodyurl);
+                            vo.setMobileUrl(bodyUrl);
                             vo.setPcUrl("-");
 
                             HashMap<String, String> params = new HashMap<>();
-//                            params.put("bodyurl", bodyurl);
+                            params.put("bodyurl", bodyUrl);
                             params.put("title", title);
                             boolean isUrl = crawlingMapper.isUrl(params);
                             if (!isUrl) {
