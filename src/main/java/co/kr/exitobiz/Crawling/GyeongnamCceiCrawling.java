@@ -33,7 +33,8 @@ public class GyeongnamCceiCrawling implements Crawling {
      * https://ccei.creativekorea.or.kr/gyeongnam/
      *  */
 
-    private String url = "https://ccei.creativekorea.or.kr/gyeongnam/allim/allim_list.do?div_code=4&page=";
+    private String url = "https://ccei.creativekorea.or.kr/gyeongnam/allim/allim_list.do?div_code=1&page=";
+
     private int page = 2;
 
     @Override
@@ -53,9 +54,11 @@ public class GyeongnamCceiCrawling implements Crawling {
         }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
+//        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
+        options.addArguments("window-size=1920x1080");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
+        options.addArguments("lang=ko_KR");
 
         ChromeDriverService service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(driverFile)
@@ -88,15 +91,13 @@ public class GyeongnamCceiCrawling implements Crawling {
             for(int j=1; j<9; j++) {
                     try {
 
-                        WebElement titleXpath = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[3]/section/div[2]/div[3]/table/tbody/tr["+ j +"]/td[2]/a"));
-                        WebElement targetXpath = driver.findElement(By.xpath("/html/body/div[2]/div[1]/div[3]/section/div[2]/div[3]/table/tbody/tr["+ j +"]/td[3]"));
+                        WebElement titleXpath = driver.findElement(By.xpath("//*[@id=\"list_body\"]/tr["+j+"]/td[2]/a"));
 
                         SupportVo vo = new SupportVo();
                         String title = titleXpath.getText();
                         String url = titleXpath.getAttribute("onclick").replaceAll("fnDetailPage","").replaceAll("\\(","").replaceAll("\\)","").replaceAll("\"","");
                         String[] urlTemp = url.split(",");
                         String bodyurl = "https://ccei.creativekorea.or.kr/gyeongnam/allim/allim_view.do?no=" + urlTemp[0];
-                        String targettype = targetXpath.getText();
 
                         vo.setTargetName("경남창조경제혁신센터");
                         vo.setTargetCatName("-");
