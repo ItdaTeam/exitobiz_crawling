@@ -46,28 +46,11 @@ public class KStartUpCrawling implements Crawling {
     * K-StartUp
     * */
 
-    private String url = "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do";
     private int page = 5;
 
     @Override
     public void setPage(int page) {
         this.page = page;
-    }
-
-    public String xmlToJson(String str){
-        String output = null;
-        try{
-            String xml = str;
-            org.json.JSONObject jObject = XML.toJSONObject(xml);
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            Object json = mapper.readValue(jObject.toString(), Object.class);
-            output = mapper.writeValueAsString(json);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return output;
     }
 
     @Override
@@ -78,17 +61,6 @@ public class KStartUpCrawling implements Crawling {
         if (!driverFile.exists() && driverFile.isFile()) {
             throw new RuntimeException("Not found");
         }
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless", "--disable-gpu","--no-sandbox");
-        options.addArguments("window-size=1920x1080");
-        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.O36");
-        options.addArguments("lang=ko_KR");
-
-        ChromeDriverService service = null;
-        WebDriver driver = null;
-        JavascriptExecutor jse = null;
 
         SupportVo supportVo = new SupportVo();
         supportVo.setTitle("K-Startup");
@@ -103,16 +75,28 @@ public class KStartUpCrawling implements Crawling {
             URI uri = new URI("https://apis.data.go.kr/B552735/kisedKstartupService/getAnnouncementInformation?serviceKey=J7tK4QjewyuyUgCX%2B8AToMhiQ971eia%2BPow%2BdppvNUJpJ%2FKVqs7b9bXoKujFAslaPIK8WdwZUwdTNqh2IjYg1g%3D%3D&page=1&perPage=1000&returnType=json");
             LocalDate now = LocalDate.now();
             LocalDate plusMonth = now.plusMonths(6);
+            LocalDate minusDay = now.plusDays(1);
 
-            uri = new URIBuilder(uri).addParameter("cond[pbanc_rcpt_bgng_dt::GTE]", String.valueOf(now).replaceAll("-", "")).addParameter("cond[pbanc_rcpt_end_dt::LTE]", String.valueOf(plusMonth).replaceAll("-","")).build();
+            uri = new URIBuilder(uri).addParameter("cond[pbanc_rcpt_bgng_dt::GTE]", String.valueOf(minusDay).replaceAll("-", "")).addParameter("cond[pbanc_rcpt_end_dt::LTE]", String.valueOf(plusMonth).replaceAll("-","")).build();
             CloseableHttpClient httpClient = HttpClients.custom().setMaxConnTotal(100).setMaxConnPerRoute(100).build();
 
             HttpResponse httpResponse = httpClient.execute(new HttpGet(uri));
             String content = EntityUtils.toString(httpResponse.getEntity());
 
-            JSONParser jsonParser1 = new JSONParser();
-            JSONObject jObject = (JSONObject) jsonParser1.parse(content);
-            JSONArray jArray = (JSONArray) jObject.get("data");
+            JSONObject jObject;
+            JSONArray jArray;
+
+            try{
+                JSONParser jsonParser1 = new JSONParser();
+                jObject = (JSONObject) jsonParser1.parse(content);
+                jArray = (JSONArray) jObject.get("data");
+            }catch(Exception e ){
+                supportVo.setErrorYn("Y");
+                e.printStackTrace();
+                crawlingMapper.createMaster(supportVo);
+                return ;
+            }
+
 
             for(int i=0; i<jArray.size(); i++){
                 JSONObject obj = (JSONObject) jArray.get(i);
@@ -260,7 +244,9 @@ public class KStartUpCrawling implements Crawling {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             supportVo.setErrorYn("Y");
+            crawlingMapper.createMaster(supportVo);
             e.printStackTrace();
+            return ;
         }
 
         /* 빈 리스트가 아니면 크레이트 */
